@@ -108,7 +108,7 @@ No lorem ipsum. Unknown facts stay as `[bracketed]` placeholders in default sett
 
 ## 8. Build order
 
-0. Wordmark SVG generation from the Montage OTF (standalone; runs whenever the OTF path is supplied; until then the snippet shows the Cormorant text).
+0. Wordmark SVG generation from the Montage OTF at `.superpowers/fonts/montage-serif.otf` (git-ignored copy; family "Montage Serif Font", 119 glyphs, 1000 upem) using fontTools from a scratch venv, output `snippets/av-wordmark.liquid` with inline `<svg>` outlines of "ANANTA VASTRAM". Standalone step; until it runs the snippet shows the Cormorant text.
 1. `layout/theme.liquid`: link the two CSS files, font settings and custom properties, opening overlay, the three new scripts alongside Dawn's retained ones. New theme settings; `settings_data.json` un-ignored, added, and populated with fonts, palette and cart type.
 2. `av-header`, `av-footer`; header and footer groups repointed.
 3. Homepage sections and `index.json`.
