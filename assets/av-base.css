@@ -187,6 +187,12 @@ img, video { max-width: 100%; display: block; }
   letter-spacing: 0.2em; text-transform: uppercase; color: var(--av-white); line-height: 1; white-space: nowrap;
 }
 .av-header__wordmark img { height: 28px; width: auto; }
+.av-wordmark--svg { display: inline-flex; align-items: center; }
+.av-wordmark--svg svg { height: 1em; width: auto; display: block; }
+.av-header__wordmark.av-wordmark--svg svg { height: 22px; }
+.av-footer__wordmark.av-wordmark--svg svg { height: 18px; }
+.av-opening__wordmark.av-wordmark--svg svg { height: clamp(32px, 5vw, 72px); }
+@media (max-width: 900px) { .av-header__wordmark.av-wordmark--svg svg { height: 16px; } }
 .av-header__burger { display: none; }
 .av-cart-count { font-family: var(--av-font-body); font-size: 10px; margin-left: 4px; }
 
