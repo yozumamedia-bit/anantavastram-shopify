@@ -1,0 +1,12 @@
+{%- comment -%} Usage: {% render 'av-newsletter-form', id: 'footer', placeholder: 'Your email, for the next drop', class: 'av-footer__news' %} {%- endcomment -%}
+{%- assign form_id = 'av-news-' | append: id -%}
+{%- form 'customer', id: form_id, class: class -%}
+  <input type="hidden" name="contact[tags]" value="newsletter">
+  {%- if form.posted_successfully? -%}
+    <span class="av-body--s">Thank you. The next letter comes to you.</span>
+  {%- else -%}
+    <label class="visually-hidden" for="av-news-input-{{ id }}">Email</label>
+    <input id="av-news-input-{{ id }}" type="email" name="contact[email]" value="{{ form.email }}" placeholder="{{ placeholder }}" autocomplete="email" required{% if form.errors %} aria-invalid="true"{% endif %}>
+    <button type="submit">Join</button>
+  {%- endif -%}
+{%- endform -%}

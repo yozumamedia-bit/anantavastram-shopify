@@ -164,8 +164,9 @@ img, video { max-width: 100%; display: block; }
 html.no-js .av-reveal, html.shopify-design-mode .av-reveal { opacity: 1; transform: none; transition: none; }
 
 /* ---- header ---------------------------------------------------------- */
+.av-header-section { position: sticky; top: 0; z-index: 50; }
 .av-header {
-  position: sticky; top: 0; z-index: 50;
+  position: relative;
   height: var(--av-header-h);
   background: var(--av-kumkum);
   display: grid;
@@ -180,6 +181,7 @@ html.no-js .av-reveal, html.shopify-design-mode .av-reveal { opacity: 1; transfo
   letter-spacing: 0.22em; text-transform: uppercase; color: var(--av-white);
 }
 .av-header__nav a:hover { color: var(--av-ivory); opacity: 0.8; }
+.av-header__right { display: flex; justify-content: flex-end; align-items: center; gap: 36px; }
 .av-header__icons { display: flex; gap: 22px; align-items: center; margin-left: 8px; }
 .av-header__icons a, .av-header__icons button { display: inline-flex; width: 44px; height: 44px; align-items: center; justify-content: center; margin: -13px; background: none; border: 0; cursor: pointer; color: var(--av-white); }
 .av-header__icons svg { width: 18px; height: 18px; stroke: currentColor; }
@@ -206,8 +208,10 @@ html.no-js .av-reveal, html.shopify-design-mode .av-reveal { opacity: 1; transfo
   .av-header__wordmark { font-size: 18px; letter-spacing: 0.16em; text-align: center; }
   .av-header__icons { margin-left: 0; gap: 16px; }
 }
-.av-drawer { position: fixed; inset: 0; z-index: 60; background: var(--av-kumkum); padding: 96px var(--av-gutter) 40px; display: none; flex-direction: column; gap: 40px; }
+.av-drawer { position: fixed; inset: 0; width: 100vw; height: 100vh; max-width: none; max-height: none; margin: 0; border: 0; z-index: 60; background: var(--av-kumkum); padding: 96px var(--av-gutter) 40px; flex-direction: column; gap: 40px; }
 .av-drawer[open] { display: flex; }
+.av-drawer::backdrop { background: transparent; }
+.av-header__home { display: flex; justify-content: center; }
 .av-drawer__group { display: flex; flex-direction: column; gap: 22px; }
 .av-drawer__group a { font-family: var(--av-font-heading); font-size: 28px; color: var(--av-white); }
 .av-drawer__close { position: absolute; top: 10px; right: 8px; width: 44px; height: 44px; background: none; border: 0; color: var(--av-white); cursor: pointer; }
