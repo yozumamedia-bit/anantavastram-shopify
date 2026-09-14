@@ -1,0 +1,10 @@
+<section class="av-hero">
+  {%- if section.settings.image != blank -%}
+    {{ section.settings.image | image_url: width: 2800 | image_tag: widths: '800, 1200, 1600, 2000, 2800', sizes: '100vw', loading: 'eager', fetchpriority: 'high', alt: section.settings.image.alt | default: '' }}
+  {%- else -%}
+    <div class="av-media" style="height:100%"></div>
+  {%- endif -%}
+</section>
+{% schema %}
+{ "name": "AV Hero", "settings": [ { "type": "image_picker", "id": "image", "label": "Full-viewport still (no copy, no button)" } ], "presets": [{ "name": "AV Hero" }] }
+{% endschema %}

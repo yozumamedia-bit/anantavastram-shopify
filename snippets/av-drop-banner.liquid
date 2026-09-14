@@ -1,0 +1,8 @@
+{%- comment -%} Usage: {% render 'av-drop-banner', label: 'Drop 001', title: drop.theme_name, meta: 'Three pieces · Pongal 2027' %} {%- endcomment -%}
+<div class="av-drop-banner">
+  <div class="av-drop-banner__title">
+    <span class="av-label">{{ label | escape }}</span>
+    <span class="av-sub av-sub--l">{{ title | escape }}</span>
+  </div>
+  {%- if meta != blank -%}<span class="av-label av-label--red">{{ meta | escape }}</span>{%- endif -%}
+</div>

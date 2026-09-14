@@ -1,0 +1,33 @@
+<section class="av-drop-rows av-reveal">
+  {% render 'av-drop-banner', label: 'Exclusive', title: section.settings.title, meta: section.settings.meta %}
+  <div class="av-rows">
+    <article class="av-row">
+      {% render 'av-media', image: section.settings.image, ratio: '520 / 560', sizes: '(min-width: 1100px) 520px, 100vw' %}
+      <div class="av-row__story">
+        <div class="av-stack" style="gap:8px"><div class="av-label">Exclusive · {{ section.settings.category | escape }}</div><h3 class="av-name">{{ section.settings.name | escape }}</h3></div>
+        <div class="av-body av-body--s">{{ section.settings.description | escape | newline_to_br }}</div>
+        <div class="av-row__making"><div class="av-label av-label--red">How it is made</div><div class="av-body av-body--s">{{ section.settings.how_made | escape | newline_to_br }}</div></div>
+      </div>
+      <div class="av-row__notes">
+        <div class="av-price">On enquiry</div>
+        <div class="av-row__note"><div class="av-label">Availability</div><div class="av-body av-body--s">{{ section.settings.availability | escape }}</div></div>
+        <div class="av-row__note"><div class="av-label">Shipping</div><div class="av-body av-body--s">{{ section.settings.shipping | escape }}</div></div>
+        <a class="av-link" href="{{ section.settings.link }}">See the exclusive line</a>
+      </div>
+    </article>
+  </div>
+</section>
+{% schema %}
+{ "name": "AV Exclusive row", "settings": [
+  { "type": "text", "id": "title", "label": "Banner title", "default": "[Second collection name]" },
+  { "type": "text", "id": "meta", "label": "Banner meta", "default": "Wedding sets · made once, to the wearer" },
+  { "type": "image_picker", "id": "image", "label": "Image" },
+  { "type": "text", "id": "category", "label": "Category", "default": "Wedding" },
+  { "type": "text", "id": "name", "label": "Piece name", "default": "[Piece name] — the groom set" },
+  { "type": "textarea", "id": "description", "label": "Description", "default": "Pale-gold silk kurta with a gold zari angavastram. Ivory veshti, gold border, hand-worked motifs on the pallu. Made once, for one wearer, to their measure." },
+  { "type": "textarea", "id": "how_made", "label": "How it is made", "default": "Begins with a conversation with Kamalam. [Yarn / silk grade], [zari type]. About [loom hours] hours at the loom, then [hand-work hours] at the table." },
+  { "type": "text", "id": "availability", "label": "Availability", "default": "[X] commissions a season. [Y] weeks from the first fitting." },
+  { "type": "text", "id": "shipping", "label": "Shipping", "default": "[Commission delivery terms]" },
+  { "type": "url", "id": "link", "label": "Link to Exclusive page" }
+], "presets": [{ "name": "AV Exclusive row" }] }
+{% endschema %}

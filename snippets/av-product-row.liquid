@@ -1,0 +1,39 @@
+{%- comment -%} One product, one row. Usage: {% render 'av-product-row', product: product %} {%- endcomment -%}
+{%- liquid
+  assign mf = product.metafields.av
+  assign weaver = mf.weaver.value
+  assign v = product.selected_or_first_available_variant | default: product.variants.first
+  assign sold_out = false
+  if v.inventory_management == 'shopify' and v.inventory_quantity <= 0
+    assign sold_out = true
+  endif
+  assign edition_total = mf.edition_total.value | default: 0
+-%}
+<article class="av-row av-reveal{% if sold_out %} av-row--sold{% endif %}">
+  <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">{% render 'av-media', image: product.featured_image, ratio: '520 / 560', sizes: '(min-width: 1100px) 520px, (min-width: 900px) 50vw, 100vw' %}</a>
+  <div class="av-row__story">
+    <div class="av-stack" style="gap:8px">
+      <div class="av-label">{% if mf.numeral != blank %}No. {{ mf.numeral | escape }}{% endif %}{% if mf.tier != blank %} · {{ mf.tier | capitalize | escape }}{% endif %}</div>
+      <h3 class="av-name"><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+    </div>
+    <div class="av-body av-body--s">{{ product.description }}</div>
+    {%- if mf.how_made != blank or weaver != blank -%}
+    <div class="av-row__making">
+      <div class="av-label av-label--red">How it is made</div>
+      <div class="av-body av-body--s">
+        {%- if weaver != blank -%}Woven by {{ weaver.name | escape }}{% if weaver.unit != blank %} at {{ weaver.unit | escape }}{% endif %}. {% endif -%}
+        {{ mf.how_made | escape | newline_to_br }}
+      </div>
+    </div>
+    {%- endif -%}
+  </div>
+  <div class="av-row__notes">
+    <div class="av-price">{{ product.price | money }}</div>
+    {%- if edition_total > 0 -%}
+    <div class="av-row__note"><div class="av-label">Edition</div><div class="av-body av-body--s">{% render 'av-edition-line', product: product, context: 'row' %}</div></div>
+    {%- endif -%}
+    <div class="av-row__note"><div class="av-label">Availability</div><div class="av-body av-body--s">{% if sold_out %}Sold out.{% else %}Made to order.{% if mf.lead_time_weeks != blank %} {{ mf.lead_time_weeks }} weeks from confirmation.{% endif %}{% endif %}</div></div>
+    <div class="av-row__note"><div class="av-label">Shipping</div><div class="av-body av-body--s">{{ settings.av_shipping_line | escape }}</div></div>
+    <a class="av-link" href="{{ product.url }}">View the piece</a>
+  </div>
+</article>

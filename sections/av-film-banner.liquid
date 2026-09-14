@@ -1,0 +1,20 @@
+<section class="av-film av-reveal">
+  <div class="av-film__grid">
+    {% render 'av-video', loop_video: section.settings.loop, film: section.settings.film, poster: section.settings.poster, class: 'av-film__video' %}
+    {% render 'av-media', image: section.settings.still, ratio: '480 / 640', sizes: '(min-width: 900px) 33vw, 100vw' %}
+  </div>
+  <div class="av-film__caption">
+    <div class="av-sub av-sub--xs">{{ section.settings.caption | escape }}</div>
+    <div class="av-label">{{ section.settings.meta | escape }}</div>
+  </div>
+</section>
+{% schema %}
+{ "name": "AV Film banner", "settings": [
+  { "type": "video", "id": "loop", "label": "Silent loop (loom, fixed rig)" },
+  { "type": "video", "id": "film", "label": "Drop film with sound (plays on tap)" },
+  { "type": "image_picker", "id": "poster", "label": "Poster frame" },
+  { "type": "image_picker", "id": "still", "label": "Tall still (border and kara, macro)" },
+  { "type": "text", "id": "caption", "label": "Caption", "default": "The drop film — loom, hands, a voice in Tamil" },
+  { "type": "text", "id": "meta", "label": "Meta", "default": "≈ 1:30 · subtitled" }
+], "presets": [{ "name": "AV Film banner" }] }
+{% endschema %}

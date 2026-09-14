@@ -1,0 +1,11 @@
+<section class="av-credo av-reveal">
+  <div class="av-label">{{ section.settings.label | escape }}</div>
+  <p class="av-statement av-statement--credo av-credo__text">{{ section.settings.statement | escape }}</p>
+  <span class="av-credo__line"></span>
+</section>
+{% schema %}
+{ "name": "AV Credo", "settings": [
+  { "type": "text", "id": "label", "label": "Label", "default": "The house keeps to this" },
+  { "type": "textarea", "id": "statement", "label": "Statement", "default": "Woven by hand, in numbered editions, by weavers we name. Nothing is made until it is asked for, and nothing is ever marked down." }
+], "presets": [{ "name": "AV Credo" }] }
+{% endschema %}

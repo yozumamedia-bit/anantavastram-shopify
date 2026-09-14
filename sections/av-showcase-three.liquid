@@ -1,0 +1,18 @@
+<section class="av-showcase av-reveal">
+  <div class="av-grid av-grid--3">
+    {%- for block in section.blocks -%}
+      <div {{ block.shopify_attributes }}>{% render 'av-media', image: block.settings.image, ratio: '3 / 5.6', sizes: '(min-width: 900px) 33vw, 100vw' %}</div>
+    {%- endfor -%}
+  </div>
+  <div class="av-grid av-grid--3">
+    {%- for block in section.blocks -%}
+      <div class="av-showcase__caption">{{ block.settings.caption | escape }}</div>
+    {%- endfor -%}
+  </div>
+</section>
+{% schema %}
+{ "name": "AV Showcase (three)", "max_blocks": 3, "blocks": [ { "type": "image", "name": "Image", "settings": [
+  { "type": "image_picker", "id": "image", "label": "Image (tall)" },
+  { "type": "text", "id": "caption", "label": "Caption (Roman numeral · name)", "default": "I · [Set]" }
+] } ], "presets": [ { "name": "AV Showcase (three)", "blocks": [ { "type": "image", "settings": { "caption": "I · Red set" } }, { "type": "image", "settings": { "caption": "II · Rust set" } }, { "type": "image", "settings": { "caption": "III · Linen set" } } ] } ] }
+{% endschema %}
