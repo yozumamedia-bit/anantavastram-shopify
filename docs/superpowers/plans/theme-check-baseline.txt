@@ -1,0 +1,184 @@
+<claude-code-hint v="1" type="plugin" value="shopify-ai-toolkit@claude-plugins-official" />
+╭─ info ───────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  Release notes for 4.8.0                                                     │
+│                                                                              │
+│  Release highlights:                                                         │
+│                                                                              │
+│   - [CLI] Add new commands `store create dev` and `store delete` to manage   │
+│  dev stores                                                                  │
+│   - [CLI] Show each store's plan in `store list`                             │
+│   - [CLI] Allow filtering `store list` by store type                         │
+│   - [App] Support the bundle_size_exception capability                       │
+│   - [App] Fix: Prompt to generate the localhost certificate instead of       │
+│  aborting on `app dev --use-localhost`                                       │
+│   - [App] Show the organization name and ID in `app info`                    │
+│                                                                              │
+│  Read the complete release notes [1]                                         │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+[1] https://github.com/Shopify/cli/releases/tag/4.8.0
+
+╭─ info ───────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  layout/password.liquid                                                      │
+│                                                                              │
+│                                                                              │
+│  [warning]: AssetPreload                                                     │
+│  For better performance, prefer using the preload_tag filter                 │
+│                                                                              │
+│  164  <link rel="preload" as="font" href="{{ settings.type_body_font |       │
+│  font_url }}" type="font/woff2" crossorigin>                                 │
+│                                                                              │
+│                                                                              │
+│  [warning]: AssetPreload                                                     │
+│  For better performance, prefer using the preload_tag filter                 │
+│                                                                              │
+│  167  <link rel="preload" as="font" href="{{ settings.type_header_font |     │
+│  font_url }}" type="font/woff2" crossorigin>                                 │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ info ───────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  layout/theme.liquid                                                         │
+│                                                                              │
+│                                                                              │
+│  [warning]: AssetPreload                                                     │
+│  For better performance, prefer using the preload_tag filter                 │
+│                                                                              │
+│  224  <link rel="preload" as="font" href="{{ settings.type_body_font |       │
+│  font_url }}" type="font/woff2" crossorigin>                                 │
+│                                                                              │
+│                                                                              │
+│  [warning]: AssetPreload                                                     │
+│  For better performance, prefer using the preload_tag filter                 │
+│                                                                              │
+│  227  <link rel="preload" as="font" href="{{ settings.type_header_font |     │
+│  font_url }}" type="font/woff2" crossorigin>                                 │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ info ───────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  sections/email-signup-banner.liquid                                         │
+│                                                                              │
+│                                                                              │
+│  [error]: ValidSchema                                                        │
+│  Property templates is not allowed.                                          │
+│                                                                              │
+│  410  "templates": ["password"]                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ info ───────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  sections/header.liquid                                                      │
+│                                                                              │
+│                                                                              │
+│  [warning]: LiquidComplexity                                                 │
+│  Liquid complexity is 121, which exceeds the maximum of 120. The decision    │
+│  at line 883 pushed it over the limit. Consider simplifying conditional      │
+│  logic, or moving self-contained decision logic into snippets with the       │
+│  render tag.                                                                 │
+│                                                                              │
+│  883  {%- if request.page_type == 'index' -%}                                │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ info ───────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  sections/main-article.liquid                                                │
+│                                                                              │
+│                                                                              │
+│  [warning]: VariableName                                                     │
+│  The variable 'anchorId' uses wrong naming format                            │
+│                                                                              │
+│  84  {%- assign anchorId = '#Comments-' | append: article.id -%}             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ info ───────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  sections/main-list-collections.liquid                                       │
+│                                                                              │
+│                                                                              │
+│  [warning]: VariableName                                                     │
+│  The variable 'moduloResult' uses wrong naming format                        │
+│                                                                              │
+│  18  assign moduloResult = 28 | modulo: section.settings.columns_desktop     │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ info ───────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  sections/main-product.liquid                                                │
+│                                                                              │
+│                                                                              │
+│  [warning]: UndefinedObject                                                  │
+│  Unknown object 'continue' used.                                             │
+│                                                                              │
+│  377  {%- for product in recommendations.products limit:                     │
+│  block.settings.products_per_page offset: continue -%}                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ info ───────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  sections/main-search.liquid                                                 │
+│                                                                              │
+│                                                                              │
+│  [warning]: UnusedAssign                                                     │
+│  The variable 'product_settings' is assigned but not used                    │
+│                                                                              │
+│  220  {%- capture product_settings -%}{%- if                                 │
+│  section.settings.product_show_vendor -%}vendor,{%- endif -%}title,price{%-  │
+│   endcapture -%}                                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ info ───────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  snippets/facets.liquid                                                      │
+│                                                                              │
+│                                                                              │
+│  [warning]: LiquidComplexity                                                 │
+│  Liquid complexity is 156, which exceeds the maximum of 120. The decision    │
+│  at line 865 pushed it over the limit. Consider simplifying conditional      │
+│  logic, or moving self-contained decision logic into snippets with the       │
+│  render tag.                                                                 │
+│                                                                              │
+│  865  {%- if enable_sorting -%}                                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ info ───────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  templates/gift_card.liquid                                                  │
+│                                                                              │
+│                                                                              │
+│  [warning]: AssetPreload                                                     │
+│  For better performance, prefer using the preload_tag filter                 │
+│                                                                              │
+│  89  <link rel="preload" as="font" href="{{ settings.type_body_font |        │
+│  font_url }}" type="font/woff2" crossorigin>                                 │
+│                                                                              │
+│                                                                              │
+│  [warning]: AssetPreload                                                     │
+│  For better performance, prefer using the preload_tag filter                 │
+│                                                                              │
+│  92  <link rel="preload" as="font" href="{{ settings.type_header_font |      │
+│  font_url }}" type="font/woff2" crossorigin>                                 │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭─ info ───────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  Theme Check Summary.                                                        │
+│                                                                              │
+│  187 files inspected with 13 total offenses found across 10 files.           │
+│  1 errors.                                                                   │
+│  12 warnings.                                                                │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
