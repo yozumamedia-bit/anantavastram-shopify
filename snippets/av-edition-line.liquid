@@ -1,0 +1,27 @@
+{%- comment -%}
+  Usage: {% render 'av-edition-line', product: product, context: 'tile' %}  context: tile | row | page
+  tile: "3 of 8 left" / "Sold out"
+  row:  "8 pieces in Drop 001. 3 remain." / "8 pieces in Drop 001. All placed."
+  page: "3 of 8 remain" / "All 8 placed"
+{%- endcomment -%}
+{%- liquid
+  assign v = product.selected_or_first_available_variant | default: product.variants.first
+  assign remaining = v.inventory_quantity | default: 0
+  if v.inventory_management != 'shopify'
+    assign remaining = 1
+  endif
+  assign total = product.metafields.av.edition_total.value | default: 0
+  assign drop = product.metafields.av.drop.value
+  assign drop_no = drop.number.value | default: drop.number
+  if remaining < 0
+    assign remaining = 0
+  endif
+-%}
+{%- case context -%}
+{%- when 'row' -%}
+  {%- if total > 0 -%}{{ total }} pieces{% if drop_no %} in Drop {{ drop_no | prepend: '00' | slice: -3, 3 }}{% endif %}. {% if remaining > 0 %}{{ remaining }} remain.{% else %}All placed.{% endif %}{%- endif -%}
+{%- when 'page' -%}
+  {%- if remaining > 0 -%}{{ remaining }} of {{ total }} remain{%- else -%}All {{ total }} placed{%- endif -%}
+{%- else -%}
+  {%- if remaining > 0 -%}{{ remaining }} of {{ total }} left{%- else -%}Sold out{%- endif -%}
+{%- endcase -%}

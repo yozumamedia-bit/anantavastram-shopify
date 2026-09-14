@@ -1,0 +1,26 @@
+{%- comment -%}
+  Muted loop with play button. `loop_video` is a Shopify video (file) metafield/setting; `film` optional full film.
+  Usage: {% render 'av-video', loop_video: section.settings.loop, film: section.settings.film, poster: section.settings.poster, class: 'av-film__video' %}
+{%- endcomment -%}
+{%- liquid
+  assign loop_src = ''
+  if loop_video != blank and loop_video.sources.size > 0
+    assign loop_src = loop_video.sources | where: 'format', 'mp4' | first
+    assign loop_src = loop_src.url
+  endif
+  assign film_src = ''
+  if film != blank and film.sources.size > 0
+    assign film_src = film.sources | where: 'format', 'mp4' | first
+    assign film_src = film_src.url
+  endif
+-%}
+<div class="av-video {{ class }}"{% if film_src != blank %} data-film="{{ film_src }}"{% endif %}>
+  {%- if loop_src != blank -%}
+    <video src="{{ loop_src }}" muted autoplay loop playsinline preload="metadata" tabindex="-1"{% if poster != blank %} poster="{{ poster | image_url: width: 1600 }}"{% endif %}></video>
+  {%- elsif poster != blank -%}
+    {{ poster | image_url: width: 1600 | image_tag: loading: 'lazy', alt: '' }}
+  {%- endif -%}
+  {%- if loop_src != blank or film_src != blank -%}
+    <button class="av-video__play" type="button" aria-label="{% if film_src != blank %}Play the film with sound{% else %}Play with sound{% endif %}">{% render 'av-icon', name: 'play' %}</button>
+  {%- endif -%}
+</div>

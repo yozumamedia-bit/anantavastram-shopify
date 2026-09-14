@@ -1,0 +1,15 @@
+{%- comment -%}
+  Responsive image in a fixed-ratio box. Ivory placeholder when blank.
+  Usage: {% render 'av-media', image: settings.image, ratio: '4 / 5', sizes: '(min-width: 900px) 33vw, 100vw', alt: 'text', loading: 'lazy', class: 'extra' %}
+{%- endcomment -%}
+{%- liquid
+  assign ratio = ratio | default: '4 / 5'
+  assign sizes = sizes | default: '100vw'
+  assign loading = loading | default: 'lazy'
+  assign alt = alt | default: image.alt | default: ''
+-%}
+<div class="av-media av-media--ratio {{ class }}" style="--ratio: {{ ratio }};">
+  {%- if image != blank -%}
+    {{ image | image_url: width: 2400 | image_tag: widths: '400, 600, 800, 1200, 1600, 2400', sizes: sizes, loading: loading, alt: alt }}
+  {%- endif -%}
+</div>
