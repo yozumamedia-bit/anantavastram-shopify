@@ -226,9 +226,6 @@ Append after the `.av-header__wordmark img` rule:
 
 (Compound selectors, no space: the snippet puts both classes on the same `<span>`.)
 
-```css
-```
-
 - [ ] **Step 5: Theme check and commit**
 
 ```bash
@@ -259,7 +256,7 @@ In `assets/av-base.css` change `--av-font-display: var(--av-display-family);` to
 
 - [ ] **Step 9: Record the deviation in `CLAUDE.md`**
 
-Change the stack line "Fonts via Shopify's font picker (Shopify CDN, no Google Fonts call): heading = Marcellus, body = Karla, display = Rubik Mono One, wordmark stand-in = Cormorant Garamond 700." to: "Fonts: heading = Marcellus and body = Karla via Shopify's font picker; display = Rubik Mono One self-hosted as `assets/rubik-mono-one-400.woff2` (OFL; not in Shopify's library); wordmark text fallback = Cormorant 700 (`cormorant_n7`, Shopify library — Cormorant Garamond is not available). No Google Fonts runtime call."
+In `CLAUDE.md` line 12, replace only the first sentence — "Fonts via Shopify's font picker (Shopify CDN, no Google Fonts call): heading = Marcellus, body = Karla, display = Rubik Mono One, wordmark stand-in = Cormorant Garamond 700." — with: "Fonts: heading = Marcellus and body = Karla via Shopify's font picker; display = Rubik Mono One self-hosted as `assets/rubik-mono-one-400.woff2` (OFL; not in Shopify's library); wordmark text fallback = Cormorant 700 (`cormorant_n7`, Shopify library — Cormorant Garamond is not available). No Google Fonts runtime call." Keep the rest of the line (the Montage Serif / SVG logo upload clause) as it is.
 
 - [ ] **Step 10: Commit**
 
@@ -321,7 +318,7 @@ In the `"Default"` preset object, change/add these keys (keep everything else):
 "av_currency_line": "India (INR ₹)"
 ```
 
-Also set the same keys in the `"current"` object if `current` is an object rather than the string `"Default"` (in stock Dawn it is the string — leave it).
+Also set the same keys in the `"current"` object if `current` is an object rather than the string `"Default"` (in stock Dawn it is the string — leave it). At Step 8, open the theme editor's font picker once to confirm `karla_n3` (Karla Light) is offered; if only n4/n7 are, use `karla_n4` — the CSS already requests `font-weight: 300` and will synthesise or fall back gracefully.
 
 - [ ] **Step 3: Edit `layout/theme.liquid`**
 
@@ -338,7 +335,7 @@ Also set the same keys in the `"current"` object if `current` is an object rathe
         --av-wordmark-family: {{ settings.av_wordmark_font.family }}, {{ settings.av_wordmark_font.fallback_families }};
 ```
 
-(`--av-font-display` was hard-coded to 'Rubik Mono One' in `av-base.css` in Task 1 Step 8, so no display-family property is needed.) After the two existing `<link rel="preload" as="font" …>` lines add:
+(`--av-font-display` was hard-coded to 'Rubik Mono One' in `av-base.css` in Task 1 Step 8, so no display-family property is needed.) Dawn's two font preloads each sit inside their own `{%- unless …font.system? -%} … {%- endunless -%}`; after the **second `endunless`** (outside both conditionals) add:
 
 ```liquid
     {{ 'rubik-mono-one-400.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
@@ -892,7 +889,7 @@ Reference artboard: `Main.dc.html`. Every section gets `class="av-reveal"` on it
 {% endschema %}
 ```
 
-In `av-sections.css` the `.av-film__video` block already styles `video` and `.av-film__play`; because `av-video` emits `.av-video__play`, add `.av-film__video .av-video__play { position:absolute; inset:0; margin:auto; }` and `.av-film__video.is-playing .av-video__play { display:none; }` (the generic `.av-video` rules from the about block cover the rest — they apply because the snippet also adds class `av-video`).
+In `av-sections.css` the `.av-film__video` block already styles `video` and `.av-film__play`; because `av-video` emits `.av-video__play`, add `.av-film__video .av-video__play { position:absolute; inset:0; margin:auto; }`, `.av-film__video.is-playing .av-video__play { display:none; }`, and `.av-film__video { aspect-ratio: auto; height: 100%; align-self: stretch; }` — the generic `.av-video` rule sets `aspect-ratio: 16 / 9`, which would stop the loop filling the fixed 640px grid row on desktop. (The generic `.av-video` rules apply because the snippet also adds class `av-video`.)
 
 - [ ] **Step 6: `snippets/av-drop-banner.liquid`** and **`snippets/av-product-row.liquid`**
 
