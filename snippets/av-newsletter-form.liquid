@@ -1,13 +1,14 @@
 {%- comment -%} Usage: {% render 'av-newsletter-form', id: 'footer', placeholder: 'Your email, for the next drop', class: 'av-footer__news' %} {%- endcomment -%}
-{%- assign form_id = 'av-news-' | append: id | default: 'av-news-form' -%}
+{%- assign news_id = id | default: 'form' -%}
+{%- assign form_id = 'av-news-' | append: news_id -%}
 {%- form 'customer', id: form_id, class: class -%}
   <input type="hidden" name="contact[tags]" value="newsletter">
   {%- if form.posted_successfully? -%}
     <span class="av-body--s">Thank you. The next letter comes to you.</span>
   {%- else -%}
-    <label class="visually-hidden" for="av-news-input-{{ id }}">Email</label>
-    <input id="av-news-input-{{ id }}" type="email" name="contact[email]" value="{{ form.email }}" placeholder="{{ placeholder | escape }}" autocomplete="email" required{% if form.errors %} aria-invalid="true" aria-describedby="av-news-err-{{ id }}"{% endif %}>
+    <label class="visually-hidden" for="av-news-input-{{ news_id }}">Email</label>
+    <input id="av-news-input-{{ news_id }}" type="email" name="contact[email]" value="{{ form.email }}" placeholder="{{ placeholder | escape }}" autocomplete="email" required{% if form.errors %} aria-invalid="true" aria-describedby="av-news-err-{{ news_id }}"{% endif %}>
     <button type="submit">Join</button>
-    {%- if form.errors -%}<span id="av-news-err-{{ id }}" class="av-body--s">Please check the address.</span>{%- endif -%}
+    {%- if form.errors -%}<span id="av-news-err-{{ news_id }}" class="av-body--s">Please check the address.</span>{%- endif -%}
   {%- endif -%}
 {%- endform -%}

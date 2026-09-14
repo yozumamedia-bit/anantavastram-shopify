@@ -13,7 +13,7 @@
     {%- endfor -%}
   </div>
   <div class="av-footer__bottom">
-    <div>© {{ 'now' | date: '%Y' }} {{ shop.name }}{% for policy in shop.policies %}{% if policy.body != blank %} · <a href="{{ policy.url }}">{{ policy.title | escape }}</a>{% endif %}{% endfor %}</div>
+    <div>© {{ 'now' | date: '%Y' }} {{ shop.name | escape }}{% for policy in shop.policies %}{% if policy.body != blank %} · <a href="{{ policy.url }}">{{ policy.title | escape }}</a>{% endif %}{% endfor %}</div>
     <div>{{ settings.av_currency_line | escape }}</div>
   </div>
 </footer>

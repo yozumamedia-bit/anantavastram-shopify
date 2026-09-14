@@ -208,7 +208,7 @@ html.no-js .av-reveal, html.shopify-design-mode .av-reveal { opacity: 1; transfo
   .av-header__wordmark { font-size: 18px; letter-spacing: 0.16em; text-align: center; }
   .av-header__icons { margin-left: 0; gap: 16px; }
 }
-.av-drawer { position: fixed; inset: 0; max-width: none; max-height: none; margin: 0; border: 0; background: var(--av-kumkum); padding: 96px var(--av-gutter) 40px; flex-direction: column; gap: 40px; overflow: auto; overscroll-behavior: contain; }
+.av-drawer { position: fixed; inset: 0; width: auto; height: auto; max-width: none; max-height: none; margin: 0; border: 0; background: var(--av-kumkum); padding: 96px var(--av-gutter) 40px; flex-direction: column; gap: 40px; overflow: auto; overscroll-behavior: contain; }
 .av-drawer[open] { display: flex; }
 .av-drawer::backdrop { background: transparent; }
 html:has(.av-drawer[open]) { overflow: hidden; }
@@ -248,7 +248,8 @@ html.av-opening-active { overflow: hidden; }
 .av-footer__title { font-family: var(--av-font-body); font-weight: 400; font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--av-white); margin: 0; }
 .av-footer__col a { font-family: var(--av-font-body); font-weight: 400; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--av-ivory); }
 .av-footer__col a:hover { color: var(--av-white); }
-.av-footer__news { display: flex; gap: 16px; justify-content: space-between; align-items: center; max-width: 360px; border-bottom: 1px solid rgba(255,255,255,0.5); padding-bottom: 8px; }
+.av-footer__news { display: flex; gap: 16px; justify-content: space-between; align-items: center; max-width: 360px; border-bottom: 1px solid rgba(255,255,255,0.5); padding-bottom: 8px; flex-wrap: wrap; }
+.av-footer__news .av-body--s { flex-basis: 100%; }
 .av-footer__news input { flex: 1; background: none; border: 0; outline: 0; font-family: var(--av-font-body); font-weight: 300; font-size: 13px; color: var(--av-ivory); min-height: 44px; }
 .av-footer__news input::placeholder { color: var(--av-ivory); opacity: 0.7; }
 .av-footer__news button { background: none; border: 0; cursor: pointer; font-family: var(--av-font-body); font-weight: 400; font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--av-white); min-height: 44px; }
