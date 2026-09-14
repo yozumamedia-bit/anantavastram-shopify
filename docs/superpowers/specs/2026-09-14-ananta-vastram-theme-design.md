@@ -18,11 +18,11 @@ This spec settles what `CLAUDE.md` (the brief) leaves open and fixes the technic
 
 ## 2. Pages, templates, sections
 
-All pages are JSON templates composed of new `av-*` sections. Dawn's own sections remain in the repo unused, except cart, customer account, search, 404 and password, which stay stock and pick up the palette through Dawn's colour-scheme settings only. `templates/cart.json` loses its `featured-collection` grid. Cart type is **page** (`settings.cart_type = page`); the custom header has no drawer integration. The bag link in `av-header` carries `id="cart-icon-bubble"` and renders `sections/cart-icon-bubble.liquid`, which is rewritten to emit the AV bag icon plus `.av-cart-count` — Dawn's `cart.js` re-fetches that section through the Section Rendering API on every quantity change and replaces the link's contents, so the section must produce the AV markup, not Dawn's. The search icon links to `/search` (Dawn's stock search page, restyled by colour scheme); predictive search stays off. Section settings are limited to content (images, video, text, links, references); layout and colour are fixed by the design.
+All pages are JSON templates composed of new `av-*` sections. Dawn's own sections remain in the repo unused, except cart, customer account, search, 404 and password, which stay stock and pick up the palette through Dawn's colour-scheme settings only. `templates/cart.json` loses its `featured-collection` grid. Cart type is **page** (`settings.cart_type = page`); the custom header has no drawer integration. The bag link in `av-header` carries `id="cart-icon-bubble"`; its contents come from `snippets/av-cart-bubble.liquid` (AV bag icon plus `.av-cart-count`), which is also the sole content of `sections/cart-icon-bubble.liquid` — Dawn's `cart.js` re-fetches that section through the Section Rendering API on every quantity change and replaces the link's contents, so both must emit identical AV markup (a section cannot be rendered inside a section, hence the shared snippet). Add-to-cart on the product page navigates to `/cart` (Dawn's `product-form.js` fallback when no drawer or notification element exists); no notification is added. The search icon links to `/search` (Dawn's stock search page, restyled by colour scheme); predictive search stays off. Section settings are limited to content (images, video, text, links, references); layout and colour are fixed by the design.
 
 | Page | Template | Sections in order |
 |---|---|---|
-| Every page | `layout/theme.liquid` | `av-opening` → `header-group` (`av-header`) → `content_for_layout` → `footer-group` (`av-footer`) |
+| Every page | `layout/theme.liquid` | `snippets/av-opening.liquid` (a snippet, not a section: no editor content beyond the wordmark) → `header-group` (`av-header`) → `content_for_layout` → `footer-group` (`av-footer`) |
 | Home | `index.json` | `av-hero` · `av-credo` · `av-showcase-three` · `av-story` · `av-film-banner` · `av-drop-rows` ×2 · `av-exclusive-row` |
 | Collections | `list-collections.json` | `av-page-intro` · `av-drop-index` |
 | Single drop | `collection.json` | `av-drop-header` · `av-product-rows` |
@@ -87,7 +87,7 @@ Menus: `main-menu` is not used. Header and footer link groups are `link_list` se
 
 Three new files, vanilla, deferred, no dependencies:
 
-- `av-opening.js` — on load, if `sessionStorage.avOpened` is unset and `prefers-reduced-motion` is not set: show overlay, wordmark fades in (CSS), hold, add `.is-leaving`, remove overlay on `transitionend`, set the flag. Otherwise remove the overlay immediately.
+- `av-opening.js` — on load, if `sessionStorage.avOpened` is unset and `prefers-reduced-motion` is not set: add `html.av-opening-active` (locks scroll), wordmark fades in (CSS), hold, add `.is-leaving`, on `transitionend` remove the overlay and the html class, set the flag. Otherwise remove the overlay immediately.
 - `av-reveal.js` — IntersectionObserver adds `.is-in` to `.av-reveal` once.
 - `av-video.js` — for `.av-video`: loops muted autoplay; the play button unmutes and, if a `data-film` source is set, swaps to the full film with controls.
 
@@ -103,7 +103,7 @@ No lorem ipsum. Unknown facts stay as `[bracketed]` placeholders in default sett
 - Tooling: Shopify CLI 3 (`shopify theme dev --store <domain>`), Theme Check (`theme-check:recommended`). `shopify theme check` runs before every commit.
 - CI: `.github/workflows/theme-check.yml` runs Theme Check on push and pull request.
 - `.gitignore`: `.DS_Store`, `node_modules/`, `.shopify/`, `.superpowers/`, `*.otf`, `*.ttf`. `settings_data.json` is tracked.
-- `docs/setup.md`: metaobject and metafield definitions (including the `drop-NNN` handle rule and status choices), tier tags on products, pages to create (About, Gallery, Exclusive) with template assignment, an automated collection with handle `all` (condition: inventory stock is greater than −1, so every product qualifies), sorted "Newest first" and assigned `collection.products-all`, the six `link_list` menus, blog `stories` with tags, WhatsApp number, GitHub integration steps.
+- `docs/setup.md`: metaobject and metafield definitions (including the `drop-NNN` handle rule and status choices), tier tags on products, pages to create (About, Gallery, Exclusive) with template assignment, an automated collection with handle `all` (condition: inventory stock is greater than −1 so every product qualifies; fallback if admin rejects a negative value: product price is greater than 0), sorted "Newest first" and assigned `collection.products-all`, the six `link_list` menus, blog `stories` with tags, WhatsApp number, GitHub integration steps.
 - "Theme Check before every commit" is a convention enforced by CI, not a git hook.
 
 ## 8. Build order
