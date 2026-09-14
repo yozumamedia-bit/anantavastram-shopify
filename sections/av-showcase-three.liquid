@@ -1,3 +1,4 @@
+{%- if section.blocks.size > 0 -%}
 <section class="av-showcase av-reveal">
   <div class="av-grid av-grid--3">
     {%- for block in section.blocks -%}
@@ -10,6 +11,7 @@
     {%- endfor -%}
   </div>
 </section>
+{%- endif -%}
 {% schema %}
 { "name": "AV Showcase (three)", "max_blocks": 3, "blocks": [ { "type": "image", "name": "Image", "settings": [
   { "type": "image_picker", "id": "image", "label": "Image (tall)" },

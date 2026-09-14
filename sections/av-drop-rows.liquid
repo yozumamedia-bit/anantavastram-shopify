@@ -17,15 +17,19 @@
     endfor
   endif
 -%}
-{%- if drop != blank and drop.collection.value != blank -%}
+{%- if drop != blank and drop.collection.value != blank and drop.collection.value.products_count > 0 -%}
   {%- liquid
     assign col = drop.collection.value
     assign count = col.products_count
     assign padded = drop.number.value | prepend: '00' | slice: -3, 3
     assign label = 'Drop ' | append: padded
-    assign meta = count | append: ' pieces'
-    if drop.season != blank
-      assign meta = meta | append: ' · ' | append: drop.season
+    if count == 1
+      assign meta = '1 piece'
+    else
+      assign meta = count | append: ' pieces'
+    endif
+    if drop.season.value != blank
+      assign meta = meta | append: ' · ' | append: drop.season.value
     endif
   -%}
   <section class="av-drop-rows">

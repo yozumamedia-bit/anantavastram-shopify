@@ -1,4 +1,5 @@
 <section class="av-hero">
+  <h1 class="visually-hidden">{{ shop.name | escape }}</h1>
   {%- if section.settings.image != blank -%}
     {{ section.settings.image | image_url: width: 2800 | image_tag: widths: '800, 1200, 1600, 2000, 2800', sizes: '100vw', loading: 'eager', fetchpriority: 'high', alt: section.settings.image.alt | default: '' }}
   {%- else -%}
