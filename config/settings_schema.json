@@ -15,7 +15,7 @@
       { "type": "header", "content": "Wordmark" },
       { "type": "image_picker", "id": "av_logo", "label": "Logo (SVG or PNG, white on transparent)", "info": "Overrides the built-in Montage wordmark in header, footer and opening." },
       { "type": "header", "content": "Contact" },
-      { "type": "text", "id": "av_whatsapp_number", "label": "WhatsApp number", "info": "International format, digits only, e.g. 919876543210", "default": "" },
+      { "type": "text", "id": "av_whatsapp_number", "label": "WhatsApp number", "info": "International format, digits only, e.g. 919876543210. Leave empty to hide all WhatsApp links." },
       { "type": "header", "content": "Commerce copy" },
       { "type": "text", "id": "av_shipping_line", "label": "Shipping line (product rows and pages)", "default": "[Shipping terms — India and worldwide, duties note]" },
       { "type": "text", "id": "av_currency_line", "label": "Footer currency line", "default": "India (INR ₹)" }
