@@ -36,7 +36,7 @@
 - `assets/av-opening.js`, `assets/av-reveal.js`, `assets/av-video.js` — new.
 
 **Snippets** (each one repeatable unit)
-- `av-wordmark.liquid`, `av-opening.liquid`, `av-icon.liquid`, `av-cart-bubble.liquid`, `av-media.liquid`, `av-video.liquid`, `av-edition-line.liquid`, `av-whatsapp-link.liquid`, `av-product-row.liquid`, `av-product-list-item.liquid`, `av-drop-tile.liquid`, `av-drop-banner.liquid`, `av-drops.liquid` (ordered drop iteration helper), `av-newsletter-form.liquid`.
+- `av-wordmark.liquid`, `av-opening.liquid`, `av-icon.liquid`, `av-cart-bubble.liquid`, `av-media.liquid`, `av-video.liquid`, `av-edition-line.liquid`, `av-whatsapp-link.liquid`, `av-product-row.liquid`, `av-product-list-item.liquid`, `av-drop-tile.liquid`, `av-drop-banner.liquid`, `av-newsletter-form.liquid`. (The ordered-drop-iteration rule is a comment atop `sections/av-drop-index.liquid`, not a snippet.)
 
 **Sections**
 - Chrome: `av-header.liquid`, `av-footer.liquid`; `cart-icon-bubble.liquid` (rewrite).
@@ -166,7 +166,6 @@ def main(otf: str) -> None:
         name = cmap[ord(ch)]
         pen = SVGPathPen(glyphs)
         # flip y (font y-up -> svg y-down), place at baseline = ascent
-        TransformPen(pen, (1, 0, 0, -1, x, ascent)).__init__  # noqa: B018 (keeps linters quiet)
         tpen = TransformPen(pen, (1, 0, 0, -1, x, ascent))
         glyphs[name].draw(tpen)
         d = pen.getCommands()
@@ -201,16 +200,6 @@ if __name__ == "__main__":
     main(sys.argv[1])
 ```
 
-Remove the stray `TransformPen(...).__init__` line — it is a leftover; the real pen is `tpen`. The final loop body is:
-
-```python
-        name = cmap[ord(ch)]
-        pen = SVGPathPen(glyphs)
-        tpen = TransformPen(pen, (1, 0, 0, -1, x, ascent))
-        glyphs[name].draw(tpen)
-        d = pen.getCommands()
-```
-
 - [ ] **Step 2: Run it**
 
 ```bash
@@ -229,10 +218,15 @@ Append after the `.av-header__wordmark img` rule:
 ```css
 .av-wordmark--svg { display: inline-flex; align-items: center; }
 .av-wordmark--svg svg { height: 1em; width: auto; display: block; }
-.av-header__wordmark .av-wordmark--svg svg { height: 22px; }
-.av-footer__wordmark .av-wordmark--svg svg { height: 18px; }
-.av-opening__wordmark .av-wordmark--svg svg { height: clamp(32px, 5vw, 72px); }
-@media (max-width: 900px) { .av-header__wordmark .av-wordmark--svg svg { height: 16px; } }
+.av-header__wordmark.av-wordmark--svg svg { height: 22px; }
+.av-footer__wordmark.av-wordmark--svg svg { height: 18px; }
+.av-opening__wordmark.av-wordmark--svg svg { height: clamp(32px, 5vw, 72px); }
+@media (max-width: 900px) { .av-header__wordmark.av-wordmark--svg svg { height: 16px; } }
+```
+
+(Compound selectors, no space: the snippet puts both classes on the same `<span>`.)
+
+```css
 ```
 
 - [ ] **Step 5: Theme check and commit**
@@ -257,7 +251,7 @@ Expected: a file of roughly 40–60 KB. Also fetch `ofl/rubikmonoone/OFL.txt` fr
 ```bash
 V=/private/tmp/claude-501/-Users-tharunpalla-Documents-GitHub-anantavastram-shopify/3bf8de45-1515-4548-a354-68b246b452f3/scratchpad/venv; $V/bin/pip install -q brotli && $V/bin/pyftsubset $V/../RubikMonoOne-Regular.ttf --unicodes="U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20B9,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD" --flavor=woff2 --output-file=/Users/tharunpalla/Documents/GitHub/anantavastram-shopify/assets/rubik-mono-one-400.woff2 && ls -la /Users/tharunpalla/Documents/GitHub/anantavastram-shopify/assets/rubik-mono-one-400.woff2
 ```
-Expected: a woff2 of roughly 15–25 KB. (`U+20B9` is ₹, needed for prices.)
+Expected: a woff2 of roughly 15–25 KB. `U+20B9` is ₹; Rubik Mono One most likely lacks that glyph, in which case `pyftsubset` silently skips it and ₹ renders from the fallback stack — that is expected, not a subsetting bug.
 
 - [ ] **Step 8: Point the token at the self-hosted face**
 
@@ -341,11 +335,16 @@ Also set the same keys in the `"current"` object if `current` is an object rathe
 (b) Inside the `:root {` block, after `--font-heading-weight` add:
 
 ```liquid
-        --av-display-family: 'Rubik Mono One', 'Arial Black', Impact, sans-serif;
         --av-wordmark-family: {{ settings.av_wordmark_font.family }}, {{ settings.av_wordmark_font.fallback_families }};
 ```
 
-and after the two existing `<link rel="preload" as="font" …>` lines add `<link rel="preload" as="font" href="{{ 'rubik-mono-one-400.woff2' | asset_url }}" type="font/woff2" crossorigin>`.
+(`--av-font-display` was hard-coded to 'Rubik Mono One' in `av-base.css` in Task 1 Step 8, so no display-family property is needed.) After the two existing `<link rel="preload" as="font" …>` lines add:
+
+```liquid
+    {{ 'rubik-mono-one-400.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+```
+
+(`preload_tag` rather than a raw `<link>` keeps Theme Check's `AssetPreload` rule quiet.)
 
 (c) Replace the Dawn `body { display: grid; grid-template-rows: auto auto 1fr auto; ... }` rule's `display: grid; grid-template-rows: auto auto 1fr auto; grid-template-columns: 100%;` with `display: flex; flex-direction: column;` and add `main { flex: 1 0 auto; }` — the header group no longer has an announcement bar (grid rows would leave a gap), and the flex-grow keeps the footer at the bottom on short stock pages (404, empty search).
 
@@ -674,7 +673,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 ### Task 4: Core snippets — media, video, edition line, WhatsApp, drop iteration
 
 **Files:**
-- Create: `snippets/av-media.liquid`, `snippets/av-video.liquid`, `snippets/av-edition-line.liquid`, `snippets/av-whatsapp-link.liquid`, `snippets/av-drops.liquid`
+- Create: `snippets/av-media.liquid`, `snippets/av-video.liquid`, `snippets/av-edition-line.liquid`, `snippets/av-whatsapp-link.liquid`
 
 - [ ] **Step 1: `snippets/av-media.liquid`**
 
@@ -771,30 +770,12 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 {%- endif -%}
 ```
 
-- [ ] **Step 5: `snippets/av-drops.liquid`** — ordered drop iteration
-
-Liquid cannot return arrays from snippets, so this snippet *renders* a chosen drop by position, and callers that need all drops loop the handle range themselves. Provide both patterns in comments so sections copy the right one:
-
-```liquid
-{%- comment -%}
-  Pattern A (used by av-drop-index): iterate all drops newest first —
-    {%- for i in (1..50) reversed -%}
-      {%- assign h = i | prepend: '00' | slice: -3, 3 | prepend: 'drop-' -%}
-      {%- assign drop = shop.metaobjects.drop[h] -%}
-      {%- if drop == blank %}{% continue %}{% endif -%}
-      ... use drop ...
-    {%- endfor -%}
-  Pattern B (used by av-drop-rows auto mode): the Nth open/current drop —
-    {%- render 'av-drops', position: 2, ... %} is not possible (no return values),
-    so av-drop-rows inlines Pattern A with a counter and `break`.
-  This file exists so the handle rule lives in one documented place.
-{%- endcomment -%}
-```
+- [ ] **Step 5: Drop iteration rule** — no file. Liquid snippets cannot return values, so ordered drop iteration is inlined wherever needed (`av-drop-rows` Task 5, `av-drop-index` Task 6) using the same loop: `for i in (1..50) reversed` → handle `drop-NNN` → `shop.metaobjects.drop[handle]` → skip blanks. The rule is documented once, as the comment at the top of `sections/av-drop-index.liquid` (Task 6 Step 3).
 
 - [ ] **Step 6: Theme check and commit**
 
 ```bash
-shopify theme check && git add snippets/av-media.liquid snippets/av-video.liquid snippets/av-edition-line.liquid snippets/av-whatsapp-link.liquid snippets/av-drops.liquid && git commit -m "feat: core AV snippets (media, video, edition line, WhatsApp, drop iteration)
+shopify theme check && git add snippets/av-media.liquid snippets/av-video.liquid snippets/av-edition-line.liquid snippets/av-whatsapp-link.liquid && git commit -m "feat: core AV snippets (media, video, edition line, WhatsApp)
 
 Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 ```
@@ -953,7 +934,7 @@ Row (image | story | notes):
       <div class="av-label av-label--red">How it is made</div>
       <div class="av-body av-body--s">
         {%- if weaver != blank -%}Woven by {{ weaver.name }}{% if weaver.unit != blank %} at {{ weaver.unit }}{% endif %}. {% endif -%}
-        {{ mf.how_made }}
+        {{ mf.how_made | newline_to_br }}
       </div>
     </div>
     {%- endif -%}
@@ -1132,7 +1113,7 @@ Reference artboard: `Collections.dc.html`.
 {% endschema %}
 ```
 
-Add to `av-base.css`: `.av-body--l { font-size: 18px; }` and to `av-sections.css`: `.av-intro__keys .is-active { border-bottom: 1px solid var(--av-kumkum); padding-bottom: 4px; }`. The `large_body` / `open` checkboxes are the one deliberate exception to "no layout toggles": the same intro serves four pages whose artboards differ only in these two details.
+Add to `av-base.css`: `.av-body--l { font-size: 18px; }` and to `av-sections.css`: `.av-intro__keys .is-active { border-bottom: 1px solid var(--av-kumkum); padding-bottom: 4px; }`. The `large_body` / `open` checkboxes here and the `mode` select on `av-band` (Task 9) are the deliberate exceptions to "no layout toggles": one section serving several artboards that differ only in that detail.
 
 - [ ] **Step 2: `snippets/av-drop-tile.liquid`**
 
@@ -1159,6 +1140,11 @@ Add to `av-base.css`: `.av-body--l { font-size: 18px; }` and to `av-sections.css
 - [ ] **Step 3: `sections/av-drop-index.liquid`**
 
 ```liquid
+{%- comment -%}
+  Drop ordering rule (the one place it is documented): every drop metaobject has handle
+  drop-NNN (three digits = its number). Sorting metaobjects by field is unreliable in Liquid,
+  so we walk the handle range newest-first and skip blanks. av-drop-rows uses the same loop.
+{%- endcomment -%}
 {%- liquid
   assign found = 0
   assign past_head_done = false
@@ -1295,7 +1281,7 @@ Add to `av-sections.css` next to the `.av-past` block: `.av-past-head { padding:
 
 - [ ] **Step 7: Verify**
 
-In admin, add collection metafield definition `av.drop` (metaobject ref) and set it on "Drop 001" → `drop-001`. Preview `/collections`: intro, current drop band with image left / info right, chip, counts, six tiles with "3 of 8 left"; add a second drop `drop-000`? No — handles are `drop-NNN` from 001; create `drop-002` with status `open` and a collection to see the past-drop band (it will list above 001 as newest — correct, newest first; set 002 `current` and 001 `open` to see both states). `/collections/drop-001`: header + rows. Theme check 0 errors.
+In admin, add collection metafield definition `av.drop` (metaobject ref) and set it on "Drop 001" → `drop-001`. Preview `/collections`: intro, current drop band with image left / info right, chip, counts, six tiles with "3 of 8 left". To see the past-drop band, create `drop-002` (status `current`, its own collection with one product) and change `drop-001` to `open`: 002 renders as the large band, 001 below it under the "Past drops" head with the "Pieces remaining" chip. Set one product's inventory to 0 to see a faded "Sold out" tile. `/collections/drop-001`: header + rows. Theme check 0 errors.
 
 - [ ] **Step 8: Commit**
 
@@ -1796,14 +1782,9 @@ Posts:
 ```liquid
 {%- liquid
   assign featured = section.settings.featured_article | default: blog.articles.first
-  if current_tags != blank
-    assign per = 12
-  else
-    assign per = 7
-  endif
 -%}
 <section class="av-posts">
-  {%- paginate blog.articles by per -%}
+  {%- paginate blog.articles by 7 -%}
     {%- assign shown = 0 -%}
     {%- assign first_page = false -%}
     {%- if current_tags == blank and paginate.current_page == 1 %}{% assign first_page = true %}{% endif -%}
@@ -1856,7 +1837,7 @@ Earlier (hidden on tag pages; shows articles 8–10):
 {% endschema %}
 ```
 
-`blog.articles` is capped at 50 outside `paginate`; the `offset: 7 limit: 3` loop reads within that cap. "All stories" links to page 2 of the paginated list, which is `/blogs/stories?page=2` — acceptable.
+`blog.articles` is capped at 50 outside `paginate`; the `offset: 7 limit: 3` loop reads within that cap. "All stories" links to page 2 of the paginated list, which is `/blogs/stories?page=2` — acceptable. Pagination is a literal 7 everywhere (page 1 untagged shows 6 because the featured article is skipped; tag pages and later pages show 7) — a literal keeps Theme Check's `PaginationSize` rule quiet.
 
 - [ ] **Step 5: `sections/av-newsletter-line.liquid`**
 
@@ -1988,7 +1969,7 @@ Reference artboards: `About.dc.html`, `Gallery.dc.html`.
   </div>
 </section>
 {% schema %}
-{ "name": "AV Chapter (portrait split)", "settings": [
+{ "name": "AV Chapter split", "settings": [
   { "type": "image_picker", "id": "portrait", "label": "Portrait" },
   { "type": "text", "id": "numeral", "label": "Numeral", "default": "II" }, { "type": "text", "id": "title", "label": "Name", "default": "Kamalam Moorthy" },
   { "type": "text", "id": "role", "label": "Role line", "default": "Chief designer · Head of production · Weaver" },
@@ -1996,7 +1977,7 @@ Reference artboards: `About.dc.html`, `Gallery.dc.html`.
   { "type": "richtext", "id": "text", "label": "Paragraphs", "default": "<p>[Paragraph — who she is, how long she has woven, the unit she runs.]</p><p>[Paragraph — what she will not do.]</p>" },
   { "type": "video", "id": "film", "label": "Interview video" }, { "type": "image_picker", "id": "poster", "label": "Video poster" },
   { "type": "text", "id": "video_caption", "label": "Video caption", "default": "In her words · from the founder interview" }
-], "presets": [{ "name": "AV Chapter (portrait split)" }] }
+], "presets": [{ "name": "AV Chapter split" }] }
 {% endschema %}
 ```
 
@@ -2126,7 +2107,15 @@ Add `story` (multi-line) to the `campaign` metaobject definition alongside the s
 }, "order": ["intro", "place", "film", "ch1", "clips", "ch2", "ch3", "ch4", "close"] }
 ```
 
-`templates/page.gallery.json` — three `av-campaign` sections `c1`, `c2`, `c3` with labels "Campaign 001/002/003"; `c3` carries `archive_label: "The archive"`, `archive_url: "/blogs/stories/tagged/campaigns"`. No intro section (Gallery starts with images).
+`templates/page.gallery.json` (no intro section — Gallery starts with images):
+
+```json
+{ "sections": {
+  "c1": { "type": "av-campaign", "settings": { "label": "Campaign 001" } },
+  "c2": { "type": "av-campaign", "settings": { "label": "Campaign 002" } },
+  "c3": { "type": "av-campaign", "settings": { "label": "Campaign 003", "archive_label": "The archive", "archive_url": "/blogs/stories/tagged/campaigns" } }
+}, "order": ["c1", "c2", "c3"] }
+```
 
 - [ ] **Step 9: Verify**
 
