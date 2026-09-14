@@ -95,9 +95,9 @@ node_modules/
 
 Then:
 ```bash
-git add .gitignore config/settings_data.json && git status --short
+git add .gitignore config/settings_data.json docs/superpowers/plans/theme-check-baseline.txt && git status --short
 ```
-Expected: `M .gitignore`, `A config/settings_data.json`.
+Expected: `M .gitignore`, `A config/settings_data.json`, `A docs/superpowers/plans/theme-check-baseline.txt`.
 
 - [ ] **Step 5: Create the develop branch and commit**
 
@@ -116,11 +116,15 @@ Run with `run_in_background: true`. It prints a `http://127.0.0.1:9292` URL — 
 
 ---
 
-### Task 1: Wordmark SVG from the Montage OTF
+### Task 1: Wordmark SVG from the Montage OTF; self-hosted display font
+
+**Why the display font is self-hosted:** Shopify's font library (shopify.dev → Fonts) has `rubik_*` and `cormorant_*` but **no Rubik Mono One and no Cormorant Garamond**. Rubik Mono One is the design's display face (product names, prices, sub-headings), so it ships as a woff2 in `assets/` under its SIL Open Font License. The wordmark text fallback uses Shopify's `cormorant_n7` (Cormorant 700, visually the same family) since the Montage SVG makes it a rarely-seen fallback. This overrides the "fonts via font picker" line in `CLAUDE.md` for one font; Step 9 records that.
 
 **Files:**
 - Create: `scripts/build-wordmark.py`
 - Create: `snippets/av-wordmark.liquid` (generated)
+- Create: `assets/rubik-mono-one-400.woff2`
+- Modify: `CLAUDE.md` (one line)
 
 - [ ] **Step 1: Write the generator**
 
@@ -174,8 +178,8 @@ def main(otf: str) -> None:
 
     svg = (
         f'<svg class="av-wordmark__svg" viewBox="0 0 {width} {height}" '
-        f'xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="av-wordmark-title" fill="currentColor">'
-        f'<title id="av-wordmark-title">{TEXT.title()}</title>' + "".join(paths) + "</svg>"
+        f'xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{TEXT.title()}" fill="currentColor">'
+        + "".join(paths) + "</svg>"
     )
 
     liquid = f"""{{%- comment -%}}
@@ -239,6 +243,38 @@ shopify theme check && git add scripts/build-wordmark.py snippets/av-wordmark.li
 Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 ```
 
+- [ ] **Step 6: Fetch Rubik Mono One (ask the user before downloading)**
+
+Source: the Google Fonts repository, file `ofl/rubikmonoone/RubikMonoOne-Regular.ttf` (~50 KB, SIL OFL 1.1). Tell the user the filename, source and size and get a yes, then:
+
+```bash
+curl -fsSL -o /private/tmp/claude-501/-Users-tharunpalla-Documents-GitHub-anantavastram-shopify/3bf8de45-1515-4548-a354-68b246b452f3/scratchpad/RubikMonoOne-Regular.ttf https://github.com/google/fonts/raw/main/ofl/rubikmonoone/RubikMonoOne-Regular.ttf && ls -la /private/tmp/claude-501/-Users-tharunpalla-Documents-GitHub-anantavastram-shopify/3bf8de45-1515-4548-a354-68b246b452f3/scratchpad/RubikMonoOne-Regular.ttf
+```
+Expected: a file of roughly 40–60 KB. Also fetch `ofl/rubikmonoone/OFL.txt` from the same directory and save it as `assets/rubik-mono-one-OFL.txt` (the licence must travel with the font).
+
+- [ ] **Step 7: Subset to Latin and convert to woff2**
+
+```bash
+V=/private/tmp/claude-501/-Users-tharunpalla-Documents-GitHub-anantavastram-shopify/3bf8de45-1515-4548-a354-68b246b452f3/scratchpad/venv; $V/bin/pip install -q brotli && $V/bin/pyftsubset $V/../RubikMonoOne-Regular.ttf --unicodes="U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20B9,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD" --flavor=woff2 --output-file=/Users/tharunpalla/Documents/GitHub/anantavastram-shopify/assets/rubik-mono-one-400.woff2 && ls -la /Users/tharunpalla/Documents/GitHub/anantavastram-shopify/assets/rubik-mono-one-400.woff2
+```
+Expected: a woff2 of roughly 15–25 KB. (`U+20B9` is ₹, needed for prices.)
+
+- [ ] **Step 8: Point the token at the self-hosted face**
+
+In `assets/av-base.css` change `--av-font-display: var(--av-display-family);` to `--av-font-display: 'Rubik Mono One', 'Arial Black', Impact, sans-serif;` (the `@font-face` itself is added in `theme.liquid` in Task 2 Step 3a).
+
+- [ ] **Step 9: Record the deviation in `CLAUDE.md`**
+
+Change the stack line "Fonts via Shopify's font picker (Shopify CDN, no Google Fonts call): heading = Marcellus, body = Karla, display = Rubik Mono One, wordmark stand-in = Cormorant Garamond 700." to: "Fonts: heading = Marcellus and body = Karla via Shopify's font picker; display = Rubik Mono One self-hosted as `assets/rubik-mono-one-400.woff2` (OFL; not in Shopify's library); wordmark text fallback = Cormorant 700 (`cormorant_n7`, Shopify library — Cormorant Garamond is not available). No Google Fonts runtime call."
+
+- [ ] **Step 10: Commit**
+
+```bash
+git add assets/rubik-mono-one-400.woff2 assets/rubik-mono-one-OFL.txt assets/av-base.css CLAUDE.md && git commit -m "feat: self-host Rubik Mono One display font (OFL)
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
+```
+
 ---
 
 ### Task 2: theme.liquid, theme settings, opening sequence, scripts
@@ -258,13 +294,11 @@ In `config/settings_schema.json`, insert this object as the second element of th
   "name": "Ananta Vastram",
   "settings": [
     { "type": "header", "content": "Type" },
-    { "type": "font_picker", "id": "av_display_font", "default": "rubik_mono_one_n4", "label": "Display font", "info": "Sub-headings, product names, prices. Design: Rubik Mono One." },
-    { "type": "font_picker", "id": "av_wordmark_font", "default": "cormorant_garamond_n7", "label": "Wordmark fallback font", "info": "Used only when no logo is set and the generated wordmark is missing." },
+    { "type": "font_picker", "id": "av_wordmark_font", "default": "cormorant_n7", "label": "Wordmark fallback font", "info": "Used only when no logo is set and the generated wordmark is missing. The display font (Rubik Mono One) is self-hosted and not a setting." },
     { "type": "header", "content": "Wordmark" },
     { "type": "image_picker", "id": "av_logo", "label": "Logo (SVG or PNG, white on transparent)", "info": "Overrides the built-in Montage wordmark in header, footer and opening." },
     { "type": "header", "content": "Contact" },
     { "type": "text", "id": "av_whatsapp_number", "label": "WhatsApp number", "info": "International format, digits only, e.g. 919876543210", "default": "" },
-    { "type": "url", "id": "av_instagram_url", "label": "Instagram URL" },
     { "type": "header", "content": "Commerce copy" },
     { "type": "text", "id": "av_shipping_line", "label": "Shipping line (product rows and pages)", "default": "[Shipping terms — India and worldwide, duties note]" },
     { "type": "text", "id": "av_currency_line", "label": "Footer currency line", "default": "India (INR ₹)" }
@@ -279,8 +313,7 @@ In the `"Default"` preset object, change/add these keys (keep everything else):
 ```json
 "type_header_font": "marcellus_n4",
 "type_body_font": "karla_n3",
-"av_display_font": "rubik_mono_one_n4",
-"av_wordmark_font": "cormorant_garamond_n7",
+"av_wordmark_font": "cormorant_n7",
 "colors_solid_button_labels": "#F5EFE3",
 "colors_accent_1": "#9E1B1E",
 "colors_accent_2": "#7A1216",
@@ -301,18 +334,20 @@ Also set the same keys in the `"current"` object if `current` is an object rathe
 (a) After the existing `{{ settings.type_header_font | font_face: font_display: 'swap' }}` line (line 48) add:
 
 ```liquid
-      {{ settings.av_display_font | font_face: font_display: 'swap' }}
       {{ settings.av_wordmark_font | font_face: font_display: 'swap' }}
+      @font-face { font-family: 'Rubik Mono One'; font-style: normal; font-weight: 400; font-display: swap; src: url('{{ 'rubik-mono-one-400.woff2' | asset_url }}') format('woff2'); }
 ```
 
 (b) Inside the `:root {` block, after `--font-heading-weight` add:
 
 ```liquid
-        --av-display-family: {{ settings.av_display_font.family }}, {{ settings.av_display_font.fallback_families }};
+        --av-display-family: 'Rubik Mono One', 'Arial Black', Impact, sans-serif;
         --av-wordmark-family: {{ settings.av_wordmark_font.family }}, {{ settings.av_wordmark_font.fallback_families }};
 ```
 
-(c) Replace the Dawn `body { display: grid; grid-template-rows: auto auto 1fr auto; ... }` rule's `display: grid; grid-template-rows: auto auto 1fr auto; grid-template-columns: 100%;` with `display: flex; flex-direction: column;` — the header group no longer has an announcement bar, and grid rows would leave a gap.
+and after the two existing `<link rel="preload" as="font" …>` lines add `<link rel="preload" as="font" href="{{ 'rubik-mono-one-400.woff2' | asset_url }}" type="font/woff2" crossorigin>`.
+
+(c) Replace the Dawn `body { display: grid; grid-template-rows: auto auto 1fr auto; ... }` rule's `display: grid; grid-template-rows: auto auto 1fr auto; grid-template-columns: 100%;` with `display: flex; flex-direction: column;` and add `main { flex: 1 0 auto; }` — the header group no longer has an announcement bar (grid rows would leave a gap), and the flex-grow keeps the footer at the bottom on short stock pages (404, empty search).
 
 (d) After `{{ 'base.css' | asset_url | stylesheet_tag }}` add:
 
@@ -420,7 +455,7 @@ html:not(.av-opening-active) .av-opening { display: none; }
 
 - [ ] **Step 8: Verify**
 
-`shopify theme check` → 0 errors. Reload the dev preview: page background should be ivory, the red overlay should show the Montage wordmark for ~2.8 s then slide up; reload again in the same tab → no overlay (sessionStorage). Open the Browser pane's devtools-equivalent: `read_console_messages` shows no errors.
+`shopify theme check` → 0 errors. Reload the dev preview: page background should be ivory, any `.av-sub` text renders in Rubik Mono One (wide, monospaced — check the network panel loads `rubik-mono-one-400.woff2` with status 200), the red overlay should show the Montage wordmark for ~2.8 s then slide up; reload again in the same tab → no overlay (sessionStorage). Open the Browser pane's devtools-equivalent: `read_console_messages` shows no errors.
 
 - [ ] **Step 9: Commit**
 
@@ -482,7 +517,8 @@ Replace the entire contents of `sections/cart-icon-bubble.liquid` with:
 
 ```liquid
 {%- comment -%} Usage: {% render 'av-newsletter-form', id: 'footer', placeholder: 'Your email, for the next drop', class: 'av-footer__news' %} {%- endcomment -%}
-{%- form 'customer', id: 'av-news-' | append: id, class: class -%}
+{%- assign form_id = 'av-news-' | append: id -%}
+{%- form 'customer', id: form_id, class: class -%}
   <input type="hidden" name="contact[tags]" value="newsletter">
   {%- if form.posted_successfully? -%}
     <span class="av-body--s">Thank you. The next letter comes to you.</span>
@@ -505,17 +541,19 @@ Replace the entire contents of `sections/cart-icon-bubble.liquid` with:
     {%- endfor -%}
   </nav>
   <a class="av-header__home" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">{% render 'av-wordmark', class: 'av-header__wordmark' %}</a>
-  <nav class="av-header__nav av-header__nav--right" aria-label="Shop">
-    {%- for link in section.settings.menu_shop.links -%}
-      <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
-    {%- endfor -%}
-  </nav>
-  <div class="av-header__icons">
-    <a href="{{ routes.search_url }}" aria-label="Search">{% render 'av-icon', name: 'search' %}</a>
-    {%- if shop.customer_accounts_enabled -%}
-      <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" aria-label="Account">{% render 'av-icon', name: 'account' %}</a>
-    {%- endif -%}
-    <a href="{{ routes.cart_url }}" id="cart-icon-bubble">{% render 'av-cart-bubble' %}</a>
+  <div class="av-header__right">
+    <nav class="av-header__nav av-header__nav--right" aria-label="Shop">
+      {%- for link in section.settings.menu_shop.links -%}
+        <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
+    <div class="av-header__icons">
+      <a href="{{ routes.search_url }}" aria-label="Search">{% render 'av-icon', name: 'search' %}</a>
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" aria-label="Account">{% render 'av-icon', name: 'account' %}</a>
+      {%- endif -%}
+      <a href="{{ routes.cart_url }}" id="cart-icon-bubble">{% render 'av-cart-bubble' %}</a>
+    </div>
   </div>
 </header>
 
@@ -534,14 +572,14 @@ Replace the entire contents of `sections/cart-icon-bubble.liquid` with:
   "name": "AV Header",
   "class": "av-header-section",
   "settings": [
-    { "type": "link_list", "id": "menu_house", "label": "Left menu — the house (Stories · Gallery · About)", "default": "av-house" },
-    { "type": "link_list", "id": "menu_shop", "label": "Right menu — shop (Collections · Products · Exclusive)", "default": "av-shop" }
+    { "type": "link_list", "id": "menu_house", "label": "Left menu — the house (Stories · Gallery · About)" },
+    { "type": "link_list", "id": "menu_shop", "label": "Right menu — shop (Collections · Products · Exclusive)" }
   ]
 }
 {% endschema %}
 ```
 
-Note: `link_list` `default` must reference a menu handle; if the menu does not exist yet the setting is simply empty and the nav renders no links — that is the documented empty state, and `docs/setup.md` (Task 11) tells the client to create `av-house` and `av-shop`.
+`link_list` settings only accept `main-menu` or `footer` as a `default`, so there is none here; `sections/header-group.json` (Step 7) assigns `av-house` / `av-shop` as values instead. Until those menus exist in admin the nav renders no links — the documented empty state; `docs/setup.md` (Task 12) tells the client to create them.
 
 - [ ] **Step 5: Drawer CSS** — in `assets/av-base.css` replace the `.av-drawer` block (`display: none` / `[open]`) with native-dialog rules:
 
@@ -552,7 +590,11 @@ Note: `link_list` `default` must reference a menu handle; if the menu does not e
 .av-header__home { display: flex; justify-content: center; }
 ```
 
-Keep `.av-drawer__group`, `.av-drawer__close` as they are. Also change `.av-header { grid-template-columns: 1fr auto 1fr }` to `grid-template-columns: 1fr auto 1fr auto` and, in the `@media (max-width: 900px)` block, `.av-header { grid-template-columns: auto 1fr auto }` stays — but since the left nav is `display:none` on mobile, add `.av-header__nav--left { display: contents }`? No — simpler: on mobile the grid is `auto 1fr auto` (burger · wordmark · icons) and both navs are `display:none`; that already matches the existing CSS. On desktop the four columns are: left nav · wordmark · right nav · icons, so add `.av-header__burger { display:none }` (exists) and nothing else.
+Keep `.av-drawer__group` and `.av-drawer__close` as they are. Then three header fixes in `av-base.css`:
+
+1. **Sticky must be on the section wrapper**, not on `.av-header` — a sticky element cannot leave its parent's box, and Shopify wraps every section in an auto-height `.shopify-section`. The schema sets `"class": "av-header-section"`, so add `.av-header-section { position: sticky; top: 0; z-index: 50; }` and change `.av-header` from `position: sticky; top: 0; z-index: 50;` to `position: relative;`.
+2. The grid stays `1fr auto 1fr` (left nav · wordmark · right group), which keeps the wordmark exactly centred. Add `.av-header__right { display: flex; justify-content: flex-end; align-items: center; gap: 36px; }`.
+3. Mobile (`max-width: 900px`): the existing `auto 1fr auto` grid becomes burger · wordmark · right group; both `<nav>`s are already `display: none` there, so the right group shows icons only. Nothing else to add.
 
 - [ ] **Step 6: `sections/av-footer.liquid`**
 
@@ -932,14 +974,14 @@ Add to `av-sections.css` under the row block: `.av-row--sold .av-media { opacity
 
 ```liquid
 {%- liquid
-  assign drop = section.settings.drop.value
+  assign drop = section.settings.drop
   if drop == blank
     assign want = section.settings.auto_index
     assign seen = 0
     for i in (1..50) reversed
       assign h = i | prepend: '00' | slice: -3, 3 | prepend: 'drop-'
       assign d = shop.metaobjects.drop[h]
-      if d == blank or d.status == 'closed'
+      if d == blank or d.status.value == 'closed'
         continue
       endif
       assign seen = seen | plus: 1
@@ -954,7 +996,8 @@ Add to `av-sections.css` under the row block: `.av-row--sold .av-media { opacity
   {%- liquid
     assign col = drop.collection.value
     assign count = col.products_count
-    assign label = 'Drop ' | append: drop.number
+    assign padded = drop.number.value | prepend: '00' | slice: -3, 3
+    assign label = 'Drop ' | append: padded
     assign meta = count | append: ' pieces'
     if drop.season != blank
       assign meta = meta | append: ' · ' | append: drop.season
@@ -975,7 +1018,7 @@ Add to `av-sections.css` under the row block: `.av-row--sold .av-media { opacity
 {% endschema %}
 ```
 
-`drop.number` on a metaobject field returns the value directly in Liquid (`{{ drop.number }}`); if it prints an object, use `drop.number.value` — check in the preview and make `av-edition-line` consistent.
+**Metaobject access rule (applies to every task):** a `metaobject`-type *setting* (`section.settings.drop`, `block.settings.weaver`, `section.settings.campaign`) returns the metaobject directly — never add `.value` to it. A metaobject *field* (`drop.status`, `drop.number`, `drop.collection`) is a metafield object: use `.value` whenever the field is compared, filtered or is a reference (`drop.status.value == 'current'`, `drop.number.value | prepend: '00'`, `drop.collection.value.url`); bare `{{ drop.theme_name }}` output is fine because Liquid renders the metafield's value when printed.
 
 - [ ] **Step 8: `sections/av-exclusive-row.liquid`** — the advert; all copy from settings
 
@@ -1032,7 +1075,7 @@ Add to `av-sections.css` under the row block: `.av-row--sold .av-media { opacity
 
 - [ ] **Step 10: Seed test data in admin (one-time, needed to see rows)**
 
-In admin: Settings → Custom data → Metaobjects → add definition `drop` with fields exactly as spec §3 (handle field: enable "handle" as editable; status: single line text with validation choices current/open/closed; collection: collection reference). Add definition `weaver` (name, portrait, role, years, unit). Then Products → metafield definitions, namespace `av`: `drop` (metaobject ref → drop), `numeral`, `tier` (single line, choices everyday/occasion/exclusive), `weaver` (ref), `edition_total` (integer), `loom_hours` (integer), `motif_name_ta`, `motif_name_en`, `yarn`, `dye`, `kara_colour`, `lead_time_weeks` (integer), `how_made` (multi-line), `care` (multi-line). Create collection "Drop 001" (manual), a drop metaobject with handle `drop-001`, number 1, status `current`, collection → Drop 001; create three products with 1 variant each, inventory tracked, quantity 3 / 8 edition_total, tag `occasion`, in the collection, with the av metafields filled. (Full list also goes into `docs/setup.md`, Task 11.)
+In admin: Settings → Custom data → Metaobjects → add definition `drop` with fields exactly as spec §3 (handle field: enable "handle" as editable; status: single line text with validation choices current/open/closed; collection: collection reference). Add definition `weaver` (name, portrait, role, years, unit). Then Products → metafield definitions, namespace `av`: `drop` (metaobject ref → drop), `numeral`, `tier` (single line, choices everyday/occasion/exclusive), `weaver` (ref), `edition_total` (integer), `loom_hours` (integer), `motif_name_ta`, `motif_name_en`, `yarn`, `dye`, `kara_colour`, `lead_time_weeks` (integer), `how_made` (multi-line), `care` (multi-line). Create collection "Drop 001" (manual), a drop metaobject with handle `drop-001`, number 1, status `current`, collection → Drop 001; create three products with 1 variant each, inventory tracked, quantity 3 / 8 edition_total, tag `occasion`, in the collection, with the av metafields filled. (Full list also goes into `docs/setup.md`, Task 12.)
 
 - [ ] **Step 11: Verify against `Main.dc.html`**
 
@@ -1089,7 +1132,7 @@ Reference artboard: `Collections.dc.html`.
 {% endschema %}
 ```
 
-Add to `av-base.css`: `.av-body--l { font-size: 18px; }` and to `av-sections.css`: `.av-intro__keys .is-active { border-bottom: 1px solid var(--av-kumkum); padding-bottom: 4px; }`.
+Add to `av-base.css`: `.av-body--l { font-size: 18px; }` and to `av-sections.css`: `.av-intro__keys .is-active { border-bottom: 1px solid var(--av-kumkum); padding-bottom: 4px; }`. The `large_body` / `open` checkboxes are the one deliberate exception to "no layout toggles": the same intro serves four pages whose artboards differ only in these two details.
 
 - [ ] **Step 2: `snippets/av-drop-tile.liquid`**
 
@@ -1118,6 +1161,7 @@ Add to `av-base.css`: `.av-body--l { font-size: 18px; }` and to `av-sections.css
 ```liquid
 {%- liquid
   assign found = 0
+  assign past_head_done = false
 -%}
 {%- for i in (1..50) reversed -%}
   {%- liquid
@@ -1143,9 +1187,9 @@ Add to `av-base.css`: `.av-body--l { font-size: 18px; }` and to `av-sections.css
     if pieces > 0
       assign per = total | divided_by: pieces
     endif
-    assign padded = drop.number | prepend: '00' | slice: -3, 3
+    assign padded = drop.number.value | prepend: '00' | slice: -3, 3
   -%}
-  {%- if drop.status == 'current' -%}
+  {%- if drop.status.value == 'current' -%}
     <section class="av-drop av-reveal">
       {% render 'av-media', image: drop.ensemble_image.value, ratio: '780 / 820', sizes: '(min-width: 900px) 58vw, 100vw' %}
       <div class="av-drop__info">
@@ -1165,9 +1209,13 @@ Add to `av-base.css`: `.av-body--l { font-size: 18px; }` and to `av-sections.css
     </section>
     <div class="av-tiles">{%- for p in col.products limit: 6 -%}{% render 'av-drop-tile', product: p %}{%- endfor -%}</div>
   {%- else -%}
-    {%- if found == 2 or forloop.first -%}
-      {%- comment -%} first past drop: print the "Past drops" head once {%- endcomment -%}
-    {%- endif -%}
+    {%- unless past_head_done -%}
+      <div class="av-past-head av-reveal">
+        <div class="av-stack" style="gap:12px"><div class="av-label">Past drops</div><h2 class="av-sub av-sub--m">Still open while pieces remain</h2></div>
+        <div class="av-body" style="max-width:560px">{{ section.settings.past_text }}</div>
+      </div>
+      {%- assign past_head_done = true -%}
+    {%- endunless -%}
     <section class="av-past av-reveal">
       <div class="av-past__head">
         <div class="av-stack" style="gap:22px">
@@ -1189,18 +1237,20 @@ Add to `av-base.css`: `.av-body--l { font-size: 18px; }` and to `av-sections.css
 {%- endfor -%}
 {%- if found == 0 -%}<div class="av-wrap av-section av-body">No drops yet.</div>{%- endif -%}
 {% schema %}
-{ "name": "AV Drop index", "settings": [], "presets": [{ "name": "AV Drop index" }] }
+{ "name": "AV Drop index", "settings": [
+  { "type": "richtext", "id": "past_text", "label": "Past drops paragraph", "default": "<p>Earlier drops are listed in full. A piece with an edition number left can still be ordered; a sold-out piece stays on the page, with its weaver and its count, as part of the record.</p>" }
+], "presets": [{ "name": "AV Drop index" }] }
 {% endschema %}
 ```
 
-The "Past drops / Still open while pieces remain" heading from the artboard is a separate block: render it once before the first non-current drop. Implement with an `assign past_head_done = false` before the loop and, inside the `else` branch, `{% unless past_head_done %}<div class="av-past-head av-wrap">…label "Past drops", Rubik "Still open while pieces remain", body paragraph…</div>{% assign past_head_done = true %}{% endunless %}`. Put the paragraph text from the artboard ("Earlier drops are listed in full…") as a section `richtext` setting `past_text`. Remove the placeholder `if found == 2` block above once this is in.
+Add to `av-sections.css` next to the `.av-past` block: `.av-past-head { padding: 96px var(--av-gutter) 40px; display: grid; grid-template-columns: 5fr 7fr; gap: 64px; align-items: end; }` and in the 900px media query `.av-past-head { grid-template-columns: 1fr; gap: 20px; }`.
 
 - [ ] **Step 4: `sections/av-drop-header.liquid`** (single drop page)
 
 ```liquid
 {%- liquid
   assign drop = collection.metafields.av.drop.value
-  assign padded = drop.number | prepend: '00' | slice: -3, 3
+  assign padded = drop.number.value | prepend: '00' | slice: -3, 3
 -%}
 <section class="av-intro av-reveal">
   <div class="av-stack" style="gap:28px">
@@ -1305,14 +1355,20 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
     assign sold_out = true
   endif
   assign form_id = 'product-form-' | append: section.id
-  assign padded = drop.number | prepend: '00' | slice: -3, 3
+  assign padded = drop.number.value | prepend: '00' | slice: -3, 3
   assign wa_text = 'About ' | append: product.title | append: ' — ' | append: shop.url | append: product.url
 -%}
 <section class="av-product">
   <div class="av-product__media">
     {%- for media in product.media -%}
+      {%- liquid
+        assign loading_attr = 'lazy'
+        if forloop.first
+          assign loading_attr = 'eager'
+        endif
+      -%}
       {%- if media.media_type == 'image' -%}
-        {% render 'av-media', image: media, ratio: '4 / 5', sizes: '(min-width: 900px) 58vw, 85vw', loading: forloop.first | ternary: 'eager', 'lazy' %}
+        {% render 'av-media', image: media, ratio: '4 / 5', sizes: '(min-width: 900px) 58vw, 85vw', loading: loading_attr %}
       {%- elsif media.media_type == 'video' -%}
         {% render 'av-video', loop_video: media, class: 'av-product__video' %}
       {%- endif -%}
@@ -1444,7 +1500,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 <a class="av-list__item{% if sold %} av-list__item--sold{% endif %}" href="{{ product.url }}">
   {% render 'av-media', image: product.featured_image, ratio: '4 / 5', sizes: '160px' %}
   <div class="av-list__name">
-    <span class="av-label">{% if mf.drop.value != blank %}Drop {{ mf.drop.value.number | prepend: '00' | slice: -3, 3 }} · {% endif %}{{ mf.numeral }}{% if mf.tier != blank %} · {{ mf.tier | capitalize }}{% endif %}</span>
+    <span class="av-label">{% if mf.drop.value != blank %}Drop {{ mf.drop.value.number.value | prepend: '00' | slice: -3, 3 }} · {% endif %}{{ mf.numeral }}{% if mf.tier != blank %} · {{ mf.tier | capitalize }}{% endif %}</span>
     <span class="av-name">{{ product.title }}</span>
   </div>
   <span class="av-list__left">{% render 'av-edition-line', product: product, context: 'tile' %}</span>
@@ -1697,7 +1753,7 @@ Reference artboard: `Stories.dc.html`.
 {%- liquid
   assign article = section.settings.article | default: blog.articles.first
 -%}
-{%- if article != blank and current_tags == blank -%}
+{%- if article != blank and current_tags == blank and current_page == 1 -%}
 <section class="av-featured">
   <a href="{{ article.url }}">{% render 'av-media', image: article.image, ratio: '1440 / 760', sizes: '100vw', loading: 'eager' %}</a>
   <div class="av-featured__text">
@@ -1749,9 +1805,11 @@ Posts:
 <section class="av-posts">
   {%- paginate blog.articles by per -%}
     {%- assign shown = 0 -%}
+    {%- assign first_page = false -%}
+    {%- if current_tags == blank and paginate.current_page == 1 %}{% assign first_page = true %}{% endif -%}
     {%- for article in blog.articles -%}
-      {%- if current_tags == blank and article.id == featured.id %}{% continue %}{% endif -%}
-      {%- if current_tags == blank and shown >= 6 %}{% break %}{% endif -%}
+      {%- if first_page and article.id == featured.id %}{% continue %}{% endif -%}
+      {%- if first_page and shown >= 6 %}{% break %}{% endif -%}
       {%- assign shown = shown | plus: 1 -%}
       <article class="av-post av-reveal">
         <div class="av-post__media">
@@ -1769,7 +1827,7 @@ Posts:
         </div>
       </article>
     {%- endfor -%}
-    {%- if current_tags != blank and paginate.pages > 1 -%}<div style="padding:40px 0">{{ paginate | default_pagination }}</div>{%- endif -%}
+    {%- if paginate.pages > 1 -%}<div style="padding:40px 0">{{ paginate | default_pagination }}</div>{%- endif -%}
   {%- endpaginate -%}
 </section>
 {% schema %}
@@ -1952,7 +2010,7 @@ Reference artboards: `About.dc.html`, `Gallery.dc.html`.
   </div>
   <div class="av-grid av-grid--4">
     {%- for block in section.blocks -%}
-      {%- assign w = block.settings.weaver.value -%}
+      {%- assign w = block.settings.weaver -%}
       <div class="av-person" {{ block.shopify_attributes }}>
         {% render 'av-media', image: w.portrait.value, ratio: '1 / 1.2', sizes: '(min-width: 900px) 25vw, 100vw' %}
         <div class="av-sub av-sub--xs">{{ w.name | default: '[Weaver name]' }}</div>
@@ -1995,7 +2053,7 @@ Reference artboards: `About.dc.html`, `Gallery.dc.html`.
 
 ```liquid
 {%- liquid
-  assign c = section.settings.campaign.value
+  assign c = section.settings.campaign
   assign imgs = c.images.value
 -%}
 {%- if c != blank -%}
@@ -2043,7 +2101,30 @@ Add `story` (multi-line) to the `campaign` metaobject definition alongside the s
 
 - [ ] **Step 8: Templates**
 
-`templates/page.about.json` — order: `intro` (label "About the house", statement "Cloth without end.", text = name meaning paragraph, note = "Ananta Vastram is a menswear house…", `large_body: true`, `open: true`) · `place` (`av-full-bleed`) · `film` (`av-video-block`) · `ch1` (`av-chapter`) · `clips` (`av-video-pair`, two blocks) · `ch2` (`av-chapter-split`) · `ch3` (`av-people-grid`, four `person` blocks) · `ch4` (`av-band`, `mode: list`, `numeral: IV`, heading "How the house works", four items: Numbered editions / Made to order / Worn by real people / One price with the artboard texts) · `close` (`av-routes`, three route blocks with URLs `/blogs/stories`, `/pages/gallery`, `/pages/exclusive`). Write the full JSON with every default from the artboard (`About.dc.html`, lines 50–172).
+`templates/page.about.json`:
+
+```json
+{ "sections": {
+  "intro": { "type": "av-page-intro", "settings": { "label": "About the house", "statement": "Cloth without end.", "text": "<p>Ananta means without end. Vastram means cloth. The name is a description of the work: a length of handwoven cloth with no seam, made on a loom that has been running in [town] for [how long], by weavers whose names we print on every piece.</p>", "note": "Ananta Vastram is a menswear house from Tamil Nadu. We make veshtis and the garments worn with them, in numbered editions, to order.", "large_body": true, "open": true } },
+  "place": { "type": "av-full-bleed", "settings": { "left": "[Unit name], [town], Tamil Nadu", "right": "Photograph · [credit]" } },
+  "film": { "type": "av-video-block", "settings": { "title": "The drop film", "meta": "Loom · hands · weaver voice in Tamil, subtitled · plays muted, sound on tap" } },
+  "ch1": { "type": "av-chapter", "settings": { "numeral": "I", "title": "The loom decides first", "text": "<p>[Paragraph — the veshti as a plain length of cloth: width, border, the kara. What is fixed before a thread is thrown, and by whom.]</p><p>[Paragraph — yarn and dye: cotton count or silk grade, the zari, where the dye comes from. What we changed at the loom and what we refused to change.]</p><p>[Paragraph — time: loom hours per piece, why the number is what it is, and why it will not go down.]</p>", "link_label": "The craft, in detail", "link": "shopify://blogs/stories" } },
+  "clips": { "type": "av-video-pair", "blocks": { "a": { "type": "clip", "settings": { "caption": "Archive · the shuttle, one pass" } }, "b": { "type": "clip", "settings": { "caption": "Archive · the kara, in gold" } } }, "block_order": ["a", "b"], "settings": {} },
+  "ch2": { "type": "av-chapter-split", "settings": { "numeral": "II", "title": "Kamalam Moorthy", "role": "Chief designer · Head of production · Weaver", "quote": "[A line from Kamalam, in her words, from the founder interview — about the cloth, not the brand.]", "text": "<p>[Paragraph — who she is, how long she has woven, the unit she runs, what she is responsible for on every piece.]</p><p>[Paragraph — what she will not do: no shortcuts on yarn, no unnamed work, no piece she has not passed.]</p>", "video_caption": "In her words · from the founder interview" } },
+  "ch3": { "type": "av-people-grid", "blocks": { "p1": { "type": "person", "settings": {} }, "p2": { "type": "person", "settings": {} }, "p3": { "type": "person", "settings": {} }, "p4": { "type": "person", "settings": {} } }, "block_order": ["p1", "p2", "p3", "p4"], "settings": { "numeral": "III", "title": "Every piece carries a name", "text": "The weaver's name is woven into the label and printed on the page. It is not a credit. It is the record of who made the cloth, kept where the buyer can see it." } },
+  "ch4": { "type": "av-band", "blocks": {
+    "i1": { "type": "item", "settings": { "title": "Numbered editions", "text": "Each drop is a fixed, honest count. When the number is reached the piece is finished. It is not re-run." } },
+    "i2": { "type": "item", "settings": { "title": "Made to order", "text": "Nothing sits in a warehouse. A piece is begun when it is asked for, and you are told how long it will take." } },
+    "i3": { "type": "item", "settings": { "title": "Worn by real people", "text": "There are no models. Every photograph on this site is of someone who owns the piece, and we name them." } },
+    "i4": { "type": "item", "settings": { "title": "One price", "text": "The price is the price. There are no sales, no launch offers, and no marketplace listings." } }
+  }, "block_order": ["i1", "i2", "i3", "i4"], "settings": { "mode": "list", "numeral": "IV", "heading": "How the house works" } },
+  "close": { "type": "av-routes", "blocks": {
+    "r1": { "type": "route", "settings": { "label": "Read", "title": "Stories from the unit", "link_label": "Stories", "url": "shopify://blogs/stories" } },
+    "r2": { "type": "route", "settings": { "label": "See", "title": "The pieces, on the people who wear them", "link_label": "Gallery", "url": "shopify://pages/gallery" } },
+    "r3": { "type": "route", "settings": { "label": "Write", "title": "A conversation with Kamalam, for a piece made to you", "link_label": "Exclusive", "url": "shopify://pages/exclusive" } }
+  }, "block_order": ["r1", "r2", "r3"], "settings": {} }
+}, "order": ["intro", "place", "film", "ch1", "clips", "ch2", "ch3", "ch4", "close"] }
+```
 
 `templates/page.gallery.json` — three `av-campaign` sections `c1`, `c2`, `c3` with labels "Campaign 001/002/003"; `c3` carries `archive_label: "The archive"`, `archive_url: "/blogs/stories/tagged/campaigns"`. No intro section (Gallery starts with images).
 
@@ -2086,7 +2167,7 @@ jobs:
       - run: shopify theme check --fail-level error
 ```
 
-- [ ] **Step 3: `docs/setup.md`** — the admin checklist. Sections: (1) Metaobject definitions `drop` (handle rule `drop-NNN`, one `current` at a time, status choices), `weaver`, `campaign` (with `story`); (2) Metafield definitions — product `av.*` list, collection `av.drop`, article `av.read_time`/`av.video`; (3) Products: one variant, inventory tracked, "continue selling when out of stock" OFF, tier tag; (4) Collections: one per drop (manual), automated `all` (condition + Newest first + template `products-all`), set `av.drop` on each drop collection; (5) Pages: About/Gallery/Exclusive with templates; (6) Blog `stories`, tags; (7) Menus: `av-house`, `av-shop`, `av-orders`, `av-contact` with the link lists from the footer artboard; (8) Theme settings: WhatsApp number, Instagram, shipping line, logo override; (9) Policies (Privacy, Terms) so the footer prints them; (10) GitHub integration: connect repo, `develop` → unpublished, `main` → live, and the rule that publishing is a human action; (11) Fonts note: Montage SVG is built in; regenerate with `scripts/build-wordmark.py` if the wordmark changes.
+- [ ] **Step 3: `docs/setup.md`** — the admin checklist. Sections: (1) Metaobject definitions `drop` (handle rule `drop-NNN`, one `current` at a time, status choices), `weaver`, `campaign` (with `story`); (2) Metafield definitions — product `av.*` list, collection `av.drop`, article `av.read_time`/`av.video`; (3) Products: one variant, inventory tracked, "continue selling when out of stock" OFF, tier tag; (4) Collections: one per drop (manual), automated `all` (condition + Newest first + template `products-all`), set `av.drop` on each drop collection; (5) Pages: About/Gallery/Exclusive with templates; (6) Blog `stories`, tags; (7) Menus: `av-house`, `av-shop`, `av-orders`, `av-contact` with the link lists from the footer artboard; (8) Theme settings: WhatsApp number, shipping line, currency line, logo override (Instagram is a link in the `av-contact` menu); (9) Policies (Privacy, Terms) so the footer prints them; (10) GitHub integration: connect repo, `develop` → unpublished, `main` → live, and the rule that publishing is a human action; (11) Fonts note: Montage SVG is built in; regenerate with `scripts/build-wordmark.py` if the wordmark changes.
 
 - [ ] **Step 4: `README.md`** — replace with: what this is, the two CSS files, dev commands, the three JS files, link to `docs/setup.md` and the spec, "never publish from CLI".
 
