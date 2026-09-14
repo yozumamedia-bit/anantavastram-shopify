@@ -8,6 +8,20 @@
     "theme_support_url": "https://support.shopify.com/"
   },
   {
+    "name": "Ananta Vastram",
+    "settings": [
+      { "type": "header", "content": "Type" },
+      { "type": "font_picker", "id": "av_wordmark_font", "default": "cormorant_n7", "label": "Wordmark fallback font", "info": "Used only when no logo is set and the generated wordmark is missing. The display font (Rubik Mono One) is self-hosted and not a setting." },
+      { "type": "header", "content": "Wordmark" },
+      { "type": "image_picker", "id": "av_logo", "label": "Logo (SVG or PNG, white on transparent)", "info": "Overrides the built-in Montage wordmark in header, footer and opening." },
+      { "type": "header", "content": "Contact" },
+      { "type": "text", "id": "av_whatsapp_number", "label": "WhatsApp number", "info": "International format, digits only, e.g. 919876543210", "default": "" },
+      { "type": "header", "content": "Commerce copy" },
+      { "type": "text", "id": "av_shipping_line", "label": "Shipping line (product rows and pages)", "default": "[Shipping terms — India and worldwide, duties note]" },
+      { "type": "text", "id": "av_currency_line", "label": "Footer currency line", "default": "India (INR ₹)" }
+    ]
+  },
+  {
     "name": "t:settings_schema.logo.name",
     "settings": [
       {

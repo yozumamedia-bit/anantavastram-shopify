@@ -46,6 +46,8 @@
       {{ body_font_italic | font_face: font_display: 'swap' }}
       {{ body_font_bold_italic | font_face: font_display: 'swap' }}
       {{ settings.type_header_font | font_face: font_display: 'swap' }}
+      {{ settings.av_wordmark_font | font_face: font_display: 'swap' }}
+      @font-face { font-family: 'Rubik Mono One'; font-style: normal; font-weight: 400; font-display: swap; src: url('{{ 'rubik-mono-one-400.woff2' | asset_url }}') format('woff2'); }
 
       :root {
         --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
@@ -56,6 +58,7 @@
         --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
         --font-heading-style: {{ settings.type_header_font.style }};
         --font-heading-weight: {{ settings.type_header_font.weight }};
+        --av-wordmark-family: {{ settings.av_wordmark_font.family }}, {{ settings.av_wordmark_font.fallback_families }};
 
         --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
         --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
@@ -198,9 +201,8 @@
       }
 
       body {
-        display: grid;
-        grid-template-rows: auto auto 1fr auto;
-        grid-template-columns: 100%;
+        display: flex;
+        flex-direction: column;
         min-height: 100%;
         margin: 0;
         font-size: 1.5rem;
@@ -211,6 +213,10 @@
         font-weight: var(--font-body-weight);
       }
 
+      main {
+        flex: 1 0 auto;
+      }
+
       @media screen and (min-width: 750px) {
         body {
           font-size: 1.6rem;
@@ -219,6 +225,11 @@
     {% endstyle %}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'av-base.css' | asset_url | stylesheet_tag }}
+    {{ 'av-sections.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'av-opening.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'av-reveal.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'av-video.js' | asset_url }}" defer="defer"></script>
 
     {%- unless settings.type_body_font.system? -%}
       <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
@@ -226,6 +237,7 @@
     {%- unless settings.type_header_font.system? -%}
       <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
     {%- endunless -%}
+    {{ 'rubik-mono-one-400.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
 
     {%- if settings.predictive_search_enabled -%}
       <link rel="stylesheet" href="{{ 'component-predictive-search.css' | asset_url }}" media="print" onload="this.media='all'">
@@ -235,17 +247,16 @@
     if (Shopify.designMode) {
       document.documentElement.classList.add('shopify-design-mode');
     }
+    try { if (!sessionStorage.getItem('avOpened') && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('av-opening-active'); } catch (e) {}
     </script>
   </head>
 
-  <body class="gradient">
+  <body>
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ "accessibility.skip_to_text" | t }}
     </a>
 
-    {%- if settings.cart_type == 'drawer' -%}
-      {%- render 'cart-drawer' -%}
-    {%- endif -%}
+    {% render 'av-opening' %}
 
     {% sections 'header-group' %}
 
