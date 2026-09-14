@@ -6,9 +6,11 @@
   assign ratio = ratio | default: '4 / 5'
   assign sizes = sizes | default: '100vw'
   assign loading = loading | default: 'lazy'
-  assign alt = alt | default: image.alt | default: ''
+  if alt == nil
+    assign alt = image.alt | default: ''
+  endif
 -%}
-<div class="av-media av-media--ratio {{ class }}" style="--ratio: {{ ratio }};">
+<div class="av-media av-media--ratio {{ class | escape }}" style="--ratio: {{ ratio | escape }};">
   {%- if image != blank -%}
     {{ image | image_url: width: 2400 | image_tag: widths: '400, 600, 800, 1200, 1600, 2400', sizes: sizes, loading: loading, alt: alt }}
   {%- endif -%}

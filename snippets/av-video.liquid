@@ -1,26 +1,38 @@
 {%- comment -%}
   Muted loop with play button. `loop_video` is a Shopify video (file) metafield/setting; `film` optional full film.
+  Renders a <video> whenever either source exists (the play button needs one to act on); a bare poster image only when neither does.
   Usage: {% render 'av-video', loop_video: section.settings.loop, film: section.settings.film, poster: section.settings.poster, class: 'av-film__video' %}
 {%- endcomment -%}
 {%- liquid
   assign loop_src = ''
   if loop_video != blank and loop_video.sources.size > 0
-    assign loop_src = loop_video.sources | where: 'format', 'mp4' | first
-    assign loop_src = loop_src.url
+    assign mp4s = loop_video.sources | where: 'format', 'mp4' | sort: 'height'
+    for s in mp4s
+      if s.height <= 1080
+        assign loop_src = s.url
+      endif
+    endfor
+    if loop_src == blank and mp4s.size > 0
+      assign loop_src = mp4s.first.url
+    endif
   endif
   assign film_src = ''
   if film != blank and film.sources.size > 0
-    assign film_src = film.sources | where: 'format', 'mp4' | first
-    assign film_src = film_src.url
+    assign film_mp4s = film.sources | where: 'format', 'mp4' | sort: 'height'
+    assign film_src = film_mp4s.last.url
+  endif
+  if poster == blank and loop_video != blank
+    assign poster = loop_video.preview_image
+  endif
+  if poster == blank and film != blank
+    assign poster = film.preview_image
   endif
 -%}
-<div class="av-video {{ class }}"{% if film_src != blank %} data-film="{{ film_src }}"{% endif %}>
-  {%- if loop_src != blank -%}
-    <video src="{{ loop_src }}" muted autoplay loop playsinline preload="metadata" tabindex="-1"{% if poster != blank %} poster="{{ poster | image_url: width: 1600 }}"{% endif %}></video>
+<div class="av-video {{ class | escape }}"{% if film_src != blank %} data-film="{{ film_src }}"{% endif %}>
+  {%- if loop_src != blank or film_src != blank -%}
+    <video{% if loop_src != blank %} src="{{ loop_src }}" muted autoplay loop{% endif %} playsinline preload="{% if loop_src != blank %}metadata{% else %}none{% endif %}" tabindex="-1"{% if poster != blank %} poster="{{ poster | image_url: width: 1600 }}"{% endif %}></video>
+    <button class="av-video__play" type="button" aria-label="{% if film_src != blank %}Play the film with sound{% else %}Play with sound{% endif %}">{% render 'av-icon', name: 'play' %}</button>
   {%- elsif poster != blank -%}
     {{ poster | image_url: width: 1600 | image_tag: loading: 'lazy', alt: '' }}
-  {%- endif -%}
-  {%- if loop_src != blank or film_src != blank -%}
-    <button class="av-video__play" type="button" aria-label="{% if film_src != blank %}Play the film with sound{% else %}Play with sound{% endif %}">{% render 'av-icon', name: 'play' %}</button>
   {%- endif -%}
 </div>

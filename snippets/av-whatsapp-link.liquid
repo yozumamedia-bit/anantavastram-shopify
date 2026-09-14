@@ -1,6 +1,6 @@
 {%- comment -%} Usage: {% render 'av-whatsapp-link', label: 'Ask on WhatsApp', text: 'About [piece]' , class: 'av-link' %} Renders nothing if no number is set. {%- endcomment -%}
 {%- if settings.av_whatsapp_number != blank -%}
   {%- assign number = settings.av_whatsapp_number | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' | remove: '.' -%}
-  {%- assign msg = text | default: 'Hello Ananta Vastram' | url_encode -%}
+  {%- assign msg = text | default: 'Hello Ananta Vastram' | url_encode | replace: '+', '%20' -%}
   <a class="{{ class | default: 'av-link' }}" href="https://wa.me/{{ number }}?text={{ msg }}" target="_blank" rel="noopener">{{ label | default: 'WhatsApp' | escape }}</a>
 {%- endif -%}

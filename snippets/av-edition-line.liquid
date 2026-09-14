@@ -3,6 +3,7 @@
   tile: "3 of 8 left" / "Sold out"
   row:  "8 pieces in Drop 001. 3 remain." / "8 pieces in Drop 001. All placed."
   page: "3 of 8 remain" / "All 8 placed"
+  Assumes overselling is off (inventory_policy: deny); a tracked variant at 0 reads as sold out.
 {%- endcomment -%}
 {%- liquid
   assign v = product.selected_or_first_available_variant | default: product.variants.first
@@ -12,7 +13,7 @@
   endif
   assign total = product.metafields.av.edition_total.value | default: 0
   assign drop = product.metafields.av.drop.value
-  assign drop_no = drop.number.value | default: drop.number
+  assign drop_no = drop.number.value
   if remaining < 0
     assign remaining = 0
   endif
@@ -21,7 +22,7 @@
 {%- when 'row' -%}
   {%- if total > 0 -%}{{ total }} pieces{% if drop_no %} in Drop {{ drop_no | prepend: '00' | slice: -3, 3 }}{% endif %}. {% if remaining > 0 %}{{ remaining }} remain.{% else %}All placed.{% endif %}{%- endif -%}
 {%- when 'page' -%}
-  {%- if remaining > 0 -%}{{ remaining }} of {{ total }} remain{%- else -%}All {{ total }} placed{%- endif -%}
+  {%- if remaining > 0 -%}{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %} remain{%- else -%}{% if total > 0 %}All {{ total }} placed{% else %}All placed{% endif %}{%- endif -%}
 {%- else -%}
-  {%- if remaining > 0 -%}{{ remaining }} of {{ total }} left{%- else -%}Sold out{%- endif -%}
+  {%- if remaining > 0 -%}{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %} left{%- else -%}Sold out{%- endif -%}
 {%- endcase -%}
