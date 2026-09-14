@@ -1,0 +1,17 @@
+{%- comment -%} Usage: {% render 'av-drop-tile', product: product %} {%- endcomment -%}
+{%- liquid
+  assign v = product.selected_or_first_available_variant | default: product.variants.first
+  assign sold = false
+  if v.inventory_management == 'shopify' and v.inventory_quantity <= 0
+    assign sold = true
+  endif
+  assign mf = product.metafields.av
+-%}
+<a class="av-tile{% if sold %} av-tile--sold{% endif %}" href="{{ product.url }}">
+  {% render 'av-media', image: product.featured_image, ratio: '3 / 4', sizes: '(min-width: 900px) 16vw, 50vw' %}
+  <div class="av-tile__meta">
+    <span class="av-label">{% if mf.numeral != blank %}{{ mf.numeral | escape }}{% if mf.tier != blank %} · {% endif %}{% endif %}{% if mf.tier != blank %}{{ mf.tier | capitalize | escape }}{% endif %}</span>
+    <span class="av-tile__left">{% render 'av-edition-line', product: product, context: 'tile' %}</span>
+  </div>
+  <div class="av-sub av-sub--xs" style="font-size:12px">{{ product.title | escape }}</div>
+</a>

@@ -1,0 +1,9 @@
+<section class="av-rows av-section">
+  {%- paginate collection.products by 12 -%}
+    {%- for product in collection.products -%}{% render 'av-product-row', product: product %}{%- endfor -%}
+    {%- if paginate.pages > 1 -%}<div class="av-wrap" style="padding-top:40px">{{ paginate | default_pagination }}</div>{%- endif -%}
+  {%- endpaginate -%}
+</section>
+{% schema %}
+{ "name": "AV Product rows", "settings": [] }
+{% endschema %}

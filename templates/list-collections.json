@@ -1,15 +1,37 @@
 {
   "sections": {
-    "main": {
-      "type": "main-list-collections",
+    "intro": {
+      "type": "av-page-intro",
+      "blocks": {
+        "k1": {
+          "type": "key",
+          "settings": {
+            "label": "Everyday"
+          }
+        },
+        "k2": {
+          "type": "key",
+          "settings": {
+            "label": "Occasion"
+          }
+        }
+      },
+      "block_order": [
+        "k1",
+        "k2"
+      ],
       "settings": {
-        "title": "Collections",
-        "sort": "alphabetical",
-        "image_ratio": "square"
+        "label": "Collections",
+        "statement": "Numbered drops, each on one idea."
       }
+    },
+    "index": {
+      "type": "av-drop-index",
+      "settings": {}
     }
   },
   "order": [
-    "main"
+    "intro",
+    "index"
   ]
 }

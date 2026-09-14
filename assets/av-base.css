@@ -85,6 +85,7 @@ img, video { max-width: 100%; display: block; }
 
 .av-body { font-family: var(--av-font-body); font-weight: 300; font-size: 16px; line-height: 1.8; color: var(--av-ink); }
 .av-body--s { font-size: 14px; line-height: 1.7; }
+.av-body--l { font-size: 18px; }
 .av-body p { margin: 0 0 16px; } .av-body p:last-child { margin-bottom: 0; }
 
 .av-numeral { font-family: var(--av-font-heading); font-size: 15px; letter-spacing: 0.2em; color: var(--av-kumkum); }

@@ -1,0 +1,28 @@
+<section class="av-intro av-reveal{% if section.settings.open %} av-intro--open{% endif %}">
+  <div class="av-stack" style="gap:28px">
+    <div class="av-label">{{ section.settings.label | escape }}</div>
+    <h1 class="av-statement av-statement--xl">{{ section.settings.statement | escape }}</h1>
+  </div>
+  <div class="av-stack">
+    <div class="av-body{% if section.settings.large_body %} av-body--l{% endif %}">{{ section.settings.text }}</div>
+    {%- if section.settings.note != blank -%}<div class="av-body av-body--s" style="color:var(--av-grey-1)">{{ section.settings.note | escape | newline_to_br }}</div>{%- endif -%}
+    {%- if section.blocks.size > 0 -%}
+    <div class="av-intro__keys">
+      {%- for block in section.blocks -%}
+        {%- if block.settings.url != blank -%}<a class="av-label av-label--red{% if block.settings.url == request.path %} is-active{% endif %}" href="{{ block.settings.url }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>{%- else -%}<span class="av-label av-label--red" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</span>{%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
+  </div>
+</section>
+{% schema %}
+{ "name": "AV Page intro", "settings": [
+  { "type": "text", "id": "label", "label": "Label", "default": "Collections" },
+  { "type": "textarea", "id": "statement", "label": "Statement (Marcellus)", "default": "Numbered drops, each on one idea." },
+  { "type": "richtext", "id": "text", "label": "Paragraph", "default": "<p>A drop is five or six pieces built around a single design — a motif, a border, a cloth. Each piece is made in a fixed edition. A drop stays open while pieces remain; when the last one goes, it closes and stays here as the record.</p>" },
+  { "type": "textarea", "id": "note", "label": "Secondary note (About page only)" },
+  { "type": "checkbox", "id": "large_body", "label": "Larger paragraph (About)", "default": false },
+  { "type": "checkbox", "id": "open", "label": "No bottom rule", "default": false }
+], "blocks": [ { "type": "key", "name": "Key word / filter link", "settings": [ { "type": "text", "id": "label", "label": "Label" }, { "type": "url", "id": "url", "label": "Link (optional — makes it a filter tab)" } ] } ],
+"presets": [{ "name": "AV Page intro" }] }
+{% endschema %}

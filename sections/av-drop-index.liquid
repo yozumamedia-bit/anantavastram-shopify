@@ -1,0 +1,92 @@
+{%- comment -%}
+  Drop ordering rule (the one place it is documented): every drop metaobject has handle
+  drop-NNN (three digits = its number). Sorting metaobjects by field is unreliable in Liquid,
+  so we walk the handle range newest-first and skip blanks. av-drop-rows uses the same loop.
+{%- endcomment -%}
+{%- liquid
+  assign found = 0
+  assign past_head_done = false
+-%}
+{%- for i in (1..50) reversed -%}
+  {%- liquid
+    assign h = i | prepend: '00' | slice: -3, 3 | prepend: 'drop-'
+    assign drop = shop.metaobjects.drop[h]
+    if drop == blank
+      continue
+    endif
+    assign col = drop.collection.value
+    if col == blank
+      continue
+    endif
+    assign found = found | plus: 1
+    assign pieces = col.products_count | default: 0
+    assign remaining = 0
+    assign total = 0
+    for p in col.products
+      assign v = p.variants.first
+      if v.inventory_management != 'shopify'
+        assign remaining = remaining | plus: 1
+      elsif v.inventory_quantity > 0
+        assign remaining = remaining | plus: v.inventory_quantity
+      endif
+      assign et = p.metafields.av.edition_total.value | default: 0
+      assign total = total | plus: et
+    endfor
+    assign per = 0
+    if pieces > 0
+      assign per = total | divided_by: pieces
+    endif
+    assign padded = drop.number.value | prepend: '00' | slice: -3, 3
+  -%}
+  {%- if drop.status.value == 'current' -%}
+    <section class="av-drop av-reveal">
+      {% render 'av-media', image: drop.ensemble_image.value, ratio: '780 / 820', sizes: '(min-width: 900px) 58vw, 100vw' %}
+      <div class="av-drop__info">
+        <div class="av-stack" style="gap:28px">
+          <div class="av-drop__head"><span class="av-label">Drop {{ padded }}{% if drop.season.value != blank %} · {{ drop.season | escape }}{% endif %}</span><span class="av-chip">Current drop</span></div>
+          <h2 class="av-sub av-sub--l">{{ drop.theme_name | escape }}</h2>
+          {%- if drop.design_line.value != blank -%}<div class="av-label av-label--red">The design · {{ drop.design_line | escape }}</div>{%- endif -%}
+          {%- if drop.story.value != blank -%}<div class="av-body">{{ drop.story | escape | newline_to_br }}</div>{%- endif -%}
+          <div class="av-counts">
+            <div class="av-count"><span class="av-label">Pieces</span><span class="av-sub av-sub--xs">{{ pieces }}</span></div>
+            {%- if per > 0 -%}<div class="av-count"><span class="av-label">Edition</span><span class="av-sub av-sub--xs">{{ per }} per piece</span></div>{%- endif -%}
+            <div class="av-count"><span class="av-label">Remaining</span><span class="av-sub av-sub--xs">{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %}</span></div>
+          </div>
+        </div>
+        <a class="av-link" href="{{ col.url }}">Enter the drop</a>
+      </div>
+    </section>
+    <div class="av-tiles">{%- for p in col.products limit: 6 -%}{% render 'av-drop-tile', product: p %}{%- endfor -%}</div>
+  {%- else -%}
+    {%- unless past_head_done -%}
+      <div class="av-past-head av-reveal">
+        <div class="av-stack" style="gap:12px"><div class="av-label">Past drops</div><h2 class="av-sub av-sub--m">Still open while pieces remain</h2></div>
+        <div class="av-body" style="max-width:560px">{{ section.settings.past_text }}</div>
+      </div>
+      {%- assign past_head_done = true -%}
+    {%- endunless -%}
+    <section class="av-past av-reveal">
+      <div class="av-past__head">
+        <div class="av-stack" style="gap:22px">
+          <div class="av-drop__head"><span class="av-label">Drop {{ padded }}{% if drop.season.value != blank %} · {{ drop.season | escape }}{% endif %}</span>{% if remaining > 0 %}<span class="av-chip">Pieces remaining</span>{% else %}<span class="av-chip av-chip--outline">Closed</span>{% endif %}</div>
+          <h2 class="av-sub av-sub--m">{{ drop.theme_name | escape }}</h2>
+          <div class="av-counts">
+            <div class="av-count"><span class="av-label">Pieces</span><span class="av-sub av-sub--xs">{{ pieces }}</span></div>
+            <div class="av-count"><span class="av-label">Remaining</span><span class="av-sub av-sub--xs">{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %}</span></div>
+          </div>
+        </div>
+        <div class="av-stack" style="max-width:620px">
+          {%- if drop.story.value != blank -%}<div class="av-body">{{ drop.story | escape | newline_to_br }}</div>{%- endif -%}
+          <a class="av-link" href="{{ col.url }}">{% if remaining > 0 %}See the drop{% else %}View the record{% endif %}</a>
+        </div>
+      </div>
+      <div class="av-tiles">{%- for p in col.products limit: 6 -%}{% render 'av-drop-tile', product: p %}{%- endfor -%}</div>
+    </section>
+  {%- endif -%}
+{%- endfor -%}
+{%- if found == 0 -%}<div class="av-wrap av-section av-body">No drops yet.</div>{%- endif -%}
+{% schema %}
+{ "name": "AV Drop index", "settings": [
+  { "type": "richtext", "id": "past_text", "label": "Past drops paragraph", "default": "<p>Earlier drops are listed in full. A piece with an edition number left can still be ordered; a sold-out piece stays on the page, with its weaver and its count, as part of the record.</p>" }
+], "presets": [{ "name": "AV Drop index" }] }
+{% endschema %}

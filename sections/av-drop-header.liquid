@@ -1,0 +1,19 @@
+{%- liquid
+  assign drop = collection.metafields.av.drop.value
+  if drop != blank
+    assign padded = drop.number.value | prepend: '00' | slice: -3, 3
+  endif
+-%}
+<section class="av-intro av-reveal">
+  <div class="av-stack" style="gap:28px">
+    <div class="av-label">{% if drop != blank %}Drop {{ padded }}{% if drop.season.value != blank %} · {{ drop.season | escape }}{% endif %}{% else %}{{ collection.title | escape }}{% endif %}</div>
+    <h1 class="av-statement av-statement--xl">{% if drop != blank and drop.theme_name.value != blank %}{{ drop.theme_name | escape }}{% else %}{{ collection.title | escape }}{% endif %}</h1>
+  </div>
+  <div class="av-stack">
+    {%- if drop != blank and drop.design_line.value != blank -%}<div class="av-label av-label--red">The design · {{ drop.design_line | escape }}</div>{%- endif -%}
+    {%- if drop != blank and drop.story.value != blank -%}<div class="av-body">{{ drop.story | escape | newline_to_br }}</div>{%- elsif collection.description != blank -%}<div class="av-body">{{ collection.description }}</div>{%- endif -%}
+  </div>
+</section>
+{% schema %}
+{ "name": "AV Drop header", "settings": [] }
+{% endschema %}
