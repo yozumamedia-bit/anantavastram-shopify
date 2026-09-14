@@ -152,6 +152,9 @@ img, video { max-width: 100%; display: block; }
 .av-media { position: relative; overflow: hidden; background: #e4dacb; }
 .av-media img, .av-media video { width: 100%; height: 100%; object-fit: cover; }
 .av-media--ratio { aspect-ratio: var(--ratio, 4 / 5); }
+/* Dawn's base.css hides every empty div (div:empty { display: none }); our placeholders must stay visible before media is uploaded. */
+.av-media:empty { display: block; }
+.av-video:empty { display: flex; }
 .av-caption { display: flex; justify-content: space-between; gap: 16px; }
 
 @media (max-width: 900px) {
