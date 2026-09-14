@@ -1,6 +1,49 @@
-{ "name": "Footer", "type": "footer", "sections": { "av-footer": { "type": "av-footer", "blocks": {
-  "house": { "type": "column", "settings": { "heading": "The house", "menu": "av-house" } },
-  "shop": { "type": "column", "settings": { "heading": "Shop", "menu": "av-shop" } },
-  "orders": { "type": "column", "settings": { "heading": "Orders", "menu": "av-orders" } },
-  "contact": { "type": "column", "settings": { "heading": "Contact", "menu": "av-contact" } }
-}, "block_order": ["house", "shop", "orders", "contact"], "settings": {} } }, "order": ["av-footer"] }
+{
+  "name": "Footer",
+  "type": "footer",
+  "sections": {
+    "av-footer": {
+      "type": "av-footer",
+      "blocks": {
+        "house": {
+          "type": "column",
+          "settings": {
+            "heading": "The house",
+            "menu": "av-house"
+          }
+        },
+        "shop": {
+          "type": "column",
+          "settings": {
+            "heading": "Shop",
+            "menu": "av-shop"
+          }
+        },
+        "orders": {
+          "type": "column",
+          "settings": {
+            "heading": "Orders",
+            "menu": "av-orders"
+          }
+        },
+        "contact": {
+          "type": "column",
+          "settings": {
+            "heading": "Contact",
+            "menu": "av-contact"
+          }
+        }
+      },
+      "block_order": [
+        "house",
+        "shop",
+        "orders",
+        "contact"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "av-footer"
+  ]
+}

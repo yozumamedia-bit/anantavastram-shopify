@@ -2,14 +2,14 @@
   <button class="av-header__burger" type="button" aria-label="Open menu" onclick="document.getElementById('av-drawer').showModal()">{% render 'av-icon', name: 'burger' %}</button>
   <nav class="av-header__nav av-header__nav--left" aria-label="The house">
     {%- for link in section.settings.menu_house.links -%}
-      <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+      <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
     {%- endfor -%}
   </nav>
-  <a class="av-header__home" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">{% render 'av-wordmark', class: 'av-header__wordmark' %}</a>
+  <a class="av-header__home" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">{% render 'av-wordmark', class: 'av-header__wordmark' %}</a>
   <div class="av-header__right">
     <nav class="av-header__nav av-header__nav--right" aria-label="Shop">
       {%- for link in section.settings.menu_shop.links -%}
-        <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+        <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
       {%- endfor -%}
     </nav>
     <div class="av-header__icons">
@@ -24,18 +24,20 @@
 
 <dialog class="av-drawer" id="av-drawer" aria-label="Menu">
   <button class="av-drawer__close" type="button" aria-label="Close menu" onclick="this.closest('dialog').close()">{% render 'av-icon', name: 'close' %}</button>
-  <div class="av-drawer__group">
-    {%- for link in section.settings.menu_house.links -%}<a href="{{ link.url }}">{{ link.title }}</a>{%- endfor -%}
-  </div>
-  <div class="av-drawer__group">
-    {%- for link in section.settings.menu_shop.links -%}<a href="{{ link.url }}">{{ link.title }}</a>{%- endfor -%}
-  </div>
+  <nav class="av-drawer__group" aria-label="The house">
+    {%- for link in section.settings.menu_house.links -%}<a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>{%- endfor -%}
+  </nav>
+  <nav class="av-drawer__group" aria-label="Shop">
+    {%- for link in section.settings.menu_shop.links -%}<a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>{%- endfor -%}
+  </nav>
 </dialog>
 
 {% schema %}
 {
   "name": "AV Header",
   "class": "av-header-section",
+  "limit": 1,
+  "enabled_on": { "groups": ["header"] },
   "settings": [
     { "type": "link_list", "id": "menu_house", "label": "Left menu — the house (Stories · Gallery · About)" },
     { "type": "link_list", "id": "menu_shop", "label": "Right menu — shop (Collections · Products · Exclusive)" }

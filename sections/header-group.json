@@ -1,1 +1,16 @@
-{ "name": "Header", "type": "header", "sections": { "av-header": { "type": "av-header", "settings": { "menu_house": "av-house", "menu_shop": "av-shop" } } }, "order": ["av-header"] }
+{
+  "name": "Header",
+  "type": "header",
+  "sections": {
+    "av-header": {
+      "type": "av-header",
+      "settings": {
+        "menu_house": "av-house",
+        "menu_shop": "av-shop"
+      }
+    }
+  },
+  "order": [
+    "av-header"
+  ]
+}
