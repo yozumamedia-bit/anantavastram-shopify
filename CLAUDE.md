@@ -9,7 +9,7 @@ https://claude.ai/code/artifact/00300329-5e1f-4940-9963-67387370613a
 ## Stack decisions (settled — don't relitigate)
 - Liquid theme on Dawn. No headless, no Hydrogen, no Tailwind, no Bootstrap, no jQuery.
 - Plain CSS with custom properties. `assets/av-base.css` (tokens, type roles, header, footer, opening) and `assets/av-sections.css` (one block per section). Both already written — extend, don't restyle.
-- Fonts via Shopify's font picker (Shopify CDN, no Google Fonts call): heading = Marcellus, body = Karla, display = Rubik Mono One, wordmark stand-in = Cormorant Garamond 700. Production wordmark is **Montage Serif** (licence to be confirmed) — support an SVG logo upload in header/opening settings.
+- Fonts: heading = Marcellus and body = Karla via Shopify's font picker; display = Rubik Mono One self-hosted as `assets/rubik-mono-one-400.woff2` (OFL; not in Shopify's library); wordmark text fallback = Cormorant 700 (`cormorant_n7`, Shopify library — Cormorant Garamond is not available). No Google Fonts runtime call. Production wordmark is **Montage Serif** (licence to be confirmed) — support an SVG logo upload in header/opening settings.
 - Minimal JS, Dawn's Web Component style. Files: `av-opening.js` (once-per-session sequence via `sessionStorage`), `av-reveal.js` (IntersectionObserver adds `.is-in` to `.av-reveal`), `av-video.js` (tap-for-sound on loops).
 - Shopify CLI 3 for dev (`shopify theme dev --store <dev store>`); Theme Check as linter; GitHub integration: `main` → live theme, `develop` → unpublished theme. No Shopify store exists yet (Sep 2026) — build blind, verify when the Partner dev store is created.
 
