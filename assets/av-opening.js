@@ -14,7 +14,7 @@
   }
   setTimeout(function () {
     el.classList.add('is-leaving');
-    el.addEventListener('transitionend', finish, { once: true });
+    el.addEventListener('transitionend', finish);
     safety = setTimeout(finish, 1200); // if transitionend never fires
   }, HOLD);
 })();

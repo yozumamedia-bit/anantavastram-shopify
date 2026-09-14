@@ -247,7 +247,7 @@
     if (Shopify.designMode) {
       document.documentElement.classList.add('shopify-design-mode');
     }
-    try { if (!sessionStorage.getItem('avOpened') && !matchMedia('(prefers-reduced-motion: reduce)').matches && !(window.Shopify && window.Shopify.designMode)) { document.documentElement.classList.add('av-opening-active'); setTimeout(function () { document.documentElement.classList.remove('av-opening-active'); }, 6000); } } catch (e) {}
+    try { if (!sessionStorage.getItem('avOpened') && !matchMedia('(prefers-reduced-motion: reduce)').matches && !(window.Shopify && window.Shopify.designMode)) { document.documentElement.classList.add('av-opening-active'); setTimeout(function () { document.documentElement.classList.remove('av-opening-active'); }, 8000); } } catch (e) {}
     </script>
   </head>
 
