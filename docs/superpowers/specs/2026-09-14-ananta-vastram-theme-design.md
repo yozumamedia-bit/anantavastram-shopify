@@ -9,16 +9,16 @@ This spec settles what `CLAUDE.md` (the brief) leaves open and fixes the technic
 | Question | Decision |
 |---|---|
 | Repo location | `~/Documents/GitHub/anantavastram-shopify` (this repo). GitHub repo to create: `ananta-vastram-theme`. `~/projects/ananta-vastram-theme` is a dead copy. |
-| "Products" nav link | `/collections/all` with template `collection.products-all.json`: a **compact list** — 4:5 image, name, tier, "N of N left", price — with a filter line All · Everyday · Occasion (by `av.tier`). Newest drop first; sold-out pieces last, at 0.45 opacity. This is a deliberate exception to the "never a grid or list" rule. |
-| Product page | **Layout A**: 7/5 split. Media stacked in the left column and scrolling; right column sticky. Panel order: label (Drop · numeral · tier), name, price, description, edition line, availability, order button (or notify-me when sold out), WhatsApp link, four accordions (Description · How it is made · Shipping · Care), facts (Woven by, Drop, Edition, Kara colour). |
-| Wordmark | SVG outlines generated from the client's Montage Serif OTF with fontTools, saved as `assets/av-wordmark.svg`, set as the default logo. The OTF never enters the repo (`*.otf`, `*.ttf` ignored). Cormorant Garamond 700 remains the text fallback when no logo is set. |
-| `config/settings_data.json` | **Tracked**, not ignored. It carries the theme's default settings and Shopify's GitHub integration writes editor changes back to it. |
-| Store | A Shopify store exists. Domain: `[to be supplied]`. Live-or-dev: `[to be supplied]`. On a live store all work happens on an unpublished theme; nothing is published without explicit instruction. |
+| "Products" nav link | `/collections/all` with template `collection.products-all.json`: a **compact list** — 4:5 image, name, tier, "N of N left", price. This is a deliberate exception to the "never a grid or list" rule. **Filter line** All · Everyday · Occasion uses Shopify's native tag URLs (`/collections/all/everyday`, `current_tags`); products carry a tag equal to their `av.tier` value in addition to the metafield (documented in `docs/setup.md`). Liquid cannot read query strings, and metafield filters need an app, so tags are the only zero-dependency mechanism. **Order**: the `all` collection's default sort is set to "Newest first" in admin; the section makes two passes over `collection.products` — available pieces first, then sold-out pieces at 0.45 opacity — so sold-out is last globally, not per drop. |
+| Product page | **Layout A**: 7/5 split. Media stacked in the left column and scrolling; right column sticky. Panel order: label (Drop · numeral · tier), name, price, `product.description` (kept to two or three sentences by content rule), edition line, availability, order button (or notify-me when sold out), WhatsApp link, four accordions **How it is made · Materials and motif · Shipping · Care** (overrides the brief's "Description" accordion, which would duplicate the panel text; Materials and motif lists yarn, dye, motif names, loom hours from metafields), facts (Woven by, Drop, Edition, Kara colour). |
+| Wordmark | Rendered by one snippet, `snippets/av-wordmark.liquid`, used by header, opening and footer. Chain: if `settings.av_logo` (image picker) is set → `<img>`; else → the inline SVG outlines generated from the client's Montage Serif OTF with fontTools (a standalone, deferrable task; until it runs, the snippet holds the Cormorant Garamond 700 text wordmark). An image picker cannot default to a theme asset, which is why the SVG is inlined in the snippet rather than "set as default". The OTF never enters the repo (`*.otf`, `*.ttf` ignored). |
+| `config/settings_data.json` | **Tracked**, not ignored (currently ignored and untracked — un-ignoring and adding it is an explicit step). It carries the theme's defaults: `type_header_font` Marcellus, `type_body_font` Karla, the two new pickers, and Dawn's colour scheme populated with the palette (background ivory, text kumkum, accent kumkum) so the stock cart/account/search/404 pages pick up the palette without custom CSS. Shopify's GitHub integration writes editor changes back to it. |
+| Store | `anantavastram.myshopify.com` (admin `xmqcfe-vp`). Treated as **live** until told otherwise: all work happens on an unpublished theme via `shopify theme dev` / `theme push --unpublished`; nothing is published without explicit instruction. |
 | Verification | Real store via `shopify theme dev`, plus Theme Check locally and in CI. No static preview needed. |
 
 ## 2. Pages, templates, sections
 
-All pages are JSON templates composed of new `av-*` sections. Dawn's own sections remain in the repo unused, except cart, customer account, search, 404 and password, which stay stock and pick up the palette through tokens only. Section settings are limited to content (images, video, text, links, references); layout and colour are fixed by the design.
+All pages are JSON templates composed of new `av-*` sections. Dawn's own sections remain in the repo unused, except cart, customer account, search, 404 and password, which stay stock and pick up the palette through Dawn's colour-scheme settings only. `templates/cart.json` loses its `featured-collection` grid. Cart type is **page** (`settings.cart_type = page`); the custom header has no drawer integration, and the bag icon links to `/cart` with a count. Section settings are limited to content (images, video, text, links, references); layout and colour are fixed by the design.
 
 | Page | Template | Sections in order |
 |---|---|---|
@@ -36,15 +36,18 @@ All pages are JSON templates composed of new `av-*` sections. Dawn's own section
 
 Section notes:
 
-- `av-drop-rows` takes a `drop` metaobject reference; if blank it auto-selects by position (setting `auto_index`: 1 = newest, 2 = second newest, by `status` current/open then `number` desc). Renders `av-drop-band` then one `av-product-row` per product in the drop's collection.
+- `av-drop-rows` takes a `drop` metaobject reference; if blank it auto-selects by position (setting `auto_index`: 1 = newest, 2 = second newest, using the handle iteration below and skipping `closed` drops). Renders `av-drop-band` then one `av-product-row` per product in the drop's collection.
 - `av-exclusive-row` is the advert: same row anatomy, price text "On enquiry", link to the Exclusive page. Image, name, description, availability and shipping are section settings.
-- `av-drop-index` loops `shop.metaobjects.drop.values`, sorted by `number` desc. The drop with `status = current` renders as the large band (7/5, ensemble image, chip "Current drop", counts, six tiles, "Enter the drop"). Others render as the compact past-drop band with chip "Pieces remaining" (`open`) or outline chip "Closed" (`closed`), then tiles. No commission content.
+- **Drop ordering.** Sorting metaobjects by a field in Liquid is not reliable, so drops are addressed by handle: every `drop` metaobject has handle `drop-NNN` (three digits, matching `number`). Sections loop `for i in (1..50) reversed`, build the handle, read `shop.metaobjects.drop[handle]`, and skip blanks. Deterministic, newest first, no sort filter. `docs/setup.md` mandates the handle.
+- `av-drop-index` iterates drops newest first as above. The drop with `status = current` renders as the large band (7/5, ensemble image, chip "Current drop", counts, six tiles, "Enter the drop"). Others render as the compact past-drop band with chip "Pieces remaining" (`open`) or outline chip "Closed" (`closed`), then tiles. No commission content.
 - `av-drop-header` reads the drop metaobject that references the current collection (`collection.metafields.av.drop`, set in admin) and shows season, theme name, design line, story, counts.
 - `av-product` uses Dawn's `product-form.js` for add-to-cart and Dawn's `<details>` accordion markup restyled. Sold-out state: order button replaced by the notify-me form; edition line reads "All N placed".
-- `av-tabs` filters by blog tag via `/blogs/stories/tagged/<tag>`; tags: weavers, embroidery, motifs-and-design, the-house.
-- `av-posts` shows `blog.articles` with alternating 5/7 layout; an article with `av.video` renders the video in place of the image. `av-earlier` shows the next three after the posts shown above.
+- `av-featured-article` shows the section's `article` setting, else `blog.articles.first`. `av-tabs` filters by blog tag via `/blogs/stories/tagged/<tag>`; tags: weavers, embroidery, motifs-and-design, the-house.
+- `av-posts` shows the next six articles after the featured one, alternating 5/7; an article with `av.video` renders the video in place of the image. `av-earlier` shows the following three. On a `/tagged/` URL the featured section is hidden and `av-posts` paginates all matching articles, 12 per page; `av-earlier` is hidden.
 
-Shared snippets: `av-product-row`, `av-product-list-item`, `av-drop-tile`, `av-drop-band`, `av-edition-line`, `av-media` (responsive `image_tag`, fixed aspect ratio, ivory placeholder when blank), `av-video` (loop, tap for sound, optional full film), `av-icon` (inline SVG by name, stroke 1.5), `av-whatsapp-link`.
+Shared snippets: `av-product-row`, `av-product-list-item`, `av-drop-tile`, `av-drop-banner` (matches the existing `.av-drop-banner` CSS), `av-edition-line` (takes `product` and `context: tile | row | page`; renders "R of E left", "Sold out", or on the product page "All E placed"), `av-media` (responsive `image_tag`, fixed aspect ratio, ivory placeholder when blank), `av-video` (loop, tap for sound, optional full film), `av-icon` (inline SVG by name, stroke 1.5), `av-whatsapp-link`, `av-wordmark`.
+
+CSS: `av-base.css` and `av-sections.css` are extended, not restyled. Blocks that do not exist yet and must be added: `av-product` (stacked media, sticky panel, accordions, notify form), `av-product-list` (compact list and filter line), mobile drawer `<dialog>` states.
 
 ## 3. Data model
 
@@ -52,7 +55,7 @@ Created in Shopify admin by hand from `docs/setup.md`.
 
 Metaobjects:
 
-- `drop` — `number` (integer), `theme_name`, `season`, `status` (single-line, one of current / open / closed), `design_line`, `story` (multi-line), `ensemble_image` (file), `collection` (collection reference).
+- `drop` — handle `drop-NNN` (required, see §2), `number` (integer), `theme_name`, `season`, `status` (single-line with choices validation: current / open / closed), `design_line`, `story` (multi-line), `ensemble_image` (file), `collection` (collection reference).
 - `weaver` — `name`, `portrait` (file), `role`, `years` (integer), `unit`.
 - `campaign` — `title`, `season`, `photographer`, `wearers` (multi-line), `location`, `images` (file list), `film` (file), `pieces` (product list).
 
@@ -61,6 +64,8 @@ Metafields, namespace `av`:
 - Product: `drop` (metaobject ref), `numeral` (Roman, text), `tier` (everyday / occasion / exclusive), `weaver` (metaobject ref), `edition_total` (integer), `loom_hours` (integer), `motif_name_ta`, `motif_name_en`, `yarn`, `dye`, `kara_colour`, `lead_time_weeks` (integer), `how_made` (multi-line), `care` (multi-line).
 - Collection: `drop` (metaobject ref).
 - Article: `read_time` (integer, minutes), `video` (file).
+
+Products also carry one tag equal to their `av.tier` value (`everyday` / `occasion` / `exclusive`) for the Products page filter.
 
 Counts: each numbered piece is one product with one variant, inventory tracked, overselling off. Remaining = `variant.inventory_quantity`; edition = `av.edition_total`. `av-edition-line` renders "R of E left" / "Sold out" and is the only place this is computed. Drop-level counts (pieces, edition per piece, remaining of total) are summed in Liquid over the collection's products.
 
@@ -78,7 +83,9 @@ Menus: `main-menu` is not used. Header and footer link groups are section settin
 
 ## 5. JavaScript
 
-Three files, vanilla, deferred, no dependencies:
+`layout/theme.liquid` **keeps** Dawn's `constants.js`, `pubsub.js`, `global.js`, the `window.shopUrl / routes / cartStrings / variantStrings / accessibilityStrings` block, the `:root` custom-property block and `base.css`; the stock cart, search, account and password templates and `product-form.js` depend on them. Dawn's `predictive-search.js` stays behind its existing setting. Removed from `theme.liquid`: nothing else; the announcement bar and cart drawer render are dropped from the header group and body respectively.
+
+Three new files, vanilla, deferred, no dependencies:
 
 - `av-opening.js` — on load, if `sessionStorage.avOpened` is unset and `prefers-reduced-motion` is not set: show overlay, wordmark fades in (CSS), hold, add `.is-leaving`, remove overlay on `transitionend`, set the flag. Otherwise remove the overlay immediately.
 - `av-reveal.js` — IntersectionObserver adds `.is-in` to `.av-reveal` once.
@@ -96,11 +103,13 @@ No lorem ipsum. Unknown facts stay as `[bracketed]` placeholders in default sett
 - Tooling: Shopify CLI 3 (`shopify theme dev --store <domain>`), Theme Check (`theme-check:recommended`). `shopify theme check` runs before every commit.
 - CI: `.github/workflows/theme-check.yml` runs Theme Check on push and pull request.
 - `.gitignore`: `.DS_Store`, `node_modules/`, `.shopify/`, `.superpowers/`, `*.otf`, `*.ttf`. `settings_data.json` is tracked.
-- `docs/setup.md`: metaobject and metafield definitions, pages to create (About, Gallery, Exclusive) with template assignment, collection `all` template assignment, blog `stories` with tags, WhatsApp number, GitHub integration steps.
+- `docs/setup.md`: metaobject and metafield definitions (including the `drop-NNN` handle rule and status choices), tier tags on products, pages to create (About, Gallery, Exclusive) with template assignment, a manual collection with handle `all` sorted "Newest first" and assigned `collection.products-all`, blog `stories` with tags, WhatsApp number, GitHub integration steps.
+- "Theme Check before every commit" is a convention enforced by CI, not a git hook.
 
 ## 8. Build order
 
-1. `layout/theme.liquid`: link the two CSS files, font settings and custom properties, opening overlay, the three scripts. New theme settings and defaults. Wordmark SVG generation.
+0. Wordmark SVG generation from the Montage OTF (standalone; runs whenever the OTF path is supplied; until then the snippet shows the Cormorant text).
+1. `layout/theme.liquid`: link the two CSS files, font settings and custom properties, opening overlay, the three new scripts alongside Dawn's retained ones. New theme settings; `settings_data.json` un-ignored, added, and populated with fonts, palette and cart type.
 2. `av-header`, `av-footer`; header and footer groups repointed.
 3. Homepage sections and `index.json`.
 4. `av-page-intro`, `av-drop-index`, `av-drop-header`, `av-product-rows`, tiles; `list-collections.json`, `collection.json`.
