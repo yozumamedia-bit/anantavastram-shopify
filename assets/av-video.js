@@ -14,8 +14,10 @@
         video.load();
       }
       video.muted = false;
-      video.play();
       box.classList.add('is-playing');
+      var p = video.play();
+      if (p && p.catch) p.catch(function () { box.classList.remove('is-playing'); });
+      video.focus();
     });
   });
 })();
