@@ -10,6 +10,8 @@
       assign stories_url = '/blogs/stories'
       if blogs.stories.url != blank
         assign stories_url = blogs.stories.url
+      elsif blogs.news.url != blank
+        assign stories_url = blogs.news.url
       endif
     -%}
     <a href="{{ stories_url }}"{% if request.path contains stories_url %} aria-current="page"{% endif %}>Stories</a>

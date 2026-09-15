@@ -6,7 +6,7 @@
     for i in (1..50) reversed
       assign h = i | prepend: '00' | slice: -3, 3 | prepend: 'drop-'
       assign d = shop.metaobjects.drop[h]
-      if d == blank or d.status.value == 'closed'
+      if d == blank or d.status.value == 'closed' or d.collection.value == blank or d.collection.value.products_count == 0
         continue
       endif
       assign seen = seen | plus: 1
@@ -23,6 +23,7 @@
     assign count = col.products_count
     assign padded = drop.number.value | prepend: '00' | slice: -3, 3
     assign label = 'Drop ' | append: padded
+    assign title = drop.theme_name.value | default: label
     if count == 1
       assign meta = '1 piece'
     else
@@ -33,7 +34,7 @@
     endif
   -%}
   <section class="av-drop-rows">
-    {% render 'av-drop-banner', label: label, title: drop.theme_name, meta: meta %}
+    {% render 'av-drop-banner', label: label, title: title, meta: meta %}
     <div class="av-rows">
       {%- for product in col.products limit: 12 -%}{% render 'av-product-row', product: product %}{%- endfor -%}
     </div>
@@ -41,7 +42,7 @@
 {%- endif -%}
 {% schema %}
 { "name": "AV Drop rows", "settings": [
-  { "type": "metaobject", "metaobject_type": "drop", "id": "drop", "label": "Drop (leave empty to pick automatically)" },
-  { "type": "range", "id": "auto_index", "min": 1, "max": 3, "step": 1, "default": 1, "label": "Automatic pick: Nth newest open drop" }
+  { "type": "metaobject", "metaobject_type": "drop", "id": "drop", "label": "Drop (leave empty to pick automatically)", "info": "Set both drop rows the same way — both automatic or both chosen — so they never show the same drop." },
+  { "type": "range", "id": "auto_index", "min": 1, "max": 3, "step": 1, "default": 1, "label": "Automatic pick: Nth newest open drop", "info": "Closed drops and drops whose collection is empty are skipped." }
 ], "presets": [{ "name": "AV Drop rows" }] }
 {% endschema %}

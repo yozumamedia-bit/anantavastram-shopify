@@ -103,7 +103,7 @@ For every numbered piece:
 ## 4. Collections
 
 - **One manual collection per drop** (e.g. "Drop 001"), default template, with `av.drop` pointing at the drop entry.
-- **Products page:** create a collection with handle **`all`** (title "Products"), automated, condition *Inventory stock is greater than -1* (if rejected, use *Product price is greater than 0*), sort **Newest**, theme template **`collection.products-all`**. `/collections/all/everyday` and `/collections/all/occasion` then filter by tag.
+- **Products page:** `/collections/all` works without any setup — Shopify's automatic all-products collection renders the compact list, and `/collections/all/everyday` and `/collections/all/occasion` filter by tag. To control its sort order, create a collection with handle **`all`** (title "Products"), automated, condition *Inventory stock is greater than -1* (if rejected, use *Product price is greater than 0*), sort **Newest**, theme template **`collection.products-all`**.
 
 ## 5. Pages
 
@@ -140,10 +140,11 @@ Then open each page in **Online Store → Themes → Customize** to add images, 
 
 ## 9. Menus (optional)
 
-The header and footer ship with built-in links, so no menus are required. To edit links, create menus in **Online Store → Navigation** and pick them in the header/footer sections in the theme editor:
-- Header: left (Stories · Gallery · About), right (Collections · Products · Exclusive).
-- Footer columns: The house, Shop, Orders, Contact.
-An empty menu choice falls back to the built-in links.
+The header and footer ship with built-in links, so no menus are required. To edit links, create menus in **Online Store → Navigation** with these handles — the theme is already pointed at them, so no editor step is needed:
+- `av-house` — header left and footer *The house* (Stories · Gallery · About).
+- `av-shop` — header right and footer *Shop* (Collections · Products · Exclusive).
+- `av-orders`, `av-contact` — footer *Orders* and *Contact* columns.
+Any other menu can be picked in the header/footer sections in the theme editor. A missing or empty menu falls back to the built-in links.
 
 ## 10. Content in the theme editor
 

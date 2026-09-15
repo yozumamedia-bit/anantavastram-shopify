@@ -1,9 +1,16 @@
+{%- unless collection.handle == 'all' -%}
 <section class="av-rows av-rows--page">
+  <h2 class="visually-hidden">Pieces</h2>
   {%- paginate collection.products by 12 -%}
-    {%- for product in collection.products -%}{% render 'av-product-row', product: product %}{%- endfor -%}
+    {%- if collection.products.size == 0 -%}
+      <p class="av-body av-list__empty">No pieces yet.</p>
+    {%- else -%}
+      {%- for product in collection.products -%}{% render 'av-product-row', product: product %}{%- endfor -%}
+    {%- endif -%}
     {%- if paginate.pages > 1 -%}<nav class="av-wrap" aria-label="Pagination" style="padding-top:40px">{{ paginate | default_pagination }}</nav>{%- endif -%}
   {%- endpaginate -%}
 </section>
+{%- endunless -%}
 {% schema %}
 { "name": "AV Product rows", "settings": [] }
 {% endschema %}

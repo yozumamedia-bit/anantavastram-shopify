@@ -1,3 +1,10 @@
+{%- liquid
+  assign show = true
+  if section.settings.all_products_only and collection.handle != 'all' and template.suffix != 'products-all'
+    assign show = false
+  endif
+-%}
+{%- if show -%}
 <section class="av-intro av-reveal{% if section.settings.open %} av-intro--open{% endif %}">
   <div class="av-stack" style="gap:28px">
     <div class="av-label">{{ section.settings.label | escape }}</div>
@@ -21,8 +28,10 @@
     {%- endif -%}
   </div>
 </section>
+{%- endif -%}
 {% schema %}
 { "name": "AV Page intro", "settings": [
+  { "type": "checkbox", "id": "all_products_only", "label": "Products page only", "info": "Shows only on /collections/all (the Products page). Leave off everywhere else.", "default": false },
   { "type": "text", "id": "label", "label": "Label", "default": "Collections" },
   { "type": "textarea", "id": "statement", "label": "Statement (Marcellus)", "default": "Numbered drops, each on one idea." },
   { "type": "richtext", "id": "text", "label": "Paragraph", "default": "<p>A drop is five or six pieces built around a single design — a motif, a border, a cloth. Each piece is made in a fixed edition. A drop stays open while pieces remain; when the last one goes, it closes and stays here as the record.</p>" },

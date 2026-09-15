@@ -1,4 +1,8 @@
-{%- comment -%} Products page list: available pieces first, then sold-out, within each page of 50. {%- endcomment -%}
+{%- comment -%}
+  Products page list: available pieces first, then sold-out, within each page of 50.
+  Renders on /collections/all (Shopify's automatic collection, default template) and on any collection using the products-all template.
+{%- endcomment -%}
+{%- if collection.handle == 'all' or template.suffix == 'products-all' -%}
 <section class="av-list av-reveal">
   <h2 class="visually-hidden">Pieces</h2>
   {%- paginate collection.products by 50 -%}
@@ -25,6 +29,7 @@
     {%- if paginate.pages > 1 -%}<nav class="av-list__pages" aria-label="Pagination">{{ paginate | default_pagination }}</nav>{%- endif -%}
   {%- endpaginate -%}
 </section>
+{%- endif -%}
 {% schema %}
 { "name": "AV Product list", "settings": [] }
 {% endschema %}

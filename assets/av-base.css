@@ -42,6 +42,8 @@ body {
 }
 a { color: var(--av-kumkum); text-decoration: none; }
 a:hover { color: var(--av-kumkum-deep); }
+/* links inside running text need more than colour to stand out from ink */
+.av-body a, .rte a { text-decoration: underline; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
 img, video { max-width: 100%; display: block; }
 
 /* ---- type roles ---------------------------------------------------- */

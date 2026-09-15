@@ -17,7 +17,13 @@
   {%- if c != blank -%}
   {%- if n > 0 -%}
   <div class="av-campaign__lead">
-    {% render 'av-media', image: imgs[0], ratio: '920 / 900', sizes: '(min-width: 900px) 66vw, 100vw' %}
+    {%- liquid
+      assign lead_loading = 'lazy'
+      if section.settings.page_heading
+        assign lead_loading = 'eager'
+      endif
+    -%}
+    {% render 'av-media', image: imgs[0], ratio: '920 / 900', sizes: '(min-width: 900px) 66vw, 100vw', loading: lead_loading %}
     {%- if n > 1 -%}
     <div class="av-campaign__stack">
       {% render 'av-media', image: imgs[1], ratio: '440 / 438', sizes: '(min-width: 900px) 33vw, 100vw' %}

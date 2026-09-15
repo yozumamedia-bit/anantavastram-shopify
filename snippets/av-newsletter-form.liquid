@@ -7,7 +7,7 @@
     <span class="av-body--s">Thank you. The next letter comes to you.</span>
   {%- else -%}
     <label class="visually-hidden" for="av-news-input-{{ news_id }}">Email</label>
-    <input id="av-news-input-{{ news_id }}" type="email" name="contact[email]" value="{{ form.email }}" placeholder="{{ placeholder | escape }}" autocomplete="email" required{% if form.errors %} aria-invalid="true" aria-describedby="av-news-err-{{ news_id }}"{% endif %}>
+    <input id="av-news-input-{{ news_id }}" type="email" name="contact[email]" value="{{ form.email | escape }}" placeholder="{{ placeholder | escape }}" autocomplete="email" required{% if form.errors %} aria-invalid="true" aria-describedby="av-news-err-{{ news_id }}"{% endif %}>
     <button type="submit">Join</button>
     {%- if form.errors -%}<span id="av-news-err-{{ news_id }}" class="av-body--s">Please check the address.</span>{%- endif -%}
   {%- endif -%}

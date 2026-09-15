@@ -7,10 +7,24 @@
     "rows": {
       "type": "av-product-rows",
       "settings": {}
-    }
+    },
+    "products-intro": {
+      "type": "av-page-intro",
+      "blocks": {
+        "all": { "type": "key", "settings": { "label": "All", "url": "/collections/all" } },
+        "everyday": { "type": "key", "settings": { "label": "Everyday", "url": "/collections/all/everyday" } },
+        "occasion": { "type": "key", "settings": { "label": "Occasion", "url": "/collections/all/occasion" } }
+      },
+      "block_order": ["all", "everyday", "occasion"],
+      "settings": {
+        "all_products_only": true,
+        "label": "Products",
+        "statement": "Every piece, across the drops.",
+        "text": "<p>Each is one of a numbered edition. A piece that has found all its wearers stays listed, at the end, as the record.</p>",
+        "open": true
+      }
+    },
+    "products-list": { "type": "av-product-list", "settings": {} }
   },
-  "order": [
-    "header",
-    "rows"
-  ]
+  "order": ["header", "rows", "products-intro", "products-list"]
 }
