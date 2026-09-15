@@ -1,0 +1,19 @@
+{%- if section.blocks.size > 0 -%}
+<section class="av-cards av-reveal">
+  {%- for block in section.blocks -%}
+    <div class="av-card" {{ block.shopify_attributes }}>
+      {% render 'av-media', image: block.settings.image, ratio: '1 / 1', sizes: '(min-width: 900px) 50vw, 100vw' %}
+      <h3 class="av-sub av-sub--s av-card__title">{{ block.settings.title | escape }}</h3>
+      {%- if block.settings.text != blank -%}<div class="av-body av-body--s">{{ block.settings.text | escape | newline_to_br }}</div>{%- endif -%}
+      {%- if block.settings.link_label != blank -%}<a class="av-link" href="{{ block.settings.link | default: '#av-enquiry' }}">{{ block.settings.link_label | escape }}</a>{%- endif -%}
+    </div>
+  {%- endfor -%}
+</section>
+{%- endif -%}
+{% schema %}
+{ "name": "AV Cards (two)", "max_blocks": 2, "settings": [], "blocks": [ { "type": "card", "name": "Card", "settings": [
+  { "type": "image_picker", "id": "image", "label": "Image" }, { "type": "text", "id": "title", "label": "Title", "default": "[Card title]" }, { "type": "textarea", "id": "text", "label": "Text" }, { "type": "text", "id": "link_label", "label": "Link label", "default": "Enquire" }, { "type": "url", "id": "link", "label": "Link (default: the enquiry form)" } ] } ],
+"presets": [ { "name": "AV Cards (two)", "blocks": [
+  { "type": "card", "settings": { "title": "The wedding set", "text": "Veshti, kurta and angavastram as one piece. Gold or tested zari, motifs drawn for the family. [Lead time] weeks. From ₹ [PRICE]." } },
+  { "type": "card", "settings": { "title": "[Second category]", "text": "[What it is, who it is for, what is decided together. Lead time and starting price.]" } } ] } ] }
+{% endschema %}

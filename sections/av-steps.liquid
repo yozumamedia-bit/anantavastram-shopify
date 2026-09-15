@@ -1,0 +1,33 @@
+{%- if section.blocks.size > 0 -%}
+<section class="av-steps av-reveal">
+  <div class="av-people__head">
+    <div class="av-stack" style="gap:12px">
+      {%- if section.settings.label != blank -%}<div class="av-label">{{ section.settings.label | escape }}</div>{%- endif -%}
+      <h2 class="av-sub av-sub--m">{{ section.settings.heading | escape }}</h2>
+    </div>
+    {%- if section.settings.text != blank -%}<div class="av-body" style="max-width:560px">{{ section.settings.text | escape | newline_to_br }}</div>{%- endif -%}
+  </div>
+  <div class="av-steps__grid">
+    {%- for block in section.blocks -%}
+      <div class="av-step" {{ block.shopify_attributes }}>
+        <div class="av-step__num" aria-hidden="true">{{ block.settings.numeral | escape }}</div>
+        <h3 class="av-sub av-sub--xs av-step__title">{{ block.settings.title | escape }}</h3>
+        <div class="av-body av-body--s">{{ block.settings.text | escape | newline_to_br }}</div>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+{%- endif -%}
+{% schema %}
+{ "name": "AV Steps", "max_blocks": 4, "settings": [
+  { "type": "text", "id": "label", "label": "Label", "default": "How it works" },
+  { "type": "text", "id": "heading", "label": "Heading", "default": "Four steps, [Y] weeks" },
+  { "type": "textarea", "id": "text", "label": "Paragraph", "default": "There is no configurator. Each piece is agreed in conversation, then woven, then fitted. The timings below are honest and will not be shortened for a date." }
+], "blocks": [ { "type": "step", "name": "Step", "settings": [ { "type": "text", "id": "numeral", "label": "Numeral", "default": "I" }, { "type": "text", "id": "title", "label": "Title", "default": "[Step]" }, { "type": "textarea", "id": "text", "label": "Text" } ] } ],
+"presets": [ { "name": "AV Steps", "blocks": [
+  { "type": "step", "settings": { "numeral": "I", "title": "The conversation", "text": "Write to us with the occasion and the date. Kamalam replies within [n] days and, if the dates allow, a call is set. Tamil or English." } },
+  { "type": "step", "settings": { "numeral": "II", "title": "Cloth and motif", "text": "Together you settle the cloth, the border, the motif and the colour from the kara set. A sample of the border is woven and sent before anything is committed." } },
+  { "type": "step", "settings": { "numeral": "III", "title": "The loom", "text": "The veshti is woven by a named weaver at the unit. The kurta or shirt is cut to your measure. You are told when the warp goes on." } },
+  { "type": "step", "settings": { "numeral": "IV", "title": "Fitting and delivery", "text": "One fitting, in [city] or by measurement. Delivered by hand within Tamil Nadu; insured courier elsewhere. The piece carries the weaver's name and yours." } }
+] } ] }
+{% endschema %}

@@ -1,0 +1,13 @@
+<section class="av-bleed av-reveal">
+  {% render 'av-media', image: section.settings.image, ratio: '1440 / 820', sizes: '100vw' %}
+  {%- if section.settings.left != blank or section.settings.right != blank -%}
+  <div class="av-bleed__caption av-caption"><span class="av-label">{{ section.settings.left | escape }}</span><span class="av-label">{{ section.settings.right | escape }}</span></div>
+  {%- endif -%}
+</section>
+{% schema %}
+{ "name": "AV Full-bleed image", "settings": [
+  { "type": "image_picker", "id": "image", "label": "Image" },
+  { "type": "text", "id": "left", "label": "Caption left", "default": "[Unit name], [town], Tamil Nadu" },
+  { "type": "text", "id": "right", "label": "Caption right", "default": "Photograph · [credit]" }
+], "presets": [{ "name": "AV Full-bleed image" }] }
+{% endschema %}

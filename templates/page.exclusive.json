@@ -1,0 +1,162 @@
+{
+  "sections": {
+    "intro": {
+      "type": "av-page-intro",
+      "blocks": {
+        "k1": {
+          "type": "key",
+          "settings": {
+            "label": "Wedding sets"
+          }
+        },
+        "k2": {
+          "type": "key",
+          "settings": {
+            "label": "[Second category]"
+          }
+        }
+      },
+      "block_order": [
+        "k1",
+        "k2"
+      ],
+      "settings": {
+        "label": "Exclusive",
+        "statement": "One piece, for one person, made once.",
+        "text": "<p>Outside the numbered drops, the house makes single pieces to the wearer — wedding sets above all. Nothing here is listed or held in stock. It begins with a conversation with Kamalam and ends at the loom.</p>",
+        "open": true
+      }
+    },
+    "exemplar": {
+      "type": "av-full-bleed",
+      "settings": {
+        "left": "The groom set · made for [wearer], [occasion, year]",
+        "right": "Woven by [weaver] · [loom hours] hours · gold zari"
+      }
+    },
+    "steps": {
+      "type": "av-steps",
+      "blocks": {
+        "s1": {
+          "type": "step",
+          "settings": {
+            "numeral": "I",
+            "title": "The conversation",
+            "text": "Write to us with the occasion and the date. Kamalam replies within [n] days and, if the dates allow, a call is set. Tamil or English."
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "numeral": "II",
+            "title": "Cloth and motif",
+            "text": "Together you settle the cloth, the border, the motif and the colour from the kara set. A sample of the border is woven and sent before anything is committed."
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "numeral": "III",
+            "title": "The loom",
+            "text": "The veshti is woven by a named weaver at the unit. The kurta or shirt is cut to your measure. You are told when the warp goes on."
+          }
+        },
+        "s4": {
+          "type": "step",
+          "settings": {
+            "numeral": "IV",
+            "title": "Fitting and delivery",
+            "text": "One fitting, in [city] or by measurement. Delivered by hand within Tamil Nadu; insured courier elsewhere. The piece carries the weaver's name and yours."
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4"
+      ],
+      "settings": {}
+    },
+    "cards": {
+      "type": "av-cards",
+      "blocks": {
+        "c1": {
+          "type": "card",
+          "settings": {
+            "title": "The wedding set",
+            "text": "Veshti, kurta and angavastram as one piece. Gold or tested zari, motifs drawn for the family. [Lead time] weeks. From ₹ [PRICE]."
+          }
+        },
+        "c2": {
+          "type": "card",
+          "settings": {
+            "title": "[Second category]",
+            "text": "[What it is, who it is for, what is decided together. Lead time and starting price.]"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2"
+      ],
+      "settings": {}
+    },
+    "terms": {
+      "type": "av-band",
+      "blocks": {
+        "t1": {
+          "type": "item",
+          "settings": {
+            "title": "Capacity",
+            "text": "[X] pieces a season. Dates are taken in order of the first conversation."
+          }
+        },
+        "t2": {
+          "type": "item",
+          "settings": {
+            "title": "Deposit",
+            "text": "[Deposit terms] on agreement of cloth and motif; balance at fitting."
+          }
+        },
+        "t3": {
+          "type": "item",
+          "settings": {
+            "title": "Lead time",
+            "text": "[Y] weeks from sample approval. Wedding dates inside that window cannot be taken."
+          }
+        },
+        "t4": {
+          "type": "item",
+          "settings": {
+            "title": "Price",
+            "text": "Quoted once, in writing, after step II. It does not change, and it is never discounted."
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "settings": {
+        "mode": "grid",
+        "label": "Terms",
+        "heading": "What is agreed before the warp goes on"
+      }
+    },
+    "enquiry": {
+      "type": "av-enquiry",
+      "settings": {}
+    }
+  },
+  "order": [
+    "intro",
+    "exemplar",
+    "steps",
+    "cards",
+    "terms",
+    "enquiry"
+  ]
+}
