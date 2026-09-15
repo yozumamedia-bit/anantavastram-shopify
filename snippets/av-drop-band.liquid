@@ -20,6 +20,10 @@
   assign per = 0
   if pieces > 0
     assign per = total | divided_by: pieces
+    assign per_check = per | times: pieces
+    if per_check != total
+      assign per = 0
+    endif
   endif
   assign padded = drop.number.value | prepend: '00' | slice: -3, 3
   assign closed = false
@@ -51,7 +55,7 @@
   <div class="av-past__head">
     <div class="av-stack" style="gap:22px">
       <div class="av-drop__head"><span class="av-label">Drop {{ padded }}{% if drop.season.value != blank %} · {{ drop.season | escape }}{% endif %}</span>{% if closed %}<span class="av-chip av-chip--outline">Closed</span>{% else %}<span class="av-chip">Pieces remaining</span>{% endif %}</div>
-      <h2 class="av-sub av-sub--m">{% if drop.theme_name.value != blank %}{{ drop.theme_name | escape }}{% else %}Drop {{ padded }}{% endif %}</h2>
+      <h3 class="av-sub av-sub--m">{% if drop.theme_name.value != blank %}{{ drop.theme_name | escape }}{% else %}Drop {{ padded }}{% endif %}</h3>
       <div class="av-counts">
         <div class="av-count"><span class="av-label">Pieces</span><span class="av-count__v">{{ pieces }}</span></div>
         <div class="av-count"><span class="av-label">Remaining</span><span class="av-count__v">{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %}</span></div>
@@ -59,7 +63,7 @@
     </div>
     <div class="av-stack" style="max-width:620px">
       {%- if drop.story.value != blank -%}<div class="av-body">{{ drop.story | escape | newline_to_br }}</div>{%- endif -%}
-      <div class="av-body">{% if closed %}Every piece in this drop has found its wearer. The pages remain.{% elsif total > 0 %}{{ remaining }} of {{ total }} pieces remain in edition.{% else %}{% if remaining == 1 %}1 piece remains.{% else %}{{ remaining }} pieces remain.{% endif %}{% endif %}</div>
+      <div class="av-body">{% if remaining == 0 %}Every piece in this drop has found its wearer. The pages remain.{% elsif total > 0 %}{{ remaining }} of {{ total }} {% if remaining == 1 %}piece remains{% else %}pieces remain{% endif %} in edition.{% elsif remaining == 1 %}1 piece remains.{% else %}{{ remaining }} pieces remain.{% endif %}</div>
       <a class="av-link" href="{{ col.url }}">{% if closed %}View the record{% else %}See the drop{% endif %}</a>
     </div>
   </div>

@@ -15,7 +15,7 @@
     assign h = i | prepend: '00' | slice: -3, 3 | prepend: 'drop-'
     assign d = shop.metaobjects.drop[h]
   -%}
-  {%- if d != blank and d.status.value == 'current' and d.collection.value != blank -%}
+  {%- if d != blank and d.status.value == 'current' and d.collection.value != blank and d.collection.value.products_count > 0 -%}
     {%- assign current_h = h -%}
     {%- assign found = found | plus: 1 -%}
     {% render 'av-drop-band', drop: d, mode: 'current' %}
@@ -30,7 +30,7 @@
       continue
     endif
     assign d = shop.metaobjects.drop[h]
-    if d == blank or d.collection.value == blank
+    if d == blank or d.collection.value == blank or d.collection.value.products_count == 0
       continue
     endif
     assign found = found | plus: 1

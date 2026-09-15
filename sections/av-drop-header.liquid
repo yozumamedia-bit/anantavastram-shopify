@@ -1,3 +1,4 @@
+{%- comment -%} The counts loop mirrors snippets/av-drop-band.liquid (canonical copy) — change both together. {%- endcomment -%}
 {%- liquid
   assign drop = collection.metafields.av.drop.value
   if drop != blank
@@ -19,7 +20,7 @@
 -%}
 <section class="av-intro av-reveal">
   <div class="av-stack" style="gap:28px">
-    <div class="av-label">{% if drop != blank %}Drop {{ padded }}{% if drop.season.value != blank %} · {{ drop.season | escape }}{% endif %}{% else %}{{ collection.title | escape }}{% endif %}</div>
+    <div class="av-label">{% if drop != blank %}Drop {{ padded }}{% if drop.season.value != blank %} · {{ drop.season | escape }}{% endif %}{% else %}Collection{% endif %}</div>
     <h1 class="av-statement av-statement--xl">{% if drop != blank and drop.theme_name.value != blank %}{{ drop.theme_name | escape }}{% else %}{{ collection.title | escape }}{% endif %}</h1>
   </div>
   <div class="av-stack">

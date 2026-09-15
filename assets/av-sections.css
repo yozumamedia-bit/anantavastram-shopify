@@ -72,6 +72,7 @@
 .av-past { padding: 80px var(--av-gutter) 96px; display: flex; flex-direction: column; gap: 40px; border-bottom: 1px solid var(--av-grey-3); }
 .av-past__head { display: grid; grid-template-columns: 5fr 7fr; gap: 64px; align-items: start; }
 .av-past .av-tiles { padding: 0; border: 0; }
+@media (max-width: 1200px) { .av-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 900px) { .av-drop { grid-template-columns: 1fr; gap: 28px; } .av-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } .av-past-head { grid-template-columns: 1fr; gap: 20px; } .av-past__head { grid-template-columns: 1fr; gap: 24px; } }
 
 /* av-chapter (about) */

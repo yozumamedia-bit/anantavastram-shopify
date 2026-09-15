@@ -100,6 +100,7 @@ img, video { max-width: 100%; display: block; }
   color: var(--av-kumkum);
   border-bottom: 1px solid var(--av-kumkum);
   padding-bottom: 4px;
+  align-self: flex-start; /* inside flex columns the underline would otherwise stretch to the column width */
   transition: opacity 200ms ease;
 }
 .av-link:hover { opacity: 0.6; }
