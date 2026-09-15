@@ -1,6 +1,9 @@
-{%- comment -%} Usage: {% render 'av-whatsapp-link', label: 'Ask on WhatsApp', text: 'About [piece]' , class: 'av-link' %} Renders nothing if no number is set. {%- endcomment -%}
+{%- comment -%}
+  Usage: {% render 'av-whatsapp-link', label: 'Ask on WhatsApp', text: 'About [piece]', class: 'av-link' %}
+  With icon: true the label is visually hidden and the WhatsApp glyph is shown instead. Renders nothing if no number is set.
+{%- endcomment -%}
 {%- if settings.av_whatsapp_number != blank -%}
   {%- assign number = settings.av_whatsapp_number | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' | remove: '.' -%}
   {%- assign msg = text | default: 'Hello Ananta Vastram' | url_encode | replace: '+', '%20' -%}
-  <a class="{{ class | default: 'av-link' }}" href="https://wa.me/{{ number }}?text={{ msg }}" target="_blank" rel="noopener" aria-describedby="a11y-new-window-message">{{ label | default: 'WhatsApp' | escape }}</a>
+  <a class="{{ class | default: 'av-link' }}" href="https://wa.me/{{ number }}?text={{ msg }}" target="_blank" rel="noopener" aria-describedby="a11y-new-window-message">{% if icon %}{% render 'av-icon', name: 'whatsapp' %}<span class="visually-hidden">{{ label | default: 'WhatsApp' | escape }}</span>{% else %}{{ label | default: 'WhatsApp' | escape }}{% endif %}</a>
 {%- endif -%}

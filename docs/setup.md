@@ -136,7 +136,8 @@ Then open each page in **Online Store → Themes → Customize** to add images, 
 ## 8. Theme settings
 
 **Online Store → Themes → Customize → Theme settings.**
-- **Ananta Vastram:** WhatsApp number (digits with country code, e.g. `919876543210` — every WhatsApp link stays hidden until this is set); shipping line (product rows and pages); footer currency line; optional logo image (overrides the built-in Montage wordmark).
+- **Ananta Vastram:** WhatsApp number (digits with country code, e.g. `919876543210` — every WhatsApp link, including the floating button, stays hidden until this is set); floating WhatsApp button on/off; header transparent over the homepage hero on/off (turns red on scroll); price note under prices ("Inclusive of all taxes"); shipping line (product rows and pages); footer currency line; optional logo image (overrides the built-in Montage wordmark).
+- **Product photographs:** upload at least two per piece — tiles, list rows and product rows fade to the second photograph on hover.
 - **Social media:** Instagram URL (footer *Contact* column).
 - **Store details** (Settings → General): store email receives contact-form enquiries and notify-me requests.
 

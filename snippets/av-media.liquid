@@ -1,6 +1,7 @@
 {%- comment -%}
   Responsive image in a fixed-ratio box. Ivory placeholder when blank.
   Usage: {% render 'av-media', image: settings.image, ratio: '4 / 5', sizes: '(min-width: 900px) 33vw, 100vw', alt: 'text', loading: 'lazy', class: 'extra' %}
+  `alt_image` adds a second photograph that fades in when the enclosing link is hovered or focused (see .av-media__alt).
 {%- endcomment -%}
 {%- liquid
   assign ratio = ratio | default: '4 / 5'
@@ -13,5 +14,8 @@
 <div class="av-media av-media--ratio {{ class | escape }}" style="--ratio: {{ ratio | escape }};">
   {%- if image != blank -%}
     {{ image | image_url: width: 2400 | image_tag: widths: '400, 600, 800, 1200, 1600, 2400', sizes: sizes, loading: loading, alt: alt }}
+    {%- if alt_image != blank -%}
+      {{ alt_image | image_url: width: 1600 | image_tag: widths: '400, 600, 800, 1200, 1600', sizes: sizes, loading: 'lazy', alt: '', class: 'av-media__alt' }}
+    {%- endif -%}
   {%- endif -%}
 </div>

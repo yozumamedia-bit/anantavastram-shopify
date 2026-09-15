@@ -230,6 +230,9 @@
     <script src="{{ 'av-opening.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'av-reveal.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'av-video.js' | asset_url }}" defer="defer"></script>
+    {%- if settings.av_header_over_hero and template.name == 'index' -%}
+      <script src="{{ 'av-header.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
 
     {%- unless settings.type_body_font.system? -%}
       <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
@@ -251,7 +254,7 @@
     </script>
   </head>
 
-  <body>
+  <body{% if settings.av_header_over_hero and template.name == 'index' %} class="av-header-over"{% endif %}>
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ "accessibility.skip_to_text" | t }}
     </a>
@@ -264,6 +267,7 @@
       {{ content_for_layout }}
     </main>
 
+    {% render 'av-whatsapp-float' %}
     {% sections 'footer-group' %}
 
     <ul hidden>

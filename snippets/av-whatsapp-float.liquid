@@ -1,0 +1,10 @@
+{%- comment -%} Floating WhatsApp button, bottom-right on every page. Off when the setting is off or no number is set. On a product page the opening message names the piece. {%- endcomment -%}
+{%- if settings.av_whatsapp_float and settings.av_whatsapp_number != blank -%}
+  {%- liquid
+    assign text = 'Hello Ananta Vastram'
+    if template.name == 'product' and product.title != blank
+      assign text = 'About ' | append: product.title
+    endif
+  -%}
+  {% render 'av-whatsapp-link', label: 'Write to us on WhatsApp', text: text, class: 'av-wa-float', icon: true %}
+{%- endif -%}

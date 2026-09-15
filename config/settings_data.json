@@ -141,7 +141,10 @@
             "color_scheme": "background-1"
           }
         }
-      }
+      },
+      "av_whatsapp_float": true,
+      "av_header_over_hero": true,
+      "av_tax_line": "Inclusive of all taxes"
     }
   }
 }

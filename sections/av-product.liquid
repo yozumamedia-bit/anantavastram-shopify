@@ -74,6 +74,7 @@
       {%- if label != blank -%}<div class="av-label">{{ label | escape }}</div>{%- endif -%}
       <h1 class="av-name">{{ product.title | escape }}</h1>
       <div class="av-price">{{ v.price | money }}</div>
+      {%- if settings.av_tax_line != blank -%}<div class="av-label av-price__note">{{ settings.av_tax_line | escape }}</div>{%- endif -%}
     </div>
     {%- if product.description != blank -%}<div class="av-body av-body--s">{{ product.description }}</div>{%- endif -%}
 

@@ -10,7 +10,7 @@
   assign edition_total = mf.edition_total.value | default: 0
 -%}
 <article class="av-row av-reveal{% if sold_out %} av-row--sold{% endif %}">
-  <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">{% render 'av-media', image: product.featured_image, ratio: '520 / 560', sizes: '(min-width: 1100px) 520px, (min-width: 900px) 50vw, 100vw' %}</a>
+  <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">{% render 'av-media', image: product.featured_image, alt_image: product.images[1], ratio: '520 / 560', sizes: '(min-width: 1100px) 520px, (min-width: 900px) 50vw, 100vw' %}</a>
   <div class="av-row__story">
     <div class="av-stack" style="gap:8px">
       <div class="av-label">{% if mf.numeral.value != blank %}No. {{ mf.numeral.value | escape }}{% if mf.tier.value != blank %} · {% endif %}{% endif %}{% if mf.tier.value != blank %}{{ mf.tier.value | capitalize | escape }}{% endif %}</div>
@@ -29,6 +29,7 @@
   </div>
   <div class="av-row__notes">
     <div class="av-price">{{ product.price | money }}</div>
+    {%- if settings.av_tax_line != blank -%}<div class="av-label av-price__note">{{ settings.av_tax_line | escape }}</div>{%- endif -%}
     {%- if edition_total > 0 -%}
     <div class="av-row__note"><div class="av-label">Edition</div><div class="av-body av-body--s">{% render 'av-edition-line', product: product, context: 'row' %}</div></div>
     {%- endif -%}
