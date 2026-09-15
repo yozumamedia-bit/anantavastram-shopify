@@ -22,7 +22,7 @@ Admin paths are for the current Shopify admin (September 2026). `[brackets]` in 
 | `ensemble_image` | File (image) | large image on Collections |
 | `collection` | Collection reference | the drop's Shopify collection |
 
-**Handle rule — required.** Each drop entry's handle must be `drop-` plus its number padded to three digits: `drop-001`, `drop-002`, … `drop-050`. The theme finds drops newest-first by handle; an entry with any other handle is invisible. Rules the pages rely on:
+**Ordering.** Drops are ordered by their `number` field, highest first — the handle does not matter. Give every drop a number. Rules the pages rely on:
 - The newest drop with status `current` is the large band on Collections and is always shown first. If more than one is `current`, the newest wins and the others show as past drops.
 - `open` = past drop still selling; `closed` = past drop kept as a record. A drop with no stock left shows "Closed" regardless.
 - A drop whose collection is empty is hidden.
@@ -116,7 +116,7 @@ For every numbered piece:
 | About | `about` | `page.about` |
 | Gallery | `gallery` | `page.gallery` |
 | Exclusive | `exclusive` | `page.exclusive` |
-| Contact (footer "Write to us") | `contact` | `page.contact` — optional; without it the footer links to the store email |
+| Contact (footer "Write to us") | `contact` | `page.contact` — Shopify creates this page by default; it already uses this template. Paste the Google Calendar appointment link into the enquiry section's **Booking link** in the theme editor |
 | Care | `care` | default — optional, appears in footer when it exists |
 | Size and measure | `size-and-measure` | default — optional |
 | Visit the unit | `visit-the-unit` | default — optional |

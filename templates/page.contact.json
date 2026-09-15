@@ -1,25 +1,26 @@
 {
   "sections": {
-    "main": {
-      "type": "main-page",
+    "intro": {
+      "type": "av-page-intro",
       "settings": {
-        "padding_top": 36,
-        "padding_bottom": 36
+        "label": "Contact",
+        "statement": "Write to the house.",
+        "text": "<p>For a piece made to order, a question about a drop, an order already placed, or a visit to the unit. Kamalam reads every message herself.</p>",
+        "open": true
       }
     },
-    "form": {
-      "type": "contact-form",
+    "enquiry": {
+      "type": "av-enquiry",
       "settings": {
-        "heading": "",
-        "heading_size": "h1",
-        "color_scheme": "background-1",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "label": "Write",
+        "heading": "Write to Kamalam",
+        "text": "Tell us the occasion, the date, where you are and who will wear the piece — and anything you already have in mind. Or book a call, or send the same on WhatsApp.",
+        "subject": "Contact enquiry",
+        "reply_line": "Kamalam replies within [n] days",
+        "calendar_label": "Book a call with Kamalam",
+        "calendar_note": "[20] minutes · Tamil or English"
       }
     }
   },
-  "order": [
-    "main",
-    "form"
-  ]
+  "order": ["intro", "enquiry"]
 }

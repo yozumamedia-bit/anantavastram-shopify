@@ -1,38 +1,52 @@
 {%- comment -%}
-  Drop ordering rule (the one place it is documented): every drop metaobject has handle
-  drop-NNN (three digits = its number). Sorting metaobjects by field is unreliable in Liquid,
-  so we walk the handle range newest-first and skip blanks. av-drop-rows uses the same loop.
-  Two passes so the current drop always renders first regardless of its number: pass 1 finds
-  the (single) current drop and renders it; pass 2 renders every other drop, newest first,
-  under "Past drops".
+  Drop ordering rule (the one place it is documented): drops are ordered by their `number` field, highest first.
+  Handles do not matter. Liquid cannot sort metaobjects by a field, so each pass scans the entries for the highest
+  number not yet rendered (at most 50 entries, so the cost is trivial). av-drop-rows uses the same scan.
+  The current drop (highest-numbered entry with status `current`) always renders first; every other drop with a
+  non-empty collection follows under "Past drops".
 {%- endcomment -%}
 {%- liquid
   assign found = 0
-  assign current_h = ''
+  assign done = ''
+  assign current = nil
+  assign current_n = -1
+  for d in shop.metaobjects.drop.values
+    if d.status.value == 'current' and d.collection.value != blank and d.collection.value.products_count > 0
+      assign dn = d.number.value | plus: 0
+      if dn > current_n
+        assign current = d
+        assign current_n = dn
+      endif
+    endif
+  endfor
 -%}
-{%- for i in (1..50) reversed -%}
+{%- if current != blank -%}
   {%- liquid
-    assign h = i | prepend: '00' | slice: -3, 3 | prepend: 'drop-'
-    assign d = shop.metaobjects.drop[h]
+    assign found = found | plus: 1
+    assign done = done | append: '|' | append: current.system.id | append: '|'
   -%}
-  {%- if d != blank and d.status.value == 'current' and d.collection.value != blank and d.collection.value.products_count > 0 -%}
-    {%- assign current_h = h -%}
-    {%- assign found = found | plus: 1 -%}
-    {% render 'av-drop-band', drop: d, mode: 'current' %}
-    {%- break -%}
-  {%- endif -%}
-{%- endfor -%}
+  {% render 'av-drop-band', drop: current, mode: 'current' %}
+{%- endif -%}
 {%- assign past_head_done = false -%}
-{%- for i in (1..50) reversed -%}
+{%- for k in (1..50) -%}
   {%- liquid
-    assign h = i | prepend: '00' | slice: -3, 3 | prepend: 'drop-'
-    if h == current_h
-      continue
+    assign pick = nil
+    assign pick_n = -1
+    for d in shop.metaobjects.drop.values
+      assign key = '|' | append: d.system.id | append: '|'
+      if done contains key or d.collection.value == blank or d.collection.value.products_count == 0
+        continue
+      endif
+      assign dn = d.number.value | plus: 0
+      if dn > pick_n
+        assign pick = d
+        assign pick_n = dn
+      endif
+    endfor
+    if pick == blank
+      break
     endif
-    assign d = shop.metaobjects.drop[h]
-    if d == blank or d.collection.value == blank or d.collection.value.products_count == 0
-      continue
-    endif
+    assign done = done | append: '|' | append: pick.system.id | append: '|'
     assign found = found | plus: 1
   -%}
   {%- unless past_head_done -%}
@@ -42,7 +56,7 @@
     </div>
     {%- assign past_head_done = true -%}
   {%- endunless -%}
-  {% render 'av-drop-band', drop: d, mode: 'past' %}
+  {% render 'av-drop-band', drop: pick, mode: 'past' %}
 {%- endfor -%}
 {%- if found == 0 -%}<div class="av-wrap av-section av-body">No drops yet.</div>{%- endif -%}
 {% schema %}

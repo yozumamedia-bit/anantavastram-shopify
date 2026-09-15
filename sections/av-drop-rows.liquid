@@ -1,19 +1,29 @@
+{%- comment -%} Automatic pick: the Nth highest-numbered drop that is not closed and has pieces (same scan as av-drop-index). {%- endcomment -%}
 {%- liquid
   assign drop = section.settings.drop
   if drop == blank
     assign want = section.settings.auto_index
-    assign seen = 0
-    for i in (1..50) reversed
-      assign h = i | prepend: '00' | slice: -3, 3 | prepend: 'drop-'
-      assign d = shop.metaobjects.drop[h]
-      if d == blank or d.status.value == 'closed' or d.collection.value == blank or d.collection.value.products_count == 0
-        continue
-      endif
-      assign seen = seen | plus: 1
-      if seen == want
-        assign drop = d
+    assign done = ''
+    for k in (1..want)
+      assign pick = nil
+      assign pick_n = -1
+      for d in shop.metaobjects.drop.values
+        assign key = '|' | append: d.system.id | append: '|'
+        if done contains key or d.status.value == 'closed' or d.collection.value == blank or d.collection.value.products_count == 0
+          continue
+        endif
+        assign dn = d.number.value | plus: 0
+        if dn > pick_n
+          assign pick = d
+          assign pick_n = dn
+        endif
+      endfor
+      if pick == blank
+        assign drop = nil
         break
       endif
+      assign done = done | append: '|' | append: pick.system.id | append: '|'
+      assign drop = pick
     endfor
   endif
 -%}
