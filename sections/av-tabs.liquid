@@ -1,19 +1,28 @@
 {%- liquid
-  assign count = blog.articles_count
+  paginate blog.articles by 7
+    assign count = paginate.items
+  endpaginate
+  assign active_tag = current_tags.first | handleize
+  assign featured_shown = false
+  if blog.articles_count > 0 and current_tags == blank and current_page == 1
+    assign featured_shown = true
+  endif
 -%}
 <div class="av-tabs">
-  <h1 class="visually-hidden">{{ blog.title | escape }}{% if current_tags %} — {{ current_tags.first | replace: '-', ' ' | capitalize | escape }}{% endif %}</h1>
+  {%- unless featured_shown -%}
+  <h1 class="visually-hidden">{{ blog.title | escape }}{% if current_tags != blank %} — {{ current_tags.first | replace: '-', ' ' | capitalize | escape }}{% endif %}</h1>
+  {%- endunless -%}
   <nav class="av-tabs__list" aria-label="Story sections">
     <a href="{{ blog.url }}"{% if current_tags == blank %} class="is-active" aria-current="page"{% endif %}>All</a>
     {%- for block in section.blocks -%}
       {%- assign tag_handle = block.settings.tag | handleize -%}
       {%- if tag_handle != blank -%}
-        <a href="{{ blog.url }}/tagged/{{ tag_handle }}"{% if current_tags contains tag_handle %} class="is-active" aria-current="page"{% endif %} {{ block.shopify_attributes }}>{{ block.settings.label | default: block.settings.tag | escape }}</a>
+        <a href="{{ blog.url }}/tagged/{{ tag_handle }}"{% if tag_handle == active_tag %} class="is-active" aria-current="page"{% endif %} {{ block.shopify_attributes }}>{{ block.settings.label | default: block.settings.tag | escape }}</a>
       {%- endif -%}
     {%- endfor -%}
   </nav>
   <span class="av-label">{% if count == 1 %}1 story{% else %}{{ count }} stories{% endif %}</span>
 </div>
 {% schema %}
-{ "name": "AV Story tabs", "settings": [], "blocks": [ { "type": "tab", "name": "Tab", "settings": [ { "type": "text", "id": "label", "label": "Label", "default": "[Section]" }, { "type": "text", "id": "tag", "label": "Article tag (handle, e.g. motifs-and-design)", "default": "[tag]" } ] } ] }
+{ "name": "AV Story tabs", "settings": [], "blocks": [ { "type": "tab", "name": "Tab", "settings": [ { "type": "text", "id": "label", "label": "Label", "default": "[Section]" }, { "type": "text", "id": "tag", "label": "Article tag (handle, e.g. motifs-and-design)" } ] } ] }
 {% endschema %}

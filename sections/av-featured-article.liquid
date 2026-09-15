@@ -1,8 +1,14 @@
+{%- comment -%}
+  The featured story is chosen once, on the blog itself: blog metafield av.featured_article (article reference).
+  av-posts and av-earlier read the same metafield so the three sections never disagree. Default: newest article.
+  When this section renders it owns the page h1 (visually hidden); av-tabs renders it otherwise.
+{%- endcomment -%}
 {%- liquid
-  assign article = section.settings.article | default: blog.articles.first
+  assign article = blog.metafields.av.featured_article.value | default: blog.articles.first
 -%}
 {%- if article != blank and current_tags == blank and current_page == 1 -%}
 <section class="av-featured">
+  <h1 class="visually-hidden">{{ blog.title | escape }}</h1>
   <a href="{{ article.url }}" tabindex="-1" aria-hidden="true">{% render 'av-media', image: article.image, ratio: '1440 / 760', sizes: '100vw', loading: 'eager', alt: '' %}</a>
   <div class="av-featured__text">
     <div class="av-stack" style="gap:20px">
@@ -10,12 +16,12 @@
       <h2 class="av-statement av-statement--l"><a href="{{ article.url }}">{{ article.title | escape }}</a></h2>
     </div>
     <div class="av-stack">
-      <div class="av-body">{{ article.excerpt_or_content | strip_html | truncatewords: 45 }}</div>
+      <div class="av-body">{{ article.excerpt_or_content | replace: '</p>', ' </p>' | strip_html | truncatewords: 45, '…' }}</div>
       <a class="av-link" href="{{ article.url }}">Read the story</a>
     </div>
   </div>
 </section>
 {%- endif -%}
 {% schema %}
-{ "name": "AV Featured story", "settings": [ { "type": "article", "id": "article", "label": "Featured article (default: newest)" } ] }
+{ "name": "AV Featured story", "settings": [] }
 {% endschema %}

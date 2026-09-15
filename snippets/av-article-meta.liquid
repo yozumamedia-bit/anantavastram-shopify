@@ -1,10 +1,10 @@
 {%- comment -%} Tag · date · read time line for an article. Usage: {% render 'av-article-meta', article: article, date_format: '%B %Y' %} {%- endcomment -%}
 {%- liquid
   assign fmt = date_format | default: '%B %Y'
-  assign read_time = article.metafields.av.read_time.value | default: 0
+  assign read_time = article.metafields.av.read_time.value | plus: 0
 -%}
 <div class="av-meta">
   {%- if article.tags.size > 0 -%}<span class="av-label av-label--red">{{ article.tags.first | replace: '-', ' ' | capitalize | escape }}</span>{%- endif -%}
-  <span class="av-label">{{ article.published_at | date: fmt }}</span>
+  <time class="av-label" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: fmt }}</time>
   {%- if read_time > 0 -%}<span class="av-label">{{ read_time }} min</span>{%- endif -%}
 </div>
