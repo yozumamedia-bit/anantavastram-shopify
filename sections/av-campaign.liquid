@@ -2,10 +2,19 @@
   assign c = section.settings.campaign
   assign imgs = c.images.value
   assign n = imgs.size | default: 0
+  assign has_film = false
+  if c.film.value.media_type == 'video'
+    assign has_film = true
+  endif
+  assign has_archive = false
+  if section.settings.archive_label != blank and section.settings.archive_url != blank
+    assign has_archive = true
+  endif
 -%}
-{%- if c != blank -%}
-<section class="av-campaign av-reveal{% if section.index > 1 %} av-campaign--next{% endif %}">
-  {%- if section.index == 1 -%}<h1 class="visually-hidden">{{ page.title | escape }}</h1>{%- endif -%}
+{%- if section.settings.page_heading -%}<h1 class="visually-hidden">{{ page.title | default: 'Gallery' | escape }}</h1>{%- endif -%}
+{%- if c != blank or has_archive -%}
+<section class="av-campaign av-reveal">
+  {%- if c != blank -%}
   {%- if n > 0 -%}
   <div class="av-campaign__lead">
     {% render 'av-media', image: imgs[0], ratio: '920 / 900', sizes: '(min-width: 900px) 66vw, 100vw' %}
@@ -35,17 +44,22 @@
     {%- for img in imgs offset: 3 limit: 3 -%}{% render 'av-media', image: img, ratio: '4 / 5', sizes: '(min-width: 900px) 33vw, 100vw' %}{%- endfor -%}
   </div>
   {%- endif -%}
-  {%- if n > 6 or c.film.value != blank -%}
-  <div class="av-grid av-grid--4-8">
-    {%- if n > 6 -%}{% render 'av-media', image: imgs[6], ratio: '480 / 520', sizes: '(min-width: 900px) 33vw, 100vw' %}{%- endif -%}
-    {%- if c.film.value != blank -%}
+  {%- if n > 6 or has_film -%}
+  {%- comment -%} Closing row: narrow image + wide film/image. A lone item spans the row (CSS :only-child). {%- endcomment -%}
+  <div class="av-grid av-grid--4-8 av-campaign__close">
+    {%- if has_film -%}
+      {%- if n > 6 -%}{% render 'av-media', image: imgs[6], ratio: '480 / 520', sizes: '(min-width: 900px) 33vw, 100vw' %}{%- endif -%}
       {% render 'av-video', loop_video: c.film.value, poster: imgs[7] %}
     {%- elsif n > 7 -%}
+      {% render 'av-media', image: imgs[6], ratio: '480 / 520', sizes: '(min-width: 900px) 33vw, 100vw' %}
       {% render 'av-media', image: imgs[7], ratio: '920 / 520', sizes: '(min-width: 900px) 66vw, 100vw' %}
+    {%- else -%}
+      {% render 'av-media', image: imgs[6], ratio: '1400 / 700', sizes: '100vw' %}
     {%- endif -%}
   </div>
   {%- endif -%}
-  {%- if section.settings.archive_label != blank and section.settings.archive_url != blank -%}
+  {%- endif -%}
+  {%- if has_archive -%}
   <div class="av-campaign__archive"><h2 class="av-sub av-sub--s">Earlier campaigns</h2><a class="av-link" href="{{ section.settings.archive_url }}">{{ section.settings.archive_label | escape }}</a></div>
   {%- endif -%}
 </section>
@@ -54,6 +68,7 @@
 { "name": "AV Campaign", "settings": [
   { "type": "metaobject", "metaobject_type": "campaign", "id": "campaign", "label": "Campaign" },
   { "type": "text", "id": "label", "label": "Label", "default": "Campaign 001" },
+  { "type": "checkbox", "id": "page_heading", "label": "Carries the page heading (first campaign only)", "default": false },
   { "type": "text", "id": "archive_label", "label": "Archive link label (last campaign only)" },
   { "type": "url", "id": "archive_url", "label": "Archive URL" }
 ], "presets": [{ "name": "AV Campaign" }] }

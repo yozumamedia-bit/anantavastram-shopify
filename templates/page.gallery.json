@@ -3,7 +3,8 @@
     "c1": {
       "type": "av-campaign",
       "settings": {
-        "label": "Campaign 001"
+        "label": "Campaign 001",
+        "page_heading": true
       }
     },
     "c2": {

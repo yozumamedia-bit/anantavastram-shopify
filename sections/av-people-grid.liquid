@@ -37,7 +37,7 @@
         endif
       -%}
       <div class="av-person" {{ block.shopify_attributes }}>
-        {% render 'av-media', image: w.portrait.value, ratio: '1 / 1.2', sizes: '(min-width: 900px) 25vw, 100vw', alt: w.name.value %}
+        {% render 'av-media', image: w.portrait.value, ratio: '1 / 1.2', sizes: '(min-width: 900px) 25vw, 100vw', alt: '' %}
         <h3 class="av-sub av-sub--xs">{{ w.name.value | escape }}</h3>
         {%- if line != blank -%}<div class="av-label">{{ line | escape }}</div>{%- endif -%}
       </div>

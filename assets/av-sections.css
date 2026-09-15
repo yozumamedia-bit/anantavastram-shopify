@@ -145,7 +145,8 @@
 
 /* av-campaign (gallery) */
 .av-campaign { padding: 24px var(--av-gutter) var(--av-section); display: flex; flex-direction: column; gap: 24px; border-bottom: 1px solid var(--av-grey-3); }
-.av-campaign--next { padding-top: 96px; }
+.shopify-section:has(> .av-campaign) ~ .shopify-section > .av-campaign { padding-top: 96px; }
+.av-campaign__close > :only-child { grid-column: 1 / -1; }
 .av-campaign__archive { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding-top: 40px; border-top: 1px solid var(--av-kumkum); }
 .av-campaign__head { display: grid; grid-template-columns: 5fr 7fr; gap: 64px; align-items: start; padding: 24px 0 16px; }
 .av-credits { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--av-grey-3); padding-top: 18px; }
