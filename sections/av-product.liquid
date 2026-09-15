@@ -37,10 +37,21 @@
   if mf.yarn.value != blank or mf.dye.value != blank or mf.motif_name_ta.value != blank or mf.motif_name_en.value != blank or loom_hours > 0
     assign has_materials = true
   endif
+  comment
+    Sold-out uses variant.available, which assumes "continue selling when out of stock" is OFF (docs/setup.md);
+    tiles, rows and av-edition-line key on inventory_quantity and agree under that rule.
+  endcomment
+  assign renderable_media = 0
+  for m in product.media
+    if m.media_type == 'image' or m.media_type == 'video'
+      assign renderable_media = renderable_media | plus: 1
+    endif
+  endfor
 -%}
+<script type="application/ld+json">{{ product | structured_data }}</script>
 <section class="av-product">
   <div class="av-product__media">
-    {%- if product.media.size == 0 -%}
+    {%- if renderable_media == 0 -%}
       {% render 'av-media', ratio: '4 / 5', sizes: '(min-width: 900px) 58vw, 85vw' %}
     {%- endif -%}
     {%- for media in product.media -%}
@@ -79,11 +90,11 @@
           <input type="hidden" name="contact[product]" value="{{ product.handle }}">
           <input type="hidden" name="contact[subject]" value="Notify me: {{ product.title | escape }}">
           {%- if form.posted_successfully? -%}
-            <div class="av-body av-body--s">Noted. If a number comes back, you hear first.</div>
+            <div class="av-body av-body--s" role="status">Noted. If a number comes back, you hear first.</div>
           {%- else -%}
             <label class="av-label" for="av-notify-email">Notify me if a number comes back</label>
-            <input id="av-notify-email" type="email" name="contact[email]" value="{{ form.email }}" placeholder="Your email" autocomplete="email" required{% if form.errors %} aria-invalid="true" aria-describedby="av-notify-err"{% endif %}>
-            {%- if form.errors -%}<div id="av-notify-err" class="av-body av-body--s">{{ form.errors | default_errors }}</div>{%- endif -%}
+            <input id="av-notify-email" type="email" name="contact[email]" value="{{ form.email | escape }}" placeholder="Your email" autocomplete="email" required{% if form.errors %} aria-invalid="true" aria-describedby="av-notify-err"{% endif %}>
+            {%- if form.errors -%}<div id="av-notify-err" class="av-body av-body--s" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
             <button class="av-button" type="submit">Notify me</button>
           {%- endif -%}
         {%- endform -%}
@@ -93,7 +104,7 @@
           {%- form 'product', product, id: form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
             <input type="hidden" name="id" value="{{ v.id }}" disabled class="product-variant-id">
             <input type="hidden" name="quantity" value="1">
-            <button id="ProductSubmitButton-{{ section.id }}" type="submit" name="add" class="av-button product-form__submit"><span>Order this piece</span><div class="loading-overlay__spinner hidden"></div></button>
+            <button id="ProductSubmitButton-{{ section.id }}" type="submit" name="add" class="av-button product-form__submit"><span>Order this piece</span><span class="loading-overlay__spinner hidden"></span></button>
           {%- endform -%}
         </product-form>
       {%- endif -%}

@@ -2,5 +2,5 @@
 {%- if settings.av_whatsapp_number != blank -%}
   {%- assign number = settings.av_whatsapp_number | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' | remove: '.' -%}
   {%- assign msg = text | default: 'Hello Ananta Vastram' | url_encode | replace: '+', '%20' -%}
-  <a class="{{ class | default: 'av-link' }}" href="https://wa.me/{{ number }}?text={{ msg }}" target="_blank" rel="noopener">{{ label | default: 'WhatsApp' | escape }}</a>
+  <a class="{{ class | default: 'av-link' }}" href="https://wa.me/{{ number }}?text={{ msg }}" target="_blank" rel="noopener" aria-describedby="a11y-new-window-message">{{ label | default: 'WhatsApp' | escape }}</a>
 {%- endif -%}
