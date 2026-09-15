@@ -75,7 +75,7 @@ Menus: `main-menu` is not used. Header and footer link groups are `link_list` se
 
 ## 4. Forms and integrations
 
-- Exclusive enquiry: `{% form 'contact' %}` with fields name, email, phone, occasion, date, city, language, notes. Arrives as store email. WhatsApp link beside the submit.
+- Exclusive enquiry: `{% form 'contact' %}` with fields name, email, phone, occasion, date, city, language, notes. Arrives as store email. Phone is optional; the reply-time sentence is one editable text setting. WhatsApp link ("WhatsApp · number") sits in the section's intro column, as on the artboard.
 - Newsletter (footer and Stories line): `{% form 'customer' %}` with `contact[tags] = newsletter`.
 - Notify-me: `{% form 'contact' %}` with hidden `product` field carrying the handle. A back-in-stock app can replace it later.
 - WhatsApp: `https://wa.me/<number>?text=<prefilled>` from `av_whatsapp_number`; product pages pre-fill the piece name and URL.

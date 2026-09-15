@@ -20,7 +20,7 @@
 </section>
 {%- endif -%}
 {% schema %}
-{ "name": "AV Red band", "settings": [
+{ "name": "AV Red band", "max_blocks": 12, "settings": [
   { "type": "select", "id": "mode", "label": "Layout", "options": [ { "value": "grid", "label": "Grid of terms" }, { "value": "list", "label": "Numbered list" } ], "default": "grid" },
   { "type": "text", "id": "label", "label": "Label", "default": "Terms" },
   { "type": "text", "id": "numeral", "label": "Chapter numeral (About IV) — replaces label" },
