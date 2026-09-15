@@ -1,0 +1,143 @@
+{%- liquid
+  assign mf = product.metafields.av
+  assign weaver = mf.weaver.value
+  assign drop = mf.drop.value
+  assign v = product.selected_or_first_available_variant | default: product.variants.first
+  assign sold_out = false
+  if v.available == false
+    assign sold_out = true
+  endif
+  assign form_id = 'product-form-' | append: section.id
+  assign edition_total = mf.edition_total.value | default: 0
+  assign lead_weeks = mf.lead_time_weeks.value | default: 0
+  assign loom_hours = mf.loom_hours.value | default: 0
+  assign padded = ''
+  if drop != blank
+    assign padded = drop.number.value | prepend: '00' | slice: -3, 3
+  endif
+  assign label = ''
+  if padded != blank
+    assign label = 'Drop ' | append: padded
+  endif
+  if mf.numeral.value != blank
+    if label != blank
+      assign label = label | append: ' · '
+    endif
+    assign label = label | append: 'No. ' | append: mf.numeral.value
+  endif
+  if mf.tier.value != blank
+    if label != blank
+      assign label = label | append: ' · '
+    endif
+    assign tier_cap = mf.tier.value | capitalize
+    assign label = label | append: tier_cap
+  endif
+  assign wa_text = 'About ' | append: product.title | append: ' — ' | append: shop.url | append: product.url
+  assign has_materials = false
+  if mf.yarn.value != blank or mf.dye.value != blank or mf.motif_name_ta.value != blank or mf.motif_name_en.value != blank or loom_hours > 0
+    assign has_materials = true
+  endif
+-%}
+<section class="av-product">
+  <div class="av-product__media">
+    {%- if product.media.size == 0 -%}
+      {% render 'av-media', ratio: '4 / 5', sizes: '(min-width: 900px) 58vw, 85vw' %}
+    {%- endif -%}
+    {%- for media in product.media -%}
+      {%- liquid
+        assign loading_attr = 'lazy'
+        if forloop.first
+          assign loading_attr = 'eager'
+        endif
+      -%}
+      {%- if media.media_type == 'image' -%}
+        {% render 'av-media', image: media, ratio: '4 / 5', sizes: '(min-width: 900px) 58vw, 85vw', loading: loading_attr %}
+      {%- elsif media.media_type == 'video' -%}
+        {% render 'av-video', loop_video: media, class: 'av-product__video' %}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  <div class="av-product__panel">
+    <div class="av-product__title">
+      {%- if label != blank -%}<div class="av-label">{{ label | escape }}</div>{%- endif -%}
+      <h1 class="av-name">{{ product.title | escape }}</h1>
+      <div class="av-price">{{ v.price | money }}</div>
+    </div>
+    {%- if product.description != blank -%}<div class="av-body av-body--s">{{ product.description }}</div>{%- endif -%}
+
+    <div class="av-product__notes">
+      {%- if edition_total > 0 -%}
+      <div class="av-row__note"><div class="av-label">Edition</div><div class="av-body av-body--s">{% render 'av-edition-line', product: product, context: 'page' %}</div></div>
+      {%- endif -%}
+      <div class="av-row__note"><div class="av-label">Availability</div><div class="av-body av-body--s">{% if sold_out %}This number is placed.{% else %}Made to order.{% if lead_weeks > 0 %} {{ lead_weeks }} {% if lead_weeks == 1 %}week{% else %}weeks{% endif %} from confirmation.{% endif %}{% endif %}</div></div>
+    </div>
+
+    <div class="av-product__actions">
+      {%- if sold_out -%}
+        {%- form 'contact', id: 'av-notify', class: 'av-notify' -%}
+          <input type="hidden" name="contact[product]" value="{{ product.handle }}">
+          <input type="hidden" name="contact[subject]" value="Notify me: {{ product.title | escape }}">
+          {%- if form.posted_successfully? -%}
+            <div class="av-body av-body--s">Noted. If a number comes back, you hear first.</div>
+          {%- else -%}
+            <label class="av-label" for="av-notify-email">Notify me if a number comes back</label>
+            <input id="av-notify-email" type="email" name="contact[email]" value="{{ form.email }}" placeholder="Your email" autocomplete="email" required{% if form.errors %} aria-invalid="true" aria-describedby="av-notify-err"{% endif %}>
+            {%- if form.errors -%}<div id="av-notify-err" class="av-body av-body--s">{{ form.errors | default_errors }}</div>{%- endif -%}
+            <button class="av-button" type="submit">Notify me</button>
+          {%- endif -%}
+        {%- endform -%}
+      {%- else -%}
+        <product-form class="product-form">
+          <div class="product-form__error-message-wrapper" role="alert" hidden><span class="product-form__error-message"></span></div>
+          {%- form 'product', product, id: form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+            <input type="hidden" name="id" value="{{ v.id }}" disabled class="product-variant-id">
+            <input type="hidden" name="quantity" value="1">
+            <button id="ProductSubmitButton-{{ section.id }}" type="submit" name="add" class="av-button product-form__submit"><span>Order this piece</span><div class="loading-overlay__spinner hidden"></div></button>
+          {%- endform -%}
+        </product-form>
+      {%- endif -%}
+      {% render 'av-whatsapp-link', label: 'Ask on WhatsApp', text: wa_text %}
+    </div>
+
+    <div class="av-product__accordions">
+      {%- if mf.how_made.value != blank or weaver != blank -%}
+      <details class="av-acc"><summary><h2 class="av-acc__title">How it is made</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{% if weaver != blank %}Woven by {{ weaver.name.value | escape }}{% if weaver.unit.value != blank %} at {{ weaver.unit.value | escape }}{% endif %}. {% endif %}{{ mf.how_made.value | escape | newline_to_br }}</div></details>
+      {%- endif -%}
+      {%- if has_materials -%}
+      <details class="av-acc"><summary><h2 class="av-acc__title">Materials and motif</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">
+        {%- if mf.yarn.value != blank -%}<p>Yarn: {{ mf.yarn.value | escape }}</p>{%- endif -%}
+        {%- if mf.dye.value != blank -%}<p>Dye: {{ mf.dye.value | escape }}</p>{%- endif -%}
+        {%- if mf.motif_name_ta.value != blank and mf.motif_name_en.value != blank -%}<p>Motif: {{ mf.motif_name_ta.value | escape }} — {{ mf.motif_name_en.value | escape }}</p>{%- elsif mf.motif_name_ta.value != blank -%}<p>Motif: {{ mf.motif_name_ta.value | escape }}</p>{%- elsif mf.motif_name_en.value != blank -%}<p>Motif: {{ mf.motif_name_en.value | escape }}</p>{%- endif -%}
+        {%- if loom_hours > 0 -%}<p>About {{ loom_hours }} {% if loom_hours == 1 %}hour{% else %}hours{% endif %} at the loom.</p>{%- endif -%}
+      </div></details>
+      {%- endif -%}
+      {%- if section.settings.shipping != blank -%}
+      <details class="av-acc"><summary><h2 class="av-acc__title">Shipping</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{{ section.settings.shipping }}</div></details>
+      {%- elsif settings.av_shipping_line != blank -%}
+      <details class="av-acc"><summary><h2 class="av-acc__title">Shipping</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{{ settings.av_shipping_line | escape }}</div></details>
+      {%- endif -%}
+      {%- if mf.care.value != blank -%}
+      <details class="av-acc"><summary><h2 class="av-acc__title">Care</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{{ mf.care.value | escape | newline_to_br }}</div></details>
+      {%- elsif section.settings.care != blank -%}
+      <details class="av-acc"><summary><h2 class="av-acc__title">Care</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{{ section.settings.care }}</div></details>
+      {%- endif -%}
+    </div>
+
+    {%- if weaver != blank or drop != blank or edition_total > 0 or mf.kara_colour.value != blank -%}
+    <div class="av-facts">
+      {%- if weaver != blank -%}<div class="av-fact"><div class="av-label">Woven by</div><div class="av-body av-body--s">{{ weaver.name.value | escape }}{% if weaver.unit.value != blank %} · {{ weaver.unit.value | escape }}{% endif %}</div></div>{%- endif -%}
+      {%- if drop != blank -%}<div class="av-fact"><div class="av-label">Drop</div><div class="av-body av-body--s">{% if drop.collection.value != blank %}<a href="{{ drop.collection.value.url }}">{% endif %}{{ padded }}{% if drop.theme_name.value != blank %} · {{ drop.theme_name.value | escape }}{% endif %}{% if drop.collection.value != blank %}</a>{% endif %}</div></div>{%- endif -%}
+      {%- if edition_total > 0 -%}<div class="av-fact"><div class="av-label">Edition</div><div class="av-body av-body--s">{{ edition_total }} {% if edition_total == 1 %}piece{% else %}pieces{% endif %}</div></div>{%- endif -%}
+      {%- if mf.kara_colour.value != blank -%}<div class="av-fact"><div class="av-label">Kara</div><div class="av-body av-body--s">{{ mf.kara_colour.value | escape }}</div></div>{%- endif -%}
+    </div>
+    {%- endif -%}
+  </div>
+</section>
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+{% schema %}
+{ "name": "AV Product", "settings": [
+  { "type": "richtext", "id": "shipping", "label": "Shipping text (overrides theme setting)" },
+  { "type": "richtext", "id": "care", "label": "Default care text", "default": "<p>[Care instructions — wash, dry, store]</p>" }
+] }
+{% endschema %}
