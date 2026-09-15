@@ -1,0 +1,28 @@
+{%- liquid
+  assign usable = 0
+  for block in section.blocks
+    if block.settings.loop != blank or block.settings.poster != blank
+      assign usable = usable | plus: 1
+    endif
+  endfor
+-%}
+{%- if usable > 0 -%}
+<section class="av-video-pair av-reveal">
+  {%- for block in section.blocks -%}
+    {%- if block.settings.loop != blank or block.settings.poster != blank -%}
+    <div class="av-stack" style="gap:14px" {{ block.shopify_attributes }}>
+      {% render 'av-video', loop_video: block.settings.loop, poster: block.settings.poster %}
+      {%- if block.settings.caption != blank -%}<div class="av-label">{{ block.settings.caption | escape }}</div>{%- endif -%}
+    </div>
+    {%- endif -%}
+  {%- endfor -%}
+</section>
+{%- endif -%}
+{% schema %}
+{ "name": "AV Video pair", "max_blocks": 2, "settings": [], "blocks": [ { "type": "clip", "name": "Clip", "settings": [
+  { "type": "video", "id": "loop", "label": "Silent loop" },
+  { "type": "image_picker", "id": "poster", "label": "Poster" },
+  { "type": "text", "id": "caption", "label": "Caption", "default": "Archive · [caption]" }
+] } ],
+"presets": [ { "name": "AV Video pair", "blocks": [ { "type": "clip", "settings": { "caption": "Archive · the shuttle, one pass" } }, { "type": "clip", "settings": { "caption": "Archive · the kara, in gold" } } ] } ] }
+{% endschema %}

@@ -1,0 +1,31 @@
+<section class="av-chapter av-chapter--split av-reveal">
+  {% render 'av-media', image: section.settings.portrait, ratio: '600 / 880', sizes: '(min-width: 900px) 42vw, 100vw', alt: section.settings.title %}
+  <div class="av-chapter__text">
+    <div class="av-stack" style="gap:12px">
+      {%- if section.settings.numeral != blank -%}<div class="av-numeral">{{ section.settings.numeral | escape }}</div>{%- endif -%}
+      <h2 class="av-sub av-sub--m">{{ section.settings.title | escape }}</h2>
+      {%- if section.settings.role != blank -%}<div class="av-label">{{ section.settings.role | escape }}</div>{%- endif -%}
+    </div>
+    {%- if section.settings.quote != blank -%}<blockquote class="av-quote">“{{ section.settings.quote | escape | newline_to_br }}”</blockquote>{%- endif -%}
+    {%- if section.settings.text != blank -%}<div class="av-body">{{ section.settings.text }}</div>{%- endif -%}
+    {%- if section.settings.film != blank -%}
+    <div class="av-stack" style="gap:12px;margin-top:12px">
+      {% render 'av-video', film: section.settings.film, poster: section.settings.poster %}
+      {%- if section.settings.video_caption != blank -%}<div class="av-label">{{ section.settings.video_caption | escape }}</div>{%- endif -%}
+    </div>
+    {%- endif -%}
+  </div>
+</section>
+{% schema %}
+{ "name": "AV Chapter split", "settings": [
+  { "type": "image_picker", "id": "portrait", "label": "Portrait" },
+  { "type": "text", "id": "numeral", "label": "Numeral", "default": "II" },
+  { "type": "text", "id": "title", "label": "Name", "default": "Kamalam Moorthy" },
+  { "type": "text", "id": "role", "label": "Role line", "default": "Chief designer · Head of production · Weaver" },
+  { "type": "textarea", "id": "quote", "label": "Pull quote", "default": "[A line from Kamalam, in her words, from the founder interview — about the cloth, not the brand.]" },
+  { "type": "richtext", "id": "text", "label": "Paragraphs", "default": "<p>[Paragraph — who she is, how long she has woven, the unit she runs.]</p><p>[Paragraph — what she will not do.]</p>" },
+  { "type": "video", "id": "film", "label": "Interview video (plays with sound on tap)" },
+  { "type": "image_picker", "id": "poster", "label": "Video poster" },
+  { "type": "text", "id": "video_caption", "label": "Video caption", "default": "In her words · from the founder interview" }
+], "presets": [{ "name": "AV Chapter split" }] }
+{% endschema %}

@@ -1,0 +1,205 @@
+{
+  "sections": {
+    "intro": {
+      "type": "av-page-intro",
+      "settings": {
+        "label": "About the house",
+        "statement": "Cloth without end.",
+        "text": "<p>Ananta means without end. Vastram means cloth. The name is a description of the work: a length of handwoven cloth with no seam, made on a loom that has been running in [town] for [how long], by weavers whose names we print on every piece.</p>",
+        "note": "Ananta Vastram is a menswear house from Tamil Nadu. We make veshtis and the garments worn with them, in numbered editions, to order.",
+        "large_body": true,
+        "open": true
+      }
+    },
+    "place": {
+      "type": "av-full-bleed",
+      "settings": {
+        "left": "[Unit name], [town], Tamil Nadu",
+        "right": "Photograph · [credit]"
+      }
+    },
+    "film": {
+      "type": "av-video-block",
+      "settings": {
+        "title": "The drop film",
+        "meta": "Loom · hands · weaver voice in Tamil, subtitled · plays muted, sound on tap"
+      }
+    },
+    "ch1": {
+      "type": "av-chapter",
+      "settings": {
+        "numeral": "I",
+        "title": "The loom decides first",
+        "text": "<p>[Paragraph — the veshti as a plain length of cloth: width, border, the kara. What is fixed before a thread is thrown, and by whom.]</p><p>[Paragraph — yarn and dye: cotton count or silk grade, the zari, where the dye comes from. What we changed at the loom and what we refused to change.]</p><p>[Paragraph — time: loom hours per piece, why the number is what it is, and why it will not go down.]</p>",
+        "link_label": "The craft, in detail",
+        "link": "shopify://blogs/stories"
+      }
+    },
+    "clips": {
+      "type": "av-video-pair",
+      "blocks": {
+        "a": {
+          "type": "clip",
+          "settings": {
+            "caption": "Archive · the shuttle, one pass"
+          }
+        },
+        "b": {
+          "type": "clip",
+          "settings": {
+            "caption": "Archive · the kara, in gold"
+          }
+        }
+      },
+      "block_order": [
+        "a",
+        "b"
+      ],
+      "settings": {}
+    },
+    "ch2": {
+      "type": "av-chapter-split",
+      "settings": {
+        "numeral": "II",
+        "title": "Kamalam Moorthy",
+        "role": "Chief designer · Head of production · Weaver",
+        "quote": "[A line from Kamalam, in her words, from the founder interview — about the cloth, not the brand.]",
+        "text": "<p>[Paragraph — who she is, how long she has woven, the unit she runs, what she is responsible for on every piece.]</p><p>[Paragraph — what she will not do: no shortcuts on yarn, no unnamed work, no piece she has not passed.]</p>",
+        "video_caption": "In her words · from the founder interview"
+      }
+    },
+    "ch3": {
+      "type": "av-people-grid",
+      "blocks": {
+        "p1": {
+          "type": "person",
+          "settings": {
+            "at_loom": true
+          }
+        },
+        "p2": {
+          "type": "person",
+          "settings": {
+            "at_loom": true
+          }
+        },
+        "p3": {
+          "type": "person",
+          "settings": {
+            "at_loom": true
+          }
+        },
+        "p4": {
+          "type": "person",
+          "settings": {
+            "at_loom": false
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ],
+      "settings": {
+        "numeral": "III",
+        "title": "Every piece carries a name",
+        "text": "The weaver's name is woven into the label and printed on the page. It is not a credit. It is the record of who made the cloth, kept where the buyer can see it."
+      }
+    },
+    "ch4": {
+      "type": "av-band",
+      "blocks": {
+        "i1": {
+          "type": "item",
+          "settings": {
+            "title": "Numbered editions",
+            "text": "Each drop is a fixed, honest count. When the number is reached the piece is finished. It is not re-run."
+          }
+        },
+        "i2": {
+          "type": "item",
+          "settings": {
+            "title": "Made to order",
+            "text": "Nothing sits in a warehouse. A piece is begun when it is asked for, and you are told how long it will take."
+          }
+        },
+        "i3": {
+          "type": "item",
+          "settings": {
+            "title": "Worn by real people",
+            "text": "There are no models. Every photograph on this site is of someone who owns the piece, and we name them."
+          }
+        },
+        "i4": {
+          "type": "item",
+          "settings": {
+            "title": "One price",
+            "text": "The price is the price. There are no sales, no launch offers, and no marketplace listings."
+          }
+        }
+      },
+      "block_order": [
+        "i1",
+        "i2",
+        "i3",
+        "i4"
+      ],
+      "settings": {
+        "mode": "list",
+        "numeral": "IV",
+        "heading": "How the house works"
+      }
+    },
+    "close": {
+      "type": "av-routes",
+      "blocks": {
+        "r1": {
+          "type": "route",
+          "settings": {
+            "label": "Read",
+            "title": "Stories from the unit",
+            "link_label": "Stories",
+            "url": "shopify://blogs/stories"
+          }
+        },
+        "r2": {
+          "type": "route",
+          "settings": {
+            "label": "See",
+            "title": "The pieces, on the people who wear them",
+            "link_label": "Gallery",
+            "url": "shopify://pages/gallery"
+          }
+        },
+        "r3": {
+          "type": "route",
+          "settings": {
+            "label": "Write",
+            "title": "A conversation with Kamalam, for a piece made to you",
+            "link_label": "Exclusive",
+            "url": "shopify://pages/exclusive"
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "intro",
+    "place",
+    "film",
+    "ch1",
+    "clips",
+    "ch2",
+    "ch3",
+    "ch4",
+    "close"
+  ]
+}

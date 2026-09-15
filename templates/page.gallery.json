@@ -1,0 +1,29 @@
+{
+  "sections": {
+    "c1": {
+      "type": "av-campaign",
+      "settings": {
+        "label": "Campaign 001"
+      }
+    },
+    "c2": {
+      "type": "av-campaign",
+      "settings": {
+        "label": "Campaign 002"
+      }
+    },
+    "c3": {
+      "type": "av-campaign",
+      "settings": {
+        "label": "Campaign 003",
+        "archive_label": "The archive",
+        "archive_url": "/blogs/stories/tagged/campaigns"
+      }
+    }
+  },
+  "order": [
+    "c1",
+    "c2",
+    "c3"
+  ]
+}

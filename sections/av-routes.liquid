@@ -1,0 +1,35 @@
+<section class="av-reveal">
+  {%- if section.settings.image_left != blank or section.settings.image_right != blank -%}
+  <div class="av-wrap av-grid av-grid--7-5" style="align-items:end;gap:24px;padding-top:var(--av-section)">
+    {% render 'av-media', image: section.settings.image_left, ratio: '820 / 640', sizes: '(min-width: 900px) 58vw, 100vw' %}
+    {% render 'av-media', image: section.settings.image_right, ratio: '560 / 480', sizes: '(min-width: 900px) 42vw, 100vw' %}
+  </div>
+  {%- endif -%}
+  {%- if section.blocks.size > 0 -%}
+  <div class="av-routes">
+    {%- for block in section.blocks -%}
+      <div class="av-route" {{ block.shopify_attributes }}>
+        {%- if block.settings.label != blank -%}<div class="av-label">{{ block.settings.label | escape }}</div>{%- endif -%}
+        <h2 class="av-sub av-sub--s">{{ block.settings.title | escape }}</h2>
+        {%- if block.settings.link_label != blank and block.settings.url != blank -%}<a class="av-link" href="{{ block.settings.url }}">{{ block.settings.link_label | escape }}</a>{%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+  {%- endif -%}
+</section>
+{% schema %}
+{ "name": "AV Routes", "max_blocks": 3, "settings": [
+  { "type": "image_picker", "id": "image_left", "label": "Left image" },
+  { "type": "image_picker", "id": "image_right", "label": "Right image" }
+], "blocks": [ { "type": "route", "name": "Route", "settings": [
+  { "type": "text", "id": "label", "label": "Label", "default": "[Label]" },
+  { "type": "text", "id": "title", "label": "Title", "default": "[Where this goes]" },
+  { "type": "text", "id": "link_label", "label": "Link label", "default": "[Link]" },
+  { "type": "url", "id": "url", "label": "URL" }
+] } ],
+"presets": [ { "name": "AV Routes", "blocks": [
+  { "type": "route", "settings": { "label": "Read", "title": "Stories from the unit", "link_label": "Stories" } },
+  { "type": "route", "settings": { "label": "See", "title": "The pieces, on the people who wear them", "link_label": "Gallery" } },
+  { "type": "route", "settings": { "label": "Write", "title": "A conversation with Kamalam, for a piece made to you", "link_label": "Exclusive" } }
+] } ] }
+{% endschema %}

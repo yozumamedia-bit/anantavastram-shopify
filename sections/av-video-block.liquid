@@ -1,0 +1,16 @@
+<section class="av-video-block av-reveal">
+  <div class="av-video-block__head">
+    <h2 class="av-sub av-sub--s av-video-block__title">{{ section.settings.title | escape }}</h2>
+    {%- if section.settings.meta != blank -%}<div class="av-label">{{ section.settings.meta | escape }}</div>{%- endif -%}
+  </div>
+  {% render 'av-video', loop_video: section.settings.loop, film: section.settings.film, poster: section.settings.poster %}
+</section>
+{% schema %}
+{ "name": "AV Video block", "settings": [
+  { "type": "text", "id": "title", "label": "Title", "default": "The drop film" },
+  { "type": "text", "id": "meta", "label": "Meta", "default": "Loom · hands · weaver voice in Tamil, subtitled · plays muted, sound on tap" },
+  { "type": "video", "id": "loop", "label": "Muted loop (optional)" },
+  { "type": "video", "id": "film", "label": "Full film (plays with sound on tap)" },
+  { "type": "image_picker", "id": "poster", "label": "Poster" }
+], "presets": [{ "name": "AV Video block" }] }
+{% endschema %}

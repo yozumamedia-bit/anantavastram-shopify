@@ -1,0 +1,59 @@
+{%- liquid
+  assign people = 0
+  for block in section.blocks
+    if block.settings.weaver != blank
+      assign people = people | plus: 1
+    endif
+  endfor
+-%}
+{%- if people > 0 -%}
+<section class="av-people av-reveal">
+  <div class="av-people__head">
+    <div class="av-stack" style="gap:12px">
+      {%- if section.settings.numeral != blank -%}<div class="av-numeral">{{ section.settings.numeral | escape }}</div>{%- endif -%}
+      <h2 class="av-sub av-sub--m">{{ section.settings.title | escape }}</h2>
+    </div>
+    {%- if section.settings.text != blank -%}<div class="av-body" style="max-width:560px">{{ section.settings.text | escape | newline_to_br }}</div>{%- endif -%}
+  </div>
+  <div class="av-grid av-grid--4">
+    {%- for block in section.blocks -%}
+      {%- assign w = block.settings.weaver -%}
+      {%- if w != blank -%}
+      {%- liquid
+        assign years = w.years.value | plus: 0
+        assign line = w.role.value | default: ''
+        if years > 0
+          if line != blank
+            assign line = line | append: ' · '
+          endif
+          if years == 1
+            assign line = line | append: '1 year'
+          else
+            assign line = line | append: years | append: ' years'
+          endif
+          if block.settings.at_loom
+            assign line = line | append: ' at the loom'
+          endif
+        endif
+      -%}
+      <div class="av-person" {{ block.shopify_attributes }}>
+        {% render 'av-media', image: w.portrait.value, ratio: '1 / 1.2', sizes: '(min-width: 900px) 25vw, 100vw', alt: w.name.value %}
+        <h3 class="av-sub av-sub--xs">{{ w.name.value | escape }}</h3>
+        {%- if line != blank -%}<div class="av-label">{{ line | escape }}</div>{%- endif -%}
+      </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+{%- endif -%}
+{% schema %}
+{ "name": "AV People grid", "max_blocks": 8, "settings": [
+  { "type": "text", "id": "numeral", "label": "Numeral", "default": "III" },
+  { "type": "text", "id": "title", "label": "Title", "default": "Every piece carries a name" },
+  { "type": "textarea", "id": "text", "label": "Text", "default": "The weaver's name is woven into the label and printed on the page. It is not a credit. It is the record of who made the cloth, kept where the buyer can see it." }
+], "blocks": [ { "type": "person", "name": "Person", "settings": [
+  { "type": "metaobject", "metaobject_type": "weaver", "id": "weaver", "label": "Weaver" },
+  { "type": "checkbox", "id": "at_loom", "label": "Say “at the loom” after the years", "default": true }
+] } ],
+"presets": [ { "name": "AV People grid", "blocks": [ { "type": "person" }, { "type": "person" }, { "type": "person" }, { "type": "person", "settings": { "at_loom": false } } ] } ] }
+{% endschema %}

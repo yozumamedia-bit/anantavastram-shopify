@@ -1,0 +1,20 @@
+<section class="av-chapter av-reveal">
+  <div class="av-stack" style="gap:12px">
+    {%- if section.settings.numeral != blank -%}<div class="av-numeral">{{ section.settings.numeral | escape }}</div>{%- endif -%}
+    <h2 class="av-sub av-sub--m">{{ section.settings.title | escape }}</h2>
+  </div>
+  <div class="av-chapter__spacer" aria-hidden="true">&nbsp;</div>
+  <div class="av-chapter__text">
+    <div class="av-body">{{ section.settings.text }}</div>
+    {%- if section.settings.link_label != blank and section.settings.link != blank -%}<a class="av-link" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }}</a>{%- endif -%}
+  </div>
+</section>
+{% schema %}
+{ "name": "AV Chapter", "settings": [
+  { "type": "text", "id": "numeral", "label": "Numeral", "default": "I" },
+  { "type": "text", "id": "title", "label": "Title", "default": "The loom decides first" },
+  { "type": "richtext", "id": "text", "label": "Paragraphs", "default": "<p>[Paragraph — the veshti as a plain length of cloth: width, border, the kara.]</p><p>[Paragraph — yarn and dye.]</p><p>[Paragraph — time: loom hours per piece.]</p>" },
+  { "type": "text", "id": "link_label", "label": "Link label", "default": "The craft, in detail" },
+  { "type": "url", "id": "link", "label": "Link" }
+], "presets": [{ "name": "AV Chapter" }] }
+{% endschema %}
