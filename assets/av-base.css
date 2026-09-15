@@ -179,10 +179,13 @@ html.no-js .av-reveal, html.shopify-design-mode .av-reveal { opacity: 1; transfo
   height: var(--av-header-h);
   background: var(--av-kumkum);
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  /* minmax(0, 1fr) keeps both sides equal so the wordmark stays on the true centre */
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  column-gap: 32px;
   align-items: center;
   padding: 0 var(--av-gutter);
 }
+.av-header__lead { display: none; }
 .av-header__nav { display: flex; gap: 36px; align-items: center; }
 .av-header__nav--right { justify-content: flex-end; }
 .av-header__nav a {
@@ -192,8 +195,8 @@ html.no-js .av-reveal, html.shopify-design-mode .av-reveal { opacity: 1; transfo
 .av-header__nav a:hover { color: var(--av-ivory); opacity: 0.8; }
 .av-header__right { display: flex; justify-content: flex-end; align-items: center; gap: 36px; }
 .av-header__icons { display: flex; gap: 22px; align-items: center; margin-left: 8px; }
-.av-header__icons a, .av-header__icons button { display: inline-flex; width: 44px; height: 44px; align-items: center; justify-content: center; margin: -13px; background: none; border: 0; cursor: pointer; color: var(--av-white); }
-.av-header__icons svg { width: 18px; height: 18px; stroke: currentColor; }
+.av-header__icons a, .av-header__icons button, .av-header__icon { display: inline-flex; width: 44px; height: 44px; align-items: center; justify-content: center; margin: -13px; background: none; border: 0; cursor: pointer; color: var(--av-white); }
+.av-header__icons svg, .av-header__icon svg { width: 18px; height: 18px; stroke: currentColor; }
 .av-header__wordmark {
   font-family: var(--av-font-wordmark); font-weight: 700; font-size: 26px;
   letter-spacing: 0.2em; text-transform: uppercase; color: var(--av-white); line-height: 1; white-space: nowrap;
@@ -206,13 +209,23 @@ html.no-js .av-reveal, html.shopify-design-mode .av-reveal { opacity: 1; transfo
 .av-footer__wordmark.av-wordmark--svg svg { height: 18px; }
 .av-opening__wordmark.av-wordmark--svg svg { height: clamp(32px, 5vw, 72px); }
 @media (max-width: 900px) { .av-header__wordmark.av-wordmark--svg svg { height: 16px; } }
-@media (max-width: 480px) { .av-header__wordmark.av-wordmark--svg svg { height: 12px; } .av-header__home { min-width: 0; padding: 0 8px; } }
+@media (max-width: 480px) { .av-header__wordmark.av-wordmark--svg svg { height: clamp(10px, 3.2vw, 12px); } .av-header__home { min-width: 0; } }
 .av-header__burger { display: none; }
+/* Narrow desktops: tighten the nav so both sides fit beside a centred wordmark */
+@media (min-width: 1201px) and (max-width: 1500px) {
+  .av-header { padding: 0 32px; column-gap: 24px; }
+  .av-header__nav, .av-header__right { gap: 24px; }
+  .av-header__nav a { letter-spacing: 0.16em; }
+  .av-header__icons { margin-left: 0; gap: 16px; }
+  .av-header__wordmark.av-wordmark--svg svg { height: 16px; }
+}
 .av-cart-count { font-family: var(--av-font-body); font-size: 10px; margin-left: 4px; }
 
 @media (max-width: 1200px) {
-  .av-header { grid-template-columns: auto 1fr auto; }
-  .av-header__nav { display: none; }
+  .av-header { column-gap: 12px; }
+  .av-header__nav, .av-header__icons .av-header__search { display: none; }
+  /* burger + search left, account + bag right: equal sides, centred wordmark */
+  .av-header__lead { display: flex; align-items: center; gap: 6px; }
   .av-header__burger { display: inline-flex; width: 44px; height: 44px; align-items: center; justify-content: center; margin-left: -13px; background: none; border: 0; color: var(--av-white); cursor: pointer; }
   .av-header__burger svg { width: 22px; height: 22px; stroke: currentColor; }
   .av-header__wordmark { font-size: 18px; letter-spacing: 0.16em; text-align: center; }
