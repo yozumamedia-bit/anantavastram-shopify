@@ -1,0 +1,23 @@
+{%- comment -%} Products page list: available pieces first, then sold-out, within each page of 50. {%- endcomment -%}
+<section class="av-list av-reveal">
+  {%- paginate collection.products by 50 -%}
+    {%- if collection.products.size == 0 -%}
+      <p class="av-body av-list__empty">{% if current_tags %}No pieces with this tag yet.{% else %}No pieces yet.{% endif %}</p>
+    {%- else -%}
+      <ul class="av-list__items">
+        {%- for product in collection.products -%}
+          {%- assign fv = product.variants.first -%}
+          {%- if fv.inventory_management != 'shopify' or fv.inventory_quantity > 0 -%}{% render 'av-product-list-item', product: product %}{%- endif -%}
+        {%- endfor -%}
+        {%- for product in collection.products -%}
+          {%- assign fv = product.variants.first -%}
+          {%- if fv.inventory_management == 'shopify' and fv.inventory_quantity <= 0 -%}{% render 'av-product-list-item', product: product %}{%- endif -%}
+        {%- endfor -%}
+      </ul>
+      {%- if paginate.pages > 1 -%}<nav class="av-list__pages" aria-label="Pagination">{{ paginate | default_pagination }}</nav>{%- endif -%}
+    {%- endif -%}
+  {%- endpaginate -%}
+</section>
+{% schema %}
+{ "name": "AV Product list", "settings": [] }
+{% endschema %}

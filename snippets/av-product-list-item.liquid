@@ -1,0 +1,39 @@
+{%- comment -%} One compact list row. Usage (inside a <ul class="av-list__items">): {% render 'av-product-list-item', product: product %} {%- endcomment -%}
+{%- liquid
+  assign v = product.variants.first
+  assign sold = false
+  if v.inventory_management == 'shopify' and v.inventory_quantity <= 0
+    assign sold = true
+  endif
+  assign mf = product.metafields.av
+  assign drop = mf.drop.value
+  assign label = ''
+  if drop != blank and drop.number.value != blank
+    assign padded = drop.number.value | prepend: '00' | slice: -3, 3
+    assign label = 'Drop ' | append: padded
+  endif
+  if mf.numeral.value != blank
+    if label != blank
+      assign label = label | append: ' · '
+    endif
+    assign label = label | append: mf.numeral.value
+  endif
+  if mf.tier.value != blank
+    if label != blank
+      assign label = label | append: ' · '
+    endif
+    assign tier_cap = mf.tier.value | capitalize
+    assign label = label | append: tier_cap
+  endif
+-%}
+<li class="av-list__row">
+  <a class="av-list__item{% if sold %} av-list__item--sold{% endif %}" href="{{ product.url }}">
+    {% render 'av-media', image: product.featured_image, ratio: '4 / 5', sizes: '(min-width: 900px) 160px, 96px', alt: '' %}
+    <div class="av-list__name">
+      {%- if label != blank -%}<span class="av-label">{{ label | escape }}</span>{%- endif -%}
+      <h3 class="av-name">{{ product.title | escape }}</h3>
+    </div>
+    <span class="av-list__left">{% render 'av-edition-line', product: product, context: 'tile' %}</span>
+    <span class="av-price">{{ product.price | money }}</span>
+  </a>
+</li>
