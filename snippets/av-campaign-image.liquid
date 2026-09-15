@@ -1,0 +1,12 @@
+{%- comment -%}
+  One slot of a campaign grid. `imgs` is either the campaign metaobject's image list or the section's image blocks
+  (`from_blocks`); `i` is the slot index. Renders a placeholder when the slot is empty so the layout reads before images arrive.
+  Usage: {% render 'av-campaign-image', imgs: imgs, i: 0, from_blocks: from_blocks, ratio: '4 / 5', sizes: '33vw', loading: 'lazy' %}
+{%- endcomment -%}
+{%- liquid
+  assign im = imgs[i]
+  if from_blocks
+    assign im = im.settings.image
+  endif
+-%}
+{% render 'av-media', image: im, ratio: ratio, sizes: sizes, loading: loading %}

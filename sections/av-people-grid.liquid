@@ -1,7 +1,8 @@
+{%- comment -%} Each person reads the weaver metaobject when one is chosen, otherwise the block's own name, role, years and portrait. {%- endcomment -%}
 {%- liquid
   assign people = 0
   for block in section.blocks
-    if block.settings.weaver != blank
+    if block.settings.weaver != blank or block.settings.name != blank
       assign people = people | plus: 1
     endif
   endfor
@@ -17,11 +18,23 @@
   </div>
   <div class="av-grid av-grid--4">
     {%- for block in section.blocks -%}
-      {%- assign w = block.settings.weaver -%}
-      {%- if w != blank -%}
       {%- liquid
-        assign years = w.years.value | plus: 0
-        assign line = w.role.value | default: ''
+        assign w = block.settings.weaver
+        if w != blank
+          assign name = w.name.value
+          assign role = w.role.value | default: ''
+          assign years = w.years.value | plus: 0
+          assign portrait = w.portrait.value
+        else
+          assign name = block.settings.name
+          assign role = block.settings.role | default: ''
+          assign years = block.settings.years | plus: 0
+          assign portrait = block.settings.portrait
+        endif
+      -%}
+      {%- if name != blank -%}
+      {%- liquid
+        assign line = role
         if years > 0
           if line != blank
             assign line = line | append: ' · '
@@ -37,8 +50,8 @@
         endif
       -%}
       <div class="av-person" {{ block.shopify_attributes }}>
-        {% render 'av-media', image: w.portrait.value, ratio: '1 / 1.2', sizes: '(min-width: 900px) 25vw, 100vw', alt: '' %}
-        <h3 class="av-sub av-sub--xs">{{ w.name.value | escape }}</h3>
+        {% render 'av-media', image: portrait, ratio: '1 / 1.2', sizes: '(min-width: 900px) 25vw, 100vw', alt: '' %}
+        <h3 class="av-sub av-sub--xs">{{ name | escape }}</h3>
         {%- if line != blank -%}<div class="av-label">{{ line | escape }}</div>{%- endif -%}
       </div>
       {%- endif -%}
@@ -52,7 +65,11 @@
   { "type": "text", "id": "title", "label": "Title", "default": "Every piece carries a name" },
   { "type": "textarea", "id": "text", "label": "Text", "default": "The weaver's name is woven into the label and printed on the page. It is not a credit. It is the record of who made the cloth, kept where the buyer can see it." }
 ], "blocks": [ { "type": "person", "name": "Person", "settings": [
-  { "type": "metaobject", "metaobject_type": "weaver", "id": "weaver", "label": "Weaver" },
+  { "type": "metaobject", "metaobject_type": "weaver", "id": "weaver", "label": "Weaver entry", "info": "When set, the fields below are ignored." },
+  { "type": "text", "id": "name", "label": "Name" },
+  { "type": "text", "id": "role", "label": "Role" },
+  { "type": "number", "id": "years", "label": "Years weaving" },
+  { "type": "image_picker", "id": "portrait", "label": "Portrait" },
   { "type": "checkbox", "id": "at_loom", "label": "Say “at the loom” after the years", "default": true }
 ] } ],
 "presets": [ { "name": "AV People grid", "blocks": [ { "type": "person" }, { "type": "person" }, { "type": "person" }, { "type": "person", "settings": { "at_loom": false } } ] } ] }

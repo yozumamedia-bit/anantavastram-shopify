@@ -27,6 +27,8 @@ Admin paths are for the current Shopify admin (September 2026). `[brackets]` in 
 - `open` = past drop still selling; `closed` = past drop kept as a record. A drop with no stock left shows "Closed" regardless.
 - A drop whose collection is empty is hidden.
 
+> **Shortcut for the About and Gallery pages.** Both work without metaobjects: on About, each person in chapter III has its own name, role, years and portrait fields; on Gallery, each campaign section has title, season, credits, film and eight image slots. Fill those in the theme editor to get the pages up first. Metaobjects are still the way to reuse a weaver across product pages and to keep campaign records in one place — when an entry is chosen, the section's own fields are ignored.
+
 ### `weaver` — people on the About page and product pages
 | Field key | Type |
 |---|---|
@@ -119,7 +121,7 @@ For every numbered piece:
 | Size and measure | `size-and-measure` | default — optional |
 | Visit the unit | `visit-the-unit` | default — optional |
 
-Then open each page in **Online Store → Themes → Customize** to add images, videos, weavers (About, chapter III) and campaigns (Gallery, one per section).
+Then open each page in **Online Store → Themes → Customize** to add images, videos, the four weavers (About, chapter III — name, role, years, portrait, or a weaver entry) and the campaigns (Gallery, one per section — eight images plus credits, or a campaign entry).
 
 ## 6. Blog
 

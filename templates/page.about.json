@@ -74,25 +74,33 @@
         "p1": {
           "type": "person",
           "settings": {
-            "at_loom": true
+            "at_loom": true,
+            "name": "[Weaver name]",
+            "role": "[Role]"
           }
         },
         "p2": {
           "type": "person",
           "settings": {
-            "at_loom": true
+            "at_loom": true,
+            "name": "[Weaver name]",
+            "role": "[Role]"
           }
         },
         "p3": {
           "type": "person",
           "settings": {
-            "at_loom": true
+            "at_loom": true,
+            "name": "[Weaver name]",
+            "role": "[Role]"
           }
         },
         "p4": {
           "type": "person",
           "settings": {
-            "at_loom": false
+            "at_loom": false,
+            "name": "[Weaver name]",
+            "role": "[Role]"
           }
         }
       },

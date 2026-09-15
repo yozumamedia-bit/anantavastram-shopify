@@ -1,66 +1,101 @@
+{%- comment -%}
+  One campaign. Reads the campaign metaobject when one is chosen; otherwise the section's own fields and image blocks,
+  so the Gallery can be built in the theme editor before any metaobject exists.
+{%- endcomment -%}
 {%- liquid
   assign c = section.settings.campaign
-  assign imgs = c.images.value
+  assign from_blocks = false
+  assign film = nil
+  if c != blank
+    assign imgs = c.images.value
+    assign title = c.title.value
+    assign season = c.season.value
+    assign photographer = c.photographer.value
+    assign wearers = c.wearers.value
+    assign location = c.location.value
+    assign story = c.story.value
+    assign pieces = c.pieces.value
+    if c.film.value.media_type == 'video'
+      assign film = c.film.value
+    endif
+  else
+    assign from_blocks = true
+    assign imgs = section.blocks | where: 'type', 'image'
+    assign title = section.settings.title
+    assign season = section.settings.season
+    assign photographer = section.settings.photographer
+    assign wearers = section.settings.wearers
+    assign location = section.settings.location
+    assign story = section.settings.story
+    assign pieces = section.settings.pieces
+    assign film = section.settings.film
+  endif
   assign n = imgs.size | default: 0
   assign has_film = false
-  if c.film.value.media_type == 'video'
+  if film != blank
     assign has_film = true
+  endif
+  assign has_campaign = false
+  if c != blank or n > 0
+    assign has_campaign = true
   endif
   assign has_archive = false
   if section.settings.archive_label != blank and section.settings.archive_url != blank
     assign has_archive = true
   endif
+  assign lead_loading = 'lazy'
+  if section.settings.page_heading
+    assign lead_loading = 'eager'
+  endif
+  assign poster = imgs[7]
+  if from_blocks
+    assign poster = poster.settings.image
+  endif
 -%}
 {%- if section.settings.page_heading -%}<h1 class="visually-hidden">{{ page.title | default: 'Gallery' | escape }}</h1>{%- endif -%}
-{%- if c != blank or has_archive -%}
+{%- if has_campaign or has_archive -%}
 <section class="av-campaign av-reveal">
-  {%- if c != blank -%}
+  {%- if has_campaign -%}
   {%- if n > 0 -%}
   <div class="av-campaign__lead">
-    {%- liquid
-      assign lead_loading = 'lazy'
-      if section.settings.page_heading
-        assign lead_loading = 'eager'
-      endif
-    -%}
-    {% render 'av-media', image: imgs[0], ratio: '920 / 900', sizes: '(min-width: 900px) 66vw, 100vw', loading: lead_loading %}
+    {% render 'av-campaign-image', imgs: imgs, i: 0, from_blocks: from_blocks, ratio: '920 / 900', sizes: '(min-width: 900px) 66vw, 100vw', loading: lead_loading %}
     {%- if n > 1 -%}
     <div class="av-campaign__stack">
-      {% render 'av-media', image: imgs[1], ratio: '440 / 438', sizes: '(min-width: 900px) 33vw, 100vw' %}
-      {%- if n > 2 -%}{% render 'av-media', image: imgs[2], ratio: '440 / 438', sizes: '(min-width: 900px) 33vw, 100vw' %}{%- endif -%}
+      {% render 'av-campaign-image', imgs: imgs, i: 1, from_blocks: from_blocks, ratio: '440 / 438', sizes: '(min-width: 900px) 33vw, 100vw' %}
+      {%- if n > 2 -%}{% render 'av-campaign-image', imgs: imgs, i: 2, from_blocks: from_blocks, ratio: '440 / 438', sizes: '(min-width: 900px) 33vw, 100vw' %}{%- endif -%}
     </div>
     {%- endif -%}
   </div>
   {%- endif -%}
   <div class="av-campaign__head">
     <div class="av-stack" style="gap:20px">
-      <div class="av-label">{{ section.settings.label | escape }}{% if c.season.value != blank %} · {{ c.season.value | escape }}{% endif %}</div>
-      <h2 class="av-sub av-sub--m">{{ c.title.value | default: section.settings.label | escape }}</h2>
+      <div class="av-label">{{ section.settings.label | escape }}{% if season != blank %} · {{ season | escape }}{% endif %}</div>
+      <h2 class="av-sub av-sub--m">{{ title | default: section.settings.label | escape }}</h2>
       <div class="av-credits">
-        {%- if c.photographer.value != blank -%}<div class="av-credit"><span class="av-label">Photographs</span><span class="av-credit__v">{{ c.photographer.value | escape }}</span></div>{%- endif -%}
-        {%- if c.wearers.value != blank -%}<div class="av-credit"><span class="av-label">Wearers</span><span class="av-credit__v">{{ c.wearers.value | escape | newline_to_br }}</span></div>{%- endif -%}
-        {%- if c.location.value != blank -%}<div class="av-credit"><span class="av-label">Location</span><span class="av-credit__v">{{ c.location.value | escape }}</span></div>{%- endif -%}
-        {%- if c.pieces.value.size > 0 -%}<div class="av-credit"><span class="av-label">Pieces</span><span class="av-credit__v">{% for p in c.pieces.value %}<a href="{{ p.url }}">{{ p.title | escape }}</a>{% unless forloop.last %} · {% endunless %}{% endfor %}</span></div>{%- endif -%}
+        {%- if photographer != blank -%}<div class="av-credit"><span class="av-label">Photographs</span><span class="av-credit__v">{{ photographer | escape }}</span></div>{%- endif -%}
+        {%- if wearers != blank -%}<div class="av-credit"><span class="av-label">Wearers</span><span class="av-credit__v">{{ wearers | escape | newline_to_br }}</span></div>{%- endif -%}
+        {%- if location != blank -%}<div class="av-credit"><span class="av-label">Location</span><span class="av-credit__v">{{ location | escape }}</span></div>{%- endif -%}
+        {%- if pieces.size > 0 -%}<div class="av-credit"><span class="av-label">Pieces</span><span class="av-credit__v">{% for p in pieces %}<a href="{{ p.url }}">{{ p.title | escape }}</a>{% unless forloop.last %} · {% endunless %}{% endfor %}</span></div>{%- endif -%}
       </div>
     </div>
-    {%- if c.story.value != blank -%}<div class="av-body" style="max-width:600px">{{ c.story.value | escape | newline_to_br }}</div>{%- endif -%}
+    {%- if story != blank -%}<div class="av-body" style="max-width:600px">{{ story | escape | newline_to_br }}</div>{%- endif -%}
   </div>
   {%- if n > 3 -%}
   <div class="av-grid av-grid--3 av-campaign__row3">
-    {%- for img in imgs offset: 3 limit: 3 -%}{% render 'av-media', image: img, ratio: '4 / 5', sizes: '(min-width: 900px) 33vw, 100vw' %}{%- endfor -%}
+    {%- for i in (3..5) -%}{%- if i < n -%}{% render 'av-campaign-image', imgs: imgs, i: i, from_blocks: from_blocks, ratio: '4 / 5', sizes: '(min-width: 900px) 33vw, 100vw' %}{%- endif -%}{%- endfor -%}
   </div>
   {%- endif -%}
   {%- if n > 6 or has_film -%}
   {%- comment -%} Closing row: narrow image + wide film/image. A lone item spans the row (CSS :only-child). {%- endcomment -%}
   <div class="av-grid av-grid--4-8 av-campaign__close">
     {%- if has_film -%}
-      {%- if n > 6 -%}{% render 'av-media', image: imgs[6], ratio: '480 / 520', sizes: '(min-width: 900px) 33vw, 100vw' %}{%- endif -%}
-      {% render 'av-video', loop_video: c.film.value, poster: imgs[7] %}
+      {%- if n > 6 -%}{% render 'av-campaign-image', imgs: imgs, i: 6, from_blocks: from_blocks, ratio: '480 / 520', sizes: '(min-width: 900px) 33vw, 100vw' %}{%- endif -%}
+      {% render 'av-video', loop_video: film, poster: poster %}
     {%- elsif n > 7 -%}
-      {% render 'av-media', image: imgs[6], ratio: '480 / 520', sizes: '(min-width: 900px) 33vw, 100vw' %}
-      {% render 'av-media', image: imgs[7], ratio: '920 / 520', sizes: '(min-width: 900px) 66vw, 100vw' %}
+      {% render 'av-campaign-image', imgs: imgs, i: 6, from_blocks: from_blocks, ratio: '480 / 520', sizes: '(min-width: 900px) 33vw, 100vw' %}
+      {% render 'av-campaign-image', imgs: imgs, i: 7, from_blocks: from_blocks, ratio: '920 / 520', sizes: '(min-width: 900px) 66vw, 100vw' %}
     {%- else -%}
-      {% render 'av-media', image: imgs[6], ratio: '1400 / 700', sizes: '100vw' %}
+      {% render 'av-campaign-image', imgs: imgs, i: 6, from_blocks: from_blocks, ratio: '1400 / 700', sizes: '100vw' %}
     {%- endif -%}
   </div>
   {%- endif -%}
@@ -71,11 +106,22 @@
 </section>
 {%- endif -%}
 {% schema %}
-{ "name": "AV Campaign", "settings": [
-  { "type": "metaobject", "metaobject_type": "campaign", "id": "campaign", "label": "Campaign" },
+{ "name": "AV Campaign", "max_blocks": 8, "settings": [
   { "type": "text", "id": "label", "label": "Label", "default": "Campaign 001" },
   { "type": "checkbox", "id": "page_heading", "label": "Carries the page heading (first campaign only)", "default": false },
-  { "type": "text", "id": "archive_label", "label": "Archive link label (last campaign only)" },
+  { "type": "metaobject", "metaobject_type": "campaign", "id": "campaign", "label": "Campaign entry", "info": "When set, the fields and image blocks below are ignored." },
+  { "type": "header", "content": "Without a campaign entry" },
+  { "type": "text", "id": "title", "label": "Title" },
+  { "type": "text", "id": "season", "label": "Season" },
+  { "type": "text", "id": "photographer", "label": "Photographs" },
+  { "type": "textarea", "id": "wearers", "label": "Wearers (named, with consent)" },
+  { "type": "text", "id": "location", "label": "Location" },
+  { "type": "product_list", "id": "pieces", "label": "Pieces", "limit": 6 },
+  { "type": "textarea", "id": "story", "label": "Story" },
+  { "type": "video", "id": "film", "label": "Film (replaces the last image)" },
+  { "type": "header", "content": "Archive link (last campaign only)" },
+  { "type": "text", "id": "archive_label", "label": "Archive link label" },
   { "type": "url", "id": "archive_url", "label": "Archive URL" }
-], "presets": [{ "name": "AV Campaign" }] }
+], "blocks": [ { "type": "image", "name": "Image", "settings": [ { "type": "image_picker", "id": "image", "label": "Image", "info": "Eight fill the layout: lead + two stacked, a row of three, a narrow and a wide closing image." } ] } ],
+"presets": [{ "name": "AV Campaign", "blocks": [ { "type": "image" }, { "type": "image" }, { "type": "image" }, { "type": "image" }, { "type": "image" }, { "type": "image" }, { "type": "image" }, { "type": "image" } ] }] }
 {% endschema %}

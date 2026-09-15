@@ -2,29 +2,73 @@
   "sections": {
     "c1": {
       "type": "av-campaign",
+      "blocks": {
+        "i1": { "type": "image", "settings": {} },
+        "i2": { "type": "image", "settings": {} },
+        "i3": { "type": "image", "settings": {} },
+        "i4": { "type": "image", "settings": {} },
+        "i5": { "type": "image", "settings": {} },
+        "i6": { "type": "image", "settings": {} },
+        "i7": { "type": "image", "settings": {} },
+        "i8": { "type": "image", "settings": {} }
+      },
+      "block_order": ["i1", "i2", "i3", "i4", "i5", "i6", "i7", "i8"],
       "settings": {
         "label": "Campaign 001",
-        "page_heading": true
+        "page_heading": true,
+        "title": "[Campaign title]",
+        "season": "[Season]",
+        "photographer": "[Photographer]",
+        "wearers": "[Wearer], [wearer]",
+        "location": "[Location]"
       }
     },
     "c2": {
       "type": "av-campaign",
+      "blocks": {
+        "i1": { "type": "image", "settings": {} },
+        "i2": { "type": "image", "settings": {} },
+        "i3": { "type": "image", "settings": {} },
+        "i4": { "type": "image", "settings": {} },
+        "i5": { "type": "image", "settings": {} },
+        "i6": { "type": "image", "settings": {} },
+        "i7": { "type": "image", "settings": {} },
+        "i8": { "type": "image", "settings": {} }
+      },
+      "block_order": ["i1", "i2", "i3", "i4", "i5", "i6", "i7", "i8"],
       "settings": {
-        "label": "Campaign 002"
+        "label": "Campaign 002",
+        "title": "[Campaign title]",
+        "season": "[Season]",
+        "photographer": "[Photographer]",
+        "wearers": "[Wearer], [wearer]",
+        "location": "[Location]"
       }
     },
     "c3": {
       "type": "av-campaign",
+      "blocks": {
+        "i1": { "type": "image", "settings": {} },
+        "i2": { "type": "image", "settings": {} },
+        "i3": { "type": "image", "settings": {} },
+        "i4": { "type": "image", "settings": {} },
+        "i5": { "type": "image", "settings": {} },
+        "i6": { "type": "image", "settings": {} },
+        "i7": { "type": "image", "settings": {} },
+        "i8": { "type": "image", "settings": {} }
+      },
+      "block_order": ["i1", "i2", "i3", "i4", "i5", "i6", "i7", "i8"],
       "settings": {
         "label": "Campaign 003",
+        "title": "[Campaign title]",
+        "season": "[Season]",
+        "photographer": "[Photographer]",
+        "wearers": "[Wearer], [wearer]",
+        "location": "[Location]",
         "archive_label": "The archive",
         "archive_url": "/blogs/stories/tagged/campaigns"
       }
     }
   },
-  "order": [
-    "c1",
-    "c2",
-    "c3"
-  ]
+  "order": ["c1", "c2", "c3"]
 }
