@@ -206,6 +206,7 @@ html.no-js .av-reveal, html.shopify-design-mode .av-reveal { opacity: 1; transfo
 .av-footer__wordmark.av-wordmark--svg svg { height: 18px; }
 .av-opening__wordmark.av-wordmark--svg svg { height: clamp(32px, 5vw, 72px); }
 @media (max-width: 900px) { .av-header__wordmark.av-wordmark--svg svg { height: 16px; } }
+@media (max-width: 480px) { .av-header__wordmark.av-wordmark--svg svg { height: 12px; } .av-header__home { min-width: 0; padding: 0 8px; } }
 .av-header__burger { display: none; }
 .av-cart-count { font-family: var(--av-font-body); font-size: 10px; margin-left: 4px; }
 
