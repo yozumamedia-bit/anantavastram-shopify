@@ -1,0 +1,10 @@
+<section class="av-newsline av-reveal">
+  <h2 class="av-statement av-statement--m">{{ section.settings.statement | escape }}</h2>
+  {% render 'av-newsletter-form', id: section.id, placeholder: section.settings.placeholder, class: '' %}
+</section>
+{% schema %}
+{ "name": "AV Newsletter line", "settings": [
+  { "type": "text", "id": "statement", "label": "Statement", "default": "One story a month, by letter." },
+  { "type": "text", "id": "placeholder", "label": "Email placeholder", "default": "Your email" }
+], "presets": [{ "name": "AV Newsletter line" }] }
+{% endschema %}

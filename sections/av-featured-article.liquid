@@ -1,0 +1,21 @@
+{%- liquid
+  assign article = section.settings.article | default: blog.articles.first
+-%}
+{%- if article != blank and current_tags == blank and current_page == 1 -%}
+<section class="av-featured">
+  <a href="{{ article.url }}" tabindex="-1" aria-hidden="true">{% render 'av-media', image: article.image, ratio: '1440 / 760', sizes: '100vw', loading: 'eager', alt: '' %}</a>
+  <div class="av-featured__text">
+    <div class="av-stack" style="gap:20px">
+      {% render 'av-article-meta', article: article %}
+      <h2 class="av-statement av-statement--l"><a href="{{ article.url }}">{{ article.title | escape }}</a></h2>
+    </div>
+    <div class="av-stack">
+      <div class="av-body">{{ article.excerpt_or_content | strip_html | truncatewords: 45 }}</div>
+      <a class="av-link" href="{{ article.url }}">Read the story</a>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+{% schema %}
+{ "name": "AV Featured story", "settings": [ { "type": "article", "id": "article", "label": "Featured article (default: newest)" } ] }
+{% endschema %}

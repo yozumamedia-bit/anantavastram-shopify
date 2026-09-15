@@ -1,0 +1,16 @@
+<article class="av-article">
+  <div class="av-article__body">
+    {% render 'av-article-meta', article: article, date_format: '%-d %B %Y' %}
+    <h1 class="av-statement av-statement--l">{{ article.title | escape }}</h1>
+    {%- if article.metafields.av.video.value != blank -%}
+      {% render 'av-video', loop_video: article.metafields.av.video.value, poster: article.image %}
+    {%- elsif article.image != blank -%}
+      {% render 'av-media', image: article.image, ratio: '16 / 10', sizes: '(min-width: 900px) 66vw, 100vw', loading: 'eager' %}
+    {%- endif -%}
+    <div class="av-body rte">{{ article.content }}</div>
+    <a class="av-link" href="{{ blog.url }}">All stories</a>
+  </div>
+</article>
+{% schema %}
+{ "name": "AV Article", "settings": [] }
+{% endschema %}

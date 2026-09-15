@@ -1,19 +1,67 @@
 {
   "sections": {
-    "main": {
-      "type": "main-blog",
-      "settings": {
-        "layout": "collage",
-        "show_image": true,
-        "image_height": "medium",
-        "show_date": true,
-        "show_author": false,
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
+    "featured": {
+      "type": "av-featured-article",
+      "settings": {}
+    },
+    "tabs": {
+      "type": "av-tabs",
+      "blocks": {
+        "t1": {
+          "type": "tab",
+          "settings": {
+            "label": "Weavers",
+            "tag": "weavers"
+          }
+        },
+        "t2": {
+          "type": "tab",
+          "settings": {
+            "label": "Embroidery",
+            "tag": "embroidery"
+          }
+        },
+        "t3": {
+          "type": "tab",
+          "settings": {
+            "label": "Motifs and design",
+            "tag": "motifs-and-design"
+          }
+        },
+        "t4": {
+          "type": "tab",
+          "settings": {
+            "label": "The house",
+            "tag": "the-house"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4"
+      ],
+      "settings": {}
+    },
+    "posts": {
+      "type": "av-posts",
+      "settings": {}
+    },
+    "earlier": {
+      "type": "av-earlier",
+      "settings": {}
+    },
+    "news": {
+      "type": "av-newsletter-line",
+      "settings": {}
     }
   },
   "order": [
-    "main"
+    "featured",
+    "tabs",
+    "posts",
+    "earlier",
+    "news"
   ]
 }

@@ -1,0 +1,38 @@
+{%- liquid
+  assign featured = section.settings.featured_article | default: blog.articles.first
+-%}
+<section class="av-posts">
+  <h2 class="visually-hidden">Stories</h2>
+  {%- paginate blog.articles by 7 -%}
+    {%- liquid
+      assign skip_featured = false
+      if current_tags == blank and paginate.current_page == 1 and featured != blank
+        assign skip_featured = true
+      endif
+    -%}
+    {%- for article in blog.articles -%}
+      {%- if skip_featured and article.id == featured.id %}{% continue %}{% endif -%}
+      <article class="av-post av-reveal">
+        <div class="av-post__media">
+          {%- if article.metafields.av.video.value != blank -%}
+            {% render 'av-video', loop_video: article.metafields.av.video.value, poster: article.image, class: 'av-post__video' %}
+          {%- else -%}
+            <a href="{{ article.url }}" tabindex="-1" aria-hidden="true">{% render 'av-media', image: article.image, ratio: '600 / 520', sizes: '(min-width: 900px) 42vw, 100vw', alt: '' %}</a>
+          {%- endif -%}
+        </div>
+        <div class="av-post__text">
+          {% render 'av-article-meta', article: article %}
+          <h3 class="av-sub av-sub--m av-post__title"><a href="{{ article.url }}">{{ article.title | escape }}</a></h3>
+          <div class="av-body">{{ article.excerpt_or_content | strip_html | truncatewords: 40 }}</div>
+          <a class="av-link" href="{{ article.url }}">Read</a>
+        </div>
+      </article>
+    {%- else -%}
+      <p class="av-body" style="padding:48px 0">{% if current_tags %}No stories in this section yet.{% else %}No stories yet.{% endif %}</p>
+    {%- endfor -%}
+    {%- if paginate.pages > 1 -%}<nav class="av-pages" aria-label="Pagination" style="padding-bottom:40px">{{ paginate | default_pagination }}</nav>{%- endif -%}
+  {%- endpaginate -%}
+</section>
+{% schema %}
+{ "name": "AV Story rows", "settings": [ { "type": "article", "id": "featured_article", "label": "Featured article to skip (match the Featured story section)" } ] }
+{% endschema %}
