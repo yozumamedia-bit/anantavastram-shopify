@@ -2,6 +2,19 @@
   assign drop = collection.metafields.av.drop.value
   if drop != blank
     assign padded = drop.number.value | prepend: '00' | slice: -3, 3
+    assign pieces = collection.products_count | default: 0
+    assign remaining = 0
+    assign total = 0
+    for p in collection.products
+      assign v = p.variants.first
+      if v.inventory_management != 'shopify'
+        assign remaining = remaining | plus: 1
+      elsif v.inventory_quantity > 0
+        assign remaining = remaining | plus: v.inventory_quantity
+      endif
+      assign et = p.metafields.av.edition_total.value | default: 0
+      assign total = total | plus: et
+    endfor
   endif
 -%}
 <section class="av-intro av-reveal">
@@ -12,6 +25,12 @@
   <div class="av-stack">
     {%- if drop != blank and drop.design_line.value != blank -%}<div class="av-label av-label--red">The design · {{ drop.design_line | escape }}</div>{%- endif -%}
     {%- if drop != blank and drop.story.value != blank -%}<div class="av-body">{{ drop.story | escape | newline_to_br }}</div>{%- elsif collection.description != blank -%}<div class="av-body">{{ collection.description }}</div>{%- endif -%}
+    {%- if drop != blank -%}
+    <div class="av-counts">
+      <div class="av-count"><span class="av-label">Pieces</span><span class="av-count__v">{{ pieces }}</span></div>
+      <div class="av-count"><span class="av-label">Remaining</span><span class="av-count__v">{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %}</span></div>
+    </div>
+    {%- endif -%}
   </div>
 </section>
 {% schema %}

@@ -8,7 +8,7 @@
   assign mf = product.metafields.av
 -%}
 <a class="av-tile{% if sold %} av-tile--sold{% endif %}" href="{{ product.url }}">
-  {% render 'av-media', image: product.featured_image, ratio: '3 / 4', sizes: '(min-width: 900px) 16vw, 50vw' %}
+  {% render 'av-media', image: product.featured_image, ratio: '3 / 4', sizes: '(min-width: 900px) 16vw, 50vw', alt: '' %}
   <div class="av-tile__meta">
     <span class="av-label">{% if mf.numeral != blank %}{{ mf.numeral | escape }}{% if mf.tier != blank %} · {% endif %}{% endif %}{% if mf.tier != blank %}{{ mf.tier | capitalize | escape }}{% endif %}</span>
     <span class="av-tile__left">{% render 'av-edition-line', product: product, context: 'tile' %}</span>

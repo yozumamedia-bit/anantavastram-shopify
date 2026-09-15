@@ -34,6 +34,7 @@
 .av-drop-banner { margin-top: var(--av-section); padding: 56px var(--av-gutter) 40px; border-top: 1px solid var(--av-kumkum); display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
 .av-drop-banner__title { display: flex; align-items: baseline; gap: 28px; flex-wrap: wrap; }
 .av-rows { padding: 0 var(--av-gutter); display: flex; flex-direction: column; }
+.av-rows--page { padding-top: 40px; padding-bottom: var(--av-section); }
 .av-row { display: grid; grid-template-columns: 520px minmax(0, 1fr) 280px; gap: 56px; padding: 40px 0 64px; border-top: 1px solid var(--av-grey-3); }
 .av-row:last-child { border-bottom: 1px solid var(--av-grey-3); }
 .av-row .av-media { --ratio: 520 / 560; }
@@ -59,6 +60,7 @@
 .av-drop__head { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 .av-counts { display: flex; gap: 40px; flex-wrap: wrap; }
 .av-count { display: flex; flex-direction: column; gap: 6px; }
+.av-count__v { font-family: var(--av-font-display); font-size: 15px; line-height: 1.3; color: var(--av-kumkum); }
 .av-tiles { padding: 0 var(--av-gutter) var(--av-section); display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 20px; border-bottom: 1px solid var(--av-kumkum); }
 .av-tile { display: flex; flex-direction: column; gap: 10px; }
 .av-tile .av-media { --ratio: 3 / 4; }

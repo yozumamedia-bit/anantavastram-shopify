@@ -9,7 +9,13 @@
     {%- if section.blocks.size > 0 -%}
     <div class="av-intro__keys">
       {%- for block in section.blocks -%}
-        {%- if block.settings.url != blank -%}<a class="av-label av-label--red{% if block.settings.url == request.path %} is-active{% endif %}" href="{{ block.settings.url }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>{%- else -%}<span class="av-label av-label--red" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</span>{%- endif -%}
+        {%- liquid
+          assign is_active = false
+          if block.settings.url != blank and block.settings.url == request.path
+            assign is_active = true
+          endif
+        -%}
+        {%- if block.settings.url != blank -%}<a class="av-label av-label--red{% if is_active %} is-active{% endif %}" href="{{ block.settings.url }}"{% if is_active %} aria-current="page"{% endif %} {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>{%- else -%}<span class="av-label av-label--red" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</span>{%- endif -%}
       {%- endfor -%}
     </div>
     {%- endif -%}

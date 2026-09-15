@@ -1,7 +1,7 @@
-<section class="av-rows av-section">
+<section class="av-rows av-rows--page">
   {%- paginate collection.products by 12 -%}
     {%- for product in collection.products -%}{% render 'av-product-row', product: product %}{%- endfor -%}
-    {%- if paginate.pages > 1 -%}<div class="av-wrap" style="padding-top:40px">{{ paginate | default_pagination }}</div>{%- endif -%}
+    {%- if paginate.pages > 1 -%}<nav class="av-wrap" aria-label="Pagination" style="padding-top:40px">{{ paginate | default_pagination }}</nav>{%- endif -%}
   {%- endpaginate -%}
 </section>
 {% schema %}
