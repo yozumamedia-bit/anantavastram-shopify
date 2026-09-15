@@ -9,28 +9,32 @@
           "type": "column",
           "settings": {
             "heading": "The house",
-            "menu": "av-house"
+            "menu": "av-house",
+            "fallback": "house"
           }
         },
         "shop": {
           "type": "column",
           "settings": {
             "heading": "Shop",
-            "menu": "av-shop"
+            "menu": "av-shop",
+            "fallback": "shop"
           }
         },
         "orders": {
           "type": "column",
           "settings": {
             "heading": "Orders",
-            "menu": "av-orders"
+            "menu": "av-orders",
+            "fallback": "orders"
           }
         },
         "contact": {
           "type": "column",
           "settings": {
             "heading": "Contact",
-            "menu": "av-contact"
+            "menu": "av-contact",
+            "fallback": "contact"
           }
         }
       },

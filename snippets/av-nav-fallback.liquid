@@ -1,0 +1,32 @@
+{%- comment -%}
+  Default links used when a header/footer menu is not set up in admin (Online Store → Navigation).
+  Usage: {% render 'av-nav-fallback', group: 'house' %}   groups: house | shop | orders | contact
+  House and Shop always render (they are the site's structure). Orders and Contact only list
+  pages and policies that exist, so the footer never links to a 404.
+{%- endcomment -%}
+{%- case group -%}
+  {%- when 'house' -%}
+    {%- liquid
+      assign stories_url = '/blogs/stories'
+      if blogs.stories.url != blank
+        assign stories_url = blogs.stories.url
+      endif
+    -%}
+    <a href="{{ stories_url }}"{% if request.path contains stories_url %} aria-current="page"{% endif %}>Stories</a>
+    <a href="/pages/gallery"{% if request.path == '/pages/gallery' %} aria-current="page"{% endif %}>Gallery</a>
+    <a href="/pages/about"{% if request.path == '/pages/about' %} aria-current="page"{% endif %}>About</a>
+  {%- when 'shop' -%}
+    <a href="{{ routes.collections_url }}"{% if request.path == routes.collections_url %} aria-current="page"{% endif %}>Collections</a>
+    <a href="{{ routes.all_products_collection_url }}"{% if request.path contains routes.all_products_collection_url %} aria-current="page"{% endif %}>Products</a>
+    <a href="/pages/exclusive"{% if request.path == '/pages/exclusive' %} aria-current="page"{% endif %}>Exclusive</a>
+  {%- when 'orders' -%}
+    {%- if shop.shipping_policy.body != blank -%}<a href="{{ shop.shipping_policy.url }}">Shipping</a>{%- endif -%}
+    {%- if shop.refund_policy.body != blank -%}<a href="{{ shop.refund_policy.url }}">Returns and exchanges</a>{%- endif -%}
+    {%- if pages['care'].url != blank -%}<a href="{{ pages['care'].url }}">Care</a>{%- endif -%}
+    {%- if pages['size-and-measure'].url != blank -%}<a href="{{ pages['size-and-measure'].url }}">Size and measure</a>{%- endif -%}
+  {%- when 'contact' -%}
+    {%- if pages['contact'].url != blank -%}<a href="{{ pages['contact'].url }}">Write to us</a>{%- elsif shop.email != blank -%}<a href="mailto:{{ shop.email }}">Write to us</a>{%- endif -%}
+    {% render 'av-whatsapp-link', label: 'WhatsApp', class: 'av-nav-link' %}
+    {%- if settings.social_instagram_link != blank -%}<a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener" aria-describedby="a11y-new-window-message">Instagram</a>{%- endif -%}
+    {%- if pages['visit-the-unit'].url != blank -%}<a href="{{ pages['visit-the-unit'].url }}">Visit the unit</a>{%- endif -%}
+{%- endcase -%}
