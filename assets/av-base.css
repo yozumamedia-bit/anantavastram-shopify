@@ -175,8 +175,16 @@ img, video { max-width: 100%; display: block; }
 /* ---- scroll reveal --------------------------------------------------- */
 .av-reveal { opacity: 0; transform: translateY(18px); transition: opacity 900ms cubic-bezier(.2,.6,.2,1), transform 900ms cubic-bezier(.2,.6,.2,1); }
 .av-reveal.is-in { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) { .av-reveal { opacity: 1; transform: none; transition: none; } }
-html.no-js .av-reveal, html.shopify-design-mode .av-reveal { opacity: 1; transform: none; transition: none; }
+/* photographs settle from 103% to rest as their block reveals */
+.av-reveal .av-media > img:first-child { transform: scale(1.03); transition: transform 1200ms cubic-bezier(.2,.6,.2,1); }
+.av-reveal.is-in .av-media > img:first-child { transform: none; }
+@media (prefers-reduced-motion: reduce) { .av-reveal, .av-reveal .av-media > img:first-child { opacity: 1; transform: none; transition: none; } }
+html.no-js .av-reveal, html.shopify-design-mode .av-reveal, html.no-js .av-reveal .av-media > img:first-child, html.shopify-design-mode .av-reveal .av-media > img:first-child { opacity: 1; transform: none; transition: none; }
+/* soft crossfade between pages where the browser supports cross-document view transitions; the header holds still */
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 320ms; animation-timing-function: ease; }
+.av-header-section { view-transition-name: av-header; }
+@media (prefers-reduced-motion: reduce) { @view-transition { navigation: none; } }
 
 /* ---- header ---------------------------------------------------------- */
 .av-header-section { position: sticky; top: 0; z-index: 50; }

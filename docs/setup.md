@@ -72,6 +72,10 @@ Admin paths are for the current Shopify admin (September 2026). `[brackets]` in 
 | `av.yarn` | Single line text | Materials and motif |
 | `av.dye` | Single line text | Materials and motif |
 | `av.kara_colour` | Single line text | Kara fact |
+| `av.cloth_weight` | Single line text | Materials and motif — e.g. `320 g` |
+| `av.cloth_width` | Single line text | Materials and motif — e.g. `122 cm` |
+| `av.cloth_length` | Single line text | Materials and motif — e.g. `4 m` |
+| `av.worn_with` | Product reference, **list** | "Worn with" — the other pieces of the set on the product page (up to 3) |
 | `av.how_made` | Multi-line text | How it is made |
 | `av.care` | Multi-line text | Care accordion (falls back to the product section's default care text) |
 

@@ -34,9 +34,11 @@
   endif
   assign wa_text = 'About ' | append: product.title | append: ' — ' | append: shop.url | append: product.url
   assign has_materials = false
-  if mf.yarn.value != blank or mf.dye.value != blank or mf.motif_name_ta.value != blank or mf.motif_name_en.value != blank or loom_hours > 0
+  if mf.yarn.value != blank or mf.dye.value != blank or mf.motif_name_ta.value != blank or mf.motif_name_en.value != blank or loom_hours > 0 or mf.cloth_weight.value != blank or mf.cloth_width.value != blank or mf.cloth_length.value != blank
     assign has_materials = true
   endif
+  assign worn_with = mf.worn_with.value
+  assign measure_page = pages['size-and-measure']
   comment
     Sold-out uses variant.available, which assumes "continue selling when out of stock" is OFF (docs/setup.md);
     tiles, rows and av-edition-line key on inventory_quantity and agree under that rule.
@@ -122,6 +124,14 @@
         {%- if mf.dye.value != blank -%}<p>Dye: {{ mf.dye.value | escape }}</p>{%- endif -%}
         {%- if mf.motif_name_ta.value != blank and mf.motif_name_en.value != blank -%}<p>Motif: {{ mf.motif_name_ta.value | escape }} — {{ mf.motif_name_en.value | escape }}</p>{%- elsif mf.motif_name_ta.value != blank -%}<p>Motif: {{ mf.motif_name_ta.value | escape }}</p>{%- elsif mf.motif_name_en.value != blank -%}<p>Motif: {{ mf.motif_name_en.value | escape }}</p>{%- endif -%}
         {%- if loom_hours > 0 -%}<p>About {{ loom_hours }} {% if loom_hours == 1 %}hour{% else %}hours{% endif %} at the loom.</p>{%- endif -%}
+        {%- if mf.cloth_weight.value != blank or mf.cloth_width.value != blank or mf.cloth_length.value != blank -%}
+        <dl class="av-measure">
+          {%- if mf.cloth_weight.value != blank -%}<div><dt class="av-label">Weight</dt><dd>{{ mf.cloth_weight.value | escape }}</dd></div>{%- endif -%}
+          {%- if mf.cloth_width.value != blank -%}<div><dt class="av-label">Width</dt><dd>{{ mf.cloth_width.value | escape }}</dd></div>{%- endif -%}
+          {%- if mf.cloth_length.value != blank -%}<div><dt class="av-label">Length</dt><dd>{{ mf.cloth_length.value | escape }}</dd></div>{%- endif -%}
+        </dl>
+        {%- endif -%}
+        {%- if measure_page != blank -%}<p><a class="av-link" href="{{ measure_page.url }}">Size and measure</a></p>{%- endif -%}
       </div></details>
       {%- endif -%}
       {%- if section.settings.shipping != blank -%}
@@ -144,9 +154,27 @@
       {%- if mf.kara_colour.value != blank -%}<div class="av-fact"><div class="av-label">Kara</div><div class="av-body av-body--s">{{ mf.kara_colour.value | escape }}</div></div>{%- endif -%}
     </div>
     {%- endif -%}
+
+    {%- if worn_with.size > 0 -%}
+    {%- comment -%} The other pieces of the set (product metafield av.worn_with). Three at most; a swipe rail on phones. {%- endcomment -%}
+    <div class="av-worn">
+      <h2 class="av-label">Worn with</h2>
+      <div class="av-worn__tiles">
+        {%- for p in worn_with limit: 3 -%}{%- unless p.handle == product.handle -%}{% render 'av-drop-tile', product: p %}{%- endunless -%}{%- endfor -%}
+      </div>
+    </div>
+    {%- endif -%}
   </div>
 </section>
+{%- unless sold_out -%}
+{%- comment -%} Phones only: a slim order bar once the main button has scrolled out of view. The button submits the product form above via its form attribute. {%- endcomment -%}
+<div class="av-orderbar" id="av-orderbar" aria-hidden="true">
+  <div class="av-orderbar__info"><span class="av-orderbar__name">{{ product.title | escape }}</span><span class="av-orderbar__price">{{ v.price | money }}</span></div>
+  <button class="av-button av-orderbar__button" type="submit" form="{{ form_id }}" tabindex="-1">Order</button>
+</div>
+{%- endunless -%}
 <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'av-product.js' | asset_url }}" defer="defer"></script>
 {% schema %}
 { "name": "AV Product", "settings": [
   { "type": "richtext", "id": "shipping", "label": "Shipping text (overrides theme setting)" },

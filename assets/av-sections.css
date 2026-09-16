@@ -243,6 +243,29 @@
 .av-acc__body { padding: 0 0 20px; }
 .av-acc__body p { margin: 0 0 8px; } .av-acc__body p:last-child { margin: 0; }
 .av-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 24px; }
+.av-measure { margin: 12px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 16px; }
+.av-measure > div { display: flex; flex-direction: column; gap: 4px; }
+.av-measure dd { margin: 0; }
+/* Worn with: the other pieces of the set */
+.av-worn { display: flex; flex-direction: column; gap: 14px; border-top: 1px solid var(--av-grey-3); padding-top: 18px; }
+.av-worn__tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.av-worn .av-tile__meta { flex-direction: column; gap: 2px; }
+/* Phone order bar */
+.av-orderbar { display: none; }
+@media (max-width: 900px) {
+  .av-orderbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 45; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px var(--av-gutter) calc(10px + env(safe-area-inset-bottom)); background: var(--av-ivory); border-top: 1px solid var(--av-grey-3); transform: translateY(100%); transition: transform 260ms ease; }
+  .av-orderbar.is-visible { transform: none; }
+  .av-orderbar__info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .av-orderbar__name { font-family: var(--av-font-display); font-size: 13px; color: var(--av-ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .av-orderbar__price { font-family: var(--av-font-display); font-size: 14px; color: var(--av-kumkum); }
+  .av-orderbar__button { flex: 0 0 auto; padding-left: 28px; padding-right: 28px; }
+  body.has-orderbar { padding-bottom: 76px; }
+  body.has-orderbar .av-wa-float { bottom: calc(84px + env(safe-area-inset-bottom)); }
+  .av-worn__tiles { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 calc(-1 * var(--av-gutter)); padding: 0 var(--av-gutter); scrollbar-width: none; }
+  .av-worn__tiles::-webkit-scrollbar { display: none; }
+  .av-worn__tiles > * { flex: 0 0 44%; scroll-snap-align: start; }
+  @media (prefers-reduced-motion: reduce) { .av-orderbar { transition: none; } }
+}
 .av-fact { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--av-grey-3); padding-top: 14px; }
 .av-notify { display: flex; flex-direction: column; gap: 12px; }
 .av-notify input { width: 100%; background: none; border: 0; border-bottom: 1px solid var(--av-kumkum); border-radius: 0; padding: 0 0 10px; font-family: var(--av-font-body); font-weight: 300; font-size: 15px; color: var(--av-ink); min-height: 44px; }
