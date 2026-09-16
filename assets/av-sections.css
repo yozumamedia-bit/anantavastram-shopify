@@ -3,6 +3,8 @@
 /* av-hero: full-viewport still, no copy */
 .av-hero { height: calc(100vh - var(--av-header-h)); min-height: 520px; }
 .av-header-over .av-hero { height: 100vh; }
+/* phones: size to the visible viewport, so the browser toolbar never cuts the hero */
+@supports (height: 100svh) { .av-hero { height: calc(100svh - var(--av-header-h)); } .av-header-over .av-hero { height: 100svh; } }
 .av-hero img { width: 100%; height: 100%; object-fit: cover; }
 
 /* av-credo */
@@ -11,9 +13,18 @@
 .av-credo__line { width: 40px; height: 1px; background: var(--av-kumkum); opacity: 0.5; }
 
 /* av-showcase-three */
-.av-showcase { padding: 0 var(--av-gutter) var(--av-section); display: flex; flex-direction: column; gap: 22px; }
+.av-showcase { padding: 0 var(--av-gutter) var(--av-section); }
+.av-showcase__item { margin: 0; display: flex; flex-direction: column; gap: 22px; }
 .av-showcase__caption { font-family: var(--av-font-heading); font-size: 16px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--av-kumkum); }
 .av-showcase .av-media { --ratio: 3 / 5.6; }
+/* phones: one swipe rail instead of three stacked full-width portraits */
+@media (max-width: 900px) {
+  .av-showcase .av-showcase__rail { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 var(--av-gutter); margin: 0 calc(-1 * var(--av-gutter)); padding: 0 var(--av-gutter); scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .av-showcase .av-showcase__rail::-webkit-scrollbar { display: none; }
+  .av-showcase__item { flex: 0 0 78%; scroll-snap-align: start; gap: 14px; }
+  .av-showcase__item:only-child { flex-basis: 100%; }
+  .av-showcase__caption { font-size: 14px; }
+}
 
 /* av-story: image left, text right */
 .av-story { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
