@@ -213,7 +213,8 @@ html.no-js .av-reveal, html.shopify-design-mode .av-reveal { opacity: 1; transfo
 .av-wordmark--svg svg { height: 1em; width: auto; display: block; }
 .av-header__wordmark.av-wordmark--svg svg { height: 22px; }
 .av-footer__wordmark.av-wordmark--svg svg { height: 18px; }
-.av-opening__wordmark.av-wordmark--svg svg { height: clamp(32px, 5vw, 72px); }
+/* the wordmark is 13:1 wide, so on the opening it is sized by width (≈68px tall at 1440, ≈25px on a phone) — never by height, which cut it on phones */
+.av-opening__wordmark.av-wordmark--svg svg { height: auto; width: min(84vw, 900px); max-width: 100%; }
 @media (max-width: 900px) { .av-header__wordmark.av-wordmark--svg svg { height: 16px; } }
 @media (max-width: 480px) { .av-header__wordmark.av-wordmark--svg svg { height: clamp(10px, 3.2vw, 12px); } .av-header__home { min-width: 0; } }
 .av-header__burger { display: none; }
@@ -263,15 +264,16 @@ html:not(.av-opening-active) .av-opening { display: none; }
   position: fixed; inset: 0; z-index: 100;
   background: var(--av-kumkum);
   display: flex; align-items: center; justify-content: center;
+  padding: 0 var(--av-gutter);
   transform: translateY(0);
   transition: transform 900ms cubic-bezier(.7,0,.2,1);
 }
 .av-opening__mark {
-  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  display: flex; flex-direction: column; align-items: center; gap: 14px; max-width: 100%;
   opacity: 0; animation: av-logo-in 1.6s ease-out 200ms both;
 }
-.av-opening__wordmark { font-family: var(--av-font-wordmark); font-weight: 700; font-size: clamp(28px, 4.4vw, 64px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--av-white); line-height: 1; text-align: center; }
-.av-opening__wordmark img { height: clamp(32px, 5vw, 72px); width: auto; }
+.av-opening__wordmark { max-width: 100%; font-family: var(--av-font-wordmark); font-weight: 700; font-size: clamp(28px, 4.4vw, 64px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--av-white); line-height: 1; text-align: center; }
+.av-opening__wordmark img { height: auto; width: auto; max-width: min(84vw, 900px); max-height: 72px; }
 .av-opening__line { width: 56px; height: 1px; background: var(--av-white); opacity: 0.6; }
 .av-opening.is-leaving { transform: translateY(-100%); }
 html.av-opening-active { overflow: hidden; }
