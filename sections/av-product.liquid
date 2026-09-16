@@ -34,8 +34,29 @@
   endif
   assign wa_text = 'About ' | append: product.title | append: ' — ' | append: shop.url | append: product.url
   assign has_materials = false
-  if mf.yarn.value != blank or mf.dye.value != blank or mf.motif_name_ta.value != blank or mf.motif_name_en.value != blank or loom_hours > 0 or mf.cloth_weight.value != blank or mf.cloth_width.value != blank or mf.cloth_length.value != blank
+  if mf.yarn.value != blank or mf.dye.value != blank or mf.motif_name_ta.value != blank or mf.motif_name_en.value != blank or mf.cloth_weight.value != blank or mf.cloth_width.value != blank or mf.cloth_length.value != blank
     assign has_materials = true
+  endif
+  comment
+    Provenance line under the title: who wove it, where, and the hours — the facts a buyer asks first, above the fold.
+  endcomment
+  assign hours_word = 'hours'
+  if loom_hours == 1
+    assign hours_word = 'hour'
+  endif
+  assign provenance = ''
+  if weaver != blank and weaver.name.value != blank
+    assign provenance = 'Woven by ' | append: weaver.name.value
+    if weaver.unit.value != blank
+      assign provenance = provenance | append: ' at ' | append: weaver.unit.value
+    endif
+  endif
+  if loom_hours > 0
+    if provenance != blank
+      assign provenance = provenance | append: ' · about ' | append: loom_hours | append: ' ' | append: hours_word | append: ' at the loom'
+    else
+      assign provenance = 'About ' | append: loom_hours | append: ' ' | append: hours_word | append: ' at the loom'
+    endif
   endif
   assign worn_with = mf.worn_with.value
   assign measure_page = pages['size-and-measure']
@@ -75,6 +96,7 @@
     <div class="av-product__title">
       {%- if label != blank -%}<div class="av-label">{{ label | escape }}</div>{%- endif -%}
       <h1 class="av-name">{{ product.title | escape }}</h1>
+      {%- if provenance != blank -%}<p class="av-provenance av-body av-body--s">{{ provenance | escape }}</p>{%- endif -%}
       <div class="av-price">{{ v.price | money }}</div>
       {%- if settings.av_tax_line != blank -%}<div class="av-label av-price__note">{{ settings.av_tax_line | escape }}</div>{%- endif -%}
     </div>
@@ -123,7 +145,6 @@
         {%- if mf.yarn.value != blank -%}<p>Yarn: {{ mf.yarn.value | escape }}</p>{%- endif -%}
         {%- if mf.dye.value != blank -%}<p>Dye: {{ mf.dye.value | escape }}</p>{%- endif -%}
         {%- if mf.motif_name_ta.value != blank and mf.motif_name_en.value != blank -%}<p>Motif: {{ mf.motif_name_ta.value | escape }} — {{ mf.motif_name_en.value | escape }}</p>{%- elsif mf.motif_name_ta.value != blank -%}<p>Motif: {{ mf.motif_name_ta.value | escape }}</p>{%- elsif mf.motif_name_en.value != blank -%}<p>Motif: {{ mf.motif_name_en.value | escape }}</p>{%- endif -%}
-        {%- if loom_hours > 0 -%}<p>About {{ loom_hours }} {% if loom_hours == 1 %}hour{% else %}hours{% endif %} at the loom.</p>{%- endif -%}
         {%- if mf.cloth_weight.value != blank or mf.cloth_width.value != blank or mf.cloth_length.value != blank -%}
         <dl class="av-measure">
           {%- if mf.cloth_weight.value != blank -%}<div><dt class="av-label">Weight</dt><dd>{{ mf.cloth_weight.value | escape }}</dd></div>{%- endif -%}
@@ -146,12 +167,13 @@
       {%- endif -%}
     </div>
 
-    {%- if weaver != blank or drop != blank or edition_total > 0 or mf.kara_colour.value != blank -%}
+    {%- if weaver != blank or drop != blank or edition_total > 0 or mf.kara_colour.value != blank or loom_hours > 0 -%}
     <div class="av-facts">
       {%- if weaver != blank -%}<div class="av-fact"><div class="av-label">Woven by</div><div class="av-body av-body--s">{{ weaver.name.value | escape }}{% if weaver.unit.value != blank %} · {{ weaver.unit.value | escape }}{% endif %}</div></div>{%- endif -%}
       {%- if drop != blank -%}<div class="av-fact"><div class="av-label">Drop</div><div class="av-body av-body--s">{% if drop.collection.value != blank %}<a href="{{ drop.collection.value.url }}">{% endif %}{{ padded }}{% if drop.theme_name.value != blank %} · {{ drop.theme_name.value | escape }}{% endif %}{% if drop.collection.value != blank %}</a>{% endif %}</div></div>{%- endif -%}
       {%- if edition_total > 0 -%}<div class="av-fact"><div class="av-label">Edition</div><div class="av-body av-body--s">{{ edition_total }} {% if edition_total == 1 %}piece{% else %}pieces{% endif %}</div></div>{%- endif -%}
       {%- if mf.kara_colour.value != blank -%}<div class="av-fact"><div class="av-label">Kara</div><div class="av-body av-body--s">{{ mf.kara_colour.value | escape }}</div></div>{%- endif -%}
+      {%- if loom_hours > 0 -%}<div class="av-fact"><div class="av-label">At the loom</div><div class="av-body av-body--s">{{ loom_hours }} {{ hours_word }}</div></div>{%- endif -%}
     </div>
     {%- endif -%}
 

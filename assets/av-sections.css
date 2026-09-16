@@ -226,6 +226,7 @@
 .av-video.av-product__video { aspect-ratio: 4 / 5; }
 .av-product__panel { position: sticky; top: calc(var(--av-header-h) + 32px); max-height: calc(100vh - var(--av-header-h) - 32px); overflow: auto; display: flex; flex-direction: column; gap: 22px; padding: 48px 8px 8px; margin: 0 -8px; } /* side padding keeps focus outlines inside the scroll box */
 .av-product__title { display: flex; flex-direction: column; gap: 10px; }
+.av-provenance { margin: 0; color: var(--av-grey-1); }
 .av-product__notes { display: flex; flex-direction: column; gap: 18px; }
 .av-product__actions { display: flex; flex-direction: column; gap: 16px; padding-top: 8px; }
 .av-product__actions .av-button { width: 100%; }
