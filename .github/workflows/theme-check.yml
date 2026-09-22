@@ -12,11 +12,17 @@ jobs:
           node-version: 20
       - run: npm i -g @shopify/cli@latest
       # JSON output turned into annotations, so offences show on the run summary without opening the logs.
-      - run: shopify theme check --output json > theme-check.json || true
+      - run: shopify theme check --output json > theme-check.json 2> theme-check.err || true
       - run: |
           node -e '
-            const raw = require("fs").readFileSync("theme-check.json", "utf8");
-            const files = JSON.parse(raw.slice(raw.indexOf("[")));
+            const fs = require("fs");
+            const raw = fs.readFileSync("theme-check.json", "utf8");
+            let files;
+            try { files = JSON.parse(raw.slice(raw.indexOf("["))); } catch (e) {
+              const dump = (raw + " | stderr: " + fs.readFileSync("theme-check.err", "utf8")).replace(/\s+/g, " ").slice(0, 3500);
+              console.log(`::error::Could not parse theme check output: ${dump}`);
+              process.exit(1);
+            }
             const level = ["error", "warning", "notice"];
             let errors = 0;
             for (const f of files) for (const o of f.offenses) {
