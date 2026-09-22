@@ -150,7 +150,7 @@ Then open each page in **Online Store → Themes → Customize** to add images, 
 **Before the link is shared (sharing previews):**
 - **Online Store → Preferences:** homepage meta description, under 155 characters, plain voice, no "luxury" or "eco". This is also the description WhatsApp and Instagram show. Optionally a social sharing image (1200×630); without one the theme uses `assets/av-share.png`, the white wordmark on kumkum.
 - **Password page** (Customize → Password page): one line under the wordmark and the letter sign-up. Sign-ups land in Customers tagged `newsletter`.
-- **Enquiries:** the Exclusive form tags senders `exclusive`, the Contact form `contact`. Settings → Notifications → Staff order notifications / Settings → General → sender email decide who receives them; add Kamalam's address there so enquiries reach her.
+- **Enquiries:** the Exclusive form tags senders `exclusive`, the Contact form `contact`. Shopify sends every contact-form message to the store contact email (Settings → General → Store contact details); to reach Kamalam, either use an address she reads or set a forward from that inbox to hers.
 
 ## 9. Menus (optional)
 
