@@ -21,7 +21,7 @@
 {% schema %}
 { "name": "AV Video pair", "max_blocks": 2, "settings": [], "blocks": [ { "type": "clip", "name": "Clip", "settings": [
   { "type": "video", "id": "loop", "label": "Silent loop" },
-  { "type": "image_picker", "id": "poster", "label": "Poster" },
+  { "type": "image_picker", "id": "poster", "label": "Poster", "info": "A still from the footage. Without one the frame shows grey until the video loads." },
   { "type": "text", "id": "caption", "label": "Caption", "default": "Archive · [caption]" }
 ] } ],
 "presets": [ { "name": "AV Video pair", "blocks": [ { "type": "clip", "settings": { "caption": "Archive · the shuttle, one pass" } }, { "type": "clip", "settings": { "caption": "Archive · the kara, in gold" } } ] } ] }

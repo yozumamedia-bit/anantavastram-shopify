@@ -25,7 +25,7 @@ Red pane, sticky. Left = brand only: **Stories · Gallery · About**. Centre = w
 Footer: red; brand + newsletter; columns **The house** (Stories, Gallery, About) · **Shop** (Collections, Products, Exclusive) · **Orders** · **Contact**; legal line + INR selector.
 
 ## Opening sequence (once per session)
-Fixed red overlay, wordmark fades in (1.6s), holds ~1s, overlay slides up (`translateY(-100%)`, 900ms) and the sticky header appears beneath. `sessionStorage.avOpened = 1` prevents replay. Respect `prefers-reduced-motion`. No loader graphic (an infinity line was tried and rejected).
+Fixed red overlay, wordmark fades in (1s), holds 0.4s, overlay slides up (`translateY(-100%)`, 900ms) and the sticky header appears beneath. `sessionStorage.avOpened = 1` prevents replay. Respect `prefers-reduced-motion`. No loader graphic (an infinity line was tried and rejected).
 
 ## Page structures
 **Homepage (`templates/index.json`)**, in order:

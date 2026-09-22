@@ -4,7 +4,7 @@
   if (!el) return;
   if (!html.classList.contains('av-opening-active')) { el.remove(); return; }
   try { sessionStorage.setItem('avOpened', '1'); } catch (e) {}
-  var HOLD = 1600 + 200 + 1000; // fade-in + delay + hold
+  var HOLD = 1000 + 200 + 400; // fade-in + delay + hold
   var safety;
   function finish(e) {
     if (e && e.target !== el) return; // ignore bubbled transitions from children

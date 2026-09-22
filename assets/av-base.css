@@ -281,7 +281,7 @@ html:not(.av-opening-active) .av-opening { display: none; }
 }
 .av-opening__mark {
   display: flex; flex-direction: column; align-items: center; gap: 14px; max-width: 100%;
-  opacity: 0; animation: av-logo-in 1.6s ease-out 200ms both;
+  opacity: 0; animation: av-logo-in 1s ease-out 200ms both;
 }
 .av-opening__wordmark { max-width: 100%; font-family: var(--av-font-wordmark); font-weight: 700; font-size: clamp(28px, 4.4vw, 64px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--av-white); line-height: 1; text-align: center; }
 .av-opening__wordmark img { height: auto; width: auto; max-width: min(84vw, 900px); max-height: 72px; }
