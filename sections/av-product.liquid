@@ -80,12 +80,14 @@
     {%- for media in product.media -%}
       {%- liquid
         assign loading_attr = 'lazy'
+        assign vt = blank
         if forloop.first
           assign loading_attr = 'eager'
+          assign vt = product.handle
         endif
       -%}
       {%- if media.media_type == 'image' -%}
-        {% render 'av-media', image: media, ratio: '4 / 5', sizes: '(min-width: 900px) 58vw, 85vw', loading: loading_attr %}
+        {% render 'av-media', image: media, ratio: '4 / 5', sizes: '(min-width: 900px) 58vw, 85vw', loading: loading_attr, vt: vt, priority: forloop.first %}
       {%- elsif media.media_type == 'video' -%}
         {% render 'av-video', loop_video: media, class: 'av-product__video' %}
       {%- endif -%}

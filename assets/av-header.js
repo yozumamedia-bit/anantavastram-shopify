@@ -2,6 +2,7 @@
 (function () {
   var section = document.querySelector('.av-header-section');
   if (!section) return;
+  if (window.CSS && CSS.supports('animation-timeline: scroll()')) return; // av-base.css fills the bar with scroll
   var threshold = 24;
   function update() {
     var y = window.scrollY || document.documentElement.scrollTop || 0;

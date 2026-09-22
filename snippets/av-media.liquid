@@ -1,21 +1,33 @@
 {%- comment -%}
   Responsive image in a fixed-ratio box. Ivory placeholder when blank.
-  Usage: {% render 'av-media', image: settings.image, ratio: '4 / 5', sizes: '(min-width: 900px) 33vw, 100vw', alt: 'text', loading: 'lazy', class: 'extra' %}
+  Usage: {% render 'av-media', image: settings.image, ratio: '4 / 5', sizes: '(min-width: 900px) 33vw, 100vw', alt: 'text', loading: 'lazy', class: 'extra', vt: product.handle, priority: true %}
+  `priority` adds fetchpriority="high" (the one largest image above the fold).
   `alt_image` adds a second photograph that fades in when the enclosing link is hovered or focused (see .av-media__alt).
+  Lazy images sit on a blurred 24px copy of themselves and fade in once loaded; eager images (hero, first product photograph) show at once.
+  `vt` names the box for the thumbnail-to-product morph; snippets/av-transitions.liquid assigns the view-transition-name at navigation time, so duplicates on a page never clash.
 {%- endcomment -%}
 {%- liquid
   assign ratio = ratio | default: '4 / 5'
   assign sizes = sizes | default: '100vw'
   assign loading = loading | default: 'lazy'
+  assign fetch_priority = 'auto'
+  if priority
+    assign fetch_priority = 'high'
+  endif
   if alt == nil
     assign alt = image.alt | default: ''
   endif
 -%}
-<div class="av-media av-media--ratio {{ class | escape }}" style="--ratio: {{ ratio | escape }};">
+<div class="av-media av-media--ratio {{ class | escape }}" style="--ratio: {{ ratio | escape }};"{% if vt != blank %} data-vt="{{ vt | escape }}"{% endif %}>
   {%- if image != blank -%}
-    {{ image | image_url: width: 2400 | image_tag: widths: '400, 600, 800, 1200, 1600, 2400', sizes: sizes, loading: loading, alt: alt }}
+    {%- if loading == 'lazy' -%}
+      {{ image | image_url: width: 2400 | image_tag: widths: '400, 600, 800, 1200, 1600, 2400', sizes: sizes, loading: loading, decoding: 'async', alt: alt, class: 'av-media__img av-media__img--fade', onload: "this.classList.add('is-loaded')" }}
+      <span class="av-media__lqip" style="background-image: url('{{ image | image_url: width: 24 }}');" aria-hidden="true"></span>
+    {%- else -%}
+      {{ image | image_url: width: 2400 | image_tag: widths: '400, 600, 800, 1200, 1600, 2400', sizes: sizes, loading: loading, fetchpriority: fetch_priority, alt: alt, class: 'av-media__img' }}
+    {%- endif -%}
     {%- if alt_image != blank -%}
-      {{ alt_image | image_url: width: 1600 | image_tag: widths: '400, 600, 800, 1200, 1600', sizes: sizes, loading: 'lazy', alt: '', class: 'av-media__alt' }}
+      {{ alt_image | image_url: width: 1600 | image_tag: widths: '400, 600, 800, 1200, 1600', sizes: sizes, loading: 'lazy', decoding: 'async', alt: '', class: 'av-media__alt' }}
     {%- endif -%}
   {%- endif -%}
 </div>

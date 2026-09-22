@@ -28,7 +28,7 @@
 -%}
 <li class="av-list__row">
   <a class="av-list__item{% if sold %} av-list__item--sold{% endif %}" href="{{ product.url }}">
-    {% render 'av-media', image: product.featured_image, alt_image: product.images[1], ratio: '4 / 5', sizes: '(min-width: 900px) 160px, 96px', alt: '' %}
+    {% render 'av-media', image: product.featured_image, alt_image: product.images[1], vt: product.handle, ratio: '4 / 5', sizes: '(min-width: 900px) 160px, 96px', alt: '' %}
     <div class="av-list__name">
       {%- if label != blank -%}<span class="av-label">{{ label | escape }}</span>{%- endif -%}
       <h3 class="av-name">{{ product.title | escape }}</h3>

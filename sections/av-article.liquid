@@ -6,7 +6,7 @@
     {%- if article.metafields.av.video.value.sources.size > 0 -%}
       {% render 'av-video', loop_video: article.metafields.av.video.value, poster: article.image %}
     {%- elsif article.image != blank -%}
-      {% render 'av-media', image: article.image, ratio: '16 / 10', sizes: '(min-width: 900px) 66vw, 100vw', loading: 'eager' %}
+      {% render 'av-media', image: article.image, ratio: '16 / 10', sizes: '(min-width: 900px) 66vw, 100vw', loading: 'eager', priority: true %}
     {%- endif -%}
     <div class="av-body rte">{{ article.content }}</div>
     <a class="av-link" href="{{ blog.url }}">All stories</a>

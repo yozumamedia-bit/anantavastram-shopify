@@ -1,4 +1,6 @@
+/* Fallback reveal for browsers without scroll-driven animations; where they exist, av-base.css ties the reveal to scroll. */
 (function () {
+  if (window.CSS && CSS.supports('animation-timeline: view()') && !document.documentElement.classList.contains('shopify-design-mode')) return;
   var items = document.querySelectorAll('.av-reveal');
   if (!items.length || !('IntersectionObserver' in window)) {
     items.forEach(function (n) { n.classList.add('is-in'); });

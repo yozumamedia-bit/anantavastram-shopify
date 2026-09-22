@@ -9,7 +9,7 @@
 {%- if article != blank and current_tags == blank and current_page == 1 -%}
 <section class="av-featured">
   <h1 class="visually-hidden">{{ blog.title | escape }}</h1>
-  <a href="{{ article.url }}" tabindex="-1" aria-hidden="true">{% render 'av-media', image: article.image, ratio: '1440 / 760', sizes: '100vw', loading: 'eager', alt: '' %}</a>
+  <a href="{{ article.url }}" tabindex="-1" aria-hidden="true">{% render 'av-media', image: article.image, ratio: '1440 / 760', sizes: '100vw', loading: 'eager', priority: true, alt: '' %}</a>
   <div class="av-featured__text">
     <div class="av-stack" style="gap:20px">
       {% render 'av-article-meta', article: article %}

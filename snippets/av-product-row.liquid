@@ -10,7 +10,7 @@
   assign edition_total = mf.edition_total.value | default: 0
 -%}
 <article class="av-row av-reveal{% if sold_out %} av-row--sold{% endif %}">
-  <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">{% render 'av-media', image: product.featured_image, alt_image: product.images[1], ratio: '520 / 560', sizes: '(min-width: 1100px) 520px, (min-width: 900px) 50vw, 100vw' %}</a>
+  <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">{% render 'av-media', image: product.featured_image, alt_image: product.images[1], vt: product.handle, ratio: '520 / 560', sizes: '(min-width: 1100px) 520px, (min-width: 900px) 50vw, 100vw' %}</a>
   <div class="av-row__story">
     <div class="av-stack" style="gap:8px">
       <div class="av-label">{% if mf.numeral.value != blank %}No. {{ mf.numeral.value | escape }}{% if mf.tier.value != blank %} · {% endif %}{% endif %}{% if mf.tier.value != blank %}{{ mf.tier.value | capitalize | escape }}{% endif %}</div>

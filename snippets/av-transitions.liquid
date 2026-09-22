@@ -1,0 +1,29 @@
+{%- comment -%}
+  Thumbnail-to-product morph for cross-document view transitions (Chrome, Safari 26+).
+  Rendered inline in <head> (pagereveal fires before deferred scripts run). Names exactly one [data-vt] box on each side of
+  the navigation, only for the navigation in progress, so a piece shown twice on one page never produces duplicate names.
+  Does nothing where view transitions are unsupported or off (reduced motion turns them off in av-base.css).
+{%- endcomment -%}
+<script>
+  (function () {
+    function handle(url) {
+      var m = url && new URL(url, location.href).pathname.match(/\/products\/([^\/?#]+)/);
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+    function name(h, vt) {
+      if (!h) return;
+      var el = document.querySelector('[data-vt="' + CSS.escape(h) + '"]');
+      if (!el) return;
+      el.style.viewTransitionName = 'av-piece';
+      vt.finished.finally(function () { el.style.viewTransitionName = ''; });
+    }
+    window.addEventListener('pageswap', function (e) {
+      if (!e.viewTransition || !e.activation) return;
+      name(handle(e.activation.entry.url) || handle(location.href), e.viewTransition);
+    });
+    window.addEventListener('pagereveal', function (e) {
+      if (!e.viewTransition || !window.navigation || !navigation.activation || !navigation.activation.from) return;
+      name(handle(location.href) || handle(navigation.activation.from.url), e.viewTransition);
+    });
+  })();
+</script>
