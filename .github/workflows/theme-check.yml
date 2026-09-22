@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
       - run: npm i -g @shopify/cli@latest
       # JSON output turned into annotations, so offences show on the run summary without opening the logs.
       - run: shopify theme check --output json > theme-check.json 2> theme-check.err || true
