@@ -11,4 +11,19 @@ jobs:
         with:
           node-version: 20
       - run: npm i -g @shopify/cli@latest
-      - run: shopify theme check --fail-level error
+      # JSON output turned into annotations, so offences show on the run summary without opening the logs.
+      - run: shopify theme check --output json > theme-check.json || true
+      - run: |
+          node -e '
+            const raw = require("fs").readFileSync("theme-check.json", "utf8");
+            const files = JSON.parse(raw.slice(raw.indexOf("[")));
+            const level = ["error", "warning", "notice"];
+            let errors = 0;
+            for (const f of files) for (const o of f.offenses) {
+              if (o.severity === 0) errors++;
+              const msg = `${o.check}: ${o.message}`.replace(/\r?\n/g, " ");
+              console.log(`::${level[o.severity] || "notice"} file=${f.path},line=${(o.start_row ?? 0) + 1}::${msg}`);
+            }
+            console.log(`${errors} error(s)`);
+            process.exit(errors ? 1 : 0);
+          '
