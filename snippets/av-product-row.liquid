@@ -28,8 +28,13 @@
     {%- endif -%}
   </div>
   <div class="av-row__notes">
-    <div class="av-price">{{ product.price | money }}</div>
-    {%- if settings.av_tax_line != blank -%}<div class="av-label av-price__note">{{ settings.av_tax_line | escape }}</div>{%- endif -%}
+    {%- if sold_out -%}
+      {%- comment -%} The row stays as the record of the edition; no price once it is complete. {%- endcomment -%}
+      <div class="av-label av-label--red">{% if edition_total > 0 %}Edition of {{ edition_total }} · complete{% else %}Edition complete{% endif %}</div>
+    {%- else -%}
+      <div class="av-price">{{ product.price | money }}</div>
+      {%- if settings.av_tax_line != blank -%}<div class="av-label av-price__note">{{ settings.av_tax_line | escape }}</div>{%- endif -%}
+    {%- endif -%}
     {%- if edition_total > 0 -%}
     <div class="av-row__note"><div class="av-label">Edition</div><div class="av-body av-body--s">{% render 'av-edition-line', product: product, context: 'row' %}</div></div>
     {%- endif -%}

@@ -15,6 +15,7 @@
   </div>
   {%- form 'contact', id: 'av-enquiry-form', class: 'av-form' -%}
     <input type="hidden" name="contact[subject]" value="{{ section.settings.subject | default: 'Enquiry' | escape }}">
+    {%- if section.settings.tag != blank -%}<input type="hidden" name="contact[tags]" value="{{ section.settings.tag | escape }}">{%- endif -%}
     {%- if form.posted_successfully? -%}
       <div class="av-form__msg av-body" role="status" tabindex="-1" autofocus>Received.{% if section.settings.reply_line != blank %} {{ section.settings.reply_line | escape }}{% unless section.settings.reply_line contains '.' %}.{% endunless %}{% endif %}</div>
     {%- else -%}
@@ -38,6 +39,7 @@
   { "type": "text", "id": "heading", "label": "Heading", "default": "Write to Kamalam" },
   { "type": "textarea", "id": "text", "label": "Text", "default": "Three lines are enough: the occasion, the date, and where you are. Or send the same on WhatsApp." },
   { "type": "text", "id": "subject", "label": "Email subject line", "info": "Subject of the email the store receives.", "default": "Exclusive enquiry" },
+  { "type": "text", "id": "tag", "label": "Customer tag", "info": "Added to the sender's customer record, so enquiries can be filtered in Customers.", "default": "exclusive" },
   { "type": "text", "id": "reply_line", "label": "Reply-time line", "info": "Shown under the form and after sending, e.g. Kamalam replies within 3 days", "default": "Kamalam replies within [n] days" },
   { "type": "header", "content": "Book a call" },
   { "type": "url", "id": "calendar_url", "label": "Booking link", "info": "A Google Calendar appointment schedule link (calendar.app.google/…) or similar. Hidden until set." },

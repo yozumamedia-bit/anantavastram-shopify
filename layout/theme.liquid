@@ -45,7 +45,6 @@
       {{ body_font_bold | font_face: font_display: 'swap' }}
       {{ body_font_italic | font_face: font_display: 'swap' }}
       {{ body_font_bold_italic | font_face: font_display: 'swap' }}
-      {{ settings.av_wordmark_font | font_face: font_display: 'swap' }}
       {% render 'av-font-faces' %}
 
       :root {
@@ -57,7 +56,6 @@
         --font-heading-family: 'General Sans', 'Helvetica Neue', Arial, sans-serif; {%- comment -%} self-hosted; the heading font picker is unused {%- endcomment -%}
         --font-heading-style: normal;
         --font-heading-weight: 700;
-        --av-wordmark-family: {{ settings.av_wordmark_font.family }}, {{ settings.av_wordmark_font.fallback_families }};
 
         --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
         --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};

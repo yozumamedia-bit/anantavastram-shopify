@@ -20,7 +20,7 @@
   --av-font-heading: var(--av-font-sans);        /* General Sans Light, large: credo and page openings */
   --av-font-display: var(--av-font-sans);        /* General Sans Bold: sub-headings and product names */
   --av-font-nav: var(--font-body-family);        /* Karla via the body font picker: header nav, footer links, captions only */
-  --av-font-wordmark: var(--av-wordmark-family); /* Cormorant 700 stand-in; Montage Serif SVG in production */
+  --av-font-wordmark: var(--av-font-sans);       /* only if the SVG wordmark is ever missing; the wordmark is inline SVG */
 
   /* rhythm */
   --av-gutter: 56px;
@@ -231,7 +231,7 @@ html.no-js .av-reveal, html.shopify-design-mode .av-reveal, html.no-js .av-revea
 .av-header__burger { display: none; }
 /* Header over the hero (homepage option): the hero starts under the header; the bar is a soft scrim until the page scrolls */
 .av-header-over .av-header-section { margin-bottom: calc(-1 * var(--av-header-h)); }
-.av-header-over .av-header { background-color: transparent; background-image: linear-gradient(rgba(30, 26, 23, 0.45), rgba(30, 26, 23, 0)); transition: background-color 350ms ease; }
+.av-header-over .av-header { background-color: transparent; background-image: linear-gradient(rgba(30, 26, 23, 0.55), rgba(30, 26, 23, 0)); transition: background-color 350ms ease; }
 .av-header-over .av-header-section.is-scrolled .av-header { background-color: var(--av-kumkum); background-image: none; }
 @media (prefers-reduced-motion: reduce) { .av-header-over .av-header { transition: none; } }
 /* Narrow desktops: tighten the nav so both sides fit beside a centred wordmark */

@@ -25,7 +25,7 @@
     </nav>
     <div class="av-header__icons">
       <a class="av-header__search" href="{{ routes.search_url }}" aria-label="Search">{% render 'av-icon', name: 'search' %}</a>
-      {%- if shop.customer_accounts_enabled -%}
+      {%- if settings.av_show_account and shop.customer_accounts_enabled -%}
         <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" aria-label="Account">{% render 'av-icon', name: 'account' %}</a>
       {%- endif -%}
       <a href="{{ routes.cart_url }}" id="cart-icon-bubble">{% render 'av-cart-bubble' %}</a>
