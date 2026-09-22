@@ -144,6 +144,13 @@ Then open each page in **Online Store → Themes → Customize** to add images, 
 - **Product photographs:** upload at least two per piece — tiles, list rows and product rows fade to the second photograph on hover.
 - **Social media:** Instagram URL (footer *Contact* column).
 - **Store details** (Settings → General): store email receives contact-form enquiries and notify-me requests.
+- **Account icon:** "Show the account icon" stays off until Drop 001 is on sale.
+- **Favicon** (Theme settings → Favicon): upload the mark as a square PNG, at least 180×180. Without it the browser tab shows a globe.
+
+**Before the link is shared (sharing previews):**
+- **Online Store → Preferences:** homepage meta description, under 155 characters, plain voice, no "luxury" or "eco". This is also the description WhatsApp and Instagram show. Optionally a social sharing image (1200×630); without one the theme uses `assets/av-share.png`, the white wordmark on kumkum.
+- **Password page** (Customize → Password page): one line under the wordmark and the letter sign-up. Sign-ups land in Customers tagged `newsletter`.
+- **Enquiries:** the Exclusive form tags senders `exclusive`, the Contact form `contact`. Settings → Notifications → Staff order notifications / Settings → General → sender email decide who receives them; add Kamalam's address there so enquiries reach her.
 
 ## 9. Menus (optional)
 

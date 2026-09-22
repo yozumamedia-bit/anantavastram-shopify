@@ -304,7 +304,8 @@
 }
 
 /* ---------- Password page ---------- */
-.av-password-body { margin: 0; background: var(--av-kumkum); color: var(--av-white); }
+html:has(> .av-password-body), .av-password-body { background: var(--av-kumkum); }
+.av-password-body { margin: 0; color: var(--av-white); }
 .av-password { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 40px 16px 32px; box-sizing: border-box; text-align: center; }
 .av-password__main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; width: 100%; }
 .av-password__mark { margin: 0; line-height: 0; color: var(--av-white); }
