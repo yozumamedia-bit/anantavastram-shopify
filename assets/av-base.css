@@ -298,7 +298,7 @@ html.av-opening-active { overflow: hidden; }
 .av-footer__wordmark { font-family: var(--av-font-wordmark); font-weight: 700; font-size: 22px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--av-white); }
 .av-footer__blurb { font-family: var(--av-font-body); font-weight: 300; font-size: 13px; line-height: 1.7; color: var(--av-ivory); opacity: 0.85; max-width: 360px; }
 .av-footer__col { display: flex; flex-direction: column; gap: 14px; }
-.av-footer__title { font-family: var(--av-font-nav); font-weight: 400; font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--av-white); margin: 0; }
+.av-footer__title { font-family: var(--av-font-nav); font-weight: 400; font-size: 12px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--av-white); margin: 0; }
 .av-footer__col a { font-family: var(--av-font-nav); font-weight: 400; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--av-ivory); }
 .av-footer__col a:hover { color: var(--av-white); }
 .av-footer__news { display: flex; gap: 16px; justify-content: space-between; align-items: center; max-width: 360px; border-bottom: 1px solid rgba(255,255,255,0.5); padding-bottom: 8px; flex-wrap: wrap; }

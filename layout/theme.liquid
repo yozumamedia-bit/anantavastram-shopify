@@ -46,10 +46,7 @@
       {{ body_font_italic | font_face: font_display: 'swap' }}
       {{ body_font_bold_italic | font_face: font_display: 'swap' }}
       {{ settings.av_wordmark_font | font_face: font_display: 'swap' }}
-      {%- comment -%} General Sans (Indian Type Foundry, Fontshare licence) — self-hosted; the whole site except nav/footer links (Karla) and the SVG wordmark. {%- endcomment -%}
-      @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 300; font-display: swap; src: url('{{ 'general-sans-300.woff2' | asset_url }}') format('woff2'); }
-      @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url('{{ 'general-sans-500.woff2' | asset_url }}') format('woff2'); }
-      @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url('{{ 'general-sans-700.woff2' | asset_url }}') format('woff2'); }
+      {% render 'av-font-faces' %}
 
       :root {
         --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};

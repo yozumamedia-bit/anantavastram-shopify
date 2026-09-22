@@ -7,7 +7,7 @@
     </div>
     {%- for block in section.blocks -%}
       <div class="av-footer__col" {{ block.shopify_attributes }}>
-        <h2 class="av-footer__title">{{ block.settings.heading | escape }}</h2>
+        <p class="av-label av-footer__title">{{ block.settings.heading | escape }}</p>
         {%- if block.settings.menu.links.size > 0 -%}
           {%- for link in block.settings.menu.links -%}<a href="{{ link.url }}">{{ link.title | escape }}</a>{%- endfor -%}
         {%- elsif block.settings.fallback != 'none' -%}

@@ -302,3 +302,16 @@
   .av-list__name, .av-list__left, .av-list__item .av-price { grid-column: 2; }
   .av-list__item .av-price { font-size: 15px; }
 }
+
+/* ---------- Password page ---------- */
+.av-password-body { margin: 0; background: var(--av-kumkum); color: var(--av-white); }
+.av-password { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 40px 16px 32px; box-sizing: border-box; text-align: center; }
+.av-password__main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; width: 100%; }
+.av-password__mark { margin: 0; line-height: 0; color: var(--av-white); }
+.av-password__wordmark.av-wordmark--svg svg { height: auto; width: min(84vw, 720px); }
+.av-password__wordmark img { max-width: min(84vw, 720px); height: auto; }
+.av-password__line { margin: 0; color: var(--av-ivory); font-size: clamp(20px, 2.4vw, 28px); line-height: 1.3; }
+.av-password__news { width: min(100%, 360px); margin-top: 12px; text-align: left; }
+.av-password__entry summary { cursor: pointer; list-style: none; color: var(--av-ivory); opacity: 0.75; min-height: 44px; display: inline-flex; align-items: center; }
+.av-password__entry summary::-webkit-details-marker { display: none; }
+.av-password__form { width: min(84vw, 320px); margin: 8px auto 0; text-align: left; }
