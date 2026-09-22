@@ -9,7 +9,7 @@ https://claude.ai/code/artifact/00300329-5e1f-4940-9963-67387370613a
 ## Stack decisions (settled — don't relitigate)
 - Liquid theme on Dawn. No headless, no Hydrogen, no Tailwind, no Bootstrap, no jQuery.
 - Plain CSS with custom properties. `assets/av-base.css` (tokens, type roles, header, footer, opening) and `assets/av-sections.css` (one block per section). Both already written — extend, don't restyle.
-- Fonts: heading = Marcellus and body = Karla via Shopify's font picker; display = Rubik Mono One self-hosted as `assets/rubik-mono-one-400.woff2` (OFL; not in Shopify's library); wordmark text fallback = Cormorant 700 (`cormorant_n7`, Shopify library — Cormorant Garamond is not available). No Google Fonts runtime call. Production wordmark is **Montage Serif** (licence to be confirmed) — support an SVG logo upload in header/opening settings.
+- Fonts (decided 22 Sep 2026): **General Sans** (Indian Type Foundry, Fontshare licence — free for commercial use) self-hosted as `assets/general-sans-300.woff2` / `-500` / `-700`, exposed as `--av-font-sans`. Light 300 = body, labels, credo and page openers; Bold 700 = sub-headings and product names; Medium 500 = prices, counts, numerals. **Karla** (body font picker, `karla_n3`) is kept only for header nav, footer links/titles and showcase captions via `--av-font-nav`. Marcellus and Rubik Mono One are retired (the heading font picker is unused). Wordmark text fallback = Cormorant 700 (`cormorant_n7`, Shopify library — Cormorant Garamond is not available). No Google Fonts runtime call. Production wordmark is **Montage Serif** (licence to be confirmed) — support an SVG logo upload in header/opening settings.
 - Minimal JS, Dawn's Web Component style. Files: `av-opening.js` (once-per-session sequence via `sessionStorage`), `av-reveal.js` (IntersectionObserver adds `.is-in` to `.av-reveal`), `av-video.js` (tap-for-sound on loops).
 - Shopify CLI 3 for dev (`shopify theme dev --store <dev store>`); Theme Check as linter; GitHub integration: `main` → live theme, `develop` → unpublished theme. No Shopify store exists yet (Sep 2026) — build blind, verify when the Partner dev store is created.
 
@@ -18,7 +18,7 @@ kumkum `#9E1B1E` · kumkum-deep `#7A1216` · ivory `#F5EFE3` · ink `#4A4541` ·
 Rule: red header/footer/bands, ivory page, red text. Kara colours appear only in product photography, never in UI chrome.
 
 ## Type roles (classes in av-base.css)
-`.av-statement` Marcellus (credo, page openings, About headline) · `.av-sub` Rubik Mono One (sub-headings, collection names, chapter titles) · `.av-name` / `.av-price` Rubik Mono One (product names 22px, prices 18px) · `.av-body` Karla 300 · `.av-label` Karla 11px tracked uppercase · `.av-numeral` Marcellus Roman numerals.
+`.av-statement` General Sans Light (credo 40px, page openings, About headline; sentence case) · `.av-sub` General Sans Bold (sub-headings 40px, collection names, chapter titles; sentence case, never uppercase) · `.av-name` General Sans Bold 26px · `.av-price` General Sans Medium 18px · `.av-body` General Sans Light 16px · `.av-label` General Sans Light 12px, 0.16em tracked uppercase, grey-1 · `.av-numeral` General Sans Medium Roman numerals · header nav / footer links Karla 400 12px tracked uppercase (`--av-font-nav`).
 
 ## Header (every page)
 Red pane, sticky. Left = brand only: **Stories · Gallery · About**. Centre = wordmark (white). Right = commerce only: **Collections · Products · Exclusive** + search, account, bag icons (inline SVG, stroke 1.5). Mobile: burger → full-screen red drawer with the two groups. No Tamil script in the header.
@@ -30,7 +30,7 @@ Fixed red overlay, wordmark fades in (1.6s), holds ~1s, overlay slides up (`tran
 ## Page structures
 **Homepage (`templates/index.json`)**, in order:
 1. `av-hero` — one full-viewport still, no text, no button.
-2. `av-credo` — label + Marcellus statement + hairline.
+2. `av-credo` — label + Light statement + hairline.
 3. `av-showcase-three` — three tall images, Roman-numeral captions only.
 4. `av-story` — image left, text right, one text link.
 5. `av-film-banner` — full-bleed: 2/3 silent loop (tap opens drop film with sound) + 1/3 tall still; caption line below.
@@ -48,7 +48,7 @@ Fixed red overlay, wordmark fades in (1.6s), holds ~1s, overlay slides up (`tran
 
 **Gallery (`templates/page.gallery.json`)** — starts directly with images (no intro). Last three campaigns, each: image grid (lead 8/4 + stacked, row of three, 4/8 + loop) then title/season/credits (photographs, wearers named with consent, location, pieces). Link to campaign archive. No prices.
 
-**Stories (`templates/blog.json`, `article.json`)** — journal. Featured article full-width image + Marcellus headline; tabs All · Weavers · Embroidery · Motifs and design · The house (article tags); posts as alternating 5/7 rows (image | section·date·read time, Rubik title, dek, Read); a video post uses an article video metafield; "Earlier" 3-up grid; monthly letter sign-up line. Article page: 2/8/2 grid, 18px body.
+**Stories (`templates/blog.json`, `article.json`)** — journal. Featured article full-width image + Light statement headline; tabs All · Weavers · Embroidery · Motifs and design · The house (article tags); posts as alternating 5/7 rows (image | section·date·read time, Bold title, dek, Read); a video post uses an article video metafield; "Earlier" 3-up grid; monthly letter sign-up line. Article page: 2/8/2 grid, 18px body.
 
 ## Data model (create in Shopify admin; document in docs/setup.md)
 Metaobjects: `drop` (number, theme_name, season, status[current|open|closed], design_line, story, ensemble_image, collection ref) · `weaver` (name, portrait, role, years, unit) · `campaign` (title, season, photographer, wearers, location, images, film).

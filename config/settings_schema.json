@@ -11,7 +11,7 @@
     "name": "Ananta Vastram",
     "settings": [
       { "type": "header", "content": "Type" },
-      { "type": "font_picker", "id": "av_wordmark_font", "default": "cormorant_n7", "label": "Wordmark fallback font", "info": "Used only when no logo is set and the generated wordmark is missing. The display font (Rubik Mono One) is self-hosted and not a setting." },
+      { "type": "font_picker", "id": "av_wordmark_font", "default": "cormorant_n7", "label": "Wordmark fallback font", "info": "Used only when no logo is set and the generated wordmark is missing. General Sans (all text except nav and footer links) is self-hosted and not a setting; the body font picker (Karla) drives nav and footer links only; the heading font picker is unused." },
       { "type": "header", "content": "Wordmark" },
       { "type": "image_picker", "id": "av_logo", "label": "Logo (SVG or PNG, white on transparent)", "info": "Overrides the built-in Montage wordmark in header, footer and opening." },
       { "type": "header", "content": "Contact" },

@@ -45,9 +45,11 @@
       {{ body_font_bold | font_face: font_display: 'swap' }}
       {{ body_font_italic | font_face: font_display: 'swap' }}
       {{ body_font_bold_italic | font_face: font_display: 'swap' }}
-      {{ settings.type_header_font | font_face: font_display: 'swap' }}
       {{ settings.av_wordmark_font | font_face: font_display: 'swap' }}
-      @font-face { font-family: 'Rubik Mono One'; font-style: normal; font-weight: 400; font-display: swap; src: url('{{ 'rubik-mono-one-400.woff2' | asset_url }}') format('woff2'); }
+      {%- comment -%} General Sans (Indian Type Foundry, Fontshare licence) — self-hosted; the whole site except nav/footer links (Karla) and the SVG wordmark. {%- endcomment -%}
+      @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 300; font-display: swap; src: url('{{ 'general-sans-300.woff2' | asset_url }}') format('woff2'); }
+      @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url('{{ 'general-sans-500.woff2' | asset_url }}') format('woff2'); }
+      @font-face { font-family: 'General Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url('{{ 'general-sans-700.woff2' | asset_url }}') format('woff2'); }
 
       :root {
         --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
@@ -55,9 +57,9 @@
         --font-body-weight: {{ settings.type_body_font.weight }};
         --font-body-weight-bold: {{ settings.type_body_font.weight | plus: 300 | at_most: 1000 }};
 
-        --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
-        --font-heading-style: {{ settings.type_header_font.style }};
-        --font-heading-weight: {{ settings.type_header_font.weight }};
+        --font-heading-family: 'General Sans', 'Helvetica Neue', Arial, sans-serif; {%- comment -%} self-hosted; the heading font picker is unused {%- endcomment -%}
+        --font-heading-style: normal;
+        --font-heading-weight: 700;
         --av-wordmark-family: {{ settings.av_wordmark_font.family }}, {{ settings.av_wordmark_font.fallback_families }};
 
         --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
@@ -237,10 +239,8 @@
     {%- unless settings.type_body_font.system? -%}
       <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
     {%- endunless -%}
-    {%- unless settings.type_header_font.system? -%}
-      <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
-    {%- endunless -%}
-    {{ 'rubik-mono-one-400.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+    {{ 'general-sans-300.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+    {{ 'general-sans-700.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
 
     {%- if settings.predictive_search_enabled -%}
       <link rel="stylesheet" href="{{ 'component-predictive-search.css' | asset_url }}" media="print" onload="this.media='all'">
