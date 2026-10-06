@@ -1,5 +1,5 @@
 {%- comment -%}
-  Products page list: available pieces first, then sold-out, within each page of 50.
+  Products page list: available pieces first, then sold-out, within each page of 50. Sold out is av-edition-line's rule (context 'state').
   Renders on /collections/all (Shopify's automatic collection, default template) and on any collection using the products-all template.
 {%- endcomment -%}
 {%- if collection.handle == 'all' or template.suffix == 'products-all' -%}
@@ -11,18 +11,12 @@
     {%- else -%}
       <ul class="av-list__items">
         {%- for product in collection.products -%}
-          {%- liquid
-            assign fv = product.variants.first
-            assign q = fv.inventory_quantity | default: 0
-          -%}
-          {%- if fv.inventory_management != 'shopify' or q > 0 -%}{% render 'av-product-list-item', product: product %}{%- endif -%}
+          {%- capture state -%}{% render 'av-edition-line', product: product, context: 'state' %}{%- endcapture -%}
+          {%- unless state contains 'sold' -%}{% render 'av-product-list-item', product: product %}{%- endunless -%}
         {%- endfor -%}
         {%- for product in collection.products -%}
-          {%- liquid
-            assign fv = product.variants.first
-            assign q = fv.inventory_quantity | default: 0
-          -%}
-          {%- if fv.inventory_management == 'shopify' and q <= 0 -%}{% render 'av-product-list-item', product: product %}{%- endif -%}
+          {%- capture state -%}{% render 'av-edition-line', product: product, context: 'state' %}{%- endcapture -%}
+          {%- if state contains 'sold' -%}{% render 'av-product-list-item', product: product %}{%- endif -%}
         {%- endfor -%}
       </ul>
     {%- endif -%}

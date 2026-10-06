@@ -21,7 +21,7 @@
       { "type": "checkbox", "id": "av_header_over_hero", "label": "Transparent over the homepage hero", "info": "The header sits over the hero photograph and turns red once the page scrolls. Homepage only.", "default": false },
       { "type": "header", "content": "Commerce copy" },
       { "type": "text", "id": "av_tax_line", "label": "Price note (product rows and pages)", "info": "Shown under the price. Leave empty to hide.", "default": "Inclusive of all taxes" },
-      { "type": "text", "id": "av_shipping_line", "label": "Shipping line (product rows and pages)", "default": "[Shipping terms — India and worldwide, duties note]" },
+      { "type": "text", "id": "av_shipping_line", "label": "Shipping line (once under each collection banner, and the product page)", "default": "[Shipping terms — India and worldwide, duties note]" },
       { "type": "text", "id": "av_currency_line", "label": "Footer currency line", "default": "India (INR ₹)" }
     ]
   },
@@ -136,13 +136,6 @@
       {
         "type": "header",
         "content": "t:settings_schema.typography.settings.header__1.content"
-      },
-      {
-        "type": "font_picker",
-        "id": "type_header_font",
-        "default": "assistant_n4",
-        "label": "t:settings_schema.typography.settings.type_header_font.label",
-        "info": "t:settings_schema.typography.settings.type_header_font.info"
       },
       {
         "type": "range",

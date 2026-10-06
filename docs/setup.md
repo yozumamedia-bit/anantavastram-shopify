@@ -64,7 +64,8 @@ Admin paths are for the current Shopify admin (September 2026). `[brackets]` in 
 | `av.numeral` | Single line text | "No. IV" |
 | `av.tier` | Single line text, choices `everyday`, `occasion`, `commission` | label; also add the same word as a **tag** (§3) |
 | `av.weaver` | Metaobject reference → `weaver` | "Woven by …" |
-| `av.edition_total` | Integer | "3 of 8 left"; hides edition lines when empty |
+| `av.edition_total` | Integer | the edition's size — "3 of 8 left"; hides edition lines when empty |
+| `av.edition_placed` | Integer | pieces placed so far (0 when empty). Remaining = `edition_total − edition_placed`; the piece is sold out when this reaches `edition_total`. Raise it by one as each number is placed |
 | `av.lead_time_weeks` | Integer | "Made to order. 6 weeks from confirmation." |
 | `av.loom_hours` | Integer | Materials and motif accordion |
 | `av.motif_name_ta` | Single line text | motif (Tamil) |
@@ -101,7 +102,7 @@ Admin paths are for the current Shopify admin (September 2026). `[brackets]` in 
 
 For every numbered piece:
 1. **One variant.** Price in INR.
-2. **Inventory:** "Track quantity" **on**, quantity = pieces available; "Continue selling when out of stock" **off**. The theme treats a tracked piece at 0 as sold out ("Sold out" tiles, "All 8 placed", notify-me form).
+2. **Inventory:** "Track quantity" **on**, quantity = pieces in stock. **Sold out means the edition is complete**, not stock at 0: a piece is sold out when `av.edition_placed` reaches `av.edition_total` (or when Shopify itself stops the sale). So for a piece with an open edition, "Continue selling when out of stock" must be **ON** — at 0 it reads "Made to order" on tiles, rows and the list, and stays orderable; the counts ("3 of 8 left", "pieces remain") come from the two metafields. Once the edition is complete the theme shows "Sold out", "All 8 placed" and the notify-me form. A piece with no `av.edition_total` keeps the plain inventory rule: tracked and at 0 is sold out.
 3. **Tag** with its tier: `everyday` or `occasion` (drives the Products page filter tabs).
 4. Add to its numbered collection.
 5. Fill the `av.*` metafields (§2). Upload photographs in order — the first is the lead image.
@@ -140,7 +141,7 @@ Then open each page in **Online Store → Themes → Customize** to add images, 
 ## 8. Theme settings
 
 **Online Store → Themes → Customize → Theme settings.**
-- **Ananta Vastram:** WhatsApp number (digits with country code, e.g. `919876543210` — every WhatsApp link, including the floating button, stays hidden until this is set); floating WhatsApp button on/off; header transparent over the homepage hero on/off (turns red on scroll); price note under prices ("Inclusive of all taxes"); shipping line (product rows and pages); footer currency line; optional logo image (overrides the built-in Montage wordmark).
+- **Ananta Vastram:** WhatsApp number (digits with country code, e.g. `919876543210` — every WhatsApp link, including the floating button, stays hidden until this is set); floating WhatsApp button on/off; header transparent over the homepage hero on/off (turns red on scroll); price note under prices ("Inclusive of all taxes"); shipping line (printed once under each collection banner and collection header, and in the product page's Shipping accordion — never per row); footer currency line; optional logo image (overrides the built-in Montage wordmark).
 - **Product photographs:** upload at least two per piece — tiles, list rows and product rows fade to the second photograph on hover.
 - **Social media:** Instagram URL (footer *Contact* column).
 - **Store details** (Settings → General): store email receives contact-form enquiries and notify-me requests.
@@ -162,7 +163,7 @@ Any other menu can be picked in the header/footer sections in the theme editor. 
 
 ## 10. Content in the theme editor
 
-- **Home:** hero still; credo; three showcase images; story image and text; film banner (silent loop, full film, poster, still); collection rows pick the two newest open collections automatically (or choose one); Commissions row copy and image.
+- **Home:** hero still; credo; three showcase images; story image and text; film banner (silent loop, full film, poster, still); collection rows pick the two newest open collections automatically (or choose one); Commissions band — eyebrow, full-bleed image, statement, link.
 - **Product template:** default shipping and care text.
 - Replace every `[bracketed]` placeholder as facts arrive.
 
@@ -185,8 +186,9 @@ python3 -m venv .venv && .venv/bin/pip install fonttools
 
 ## Check after setup
 
-- `/` — hero, credo, showcase, story, film, two collection rows, Commissions row.
-- `/collections` — current collection band first, six tiles with "N of N left", past collections below.
+- `/` — hero, credo, showcase, story, film, two collection rows (shipping line once under each banner), Commissions band.
+- `/collections` — current collection band first, six tiles (name, price, "N of N left"), past collections below with the outline chip.
+- `/blogs/stories` — featured story, then three rows (5/7, 7/5, full-width), then the Earlier grid of six.
 - `/collections/drop-001` — collection header with counts, one piece per row.
 - `/collections/all`, `/collections/all/occasion` — compact list, sold-out pieces last.
 - A product — sticky panel, order button adds to cart; set a piece to 0 to see the notify-me form.

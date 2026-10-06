@@ -1,13 +1,19 @@
-{%- comment -%} One product, one row. Usage: {% render 'av-product-row', product: product %} {%- endcomment -%}
+{%- comment -%}
+  One product, one row. Usage: {% render 'av-product-row', product: product %}
+  Sold out / made to order comes from snippets/av-edition-line.liquid (context 'state'), the one source of that rule.
+  The shipping line is printed once under the collection banner (av-drop-banner), never per row.
+{%- endcomment -%}
 {%- liquid
   assign mf = product.metafields.av
   assign weaver = mf.weaver.value
-  assign v = product.selected_or_first_available_variant | default: product.variants.first
+  assign edition_total = mf.edition_total.value | default: 0
+  capture state
+    render 'av-edition-line', product: product, context: 'state'
+  endcapture
   assign sold_out = false
-  if v.inventory_management == 'shopify' and v.inventory_quantity <= 0
+  if state contains 'sold'
     assign sold_out = true
   endif
-  assign edition_total = mf.edition_total.value | default: 0
 -%}
 <article class="av-row{% if sold_out %} av-row--sold{% endif %}">
   <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">{% render 'av-media', image: product.featured_image, alt_image: product.images[1], vt: product.handle, ratio: '520 / 560', sizes: '(min-width: 1100px) 520px, (min-width: 900px) 50vw, 100vw' %}</a>
@@ -39,7 +45,6 @@
     <div class="av-row__note"><div class="av-label">Edition</div><div class="av-body av-body--s">{% render 'av-edition-line', product: product, context: 'row' %}</div></div>
     {%- endif -%}
     <div class="av-row__note"><div class="av-label">Availability</div><div class="av-body av-body--s">{% if sold_out %}Sold out.{% else %}Made to order.{% if mf.lead_time_weeks.value != blank %} {{ mf.lead_time_weeks.value }} {% if mf.lead_time_weeks.value == 1 %}week{% else %}weeks{% endif %} from confirmation.{% endif %}{% endif %}</div></div>
-    <div class="av-row__note"><div class="av-label">Shipping</div><div class="av-body av-body--s">{{ settings.av_shipping_line | escape }}</div></div>
     <a class="av-link" href="{{ product.url }}">View the piece</a>
   </div>
 </article>

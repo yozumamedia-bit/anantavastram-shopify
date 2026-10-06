@@ -5,9 +5,11 @@
     <h2 class="av-sub av-sub--m">{{ section.settings.heading | escape }}</h2>
   </div>
   {%- if section.settings.mode == 'list' -%}
+    {%- comment -%} Roman numerals, as the About chapters: one numbering system on the page. {%- endcomment -%}
+    {%- assign romans = 'I,II,III,IV,V,VI,VII,VIII,IX,X,XI,XII' | split: ',' -%}
     <div class="av-band__list">
       {%- for block in section.blocks -%}
-        <div class="av-band__item" {{ block.shopify_attributes }}><div class="av-band__num" aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div><div class="av-stack" style="gap:8px"><h3 class="av-sub av-sub--xs">{{ block.settings.title | escape }}</h3><div class="av-body">{{ block.settings.text | escape | newline_to_br }}</div></div></div>
+        <div class="av-band__item" {{ block.shopify_attributes }}><div class="av-numeral av-band__num" aria-hidden="true">{{ romans[forloop.index0] }}</div><div class="av-stack" style="gap:8px"><h3 class="av-sub av-sub--xs">{{ block.settings.title | escape }}</h3><div class="av-body">{{ block.settings.text | escape | newline_to_br }}</div></div></div>
       {%- endfor -%}
     </div>
   {%- else -%}

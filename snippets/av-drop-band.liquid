@@ -1,6 +1,7 @@
 {%- comment -%}
   One drop's band + its tile grid. Usage: {% render 'av-drop-band', drop: drop, mode: 'current' %}
   mode: 'current' (large band, on the collections index) | 'past' (compact band, closed/open chip).
+  Remaining per piece comes from snippets/av-edition-line.liquid (context 'remaining'); sections/av-drop-header.liquid sums it the same way.
 {%- endcomment -%}
 {%- liquid
   assign col = drop.collection.value
@@ -8,12 +9,11 @@
   assign remaining = 0
   assign total = 0
   for p in col.products
-    assign v = p.variants.first
-    if v.inventory_management != 'shopify'
-      assign remaining = remaining | plus: 1
-    elsif v.inventory_quantity > 0
-      assign remaining = remaining | plus: v.inventory_quantity
-    endif
+    capture r
+      render 'av-edition-line', product: p, context: 'remaining'
+    endcapture
+    assign r = r | strip | plus: 0
+    assign remaining = remaining | plus: r
     assign et = p.metafields.av.edition_total.value | default: 0
     assign total = total | plus: et
   endfor
@@ -38,7 +38,7 @@
     <div class="av-stack" style="gap:28px">
       <div class="av-drop__head"><span class="av-label">Collection {{ padded }}{% if drop.season.value != blank %} · {{ drop.season.value | escape }}{% endif %}</span><span class="av-chip">Current collection</span></div>
       <h2 class="av-sub av-sub--l">{% if drop.theme_name.value != blank %}{{ drop.theme_name.value | escape }}{% else %}Collection {{ padded }}{% endif %}</h2>
-      {%- if drop.design_line.value != blank -%}<div class="av-label av-label--red">The design · {{ drop.design_line.value | escape }}</div>{%- endif -%}
+      {%- if drop.design_line.value != blank -%}<div class="av-label av-label--red av-ta">The design · {{ drop.design_line.value | escape }}</div>{%- endif -%}
       {%- if drop.story.value != blank -%}<div class="av-body">{{ drop.story.value | escape | newline_to_br }}</div>{%- endif -%}
       <div class="av-counts">
         <div class="av-count"><span class="av-label">Pieces</span><span class="av-count__v">{{ pieces }}</span></div>
@@ -54,7 +54,7 @@
 <section class="av-past">
   <div class="av-past__head">
     <div class="av-stack" style="gap:22px">
-      <div class="av-drop__head"><span class="av-label">Collection {{ padded }}{% if drop.season.value != blank %} · {{ drop.season.value | escape }}{% endif %}</span>{% if closed %}<span class="av-chip av-chip--outline">Closed</span>{% else %}<span class="av-chip">Pieces remaining</span>{% endif %}</div>
+      <div class="av-drop__head"><span class="av-label">Collection {{ padded }}{% if drop.season.value != blank %} · {{ drop.season.value | escape }}{% endif %}</span>{% if closed %}<span class="av-chip av-chip--outline av-chip--closed">Closed</span>{% else %}<span class="av-chip av-chip--outline">Pieces remaining</span>{% endif %}</div>
       <h3 class="av-sub av-sub--m">{% if drop.theme_name.value != blank %}{{ drop.theme_name.value | escape }}{% else %}Collection {{ padded }}{% endif %}</h3>
       <div class="av-counts">
         <div class="av-count"><span class="av-label">Pieces</span><span class="av-count__v">{{ pieces }}</span></div>

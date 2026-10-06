@@ -3,8 +3,11 @@
   assign weaver = mf.weaver.value
   assign drop = mf.drop.value
   assign v = product.selected_or_first_available_variant | default: product.variants.first
+  capture state
+    render 'av-edition-line', product: product, context: 'state'
+  endcapture
   assign sold_out = false
-  if v.available == false
+  if state contains 'sold'
     assign sold_out = true
   endif
   assign form_id = 'product-form-' | append: section.id
@@ -61,8 +64,9 @@
   assign worn_with = mf.worn_with.value
   assign measure_page = pages['size-and-measure']
   comment
-    Sold-out uses variant.available, which assumes "continue selling when out of stock" is OFF (docs/setup.md);
-    tiles, rows and av-edition-line key on inventory_quantity and agree under that rule.
+    Sold out is snippets/av-edition-line.liquid's rule (edition complete, or variant.available false); tiles, rows and
+    the list read the same snippet. A piece at inventory 0 with an open edition is made to order and keeps the order form,
+    which needs "continue selling when out of stock" ON for that piece (docs/setup.md §3).
   endcomment
   assign renderable_media = 0
   for m in product.media
@@ -146,7 +150,7 @@
       <details class="av-acc"><summary><h2 class="av-acc__title">Materials and motif</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">
         {%- if mf.yarn.value != blank -%}<p>Yarn: {{ mf.yarn.value | escape }}</p>{%- endif -%}
         {%- if mf.dye.value != blank -%}<p>Dye: {{ mf.dye.value | escape }}</p>{%- endif -%}
-        {%- if mf.motif_name_ta.value != blank and mf.motif_name_en.value != blank -%}<p>Motif: {{ mf.motif_name_ta.value | escape }} — {{ mf.motif_name_en.value | escape }}</p>{%- elsif mf.motif_name_ta.value != blank -%}<p>Motif: {{ mf.motif_name_ta.value | escape }}</p>{%- elsif mf.motif_name_en.value != blank -%}<p>Motif: {{ mf.motif_name_en.value | escape }}</p>{%- endif -%}
+        {%- if mf.motif_name_ta.value != blank and mf.motif_name_en.value != blank -%}<p>Motif: <span class="av-ta" lang="ta">{{ mf.motif_name_ta.value | escape }}</span> — {{ mf.motif_name_en.value | escape }}</p>{%- elsif mf.motif_name_ta.value != blank -%}<p>Motif: <span class="av-ta" lang="ta">{{ mf.motif_name_ta.value | escape }}</span></p>{%- elsif mf.motif_name_en.value != blank -%}<p>Motif: {{ mf.motif_name_en.value | escape }}</p>{%- endif -%}
         {%- if mf.cloth_weight.value != blank or mf.cloth_width.value != blank or mf.cloth_length.value != blank -%}
         <dl class="av-measure">
           {%- if mf.cloth_weight.value != blank -%}<div><dt class="av-label">Weight</dt><dd>{{ mf.cloth_weight.value | escape }}</dd></div>{%- endif -%}

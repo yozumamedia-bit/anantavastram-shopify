@@ -1,23 +1,51 @@
+{%- comment -%}
+  Story rows. Page 1 of the main listing: the featured story (blog metafield av.featured_article, else the newest;
+  av-featured-article shows it) is skipped, then exactly three rows — 5/7 (image left), 7/5 (image right), full-width
+  (image full-bleed, text below) — and av-earlier takes the rest of the page as the 3-up "Earlier" grid, with "All stories"
+  continuing to page 2. Page 2 onwards, and tag pages, repeat the three-row rhythm for every story.
+  A page holds ten stories (featured + three rows + six earlier), so page 2 starts at the eleventh.
+  Row layouts key on nth-of-type in av-sections.css — the hidden h2 is not an article, so it never shifts the rhythm —
+  and this file sets the matching image ratio for each slot.
+{%- endcomment -%}
 {%- liquid
   assign featured = blog.metafields.av.featured_article.value | default: blog.articles.first
+  assign per_page = 10
 -%}
 <section class="av-posts">
   <h2 class="visually-hidden">Stories</h2>
-  {%- paginate blog.articles by 7 -%}
+  {%- paginate blog.articles by per_page -%}
     {%- liquid
+      assign first_page = false
+      if current_tags == blank and paginate.current_page == 1
+        assign first_page = true
+      endif
       assign skip_featured = false
-      if current_tags == blank and paginate.current_page == 1 and featured != blank
+      if first_page and featured != blank
         assign skip_featured = true
       endif
+      assign shown = 0
     -%}
     {%- for article in blog.articles -%}
       {%- if skip_featured and article.id == featured.id %}{% continue %}{% endif -%}
+      {%- if first_page and shown == 3 %}{% break %}{% endif -%}
+      {%- liquid
+        assign shown = shown | plus: 1
+        assign slot = shown | modulo: 3
+        assign ratio = '600 / 520'
+        assign sizes = '(min-width: 900px) 42vw, 100vw'
+        if slot == 2
+          assign sizes = '(min-width: 900px) 58vw, 100vw'
+        elsif slot == 0
+          assign ratio = '1440 / 640'
+          assign sizes = '100vw'
+        endif
+      -%}
       <article class="av-post">
         <div class="av-post__media">
           {%- if article.metafields.av.video.value.sources.size > 0 -%}
             {% render 'av-video', loop_video: article.metafields.av.video.value, poster: article.image, class: 'av-post__video' %}
           {%- else -%}
-            <a href="{{ article.url }}" tabindex="-1" aria-hidden="true">{% render 'av-media', image: article.image, ratio: '600 / 520', sizes: '(min-width: 900px) 42vw, 100vw', alt: '' %}</a>
+            <a href="{{ article.url }}" tabindex="-1" aria-hidden="true">{% render 'av-media', image: article.image, ratio: ratio, sizes: sizes, alt: '' %}</a>
           {%- endif -%}
         </div>
         <div class="av-post__text">
@@ -30,7 +58,8 @@
     {%- else -%}
       <p class="av-body" style="padding:48px 0">{% if current_tags != blank %}No stories in this section yet.{% else %}No stories yet.{% endif %}</p>
     {%- endfor -%}
-    {%- if paginate.pages > 1 -%}<nav class="av-pages" aria-label="Pagination" style="padding-bottom:40px">{{ paginate | default_pagination }}</nav>{%- endif -%}
+    {%- comment -%} On page 1 the Earlier grid's "All stories" link is the way to page 2. {%- endcomment -%}
+    {%- if paginate.pages > 1 and first_page == false -%}<nav class="av-pages" aria-label="Pagination" style="padding-bottom:40px">{{ paginate | default_pagination }}</nav>{%- endif -%}
   {%- endpaginate -%}
 </section>
 {% schema %}

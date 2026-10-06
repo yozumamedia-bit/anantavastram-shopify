@@ -114,6 +114,9 @@ img, video { max-width: 100%; display: block; }
 
 .av-numeral { font-family: var(--av-font-heading); font-weight: 500; font-size: 15px; letter-spacing: 0.2em; color: var(--av-kumkum); }
 
+/* Tamil text (motif names, design lines): General Sans has no Tamil, so the stack names Noto Sans Tamil for those glyphs. The family is only named here — nothing is loaded. */
+.av-ta { font-family: var(--av-font-sans), 'Noto Sans Tamil', sans-serif; }
+
 .av-link {
   display: inline-block;
   font-family: var(--av-font-body);
@@ -141,7 +144,9 @@ img, video { max-width: 100%; display: block; }
   color: var(--av-ivory);
   background: var(--av-kumkum);
 }
-.av-chip--outline { color: var(--av-grey-1); background: none; border: 1px solid var(--av-grey-2); padding: 7px 13px; }
+/* the filled chip is only ever "Current collection"; past collections with pieces left get the kumkum outline, closed ones the grey */
+.av-chip--outline { color: var(--av-kumkum); background: none; border: 1px solid var(--av-kumkum); padding: 7px 13px; }
+.av-chip--closed { color: var(--av-grey-1); border-color: var(--av-grey-2); }
 
 .av-button {
   display: inline-block;

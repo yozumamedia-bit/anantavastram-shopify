@@ -1,8 +1,10 @@
-{%- comment -%} One compact list row. Usage (inside a <ul class="av-list__items">): {% render 'av-product-list-item', product: product %} {%- endcomment -%}
+{%- comment -%} One compact list row. Usage (inside a <ul class="av-list__items">): {% render 'av-product-list-item', product: product %}  Sold out comes from snippets/av-edition-line.liquid (context 'state'). {%- endcomment -%}
 {%- liquid
-  assign v = product.variants.first
+  capture state
+    render 'av-edition-line', product: product, context: 'state'
+  endcapture
   assign sold = false
-  if v.inventory_management == 'shopify' and v.inventory_quantity <= 0
+  if state contains 'sold'
     assign sold = true
   endif
   assign mf = product.metafields.av

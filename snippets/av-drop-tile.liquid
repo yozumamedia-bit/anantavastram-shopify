@@ -1,17 +1,27 @@
-{%- comment -%} Usage: {% render 'av-drop-tile', product: product %} {%- endcomment -%}
+{%- comment -%}
+  Usage: {% render 'av-drop-tile', product: product %}
+  Photograph, name, price, then numeral · tier and the count. Sold out dims the photograph only (CSS .av-tile--sold .av-media);
+  the name stays legible and, as in the rows, the price goes once the edition is complete.
+  Sold out / made to order comes from snippets/av-edition-line.liquid (context 'state').
+{%- endcomment -%}
 {%- liquid
-  assign v = product.selected_or_first_available_variant | default: product.variants.first
+  assign mf = product.metafields.av
+  capture state
+    render 'av-edition-line', product: product, context: 'state'
+  endcapture
   assign sold = false
-  if v.inventory_management == 'shopify' and v.inventory_quantity <= 0
+  if state contains 'sold'
     assign sold = true
   endif
-  assign mf = product.metafields.av
 -%}
 <a class="av-tile{% if sold %} av-tile--sold{% endif %}" href="{{ product.url }}">
   {% render 'av-media', image: product.featured_image, alt_image: product.images[1], vt: product.handle, ratio: '3 / 4', sizes: '(min-width: 900px) 16vw, 50vw', alt: '' %}
-  <div class="av-tile__meta">
-    <span class="av-label">{% if mf.numeral.value != blank %}{{ mf.numeral.value | escape }}{% if mf.tier.value != blank %} · {% endif %}{% endif %}{% if mf.tier.value != blank %}{{ mf.tier.value | capitalize | escape }}{% endif %}</span>
-    <span class="av-tile__left">{% render 'av-edition-line', product: product, context: 'tile' %}</span>
-  </div>
-  <div class="av-sub av-sub--xs" style="font-size:12px">{{ product.title | escape }}</div>
+  <span class="av-tile__text">
+    <span class="av-name av-tile__name">{{ product.title | escape }}</span>
+    {%- unless sold -%}<span class="av-price av-tile__price">{{ product.price | money }}</span>{%- endunless -%}
+    <span class="av-tile__meta">
+      {%- if mf.numeral.value != blank or mf.tier.value != blank -%}<span class="av-label">{% if mf.numeral.value != blank %}{{ mf.numeral.value | escape }}{% if mf.tier.value != blank %} · {% endif %}{% endif %}{% if mf.tier.value != blank %}{{ mf.tier.value | capitalize | escape }}{% endif %}</span>{%- endif -%}
+      <span class="av-tile__left">{% render 'av-edition-line', product: product, context: 'tile' %}</span>
+    </span>
+  </span>
 </a>

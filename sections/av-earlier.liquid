@@ -1,14 +1,33 @@
-{%- comment -%} Three articles after page 1's rows, skipping the featured story (blog metafield av.featured_article). {%- endcomment -%}
-{%- assign featured = blog.metafields.av.featured_article.value | default: blog.articles.first -%}
-{%- if current_tags == blank and current_page == 1 and blog.articles_count > 7 -%}
+{%- comment -%}
+  Page 1 of the main listing only: the 3-up "Earlier" grid takes the rest of the page's ten stories once the featured
+  story (blog metafield av.featured_article, else the newest) and av-posts' three rows are out — six, normally.
+  "All stories" continues to page 2, which starts at the eleventh story. per_page and rows mirror av-posts.
+{%- endcomment -%}
+{%- liquid
+  assign featured = blog.metafields.av.featured_article.value | default: blog.articles.first
+  assign per_page = 10
+  assign rows = 3
+  assign passed = 0
+  assign earlier_n = 0
+  for article in blog.articles limit: per_page
+    if article.id == featured.id
+      continue
+    endif
+    if passed < rows
+      assign passed = passed | plus: 1
+      continue
+    endif
+    assign earlier_n = earlier_n | plus: 1
+  endfor
+-%}
+{%- if current_tags == blank and current_page == 1 and earlier_n > 0 -%}
 <section class="av-earlier">
-  <div class="av-earlier__head"><h2 class="av-sub av-sub--s">Earlier</h2><a class="av-link" href="{{ blog.url }}?page=2">All stories</a></div>
+  <div class="av-earlier__head"><h2 class="av-sub av-sub--s">Earlier</h2>{% if blog.articles_count > per_page %}<a class="av-link" href="{{ blog.url }}?page=2">All stories</a>{% endif %}</div>
   <div class="av-grid av-grid--3">
-    {%- assign shown = 0 -%}
-    {%- for article in blog.articles offset: 7 limit: 4 -%}
+    {%- assign passed = 0 -%}
+    {%- for article in blog.articles limit: per_page -%}
       {%- if article.id == featured.id %}{% continue %}{% endif -%}
-      {%- if shown == 3 %}{% break %}{% endif -%}
-      {%- assign shown = shown | plus: 1 -%}
+      {%- if passed < rows %}{% assign passed = passed | plus: 1 %}{% continue %}{% endif -%}
       <a class="av-earlier__item" href="{{ article.url }}">
         {% render 'av-media', image: article.image, ratio: '4 / 3', sizes: '(min-width: 900px) 33vw, 100vw', alt: '' %}
         {% render 'av-article-meta', article: article %}

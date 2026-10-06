@@ -1,5 +1,5 @@
 {%- liquid
-  paginate blog.articles by 7
+  paginate blog.articles by 10
     assign count = paginate.items
   endpaginate
   assign active_tag = current_tags.first | handleize

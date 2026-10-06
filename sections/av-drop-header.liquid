@@ -1,4 +1,4 @@
-{%- comment -%} The counts loop mirrors snippets/av-drop-band.liquid (canonical copy) — change both together. {%- endcomment -%}
+{%- comment -%} The counts loop mirrors snippets/av-drop-band.liquid (canonical copy) — change both together; remaining per piece is av-edition-line's (context 'remaining'). {%- endcomment -%}
 {%- comment -%} /collections/all (Shopify's automatic all-products collection) is the Products page: its sections live in this template too, keyed on the handle. {%- endcomment -%}
 {%- unless collection.handle == 'all' -%}
 {%- liquid
@@ -9,12 +9,11 @@
     assign remaining = 0
     assign total = 0
     for p in collection.products
-      assign v = p.variants.first
-      if v.inventory_management != 'shopify'
-        assign remaining = remaining | plus: 1
-      elsif v.inventory_quantity > 0
-        assign remaining = remaining | plus: v.inventory_quantity
-      endif
+      capture r
+        render 'av-edition-line', product: p, context: 'remaining'
+      endcapture
+      assign r = r | strip | plus: 0
+      assign remaining = remaining | plus: r
       assign et = p.metafields.av.edition_total.value | default: 0
       assign total = total | plus: et
     endfor
@@ -26,7 +25,7 @@
     <h1 class="av-statement av-statement--xl">{% if drop != blank and drop.theme_name.value != blank %}{{ drop.theme_name.value | escape }}{% else %}{{ collection.title | escape }}{% endif %}</h1>
   </div>
   <div class="av-stack">
-    {%- if drop != blank and drop.design_line.value != blank -%}<div class="av-label av-label--red">The design · {{ drop.design_line.value | escape }}</div>{%- endif -%}
+    {%- if drop != blank and drop.design_line.value != blank -%}<div class="av-label av-label--red av-ta">The design · {{ drop.design_line.value | escape }}</div>{%- endif -%}
     {%- if drop != blank and drop.story.value != blank -%}<div class="av-body">{{ drop.story.value | escape | newline_to_br }}</div>{%- elsif collection.description != blank -%}<div class="av-body">{{ collection.description }}</div>{%- endif -%}
     {%- if drop != blank -%}
     <div class="av-counts">
@@ -34,6 +33,8 @@
       <div class="av-count"><span class="av-label">Remaining</span><span class="av-count__v">{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %}</span></div>
     </div>
     {%- endif -%}
+    {%- comment -%} The shipping line is printed once here; the rows below carry none (the product page has its own accordion). {%- endcomment -%}
+    {%- if settings.av_shipping_line != blank -%}<div class="av-body av-body--meta">{{ settings.av_shipping_line | escape }}</div>{%- endif -%}
   </div>
 </section>
 {%- endunless -%}

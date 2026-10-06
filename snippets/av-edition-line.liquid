@@ -1,28 +1,56 @@
 {%- comment -%}
-  Usage: {% render 'av-edition-line', product: product, context: 'tile' %}  context: tile | row | page
-  tile: "3 of 8 left" / "Sold out"
-  row:  "8 pieces in Collection 001. 3 remain." / "8 pieces in Collection 001. All placed."
-  page: "3 of 8 remain" / "All 8 placed"
-  Assumes overselling is off (inventory_policy: deny); a tracked variant at 0 reads as sold out.
+  The one source of the sold-out rule. Usage: {% render 'av-edition-line', product: product, context: 'tile' %}
+  context: tile | row | page | state | remaining
+    tile:      "3 of 8 left" / "Made to order" / "Sold out"            (tiles and the Products list)
+    row:       "8 pieces in Collection 001. 3 remain." / "… All placed."
+    page:      "3 of 8 remain" / "All 8 placed"
+    state:     sold | mto | open  — callers branch on it: {% capture state %}{% render … context: 'state' %}{% endcapture %}
+    remaining: the integer the collection bands sum into "N of N"
+  Rule: a piece is sold out when its edition is complete — av.edition_placed (pieces placed so far) has reached
+  av.edition_total — or when Shopify itself stops the sale (variant.available == false). Inventory at 0 with an open
+  edition is "Made to order" and stays orderable, so "Continue selling when out of stock" must be ON for those pieces
+  (docs/setup.md §3). Products with no av.edition_total keep the inventory rule: a tracked variant at 0 is sold out.
 {%- endcomment -%}
 {%- liquid
   assign v = product.selected_or_first_available_variant | default: product.variants.first
-  assign remaining = v.inventory_quantity | default: 0
-  if v.inventory_management != 'shopify'
-    assign remaining = 1
-  endif
   assign total = product.metafields.av.edition_total.value | default: 0
-  assign drop = product.metafields.av.drop.value
-  assign drop_no = drop.number.value
-  if remaining < 0
+  assign placed = product.metafields.av.edition_placed.value | default: 0
+  assign tracked_out = false
+  if v.inventory_management == 'shopify' and v.inventory_quantity <= 0
+    assign tracked_out = true
+  endif
+  assign sold = false
+  assign mto = false
+  if total > 0
+    assign remaining = total | minus: placed
+    if placed >= total or v.available == false
+      assign sold = true
+    elsif tracked_out
+      assign mto = true
+    endif
+  else
+    assign remaining = v.inventory_quantity | default: 0
+    if v.inventory_management != 'shopify'
+      assign remaining = 1
+    endif
+    if tracked_out or v.available == false
+      assign sold = true
+    endif
+  endif
+  if sold or remaining < 0
     assign remaining = 0
   endif
+  assign drop_no = product.metafields.av.drop.value.number.value
 -%}
 {%- case context -%}
+{%- when 'state' -%}
+  {%- if sold -%}sold{%- elsif mto -%}mto{%- else -%}open{%- endif -%}
+{%- when 'remaining' -%}
+  {{- remaining -}}
 {%- when 'row' -%}
   {%- if total > 0 -%}{{ total }} pieces{% if drop_no %} in Collection {{ drop_no | prepend: '00' | slice: -3, 3 }}{% endif %}. {% if remaining > 0 %}{{ remaining }} remain.{% else %}All placed.{% endif %}{%- endif -%}
 {%- when 'page' -%}
-  {%- if remaining > 0 -%}{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %} remain{%- else -%}{% if total > 0 %}All {{ total }} placed{% else %}All placed{% endif %}{%- endif -%}
+  {%- if sold -%}{% if total > 0 %}All {{ total }} placed{% else %}All placed{% endif %}{%- else -%}{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %} remain{%- endif -%}
 {%- else -%}
-  {%- if remaining > 0 -%}{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %} left{%- else -%}Sold out{%- endif -%}
+  {%- if sold -%}Sold out{%- elsif mto -%}Made to order{%- else -%}{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %} left{%- endif -%}
 {%- endcase -%}

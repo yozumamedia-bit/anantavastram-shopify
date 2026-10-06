@@ -1,8 +1,12 @@
-{%- comment -%} Usage: {% render 'av-drop-banner', label: 'Collection 001', title: drop.theme_name, meta: 'Three pieces · Pongal 2027' %} {%- endcomment -%}
+{%- comment -%}
+  Usage: {% render 'av-drop-banner', label: 'Collection 001', title: drop.theme_name, meta: 'Three pieces · Pongal 2027', shipping: true %}
+  shipping: true prints the theme's shipping line once, under the banner — the rows beneath carry none.
+{%- endcomment -%}
 <div class="av-drop-banner">
   <div class="av-drop-banner__title">
     <span class="av-label">{{ label | escape }}</span>
     <h2 class="av-sub av-sub--l">{{ title | escape }}</h2>
   </div>
   {%- if meta != blank -%}<span class="av-label av-label--red">{{ meta | escape }}</span>{%- endif -%}
+  {%- if shipping and settings.av_shipping_line != blank -%}<div class="av-body av-body--meta av-drop-banner__shipping">{{ settings.av_shipping_line | escape }}</div>{%- endif -%}
 </div>
