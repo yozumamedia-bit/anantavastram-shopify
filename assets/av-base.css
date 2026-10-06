@@ -269,16 +269,17 @@ html.no-js .av-reveal > .av-media__img, html.shopify-design-mode .av-reveal > .a
 .av-header__burger { display: none; }
 /* Header over the hero (homepage option): the hero starts under the header; the bar is a soft scrim until the page scrolls */
 .av-header-over .av-header-section { margin-bottom: calc(-1 * var(--av-header-h)); }
-.av-header-over .av-header { background-color: transparent; transition: background-color 350ms ease; }
-/* the scrim sits under the bar's own colour, so the red covers it as the bar fills */
+.av-header-over .av-header { background-color: transparent; }
+/* the scrim sits under a red layer that fades in as the bar fills — only opacity animates, so it stays on the compositor */
 .av-header-over .av-header::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(rgba(30, 26, 23, 0.55), rgba(30, 26, 23, 0)); pointer-events: none; }
-.av-header-over .av-header-section.is-scrolled .av-header { background-color: var(--av-kumkum); }
-@media (prefers-reduced-motion: reduce) { .av-header-over .av-header { transition: none; } }
+.av-header-over .av-header::after { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--av-kumkum); opacity: 0; transition: opacity 350ms ease; pointer-events: none; }
+.av-header-over .av-header-section.is-scrolled .av-header::after { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .av-header-over .av-header::after { transition: none; } }
 /* where supported, the red fills in over the first 120px of scroll instead of snapping at 24px (av-header.js stands down) */
 @supports (animation-timeline: scroll()) {
-  .av-header-over .av-header { transition: none; animation: av-header-fill linear both; animation-timeline: scroll(root); animation-range: 0 120px; }
+  .av-header-over .av-header::after { transition: none; animation: av-header-fill linear both; animation-timeline: scroll(root); animation-range: 0 120px; }
 }
-@keyframes av-header-fill { from { background-color: rgb(158 27 30 / 0); } to { background-color: var(--av-kumkum); } }
+@keyframes av-header-fill { from { opacity: 0; } to { opacity: 1; } }
 /* Narrow desktops: tighten the nav so both sides fit beside a centred wordmark */
 @media (min-width: 1201px) and (max-width: 1500px) {
   .av-header { padding: 0 32px; column-gap: 24px; }
