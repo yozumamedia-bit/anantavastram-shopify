@@ -7,7 +7,7 @@
     {%- if section.settings.calendar_url != blank -%}
       <div class="av-stack" style="gap:8px">
         <a class="av-link" href="{{ section.settings.calendar_url }}" target="_blank" rel="noopener" aria-describedby="a11y-new-window-message">{{ section.settings.calendar_label | default: 'Book a call' | escape }}</a>
-        {%- if section.settings.calendar_note != blank -%}<span class="av-label" style="color:var(--av-grey-1)">{{ section.settings.calendar_note | escape }}</span>{%- endif -%}
+        {%- if section.settings.calendar_note != blank -%}<span class="av-body av-body--meta">{{ section.settings.calendar_note | escape }}</span>{%- endif -%}
       </div>
     {%- endif -%}
     {%- assign wa_label = 'WhatsApp · ' | append: settings.av_whatsapp_number -%}
@@ -29,7 +29,7 @@
       <div class="av-field"><label class="av-label" for="enq-wearer">Who will wear it</label><input id="enq-wearer" type="text" name="contact[wearer]" placeholder="Yourself · the groom · a name"></div>
       <div class="av-field"><label class="av-label" for="enq-lang">Language</label><select id="enq-lang" name="contact[language]"><option value="">No preference</option><option>Tamil</option><option>English</option></select></div>
       <div class="av-field av-field--wide"><label class="av-label" for="enq-notes">A few lines</label><textarea id="enq-notes" name="contact[body]" placeholder="What you have in mind — a border you remember, a colour, a family motif, the pieces in the set">{{ form.body | escape }}</textarea></div>
-      <div class="av-form__foot">{%- if section.settings.reply_line != blank -%}<span class="av-label">{{ section.settings.reply_line | escape }}</span>{%- endif -%}<button class="av-button" type="submit">Send</button></div>
+      <div class="av-form__foot">{%- if section.settings.reply_line != blank -%}<span class="av-body av-body--meta">{{ section.settings.reply_line | escape }}</span>{%- endif -%}<button class="av-button" type="submit">Send</button></div>
     {%- endif -%}
   {%- endform -%}
 </section>

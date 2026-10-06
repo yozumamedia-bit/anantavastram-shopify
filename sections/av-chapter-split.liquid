@@ -4,14 +4,14 @@
     <div class="av-stack" style="gap:12px">
       {%- if section.settings.numeral != blank -%}<div class="av-numeral">{{ section.settings.numeral | escape }}</div>{%- endif -%}
       <h2 class="av-sub av-sub--m">{{ section.settings.title | escape }}</h2>
-      {%- if section.settings.role != blank -%}<div class="av-label">{{ section.settings.role | escape }}</div>{%- endif -%}
+      {%- if section.settings.role != blank -%}<div class="av-body av-body--meta">{{ section.settings.role | escape }}</div>{%- endif -%}
     </div>
     {%- if section.settings.quote != blank -%}<blockquote class="av-quote">“{{ section.settings.quote | escape | newline_to_br }}”</blockquote>{%- endif -%}
     {%- if section.settings.text != blank -%}<div class="av-body">{{ section.settings.text }}</div>{%- endif -%}
     {%- if section.settings.film != blank -%}
     <div class="av-stack" style="gap:12px;margin-top:12px">
       {% render 'av-video', film: section.settings.film, poster: section.settings.poster %}
-      {%- if section.settings.video_caption != blank -%}<div class="av-label">{{ section.settings.video_caption | escape }}</div>{%- endif -%}
+      {%- if section.settings.video_caption != blank -%}<div class="av-body av-body--meta">{{ section.settings.video_caption | escape }}</div>{%- endif -%}
     </div>
     {%- endif -%}
   </div>

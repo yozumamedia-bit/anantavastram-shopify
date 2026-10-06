@@ -90,7 +90,7 @@
 .av-tile__meta { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
 .av-tile--sold { opacity: 0.45; }
 .av-tile__left { font-family: var(--av-font-body); font-weight: 400; font-size: 13px; color: var(--av-kumkum); }
-.av-tile--sold .av-tile__left { color: var(--av-grey-2); }
+.av-tile--sold .av-tile__left { color: var(--av-grey-1); } /* the tile's own opacity does the dimming */
 .av-past-head { padding: 96px var(--av-gutter) 40px; display: grid; grid-template-columns: 5fr 7fr; gap: 64px; align-items: end; }
 .av-past { padding: 80px var(--av-gutter) 96px; display: flex; flex-direction: column; gap: 40px; border-bottom: 1px solid var(--av-grey-3); }
 .av-past__head { display: grid; grid-template-columns: 5fr 7fr; gap: 64px; align-items: start; }
@@ -161,7 +161,7 @@
 .av-field textarea { resize: vertical; min-height: 88px; }
 .av-form__foot { grid-column: span 2; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-top: 8px; flex-wrap: wrap; }
 .av-form__msg { grid-column: span 2; }
-.av-field .av-label, .av-form__foot .av-label { color: var(--av-grey-1); } /* field names must meet AA contrast; grey-2 is ~2.2:1 on ivory */
+.av-field input::placeholder, .av-field textarea::placeholder { color: var(--av-grey-1); opacity: 1; } /* placeholders are text on ivory too: grey-1, not the browser's default grey */
 .av-enquiry, .av-form { scroll-margin-top: calc(var(--av-header-h) + 24px); } /* Shopify returns to #av-enquiry-form after posting; keep it clear of the sticky header */
 @media (max-width: 900px) { .av-enquiry { grid-template-columns: 1fr; gap: 32px; } .av-form { grid-template-columns: 1fr; } .av-field--wide, .av-form__foot { grid-column: auto; } .av-form__msg { grid-column: auto; } }
 
@@ -184,7 +184,7 @@
 .av-meta { display: flex; gap: 18px; flex-wrap: wrap; }
 .av-tabs { padding: 40px var(--av-gutter) 0; display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
 .av-tabs__list { display: flex; gap: 0 36px; flex-wrap: wrap; }
-.av-tabs__list a { font-family: var(--av-font-body); font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--av-grey-2); padding-bottom: 6px; min-height: 44px; display: inline-flex; align-items: flex-end; }
+.av-tabs__list a { font-family: var(--av-font-body); font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--av-grey-1); padding-bottom: 6px; min-height: 44px; display: inline-flex; align-items: flex-end; }
 .av-tabs__list a.is-active { color: var(--av-kumkum); border-bottom: 1px solid var(--av-kumkum); }
 .av-posts { padding: 24px var(--av-gutter) 0; display: flex; flex-direction: column; }
 .av-post { display: grid; grid-template-columns: 5fr 7fr; gap: 64px; padding: 56px 0; border-top: 1px solid var(--av-grey-3); }
@@ -211,6 +211,7 @@
 .av-newsline form { display: flex; gap: 16px; border-bottom: 1px solid var(--av-kumkum); padding-bottom: 12px; justify-content: space-between; align-items: center; max-width: 520px; flex-wrap: wrap; }
 .av-newsline form .av-body--s { flex-basis: 100%; }
 .av-newsline input { flex: 1; background: none; border: 0; font-family: var(--av-font-body); font-weight: 300; font-size: 15px; color: var(--av-ink); min-height: 44px; }
+.av-newsline input::placeholder { color: var(--av-grey-1); opacity: 1; }
 .av-newsline input:focus-visible { outline: 2px solid var(--av-kumkum); outline-offset: 4px; box-shadow: none; }
 .av-newsline button { background: none; border: 0; cursor: pointer; font-family: var(--av-font-body); font-weight: 500; font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--av-kumkum); min-height: 44px; }
 @media (max-width: 900px) { .av-newsline { grid-template-columns: 1fr; gap: 24px; } }
@@ -280,6 +281,7 @@
 .av-fact { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--av-grey-3); padding-top: 14px; }
 .av-notify { display: flex; flex-direction: column; gap: 12px; }
 .av-notify input { width: 100%; background: none; border: 0; border-bottom: 1px solid var(--av-kumkum); border-radius: 0; padding: 0 0 10px; font-family: var(--av-font-body); font-weight: 300; font-size: 15px; color: var(--av-ink); min-height: 44px; }
+.av-notify input::placeholder { color: var(--av-grey-1); opacity: 1; }
 .av-notify input:focus-visible { outline: 2px solid var(--av-kumkum); outline-offset: 4px; box-shadow: none; }
 @media (max-width: 900px) {
   .av-product { grid-template-columns: 1fr; gap: 32px; }

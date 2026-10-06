@@ -1,7 +1,7 @@
 <section class="av-bleed av-reveal">
   {% render 'av-media', image: section.settings.image, ratio: '1440 / 820', sizes: '100vw' %}
   {%- if section.settings.left != blank or section.settings.right != blank -%}
-  <div class="av-bleed__caption av-caption"><span class="av-label">{{ section.settings.left | escape }}</span><span class="av-label">{{ section.settings.right | escape }}</span></div>
+  <div class="av-bleed__caption av-caption"><span class="av-body av-body--meta">{{ section.settings.left | escape }}</span><span class="av-body av-body--meta">{{ section.settings.right | escape }}</span></div>
   {%- endif -%}
 </section>
 {% schema %}

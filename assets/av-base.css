@@ -11,7 +11,7 @@
   --av-ivory: #f5efe3;
   --av-ink: #4a4541;
   --av-grey-1: #6b6560;
-  --av-grey-2: #a8a29b;
+  --av-grey-2: #a8a29b;   /* decorative only: rules, hairlines, borders. Never a text colour on ivory (2.2:1); text uses grey-1 or kumkum */
   --av-grey-3: #d9d2c5;
   --av-white: #ffffff;
   --av-dark: #1e1a17;
@@ -96,6 +96,7 @@ img, video { max-width: 100%; display: block; }
 .av-body { font-family: var(--av-font-body); font-weight: 300; font-size: 16px; line-height: 1.8; color: var(--av-ink); }
 .av-body--s { font-size: 14px; line-height: 1.7; }
 .av-body--l { font-size: 18px; }
+.av-body--meta { font-size: 13px; line-height: 1.6; color: var(--av-grey-1); } /* long meta and caption lines, sentence case: tracked uppercase (.av-label) is kept for eyebrows under ~40 characters */
 .av-body p { margin: 0 0 16px; } .av-body p:last-child { margin-bottom: 0; }
 
 .av-numeral { font-family: var(--av-font-heading); font-weight: 500; font-size: 15px; letter-spacing: 0.2em; color: var(--av-kumkum); }
