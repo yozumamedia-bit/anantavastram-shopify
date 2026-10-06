@@ -140,7 +140,7 @@
 .av-video-pair .av-video { aspect-ratio: 16 / 10; }
 @media (max-width: 900px) { .av-video-pair { grid-template-columns: 1fr; } }
 
-/* av-steps (exclusive) */
+/* av-steps (commissions) */
 .av-steps { padding: var(--av-section) var(--av-gutter); display: flex; flex-direction: column; gap: 56px; }
 .av-steps__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; }
 .av-step { display: flex; flex-direction: column; gap: 14px; border-top: 1px solid var(--av-kumkum); padding-top: 20px; }
@@ -224,7 +224,7 @@
 .av-bleed { display: flex; flex-direction: column; gap: 14px; }
 .av-bleed__caption { padding: 0 var(--av-gutter); }
 
-/* av-two-up cards (exclusive: what can be made) */
+/* av-two-up cards (commissions: what can be made) */
 .av-cards { padding: 0 var(--av-gutter) var(--av-section); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
 .av-card { display: flex; flex-direction: column; gap: 16px; }
 .av-card__title { margin: 0; }

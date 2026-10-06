@@ -10,7 +10,7 @@
   assign label = ''
   if drop != blank and drop.number.value != blank
     assign padded = drop.number.value | prepend: '00' | slice: -3, 3
-    assign label = 'Drop ' | append: padded
+    assign label = 'Collection ' | append: padded
   endif
   if mf.numeral.value != blank
     if label != blank

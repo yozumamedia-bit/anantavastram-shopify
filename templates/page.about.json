@@ -21,7 +21,7 @@
     "film": {
       "type": "av-video-block",
       "settings": {
-        "title": "The drop film",
+        "title": "The collection film",
         "meta": "Loom · hands · weaver voice in Tamil, subtitled · plays muted, sound on tap"
       }
     },
@@ -123,7 +123,7 @@
           "type": "item",
           "settings": {
             "title": "Numbered editions",
-            "text": "Each drop is a fixed, honest count. When the number is reached the piece is finished. It is not re-run."
+            "text": "Each collection is a fixed, honest count. When the number is reached the piece is finished. It is not re-run."
           }
         },
         "i2": {
@@ -186,8 +186,8 @@
           "settings": {
             "label": "Write",
             "title": "A conversation with Kamalam, for a piece made to you",
-            "link_label": "Exclusive",
-            "url": "shopify://pages/exclusive"
+            "link_label": "Commissions",
+            "url": "shopify://pages/commissions"
           }
         }
       },

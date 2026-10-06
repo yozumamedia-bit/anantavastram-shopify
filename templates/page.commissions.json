@@ -21,9 +21,9 @@
         "k2"
       ],
       "settings": {
-        "label": "Exclusive",
+        "label": "Commissions",
         "statement": "One piece, for one person, made once.",
-        "text": "<p>Outside the numbered drops, the house makes single pieces to the wearer — wedding sets above all. Nothing here is listed or held in stock. It begins with a conversation with Kamalam and ends at the loom.</p>",
+        "text": "<p>Outside the numbered collections, the house makes single pieces to the wearer — wedding sets above all. Nothing here is listed or held in stock. It begins with a conversation with Kamalam and ends at the loom.</p>",
         "open": true
       }
     },

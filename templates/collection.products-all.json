@@ -10,7 +10,7 @@
       "block_order": ["all", "everyday", "occasion"],
       "settings": {
         "label": "Products",
-        "statement": "Every piece, across the drops.",
+        "statement": "Every piece, across the collections.",
         "text": "<p>Each is one of a numbered edition. A piece that has found all its wearers stays listed, at the end, as the record.</p>",
         "open": true
       }

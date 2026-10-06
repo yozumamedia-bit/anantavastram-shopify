@@ -1,7 +1,7 @@
 {%- comment -%}
   Usage: {% render 'av-edition-line', product: product, context: 'tile' %}  context: tile | row | page
   tile: "3 of 8 left" / "Sold out"
-  row:  "8 pieces in Drop 001. 3 remain." / "8 pieces in Drop 001. All placed."
+  row:  "8 pieces in Collection 001. 3 remain." / "8 pieces in Collection 001. All placed."
   page: "3 of 8 remain" / "All 8 placed"
   Assumes overselling is off (inventory_policy: deny); a tracked variant at 0 reads as sold out.
 {%- endcomment -%}
@@ -20,7 +20,7 @@
 -%}
 {%- case context -%}
 {%- when 'row' -%}
-  {%- if total > 0 -%}{{ total }} pieces{% if drop_no %} in Drop {{ drop_no | prepend: '00' | slice: -3, 3 }}{% endif %}. {% if remaining > 0 %}{{ remaining }} remain.{% else %}All placed.{% endif %}{%- endif -%}
+  {%- if total > 0 -%}{{ total }} pieces{% if drop_no %} in Collection {{ drop_no | prepend: '00' | slice: -3, 3 }}{% endif %}. {% if remaining > 0 %}{{ remaining }} remain.{% else %}All placed.{% endif %}{%- endif -%}
 {%- when 'page' -%}
   {%- if remaining > 0 -%}{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %} remain{%- else -%}{% if total > 0 %}All {{ total }} placed{% else %}All placed{% endif %}{%- endif -%}
 {%- else -%}

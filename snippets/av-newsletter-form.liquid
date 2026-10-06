@@ -1,4 +1,4 @@
-{%- comment -%} Usage: {% render 'av-newsletter-form', id: 'footer', placeholder: 'Your email, for the next drop', class: 'av-footer__news' %} {%- endcomment -%}
+{%- comment -%} Usage: {% render 'av-newsletter-form', id: 'footer', placeholder: 'Your email, for the next collection', class: 'av-footer__news' %} {%- endcomment -%}
 {%- assign news_id = id | default: 'form' -%}
 {%- assign form_id = 'av-news-' | append: news_id -%}
 {%- form 'customer', id: form_id, class: class -%}

@@ -3,7 +3,7 @@
   Handles do not matter. Liquid cannot sort metaobjects by a field, so each pass scans the entries for the highest
   number not yet rendered (at most 50 entries, so the cost is trivial). av-drop-rows uses the same scan.
   The current drop (highest-numbered entry with status `current`) always renders first; every other drop with a
-  non-empty collection follows under "Past drops".
+  non-empty collection follows under "Past collections".
 {%- endcomment -%}
 {%- liquid
   assign found = 0
@@ -51,16 +51,16 @@
   -%}
   {%- unless past_head_done -%}
     <div class="av-past-head av-reveal">
-      <div class="av-stack" style="gap:12px"><div class="av-label">Past drops</div><h2 class="av-sub av-sub--m">Still open while pieces remain</h2></div>
+      <div class="av-stack" style="gap:12px"><div class="av-label">Past collections</div><h2 class="av-sub av-sub--m">Still open while pieces remain</h2></div>
       <div class="av-body" style="max-width:560px">{{ section.settings.past_text }}</div>
     </div>
     {%- assign past_head_done = true -%}
   {%- endunless -%}
   {% render 'av-drop-band', drop: pick, mode: 'past' %}
 {%- endfor -%}
-{%- if found == 0 -%}<div class="av-wrap av-section av-body">No drops yet.</div>{%- endif -%}
+{%- if found == 0 -%}<div class="av-wrap av-section av-body">No collections yet.</div>{%- endif -%}
 {% schema %}
-{ "name": "AV Drop index", "settings": [
-  { "type": "richtext", "id": "past_text", "label": "Past drops paragraph", "default": "<p>Earlier drops are listed in full. A piece with an edition number left can still be ordered; a sold-out piece stays on the page, with its weaver and its count, as part of the record.</p>" }
-], "presets": [{ "name": "AV Drop index" }] }
+{ "name": "AV Collection index", "settings": [
+  { "type": "richtext", "id": "past_text", "label": "Past collections paragraph", "default": "<p>Earlier collections are listed in full. A piece with an edition number left can still be ordered; a sold-out piece stays on the page, with its weaver and its count, as part of the record.</p>" }
+], "presets": [{ "name": "AV Collection index" }] }
 {% endschema %}

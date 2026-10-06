@@ -16,7 +16,7 @@
     "film": { "type": "av-film-banner", "settings": {} },
     "drop-1": { "type": "av-drop-rows", "settings": { "auto_index": 1 } },
     "drop-2": { "type": "av-drop-rows", "settings": { "auto_index": 2 } },
-    "exclusive": { "type": "av-exclusive-row", "settings": { "link": "shopify://pages/exclusive" } }
+    "commissions": { "type": "av-commissions-row", "settings": { "link": "shopify://pages/commissions" } }
   },
-  "order": ["hero", "credo", "showcase", "story", "film", "drop-1", "drop-2", "exclusive"]
+  "order": ["hero", "credo", "showcase", "story", "film", "drop-1", "drop-2", "commissions"]
 }

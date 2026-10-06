@@ -36,8 +36,8 @@
   {% render 'av-media', image: drop.ensemble_image.value, ratio: '780 / 820', sizes: '(min-width: 900px) 58vw, 100vw', loading: 'eager' %}
   <div class="av-drop__info">
     <div class="av-stack" style="gap:28px">
-      <div class="av-drop__head"><span class="av-label">Drop {{ padded }}{% if drop.season.value != blank %} · {{ drop.season.value | escape }}{% endif %}</span><span class="av-chip">Current drop</span></div>
-      <h2 class="av-sub av-sub--l">{% if drop.theme_name.value != blank %}{{ drop.theme_name.value | escape }}{% else %}Drop {{ padded }}{% endif %}</h2>
+      <div class="av-drop__head"><span class="av-label">Collection {{ padded }}{% if drop.season.value != blank %} · {{ drop.season.value | escape }}{% endif %}</span><span class="av-chip">Current collection</span></div>
+      <h2 class="av-sub av-sub--l">{% if drop.theme_name.value != blank %}{{ drop.theme_name.value | escape }}{% else %}Collection {{ padded }}{% endif %}</h2>
       {%- if drop.design_line.value != blank -%}<div class="av-label av-label--red">The design · {{ drop.design_line.value | escape }}</div>{%- endif -%}
       {%- if drop.story.value != blank -%}<div class="av-body">{{ drop.story.value | escape | newline_to_br }}</div>{%- endif -%}
       <div class="av-counts">
@@ -46,7 +46,7 @@
         <div class="av-count"><span class="av-label">Remaining</span><span class="av-count__v">{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %}</span></div>
       </div>
     </div>
-    <a class="av-link" href="{{ col.url }}">Enter the drop</a>
+    <a class="av-link" href="{{ col.url }}">Enter the collection</a>
   </div>
 </section>
 <div class="av-tiles">{%- for p in col.products limit: 6 -%}{% render 'av-drop-tile', product: p %}{%- endfor -%}</div>
@@ -54,8 +54,8 @@
 <section class="av-past av-reveal">
   <div class="av-past__head">
     <div class="av-stack" style="gap:22px">
-      <div class="av-drop__head"><span class="av-label">Drop {{ padded }}{% if drop.season.value != blank %} · {{ drop.season.value | escape }}{% endif %}</span>{% if closed %}<span class="av-chip av-chip--outline">Closed</span>{% else %}<span class="av-chip">Pieces remaining</span>{% endif %}</div>
-      <h3 class="av-sub av-sub--m">{% if drop.theme_name.value != blank %}{{ drop.theme_name.value | escape }}{% else %}Drop {{ padded }}{% endif %}</h3>
+      <div class="av-drop__head"><span class="av-label">Collection {{ padded }}{% if drop.season.value != blank %} · {{ drop.season.value | escape }}{% endif %}</span>{% if closed %}<span class="av-chip av-chip--outline">Closed</span>{% else %}<span class="av-chip">Pieces remaining</span>{% endif %}</div>
+      <h3 class="av-sub av-sub--m">{% if drop.theme_name.value != blank %}{{ drop.theme_name.value | escape }}{% else %}Collection {{ padded }}{% endif %}</h3>
       <div class="av-counts">
         <div class="av-count"><span class="av-label">Pieces</span><span class="av-count__v">{{ pieces }}</span></div>
         <div class="av-count"><span class="av-label">Remaining</span><span class="av-count__v">{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %}</span></div>
@@ -63,8 +63,8 @@
     </div>
     <div class="av-stack" style="max-width:620px">
       {%- if drop.story.value != blank -%}<div class="av-body">{{ drop.story.value | escape | newline_to_br }}</div>{%- endif -%}
-      <div class="av-body">{% if remaining == 0 %}Every piece in this drop has found its wearer. The pages remain.{% elsif total > 0 %}{{ remaining }} of {{ total }} {% if remaining == 1 %}piece remains{% else %}pieces remain{% endif %} in edition.{% elsif remaining == 1 %}1 piece remains.{% else %}{{ remaining }} pieces remain.{% endif %}</div>
-      <a class="av-link" href="{{ col.url }}">{% if closed %}View the record{% else %}See the drop{% endif %}</a>
+      <div class="av-body">{% if remaining == 0 %}Every piece in this collection has found its wearer. The pages remain.{% elsif total > 0 %}{{ remaining }} of {{ total }} {% if remaining == 1 %}piece remains{% else %}pieces remain{% endif %} in edition.{% elsif remaining == 1 %}1 piece remains.{% else %}{{ remaining }} pieces remain.{% endif %}</div>
+      <a class="av-link" href="{{ col.url }}">{% if closed %}View the record{% else %}See the collection{% endif %}</a>
     </div>
   </div>
   <div class="av-tiles">{%- for p in col.products limit: 6 -%}{% render 'av-drop-tile', product: p %}{%- endfor -%}</div>

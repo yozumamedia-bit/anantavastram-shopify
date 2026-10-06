@@ -20,7 +20,7 @@
   {%- when 'shop' -%}
     <a href="{{ routes.collections_url }}"{% if request.path == routes.collections_url %} aria-current="page"{% endif %}>Collections</a>
     <a href="{{ routes.all_products_collection_url }}"{% if request.path contains routes.all_products_collection_url %} aria-current="page"{% endif %}>Products</a>
-    <a href="/pages/exclusive"{% if request.path == '/pages/exclusive' %} aria-current="page"{% endif %}>Exclusive</a>
+    <a href="/pages/commissions"{% if request.path == '/pages/commissions' %} aria-current="page"{% endif %}>Commissions</a>
   {%- when 'orders' -%}
     {%- comment -%} Shipping and refund policies are standard store setup (Settings → Policies), so they are always linked. {%- endcomment -%}
     <a href="{{ shop.shipping_policy.url | default: '/policies/shipping-policy' }}">Shipping</a>

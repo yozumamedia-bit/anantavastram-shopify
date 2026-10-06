@@ -10,22 +10,22 @@ Admin paths are for the current Shopify admin (September 2026). `[brackets]` in 
 
 **Settings → Custom data → Metaobjects → Add definition.** For each definition, turn on **Storefronts access** (otherwise Liquid cannot read it) and set entries to **Active**.
 
-### `drop` — one per numbered drop
+### `drop` — one per numbered collection (the metaobject keeps the key `drop`; customers read "Collection 001")
 | Field key | Type | Notes |
 |---|---|---|
 | `number` | Integer | 1, 2, 3 … |
-| `theme_name` | Single line text | e.g. the drop's idea |
+| `theme_name` | Single line text | e.g. the collection's idea |
 | `season` | Single line text | e.g. Pongal 2027 |
-| `status` | Single line text, **choices**: `current`, `open`, `closed` | exactly one drop `current` at a time |
+| `status` | Single line text, **choices**: `current`, `open`, `closed` | exactly one collection `current` at a time |
 | `design_line` | Single line text | "The design · …" line |
 | `story` | Multi-line text | paragraph from Kamalam |
 | `ensemble_image` | File (image) | large image on Collections |
-| `collection` | Collection reference | the drop's Shopify collection |
+| `collection` | Collection reference | the Shopify collection holding its pieces |
 
-**Ordering.** Drops are ordered by their `number` field, highest first — the handle does not matter. Give every drop a number. Rules the pages rely on:
-- The newest drop with status `current` is the large band on Collections and is always shown first. If more than one is `current`, the newest wins and the others show as past drops.
-- `open` = past drop still selling; `closed` = past drop kept as a record. A drop with no stock left shows "Closed" regardless.
-- A drop whose collection is empty is hidden.
+**Ordering.** Collections (`drop` entries) are ordered by their `number` field, highest first — the handle does not matter. Give every entry a number. Rules the pages rely on:
+- The newest entry with status `current` is the large band on Collections and is always shown first. If more than one is `current`, the newest wins and the others show under "Past collections".
+- `open` = past collection still selling; `closed` = past collection kept as a record. A collection with no stock left shows "Closed" regardless.
+- An entry whose Shopify collection is empty is hidden.
 
 > **Shortcut for the About and Gallery pages.** Both work without metaobjects: on About, each person in chapter III has its own name, role, years and portrait fields; on Gallery, each campaign section has title, season, credits, film and eight image slots. Fill those in the theme editor to get the pages up first. Metaobjects are still the way to reuse a weaver across product pages and to keep campaign records in one place — when an entry is chosen, the section's own fields are ignored.
 
@@ -60,9 +60,9 @@ Admin paths are for the current Shopify admin (September 2026). `[brackets]` in 
 ### Products
 | Key | Type | Used for |
 |---|---|---|
-| `av.drop` | Metaobject reference → `drop` | label "Drop 001", drop fact link, edition line |
+| `av.drop` | Metaobject reference → `drop` | label "Collection 001", collection fact link, edition line |
 | `av.numeral` | Single line text | "No. IV" |
-| `av.tier` | Single line text, choices `everyday`, `occasion`, `exclusive` | label; also add the same word as a **tag** (§3) |
+| `av.tier` | Single line text, choices `everyday`, `occasion`, `commission` | label; also add the same word as a **tag** (§3) |
 | `av.weaver` | Metaobject reference → `weaver` | "Woven by …" |
 | `av.edition_total` | Integer | "3 of 8 left"; hides edition lines when empty |
 | `av.lead_time_weeks` | Integer | "Made to order. 6 weeks from confirmation." |
@@ -82,7 +82,7 @@ Admin paths are for the current Shopify admin (September 2026). `[brackets]` in 
 ### Collections
 | Key | Type |
 |---|---|
-| `av.drop` | Metaobject reference → `drop` (set on each drop's collection; drives the drop page header and counts) |
+| `av.drop` | Metaobject reference → `drop` (set on each numbered collection; drives the collection page header and counts) |
 
 ### Blog posts (articles)
 | Key | Type |
@@ -103,12 +103,12 @@ For every numbered piece:
 1. **One variant.** Price in INR.
 2. **Inventory:** "Track quantity" **on**, quantity = pieces available; "Continue selling when out of stock" **off**. The theme treats a tracked piece at 0 as sold out ("Sold out" tiles, "All 8 placed", notify-me form).
 3. **Tag** with its tier: `everyday` or `occasion` (drives the Products page filter tabs).
-4. Add to its drop's collection.
+4. Add to its numbered collection.
 5. Fill the `av.*` metafields (§2). Upload photographs in order — the first is the lead image.
 
 ## 4. Collections
 
-- **One manual collection per drop** (e.g. "Drop 001"), default template, with `av.drop` pointing at the drop entry.
+- **One manual collection per numbered collection** (e.g. "Collection 001"), default template, with `av.drop` pointing at the `drop` entry.
 - **Products page:** `/collections/all` works without any setup — Shopify's automatic all-products collection renders the compact list, and `/collections/all/everyday` and `/collections/all/occasion` filter by tag. To control its sort order, create a collection with handle **`all`** (title "Products"), automated, condition *Inventory stock is greater than -1* (if rejected, use *Product price is greater than 0*), sort **Newest**, theme template **`collection.products-all`**.
 
 ## 5. Pages
@@ -119,7 +119,7 @@ For every numbered piece:
 |---|---|---|
 | About | `about` | `page.about` |
 | Gallery | `gallery` | `page.gallery` |
-| Exclusive | `exclusive` | `page.exclusive` |
+| Commissions | `commissions` | `page.commissions` |
 | Contact (footer "Write to us") | `contact` | `page.contact` — Shopify creates this page by default; it already uses this template. Paste the Google Calendar appointment link into the enquiry section's **Booking link** in the theme editor |
 | Care | `care` | default — optional, appears in footer when it exists |
 | Size and measure | `size-and-measure` | default — optional |
@@ -144,25 +144,25 @@ Then open each page in **Online Store → Themes → Customize** to add images, 
 - **Product photographs:** upload at least two per piece — tiles, list rows and product rows fade to the second photograph on hover.
 - **Social media:** Instagram URL (footer *Contact* column).
 - **Store details** (Settings → General): store email receives contact-form enquiries and notify-me requests.
-- **Account icon:** "Show the account icon" stays off until Drop 001 is on sale.
+- **Account icon:** "Show the account icon" stays off until Collection 001 is on sale.
 - **Favicon** (Theme settings → Favicon): upload the mark as a square PNG, at least 180×180. Without it the browser tab shows a globe.
 
 **Before the link is shared (sharing previews):**
 - **Online Store → Preferences:** homepage meta description, under 155 characters, plain voice, no "luxury" or "eco". This is also the description WhatsApp and Instagram show. Optionally a social sharing image (1200×630); without one the theme uses `assets/av-share.png`, the white wordmark on kumkum.
 - **Password page** (Customize → Password page): one line under the wordmark and the letter sign-up. Sign-ups land in Customers tagged `newsletter`.
-- **Enquiries:** the Exclusive form tags senders `exclusive`, the Contact form `contact`. Shopify sends every contact-form message to the store contact email (Settings → General → Store contact details); to reach Kamalam, either use an address she reads or set a forward from that inbox to hers.
+- **Enquiries:** the Commissions form tags senders `commissions`, the Contact form `contact`. Shopify sends every contact-form message to the store contact email (Settings → General → Store contact details); to reach Kamalam, either use an address she reads or set a forward from that inbox to hers.
 
 ## 9. Menus (optional)
 
 The header and footer ship with built-in links, so no menus are required. To edit links, create menus in **Online Store → Navigation** with these handles — the theme is already pointed at them, so no editor step is needed:
 - `av-house` — header left and footer *The house* (Stories · Gallery · About).
-- `av-shop` — header right and footer *Shop* (Collections · Products · Exclusive).
+- `av-shop` — header right and footer *Shop* (Collections · Products · Commissions).
 - `av-orders`, `av-contact` — footer *Orders* and *Contact* columns.
 Any other menu can be picked in the header/footer sections in the theme editor. A missing or empty menu falls back to the built-in links.
 
 ## 10. Content in the theme editor
 
-- **Home:** hero still; credo; three showcase images; story image and text; film banner (silent loop, full film, poster, still); drop rows pick the two newest non-closed drops automatically (or choose a drop); Exclusive row copy and image.
+- **Home:** hero still; credo; three showcase images; story image and text; film banner (silent loop, full film, poster, still); collection rows pick the two newest open collections automatically (or choose one); Commissions row copy and image.
 - **Product template:** default shipping and care text.
 - Replace every `[bracketed]` placeholder as facts arrive.
 
@@ -185,11 +185,11 @@ python3 -m venv .venv && .venv/bin/pip install fonttools
 
 ## Check after setup
 
-- `/` — hero, credo, showcase, story, film, two drop rows, Exclusive row.
-- `/collections` — current drop band first, six tiles with "N of N left", past drops below.
-- `/collections/drop-001` — drop header with counts, one piece per row.
+- `/` — hero, credo, showcase, story, film, two collection rows, Commissions row.
+- `/collections` — current collection band first, six tiles with "N of N left", past collections below.
+- `/collections/drop-001` — collection header with counts, one piece per row.
 - `/collections/all`, `/collections/all/occasion` — compact list, sold-out pieces last.
 - A product — sticky panel, order button adds to cart; set a piece to 0 to see the notify-me form.
-- `/pages/exclusive` — send a test enquiry; it arrives at the store email.
+- `/pages/commissions` — send a test enquiry; it arrives at the store email.
 - `/pages/about`, `/pages/gallery`, `/blogs/stories`, `/blogs/stories/tagged/weavers`, an article.
 - Phone width: burger menu, product image rail, stacked rows.

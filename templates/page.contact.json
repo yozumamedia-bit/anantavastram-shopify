@@ -5,7 +5,7 @@
       "settings": {
         "label": "Contact",
         "statement": "Write to the house.",
-        "text": "<p>For a piece made to order, a question about a drop, an order already placed, or a visit to the unit. Kamalam reads every message herself.</p>",
+        "text": "<p>For a piece made to order, a question about a collection, an order already placed, or a visit to the unit. Kamalam reads every message herself.</p>",
         "open": true
       }
     },

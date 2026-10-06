@@ -17,7 +17,7 @@
   endif
   assign label = ''
   if padded != blank
-    assign label = 'Drop ' | append: padded
+    assign label = 'Collection ' | append: padded
   endif
   if mf.numeral.value != blank
     if label != blank
@@ -172,7 +172,7 @@
     {%- if weaver != blank or drop != blank or edition_total > 0 or mf.kara_colour.value != blank or loom_hours > 0 -%}
     <div class="av-facts">
       {%- if weaver != blank -%}<div class="av-fact"><div class="av-label">Woven by</div><div class="av-body av-body--s">{{ weaver.name.value | escape }}{% if weaver.unit.value != blank %} · {{ weaver.unit.value | escape }}{% endif %}</div></div>{%- endif -%}
-      {%- if drop != blank -%}<div class="av-fact"><div class="av-label">Drop</div><div class="av-body av-body--s">{% if drop.collection.value != blank %}<a href="{{ drop.collection.value.url }}">{% endif %}{{ padded }}{% if drop.theme_name.value != blank %} · {{ drop.theme_name.value | escape }}{% endif %}{% if drop.collection.value != blank %}</a>{% endif %}</div></div>{%- endif -%}
+      {%- if drop != blank -%}<div class="av-fact"><div class="av-label">Collection</div><div class="av-body av-body--s">{% if drop.collection.value != blank %}<a href="{{ drop.collection.value.url }}">{% endif %}{{ padded }}{% if drop.theme_name.value != blank %} · {{ drop.theme_name.value | escape }}{% endif %}{% if drop.collection.value != blank %}</a>{% endif %}</div></div>{%- endif -%}
       {%- if edition_total > 0 -%}<div class="av-fact"><div class="av-label">Edition</div><div class="av-body av-body--s">{{ edition_total }} {% if edition_total == 1 %}piece{% else %}pieces{% endif %}</div></div>{%- endif -%}
       {%- if mf.kara_colour.value != blank -%}<div class="av-fact"><div class="av-label">Kara</div><div class="av-body av-body--s">{{ mf.kara_colour.value | escape }}</div></div>{%- endif -%}
       {%- if loom_hours > 0 -%}<div class="av-fact"><div class="av-label">At the loom</div><div class="av-body av-body--s">{{ loom_hours }} {{ hours_word }}</div></div>{%- endif -%}

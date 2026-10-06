@@ -22,7 +22,7 @@
 -%}
 <section class="av-intro av-reveal">
   <div class="av-stack" style="gap:28px">
-    <div class="av-label">{% if drop != blank %}Drop {{ padded }}{% if drop.season.value != blank %} · {{ drop.season.value | escape }}{% endif %}{% else %}Collection{% endif %}</div>
+    <div class="av-label">{% if drop != blank %}Collection {{ padded }}{% if drop.season.value != blank %} · {{ drop.season.value | escape }}{% endif %}{% else %}Collection{% endif %}</div>
     <h1 class="av-statement av-statement--xl">{% if drop != blank and drop.theme_name.value != blank %}{{ drop.theme_name.value | escape }}{% else %}{{ collection.title | escape }}{% endif %}</h1>
   </div>
   <div class="av-stack">
@@ -38,5 +38,5 @@
 </section>
 {%- endunless -%}
 {% schema %}
-{ "name": "AV Drop header", "settings": [] }
+{ "name": "AV Collection header", "settings": [] }
 {% endschema %}
