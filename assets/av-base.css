@@ -50,6 +50,17 @@ a { color: var(--av-kumkum); text-decoration: none; }
 .av-body a, .rte a { text-decoration: underline; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
 img, video { max-width: 100%; display: block; }
 
+/* ---- focus, selection, caret ------------------------------------------ */
+/* one ring everywhere, kumkum on ivory; base.css loads first, so this replaces Dawn's *:focus-visible glow */
+:root { caret-color: var(--av-kumkum); accent-color: var(--av-kumkum); }
+::selection { background: var(--av-kumkum); color: var(--av-ivory); }
+:focus-visible { outline: 2px solid var(--av-kumkum); outline-offset: 3px; box-shadow: none; }
+.av-link:focus-visible { outline-offset: 6px; }
+/* on red surfaces (header, drawer, footer and password forms, bands) the ring, caret and selection turn ivory */
+.av-header :focus-visible, .av-drawer :focus-visible, .av-footer :focus-visible, .av-password :focus-visible, .av-band :focus-visible { outline: 2px solid var(--av-ivory); outline-offset: 3px; }
+.av-header, .av-drawer, .av-footer, .av-password, .av-band { caret-color: var(--av-ivory); }
+.av-header ::selection, .av-drawer ::selection, .av-footer ::selection, .av-password ::selection, .av-band ::selection { background: var(--av-ivory); color: var(--av-kumkum); }
+
 /* ---- type roles ---------------------------------------------------- */
 .av-label {
   font-family: var(--av-font-body);

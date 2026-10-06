@@ -148,22 +148,73 @@
 .av-step__title { margin: 0; }
 @media (max-width: 900px) { .av-steps__grid { grid-template-columns: 1fr; } }
 
-/* av-enquiry-form */
+/* av-enquiry-form — every state designed: default, focus, invalid, disabled, sending, sent, failed */
 .av-enquiry { padding: var(--av-section) var(--av-gutter); display: grid; grid-template-columns: 5fr 7fr; gap: 64px; }
+.av-enquiry__panel { display: block; min-width: 0; }
 .av-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 32px; align-content: start; }
-.av-field { display: flex; flex-direction: column; gap: 10px; }
+.av-field { display: flex; flex-direction: column; gap: 10px; min-width: 0; margin: 0; padding: 0; border: 0; } /* chip groups are fieldsets: strip the UA box */
 .av-field--wide { grid-column: span 2; }
+.av-field__label { font-family: var(--av-font-body); font-weight: 300; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--av-grey-1); padding: 0; transition: color 160ms ease; } /* the .av-label role, with a focus colour */
+legend.av-field__label { margin: 0 0 10px; } /* a legend is not a flex item, so the column gap does not reach it */
+.av-field__label abbr { text-decoration: none; color: var(--av-kumkum); }
 .av-field input, .av-field textarea, .av-field select {
   width: 100%; background: none; border: 0; border-bottom: 1px solid var(--av-kumkum); border-radius: 0;
   padding: 0 0 10px; font-family: var(--av-font-body); font-weight: 300; font-size: 15px; color: var(--av-ink); min-height: 44px;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
 }
-.av-field input:focus-visible, .av-field textarea:focus-visible, .av-field select:focus-visible { outline: 2px solid var(--av-kumkum); outline-offset: 4px; box-shadow: none; }
-.av-field textarea { resize: vertical; min-height: 88px; }
-.av-form__foot { grid-column: span 2; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-top: 8px; flex-wrap: wrap; }
-.av-form__msg { grid-column: span 2; }
 .av-field input::placeholder, .av-field textarea::placeholder { color: var(--av-grey-1); opacity: 1; } /* placeholders are text on ivory too: grey-1, not the browser's default grey */
+.av-field textarea { resize: vertical; min-height: 88px; }
+.av-field input[type="date"] { -webkit-appearance: none; appearance: none; }
+.av-field input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.6; cursor: pointer; }
+/* focus: the global ring (av-base.css), and the rule thickens while the label turns kumkum; box-shadow so the 2px rule does not shift layout */
+.av-field:focus-within .av-field__label { color: var(--av-kumkum); }
+.av-field input:focus-visible, .av-field textarea:focus-visible, .av-field select:focus-visible { box-shadow: 0 1px 0 0 var(--av-kumkum); }
+/* invalid: deeper red rule, label and message — only after the field has been left or Send was pressed */
+.av-field.is-invalid input, .av-field.is-invalid textarea, .av-field [aria-invalid="true"] { border-bottom-color: var(--av-kumkum-deep); box-shadow: 0 1px 0 0 var(--av-kumkum-deep); }
+.av-field.is-invalid .av-field__label { color: var(--av-kumkum-deep); }
+.av-field__error { display: none; margin: 0; font-family: var(--av-font-body); font-weight: 400; font-size: 13px; line-height: 1.5; color: var(--av-kumkum-deep); }
+.av-field.is-invalid .av-field__error { display: block; }
+.av-field__hint { margin: 0; font-family: var(--av-font-body); font-weight: 300; font-size: 13px; line-height: 1.5; color: var(--av-grey-1); }
+.av-field__hint:empty { display: none; }
+/* sending: the fields wait */
+.av-form [disabled] { opacity: 0.6; cursor: progress; }
+/* chip groups (occasion, language): real radios, visually chips; 44px targets; arrow keys move within the group */
+.av-chips__row { position: relative; display: flex; gap: 10px; flex-wrap: wrap; }
+.av-chips input { position: absolute; opacity: 0; width: 1px; height: 1px; min-height: 0; margin: 0; padding: 0; border: 0; outline: 0; pointer-events: none; }
+.av-chips label {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 9px 15px; box-sizing: border-box; cursor: pointer;
+  font-family: var(--av-font-body); font-weight: 500; font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--av-ink); border: 1px solid var(--av-grey-2); transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+@media (hover: hover) and (pointer: fine) { .av-chips label:hover { border-color: var(--av-kumkum); color: var(--av-kumkum); } }
+.av-chips input:checked + label { background: var(--av-kumkum); border-color: var(--av-kumkum); color: var(--av-ivory); }
+.av-chips input:focus-visible + label { outline: 2px solid var(--av-kumkum); outline-offset: 3px; }
+.av-chips input[disabled] + label { opacity: 0.6; cursor: progress; }
+.av-chips.is-invalid label { border-color: var(--av-kumkum-deep); }
+/* footer row: assurance + Send */
+.av-form__foot { grid-column: span 2; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-top: 8px; flex-wrap: wrap; }
+.av-form .av-button { display: inline-flex; align-items: center; justify-content: center; transition: background 160ms ease, transform 160ms ease-out, opacity 160ms ease; }
+.av-form .av-button:active { transform: scale(0.97); }
+.av-button[disabled], .av-button[aria-busy="true"] { opacity: 0.85; cursor: progress; }
+.av-button__spinner { display: none; width: 14px; height: 14px; border: 1.5px solid var(--av-ivory); border-right-color: transparent; border-radius: 50%; margin-right: 12px; animation: av-spin 800ms linear infinite; }
+.av-button[aria-busy="true"] .av-button__spinner { display: inline-block; }
+@keyframes av-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .av-button__spinner { animation: none; border-right-color: var(--av-ivory); opacity: 0.5; } }
+/* form-level error (network / server) and the sent state */
+.av-form__error { grid-column: span 2; margin: 0; font-family: var(--av-font-body); font-weight: 400; font-size: 14px; line-height: 1.6; color: var(--av-kumkum-deep); border-top: 1px solid var(--av-kumkum-deep); padding-top: 14px; }
+.av-form__error:empty { display: none; }
+.av-form.is-sent { display: none; }
+.av-sent { display: flex; flex-direction: column; gap: 22px; }
+.av-sent[hidden] { display: none; }
+.av-sent > * { margin: 0; }
+.av-sent__routes { display: flex; gap: 32px; align-items: baseline; flex-wrap: wrap; }
 .av-enquiry, .av-form { scroll-margin-top: calc(var(--av-header-h) + 24px); } /* Shopify returns to #av-enquiry-form after posting; keep it clear of the sticky header */
-@media (max-width: 900px) { .av-enquiry { grid-template-columns: 1fr; gap: 32px; } .av-form { grid-template-columns: 1fr; } .av-field--wide, .av-form__foot { grid-column: auto; } .av-form__msg { grid-column: auto; } }
+@media (max-width: 900px) {
+  .av-enquiry { grid-template-columns: 1fr; gap: 32px; }
+  .av-form { grid-template-columns: 1fr; }
+  .av-field--wide, .av-form__foot, .av-form__error { grid-column: auto; }
+  .av-form__foot { flex-direction: column; align-items: flex-start; }
+}
 
 /* av-campaign (gallery) */
 .av-campaign { padding: 24px var(--av-gutter) var(--av-section); display: flex; flex-direction: column; gap: 24px; border-bottom: 1px solid var(--av-grey-3); }
@@ -212,7 +263,6 @@
 .av-newsline form .av-body--s { flex-basis: 100%; }
 .av-newsline input { flex: 1; background: none; border: 0; font-family: var(--av-font-body); font-weight: 300; font-size: 15px; color: var(--av-ink); min-height: 44px; }
 .av-newsline input::placeholder { color: var(--av-grey-1); opacity: 1; }
-.av-newsline input:focus-visible { outline: 2px solid var(--av-kumkum); outline-offset: 4px; box-shadow: none; }
 .av-newsline button { background: none; border: 0; cursor: pointer; font-family: var(--av-font-body); font-weight: 500; font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--av-kumkum); min-height: 44px; }
 @media (max-width: 900px) { .av-newsline { grid-template-columns: 1fr; gap: 24px; } }
 
@@ -282,7 +332,6 @@
 .av-notify { display: flex; flex-direction: column; gap: 12px; }
 .av-notify input { width: 100%; background: none; border: 0; border-bottom: 1px solid var(--av-kumkum); border-radius: 0; padding: 0 0 10px; font-family: var(--av-font-body); font-weight: 300; font-size: 15px; color: var(--av-ink); min-height: 44px; }
 .av-notify input::placeholder { color: var(--av-grey-1); opacity: 1; }
-.av-notify input:focus-visible { outline: 2px solid var(--av-kumkum); outline-offset: 4px; box-shadow: none; }
 @media (max-width: 900px) {
   .av-product { grid-template-columns: 1fr; gap: 32px; }
   .av-product__panel { position: static; max-height: none; overflow: visible; padding: 0; margin: 0; }

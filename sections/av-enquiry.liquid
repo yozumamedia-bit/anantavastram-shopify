@@ -1,4 +1,19 @@
-{%- comment -%} Enquiry form for Kamalam: used on the Commissions page and the Contact page. Three ways in — the form, a booking link (Google Calendar or similar), WhatsApp. {%- endcomment -%}
+{%- comment -%}
+  Enquiry form for Kamalam: used on the Commissions page and the Contact page. Three ways in — the form, a booking link (Google Calendar or similar), WhatsApp.
+  States: default, focus, invalid, sending, sent, failed. av-enquiry.js validates on leaving a field and on Send, posts with fetch and shows the sent
+  state in place. Without JS the native post and Shopify's redirect to ?contact_posted=true render the same sent state here.
+  `form` only exists inside {% form %}, so the form is captured first; the flag it sets decides what is shown around it.
+{%- endcomment -%}
+{%- liquid
+  assign today = 'now' | date: '%Y-%m-%d'
+  assign lead_weeks = section.settings.lead_weeks | default: 8
+  assign reply_line = section.settings.reply_line | strip
+  assign wa_label = 'WhatsApp · ' | append: settings.av_whatsapp_number
+  assign wa_text = 'A commission enquiry'
+  assign sent = false
+  assign email_invalid = false
+  assign other_error = false
+-%}
 <section class="av-enquiry av-reveal" id="av-enquiry">
   <div class="av-stack">
     {%- if section.settings.label != blank -%}<div class="av-label">{{ section.settings.label | escape }}</div>{%- endif -%}
@@ -10,29 +25,95 @@
         {%- if section.settings.calendar_note != blank -%}<span class="av-body av-body--meta">{{ section.settings.calendar_note | escape }}</span>{%- endif -%}
       </div>
     {%- endif -%}
-    {%- assign wa_label = 'WhatsApp · ' | append: settings.av_whatsapp_number -%}
-    {% render 'av-whatsapp-link', label: wa_label, text: 'An enquiry for a piece made to order' %}
+    {% render 'av-whatsapp-link', label: wa_label, text: wa_text, class: 'av-link av-enquiry__wa' %}
   </div>
-  {%- form 'contact', id: 'av-enquiry-form', class: 'av-form' -%}
-    <input type="hidden" name="contact[subject]" value="{{ section.settings.subject | default: 'Enquiry' | escape }}">
-    {%- if section.settings.tag != blank -%}<input type="hidden" name="contact[tags]" value="{{ section.settings.tag | escape }}">{%- endif -%}
-    {%- if form.posted_successfully? -%}
-      <div class="av-form__msg av-body" role="status" tabindex="-1" autofocus>Received.{% if section.settings.reply_line != blank %} {{ section.settings.reply_line | escape }}{% unless section.settings.reply_line contains '.' %}.{% endunless %}{% endif %}</div>
-    {%- else -%}
-      {%- if form.errors -%}<div id="enq-errors" class="av-form__msg av-body av-body--s" role="alert" tabindex="-1" autofocus>{{ form.errors | default_errors }}</div>{%- endif -%}
-      <div class="av-field"><label class="av-label" for="enq-name">Name</label><input id="enq-name" type="text" name="contact[name]" value="{{ form.name | escape }}" placeholder="Your name" autocomplete="name" required></div>
-      <div class="av-field"><label class="av-label" for="enq-email">Email</label><input id="enq-email" type="email" name="contact[email]" value="{{ form.email | escape }}" placeholder="So we can reply" autocomplete="email" required{% if form.errors contains 'email' %} aria-invalid="true" aria-describedby="enq-errors"{% endif %}></div>
-      <div class="av-field"><label class="av-label" for="enq-phone">Phone (optional)</label><input id="enq-phone" type="tel" name="contact[phone]" value="{{ form.phone | escape }}" placeholder="With country code" autocomplete="tel"></div>
-      <div class="av-field"><label class="av-label" for="enq-city">City</label><input id="enq-city" type="text" name="contact[city]" placeholder="Where the fitting would be" autocomplete="address-level2"></div>
-      <div class="av-field"><label class="av-label" for="enq-occasion">The occasion</label><input id="enq-occasion" type="text" name="contact[occasion]" placeholder="Wedding · reception · other"></div>
-      <div class="av-field"><label class="av-label" for="enq-date">The date</label><input id="enq-date" type="text" name="contact[date]" placeholder="When it is needed by"></div>
-      <div class="av-field"><label class="av-label" for="enq-wearer">Who will wear it</label><input id="enq-wearer" type="text" name="contact[wearer]" placeholder="Yourself · the groom · a name"></div>
-      <div class="av-field"><label class="av-label" for="enq-lang">Language</label><select id="enq-lang" name="contact[language]"><option value="">No preference</option><option>Tamil</option><option>English</option></select></div>
-      <div class="av-field av-field--wide"><label class="av-label" for="enq-notes">A few lines</label><textarea id="enq-notes" name="contact[body]" placeholder="What you have in mind — a border you remember, a colour, a family motif, the pieces in the set">{{ form.body | escape }}</textarea></div>
-      <div class="av-form__foot">{%- if section.settings.reply_line != blank -%}<span class="av-body av-body--meta">{{ section.settings.reply_line | escape }}</span>{%- endif -%}<button class="av-button" type="submit">Send</button></div>
-    {%- endif -%}
-  {%- endform -%}
+  {%- capture enquiry_form -%}
+    {%- form 'contact', id: 'av-enquiry-form', class: 'av-form', data-lead-weeks: lead_weeks -%}
+      {%- if form.posted_successfully? -%}
+        {%- assign sent = true -%}
+      {%- else -%}
+        {%- if form.errors -%}
+          {%- for field in form.errors -%}
+            {%- if field == 'email' -%}{%- assign email_invalid = true -%}{%- else -%}{%- assign other_error = true -%}{%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+        <input type="hidden" name="contact[subject]" value="{{ section.settings.subject | default: 'Enquiry' | escape }}">
+        {%- if section.settings.tag != blank -%}<input type="hidden" name="contact[tags]" value="{{ section.settings.tag | escape }}">{%- endif -%}
+
+        <div class="av-field">
+          <label class="av-field__label" for="enq-name">Name <abbr title="required">*</abbr></label>
+          <input id="enq-name" type="text" name="contact[name]" value="{{ form.name | escape }}" autocomplete="name" required>
+          <p class="av-field__error" id="enq-name-error">Your name, so Kamalam can reply.</p>
+        </div>
+
+        <div class="av-field{% if email_invalid %} is-invalid{% endif %}">
+          <label class="av-field__label" for="enq-email">Email <abbr title="required">*</abbr></label>
+          <input id="enq-email" type="email" name="contact[email]" value="{{ form.email | escape }}" autocomplete="email" required{% if email_invalid %} aria-invalid="true" aria-describedby="enq-email-error"{% endif %}>
+          <p class="av-field__error" id="enq-email-error">An email we can reply to.</p>
+        </div>
+
+        <div class="av-field">
+          <label class="av-field__label" for="enq-phone">Phone (optional)</label>
+          <input id="enq-phone" type="tel" name="contact[phone]" value="{{ form.phone | escape }}" placeholder="With country code" autocomplete="tel">
+        </div>
+
+        <fieldset class="av-field av-chips" id="enq-occasion">
+          <legend class="av-field__label">The occasion <abbr title="required">*</abbr></legend>
+          <div class="av-chips__row">
+            <input type="radio" id="enq-occasion-wedding" name="contact[occasion]" value="Wedding" required><label for="enq-occasion-wedding">Wedding</label>
+            <input type="radio" id="enq-occasion-reception" name="contact[occasion]" value="Reception"><label for="enq-occasion-reception">Reception</label>
+            <input type="radio" id="enq-occasion-other" name="contact[occasion]" value="Other"><label for="enq-occasion-other">Other</label>
+          </div>
+          <p class="av-field__error" id="enq-occasion-error">Choose the occasion.</p>
+        </fieldset>
+
+        <div class="av-field">
+          <label class="av-field__label" for="enq-date">The date <abbr title="required">*</abbr></label>
+          <input id="enq-date" type="date" name="contact[date]" min="{{ today }}" required>
+          <p class="av-field__error" id="enq-date-error" data-missing="Choose a date." data-past="Choose a date from today on.">Choose a date.</p>
+          <p class="av-field__hint" id="enq-date-hint" role="status" data-text="That date is inside the {{ lead_weeks }}-week lead time. Kamalam can still reply — say so in your note, or choose a later date."></p>
+        </div>
+
+        <div class="av-field">
+          <label class="av-field__label" for="enq-city">City</label>
+          <input id="enq-city" type="text" name="contact[city]" placeholder="Where the fitting would be" autocomplete="address-level2">
+        </div>
+
+        <fieldset class="av-field av-chips" id="enq-language">
+          <legend class="av-field__label">Language</legend>
+          <div class="av-chips__row">
+            <input type="radio" id="enq-language-tamil" name="contact[language]" value="Tamil"><label for="enq-language-tamil">Tamil</label>
+            <input type="radio" id="enq-language-english" name="contact[language]" value="English"><label for="enq-language-english">English</label>
+          </div>
+        </fieldset>
+
+        <div class="av-field av-field--wide">
+          <label class="av-field__label" for="enq-notes">A few lines</label>
+          <textarea id="enq-notes" name="contact[body]" rows="4" placeholder="What you have in mind — a border you remember, a colour, a family motif, the pieces in the set">{{ form.body | escape }}</textarea>
+        </div>
+
+        <p class="av-form__error" role="alert" aria-live="polite" data-text="That did not send. Nothing was lost — try again, or write on WhatsApp.">{% if other_error %}{{ form.errors | default_errors }}{% endif %}</p>
+        <div class="av-form__foot">
+          <span class="av-body av-body--meta">{% if reply_line != blank %}{{ reply_line | escape }} · nothing is shared{% else %}Nothing is shared{% endif %}</span>
+          <button class="av-button" type="submit"><span class="av-button__spinner" aria-hidden="true"></span>Send</button>
+        </div>
+      {%- endif -%}
+    {%- endform -%}
+  {%- endcapture -%}
+  {%- if sent -%}{%- assign enquiry_form = enquiry_form | replace_first: 'class="av-form"', 'class="av-form is-sent"' -%}{%- endif -%}
+  <av-enquiry-form class="av-enquiry__panel">
+    {{ enquiry_form }}
+    <div class="av-sent" id="av-enquiry-sent"{% unless sent %} hidden{% endunless %}>
+      <h2 class="av-sub av-sub--m" tabindex="-1">Kamalam has your note.</h2>
+      {%- if reply_line != blank -%}<p class="av-body">{{ reply_line | escape }}{% unless reply_line contains '.' %}.{% endunless %}</p>{%- endif -%}
+      <div class="av-sent__routes">
+        {% render 'av-whatsapp-link', label: wa_label, text: wa_text, class: 'av-link av-enquiry__wa' %}
+        <a class="av-link" href="{{ routes.collections_url }}">Back to the pieces</a>
+      </div>
+    </div>
+  </av-enquiry-form>
 </section>
+<script src="{{ 'av-enquiry.js' | asset_url }}" defer="defer"></script>
 {% schema %}
 { "name": "AV Enquiry form", "limit": 1, "settings": [
   { "type": "text", "id": "label", "label": "Label", "default": "Begin" },
@@ -41,6 +122,7 @@
   { "type": "text", "id": "subject", "label": "Email subject line", "info": "Subject of the email the store receives.", "default": "Commissions enquiry" },
   { "type": "text", "id": "tag", "label": "Customer tag", "info": "Added to the sender's customer record, so enquiries can be filtered in Customers.", "default": "commissions" },
   { "type": "text", "id": "reply_line", "label": "Reply-time line", "info": "Shown under the form and after sending, e.g. Kamalam replies within 3 days", "default": "Kamalam replies within [n] days" },
+  { "type": "number", "id": "lead_weeks", "label": "Lead time (weeks)", "info": "A date inside this window gets a note under the date field. It is not blocked.", "default": 8 },
   { "type": "header", "content": "Book a call" },
   { "type": "url", "id": "calendar_url", "label": "Booking link", "info": "A Google Calendar appointment schedule link (calendar.app.google/…) or similar. Hidden until set." },
   { "type": "text", "id": "calendar_label", "label": "Booking link label", "default": "Book a call with Kamalam" },
