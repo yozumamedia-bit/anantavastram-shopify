@@ -32,7 +32,7 @@
   endif
 -%}
 {%- if mode == 'current' -%}
-<section class="av-drop av-reveal">
+<section class="av-drop">
   {% render 'av-media', image: drop.ensemble_image.value, ratio: '780 / 820', sizes: '(min-width: 900px) 58vw, 100vw', loading: 'eager' %}
   <div class="av-drop__info">
     <div class="av-stack" style="gap:28px">
@@ -51,7 +51,7 @@
 </section>
 <div class="av-tiles">{%- for p in col.products limit: 6 -%}{% render 'av-drop-tile', product: p %}{%- endfor -%}</div>
 {%- else -%}
-<section class="av-past av-reveal">
+<section class="av-past">
   <div class="av-past__head">
     <div class="av-stack" style="gap:22px">
       <div class="av-drop__head"><span class="av-label">Collection {{ padded }}{% if drop.season.value != blank %} · {{ drop.season.value | escape }}{% endif %}</span>{% if closed %}<span class="av-chip av-chip--outline">Closed</span>{% else %}<span class="av-chip">Pieces remaining</span>{% endif %}</div>

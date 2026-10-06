@@ -3,7 +3,7 @@
   Renders on /collections/all (Shopify's automatic collection, default template) and on any collection using the products-all template.
 {%- endcomment -%}
 {%- if collection.handle == 'all' or template.suffix == 'products-all' -%}
-<section class="av-list av-reveal">
+<section class="av-list">
   <h2 class="visually-hidden">Pieces</h2>
   {%- paginate collection.products by 50 -%}
     {%- if collection.products.size == 0 -%}

@@ -20,7 +20,7 @@
     endfor
   endif
 -%}
-<section class="av-intro av-reveal">
+<section class="av-intro">
   <div class="av-stack" style="gap:28px">
     <div class="av-label">{% if drop != blank %}Collection {{ padded }}{% if drop.season.value != blank %} · {{ drop.season.value | escape }}{% endif %}{% else %}Collection{% endif %}</div>
     <h1 class="av-statement av-statement--xl">{% if drop != blank and drop.theme_name.value != blank %}{{ drop.theme_name.value | escape }}{% else %}{{ collection.title | escape }}{% endif %}</h1>

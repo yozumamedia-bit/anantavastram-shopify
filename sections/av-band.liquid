@@ -1,5 +1,5 @@
 {%- if section.blocks.size > 0 -%}
-<section class="av-band av-reveal">
+<section class="av-band">
   <div class="av-stack" style="gap:12px">
     {%- if section.settings.numeral != blank -%}<div class="av-numeral" style="color:var(--av-ivory);opacity:.7">{{ section.settings.numeral | escape }}</div>{%- elsif section.settings.label != blank -%}<div class="av-label">{{ section.settings.label | escape }}</div>{%- endif -%}
     <h2 class="av-sub av-sub--m">{{ section.settings.heading | escape }}</h2>

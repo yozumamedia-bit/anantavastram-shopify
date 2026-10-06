@@ -1,10 +1,9 @@
 /* Ananta Vastram — section styles (one block per section file) */
 
 /* av-hero: full-viewport still, no copy */
-.av-hero { height: calc(100vh - var(--av-header-h)); min-height: 520px; }
-.av-header-over .av-hero { height: 100vh; }
-/* phones: size to the visible viewport, so the browser toolbar never cuts the hero */
-@supports (height: 100svh) { .av-hero { height: calc(100svh - var(--av-header-h)); } .av-header-over .av-hero { height: 100svh; } }
+/* svh is the small viewport, so a phone's toolbar never cuts the hero; the vh line before it is the fallback */
+.av-hero { height: calc(100vh - var(--av-header-h)); height: calc(100svh - var(--av-header-h)); min-height: 520px; }
+.av-header-over .av-hero { height: 100vh; height: 100svh; }
 .av-hero { overflow: hidden; overflow: clip; }
 .av-hero img { width: 100%; height: 100%; object-fit: cover; }
 /* a slow drift as the page scrolls past the hero: transform only, so it stays on the compositor */
@@ -59,7 +58,7 @@
 .av-row { display: grid; grid-template-columns: 520px minmax(0, 1fr) 280px; gap: 56px; padding: 40px 0 64px; border-top: 1px solid var(--av-grey-3); }
 .av-row:last-child { border-bottom: 1px solid var(--av-grey-3); }
 .av-row .av-media { --ratio: 520 / 560; }
-.av-row--sold .av-media { opacity: .45; }
+.av-row--sold .av-media { --av-dim: .45; }
 .av-row__story { display: flex; flex-direction: column; gap: 22px; padding-top: 8px; }
 .av-row__making { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--av-grey-3); padding-top: 18px; }
 .av-row__notes { display: flex; flex-direction: column; gap: 20px; padding-top: 8px; }
@@ -130,9 +129,16 @@
 .av-video { position: relative; background: var(--av-grey-3); aspect-ratio: 16 / 9; display: flex; align-items: center; justify-content: center; }
 .av-video video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .av-video img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.av-video__play { position: relative; z-index: 1; width: 72px; height: 72px; border-radius: 50%; border: 1px solid var(--av-ivory); background: rgba(30,26,23,0.5); color: var(--av-ivory); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.av-video__play { position: relative; z-index: 1; width: 72px; height: 72px; border-radius: 50%; border: 1px solid var(--av-ivory); background: rgba(30,26,23,0.5); color: var(--av-ivory); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: opacity 200ms ease, transform 200ms ease; }
 .av-video__play svg { width: 26px; height: 26px; fill: currentColor; }
-.av-video.is-playing .av-video__play { display: none; }
+.av-video__play:active { transform: scale(.97); }
+@media (hover: hover) { .av-video__play:hover { transform: scale(1.04); } }
+.av-video.is-playing .av-video__play { opacity: 0; transform: scale(.96); pointer-events: none; } /* fades out; never display: none */
+/* Sound: on the film, while it plays; aria-pressed="false" = muted */
+.av-video__sound { position: absolute; top: 16px; right: 16px; z-index: 2; min-height: 44px; padding: 0 14px; border: 0; background: rgba(30,26,23,0.5); color: var(--av-ivory); font-family: var(--av-font-body); font-weight: 500; font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity 200ms ease; }
+.av-video.is-playing .av-video__sound { opacity: 1; pointer-events: auto; }
+.av-video__sound[aria-pressed="false"] { text-decoration: line-through; text-decoration-thickness: 1px; }
+@media (prefers-reduced-motion: reduce) { .av-video__play, .av-video__sound { transition: none; } }
 .av-video-block { padding: var(--av-section) var(--av-gutter) 0; display: flex; flex-direction: column; gap: 18px; }
 .av-video-block__head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
 .av-video-block__title { margin: 0; }
@@ -193,8 +199,7 @@ legend.av-field__label { margin: 0 0 10px; } /* a legend is not a flex item, so 
 .av-chips.is-invalid label { border-color: var(--av-kumkum-deep); }
 /* footer row: assurance + Send */
 .av-form__foot { grid-column: span 2; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-top: 8px; flex-wrap: wrap; }
-.av-form .av-button { display: inline-flex; align-items: center; justify-content: center; transition: background 160ms ease, transform 160ms ease-out, opacity 160ms ease; }
-.av-form .av-button:active { transform: scale(0.97); }
+.av-form .av-button { display: inline-flex; align-items: center; justify-content: center; transition: background-color 160ms, transform 160ms ease-out, opacity 160ms ease; }
 .av-button[disabled], .av-button[aria-busy="true"] { opacity: 0.85; cursor: progress; }
 .av-button__spinner { display: none; width: 14px; height: 14px; border: 1.5px solid var(--av-ivory); border-right-color: transparent; border-radius: 50%; margin-right: 12px; animation: av-spin 800ms linear infinite; }
 .av-button[aria-busy="true"] .av-button__spinner { display: inline-block; }
@@ -346,11 +351,10 @@ legend.av-field__label { margin: 0 0 10px; } /* a legend is not a flex item, so 
 .av-list__row { border-top: 1px solid var(--av-grey-3); }
 .av-list__item { display: grid; grid-template-columns: 160px minmax(0, 1fr) 160px max-content; gap: 32px; align-items: center; padding: 24px 0; }
 .av-list__item .av-price { white-space: nowrap; }
-.av-list__item .av-media { transition: opacity 200ms ease; }
-@media (hover: hover) { .av-list__item:hover .av-media { opacity: .85; } }
+@media (hover: hover) { .av-list__item:hover .av-media { --av-dim: .85; } } /* through the box's own (reveal) transition */
 .av-list__name { display: flex; flex-direction: column; gap: 8px; }
 .av-list__left { font-family: var(--av-font-body); font-weight: 400; font-size: 13px; color: var(--av-kumkum); }
-.av-list__item--sold .av-media { opacity: .45; }
+.av-list__item--sold .av-media { --av-dim: .45; }
 .av-list__item--sold .av-list__left { color: var(--av-grey-1); }
 .av-list__empty { padding: 48px 0; }
 .av-list__pages, .av-pages { padding-top: 40px; display: flex; flex-wrap: wrap; gap: 4px; font-family: var(--av-font-body); font-size: 13px; letter-spacing: .12em; }

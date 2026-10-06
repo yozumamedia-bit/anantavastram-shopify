@@ -12,7 +12,7 @@
     -%}
     {%- for article in blog.articles -%}
       {%- if skip_featured and article.id == featured.id %}{% continue %}{% endif -%}
-      <article class="av-post av-reveal">
+      <article class="av-post">
         <div class="av-post__media">
           {%- if article.metafields.av.video.value.sources.size > 0 -%}
             {% render 'av-video', loop_video: article.metafields.av.video.value, poster: article.image, class: 'av-post__video' %}

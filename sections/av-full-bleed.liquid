@@ -1,4 +1,4 @@
-<section class="av-bleed av-reveal">
+<section class="av-bleed">
   {% render 'av-media', image: section.settings.image, ratio: '1440 / 820', sizes: '100vw' %}
   {%- if section.settings.left != blank or section.settings.right != blank -%}
   <div class="av-bleed__caption av-caption"><span class="av-body av-body--meta">{{ section.settings.left | escape }}</span><span class="av-body av-body--meta">{{ section.settings.right | escape }}</span></div>

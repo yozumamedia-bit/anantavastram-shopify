@@ -1,5 +1,9 @@
-{%- comment -%} Once-per-session opening overlay. Shown only when <html> has .av-opening-active (set pre-paint in theme.liquid); av-opening.js runs the sequence. {%- endcomment -%}
+{%- comment -%}
+  Once-per-session opening overlay. Shown only when <html> has .av-opening-active (set pre-paint in theme.liquid);
+  av-opening.js runs the sequence. The pane slides up while the mark (the same wordmark as the header's) travels into the header.
+{%- endcomment -%}
 <div class="av-opening" id="av-opening" aria-hidden="true">
+  <div class="av-opening__pane"></div>
   <div class="av-opening__mark">
     {% render 'av-wordmark', class: 'av-opening__wordmark' %}
     <span class="av-opening__line"></span>

@@ -1,5 +1,5 @@
 {%- if section.blocks.size > 0 -%}
-<section class="av-cards av-reveal">
+<section class="av-cards">
   {%- if section.settings.heading != blank -%}<h2 class="visually-hidden">{{ section.settings.heading | escape }}</h2>{%- endif -%}
   {%- for block in section.blocks -%}
     <div class="av-card" {{ block.shopify_attributes }}>

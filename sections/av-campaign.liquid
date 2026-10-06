@@ -54,7 +54,7 @@
 -%}
 {%- if section.settings.page_heading -%}<h1 class="visually-hidden">{{ page.title | default: 'Gallery' | escape }}</h1>{%- endif -%}
 {%- if has_campaign or has_archive -%}
-<section class="av-campaign av-reveal">
+<section class="av-campaign">
   {%- if has_campaign -%}
   {%- if n > 0 -%}
   <div class="av-campaign__lead">

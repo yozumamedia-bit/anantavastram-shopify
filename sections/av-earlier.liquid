@@ -1,7 +1,7 @@
 {%- comment -%} Three articles after page 1's rows, skipping the featured story (blog metafield av.featured_article). {%- endcomment -%}
 {%- assign featured = blog.metafields.av.featured_article.value | default: blog.articles.first -%}
 {%- if current_tags == blank and current_page == 1 and blog.articles_count > 7 -%}
-<section class="av-earlier av-reveal">
+<section class="av-earlier">
   <div class="av-earlier__head"><h2 class="av-sub av-sub--s">Earlier</h2><a class="av-link" href="{{ blog.url }}?page=2">All stories</a></div>
   <div class="av-grid av-grid--3">
     {%- assign shown = 0 -%}

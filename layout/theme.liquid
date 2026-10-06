@@ -228,9 +228,7 @@
     <script src="{{ 'av-opening.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'av-reveal.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'av-video.js' | asset_url }}" defer="defer"></script>
-    {%- if settings.av_header_over_hero and template.name == 'index' -%}
-      <script src="{{ 'av-header.js' | asset_url }}" defer="defer"></script>
-    {%- endif -%}
+    <script src="{{ 'av-header.js' | asset_url }}" defer="defer"></script>
 
     {%- unless settings.type_body_font.system? -%}
       <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
@@ -248,6 +246,7 @@
     }
     try { if (!sessionStorage.getItem('avOpened') && !matchMedia('(prefers-reduced-motion: reduce)').matches && !(window.Shopify && window.Shopify.designMode)) { document.documentElement.classList.add('av-opening-active'); setTimeout(function () { document.documentElement.classList.remove('av-opening-active'); }, 8000); } } catch (e) {}
     </script>
+    <noscript><style>.av-opening{display:none}</style></noscript>
   </head>
 
   <body{% if settings.av_header_over_hero and template.name == 'index' %} class="av-header-over"{% endif %}>

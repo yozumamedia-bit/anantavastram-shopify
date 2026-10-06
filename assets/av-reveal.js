@@ -1,15 +1,15 @@
-/* Fallback reveal for browsers without scroll-driven animations; where they exist, av-base.css ties the reveal to scroll. */
+/* Scroll reveal for photographs and loops only: .av-media and .av-video wrappers carry .av-reveal (set in their snippets).
+   Adds .is-in once 15% of the box is inside the viewport less a 10% margin at the bottom; av-base.css holds the transition.
+   Design mode, no-js and reduced motion show everything at once (CSS). */
 (function () {
-  if (window.CSS && CSS.supports('animation-timeline: view()') && !document.documentElement.classList.contains('shopify-design-mode')) return;
   var items = document.querySelectorAll('.av-reveal');
-  if (!items.length || !('IntersectionObserver' in window)) {
-    items.forEach(function (n) { n.classList.add('is-in'); });
-    return;
-  }
+  if (!items.length) return;
+  function show(n) { n.classList.add('is-in'); }
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      if (e.isIntersecting) { show(e.target); io.unobserve(e.target); }
     });
-  }, { rootMargin: '0px 0px -10% 0px' });
+  }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
   items.forEach(function (n) { io.observe(n); });
 })();

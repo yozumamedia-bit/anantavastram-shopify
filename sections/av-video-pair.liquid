@@ -7,7 +7,7 @@
   endfor
 -%}
 {%- if usable > 0 -%}
-<section class="av-video-pair av-reveal">
+<section class="av-video-pair">
   {%- for block in section.blocks -%}
     {%- if block.settings.loop != blank or block.settings.poster != blank -%}
     <div class="av-stack" style="gap:14px" {{ block.shopify_attributes }}>

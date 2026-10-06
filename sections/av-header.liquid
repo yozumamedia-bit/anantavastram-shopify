@@ -1,6 +1,6 @@
 <header class="av-header" id="av-header">
   <div class="av-header__lead">
-    <button class="av-header__burger" type="button" aria-label="Open menu" onclick="document.getElementById('av-drawer').showModal()">{% render 'av-icon', name: 'burger' %}</button>
+    <button class="av-header__burger" type="button" aria-label="Open menu" aria-controls="av-drawer">{% render 'av-icon', name: 'burger' %}</button>
     <a class="av-header__icon" href="{{ routes.search_url }}" aria-label="Search">{% render 'av-icon', name: 'search' %}</a>
   </div>
   <nav class="av-header__nav av-header__nav--left" aria-label="The house">
@@ -34,7 +34,7 @@
 </header>
 
 <dialog class="av-drawer" id="av-drawer" aria-label="Menu">
-  <button class="av-drawer__close" type="button" aria-label="Close menu" onclick="this.closest('dialog').close()">{% render 'av-icon', name: 'close' %}</button>
+  <button class="av-drawer__close" type="button" aria-label="Close menu">{% render 'av-icon', name: 'close' %}</button>
   <nav class="av-drawer__group" aria-label="The house">
     {%- if section.settings.menu_house.links.size > 0 -%}
       {%- for link in section.settings.menu_house.links -%}<a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>{%- endfor -%}

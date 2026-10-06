@@ -8,6 +8,8 @@
   --av-kumkum-deep: #7a1216;
   --av-kumkum-hover: color-mix(in oklch, var(--av-kumkum), black 15%);
   --av-ease: cubic-bezier(0.2, 0.6, 0.2, 1);
+  --av-ease-out: cubic-bezier(0.23, 1, 0.32, 1);   /* reveals: quick start, long settle */
+  --av-ease-pane: cubic-bezier(0.32, 0.72, 0, 1);  /* panes: the opening, the drawer */
   --av-ivory: #f5efe3;
   --av-ink: #4a4541;
   --av-grey-1: #6b6560;
@@ -154,7 +156,9 @@ img, video { max-width: 100%; display: block; }
   border: 0;
   cursor: pointer;
   min-height: 44px;
+  transition: background-color 160ms, transform 160ms ease-out;
 }
+.av-button:active { transform: scale(.97); }
 @media (hover: hover) { .av-button:hover { background: var(--av-kumkum-hover); color: var(--av-ivory); } }
 
 /* ---- layout ---------------------------------------------------------- */
@@ -172,7 +176,7 @@ img, video { max-width: 100%; display: block; }
 .av-grid--8-4 { grid-template-columns: 8fr 4fr; }
 .av-grid--4-8 { grid-template-columns: 4fr 8fr; }
 .av-stack { display: flex; flex-direction: column; gap: 22px; }
-.av-media { position: relative; overflow: hidden; overflow: clip; background: #e4dacb; } /* clip, not hidden: a hidden box is a scroll container and would capture the image's view() timeline */
+.av-media { position: relative; overflow: hidden; overflow: clip; background: #e4dacb; opacity: var(--av-dim, 1); } /* clip, not hidden: a hidden box is a scroll container. --av-dim (sold-out, list hover) dims the box without fighting the reveal's opacity */
 .av-media img, .av-media video { width: 100%; height: 100%; object-fit: cover; }
 .av-media--ratio { aspect-ratio: var(--ratio, 4 / 5); }
 /* layers: blurred 24px copy (lazy images only) < the photograph < the hover photograph */
@@ -199,23 +203,19 @@ a:focus-visible .av-media__alt { opacity: 1; }
 }
 
 /* ---- scroll reveal --------------------------------------------------- */
-.av-reveal { opacity: 0; transform: translateY(18px); transition: opacity 900ms cubic-bezier(.2,.6,.2,1), transform 900ms cubic-bezier(.2,.6,.2,1); }
-.av-reveal.is-in { opacity: 1; transform: none; }
-/* photographs settle from 103% to rest as their block reveals */
-.av-reveal .av-media > img:first-child { transform: scale(1.03); transition: transform 1200ms cubic-bezier(.2,.6,.2,1); }
-.av-reveal.is-in .av-media > img:first-child { transform: none; }
-@media (prefers-reduced-motion: reduce) { .av-reveal, .av-reveal .av-media > img:first-child { opacity: 1; transform: none; transition: none; } }
-html.no-js .av-reveal, html.shopify-design-mode .av-reveal, html.no-js .av-reveal .av-media > img:first-child, html.shopify-design-mode .av-reveal .av-media > img:first-child { opacity: 1; transform: none; transition: none; }
-/* Where scroll-driven animations exist, the reveal is tied to scroll and av-reveal.js stands down. A block already in view
-   when the page opens, or reached by an anchor, is past its entry range and so fully shown. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    html:not(.shopify-design-mode) .av-reveal { opacity: 1; transform: none; transition: none; animation: av-rise linear both; animation-timeline: view(); animation-range: entry 0% entry 35%; }
-    html:not(.shopify-design-mode) .av-reveal .av-media > img:first-child { transform: none; transition: opacity 500ms ease; animation: av-settle linear both; animation-timeline: view(); animation-range: entry 0% cover 40%; }
-  }
+/* Photographs and loops only: .av-media and .av-video wrappers carry .av-reveal (their snippets); av-reveal.js adds .is-in
+   at 15% in view. Text, rows, forms, bands and the footer never move. Only opacity and transform animate. */
+.av-reveal { opacity: 0; transform: translateY(18px); transition: opacity 600ms var(--av-ease-out), transform 600ms var(--av-ease-out); }
+.av-reveal.is-in { opacity: var(--av-dim, 1); transform: none; }
+/* the photograph settles from 103% to rest as its box reveals; the lazy fade-in keeps its own opacity transition */
+.av-reveal > .av-media__img { transform: scale(1.03); transition: transform 1200ms var(--av-ease-out), opacity 500ms ease; }
+.av-reveal.is-in > .av-media__img { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .av-reveal { opacity: var(--av-dim, 1); transform: none; transition: none; }
+  .av-reveal > .av-media__img { transform: none; transition: opacity 500ms ease; }
 }
-@keyframes av-rise { from { opacity: 0; transform: translateY(18px); } }
-@keyframes av-settle { from { transform: scale(1.03); } }
+html.no-js .av-reveal, html.shopify-design-mode .av-reveal { opacity: var(--av-dim, 1); transform: none; transition: none; }
+html.no-js .av-reveal > .av-media__img, html.shopify-design-mode .av-reveal > .av-media__img { transform: none; }
 /* soft crossfade between pages where the browser supports cross-document view transitions; the header holds still */
 @view-transition { navigation: auto; }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 320ms; animation-timing-function: ease; }
@@ -247,6 +247,7 @@ html.no-js .av-reveal, html.shopify-design-mode .av-reveal, html.no-js .av-revea
   letter-spacing: 0.22em; text-transform: uppercase; color: var(--av-white);
 }
 @media (hover: hover) { .av-header__nav a:hover { color: var(--av-ivory); opacity: 0.8; } }
+@media (hover: hover) and (pointer: fine) { .av-header__nav a { transition: opacity 160ms ease; } }
 .av-header__right { display: flex; justify-content: flex-end; align-items: center; gap: 36px; }
 .av-header__icons { display: flex; gap: 22px; align-items: center; margin-left: 8px; }
 .av-header__icons a, .av-header__icons button, .av-header__icon { display: inline-flex; width: 44px; height: 44px; align-items: center; justify-content: center; margin: -13px; background: none; border: 0; cursor: pointer; color: var(--av-white); }
@@ -299,7 +300,11 @@ html.no-js .av-reveal, html.shopify-design-mode .av-reveal, html.no-js .av-revea
   .av-header__icons { margin-left: 0; gap: 16px; }
 }
 .av-drawer { position: fixed; inset: 0; width: auto; height: auto; max-width: none; max-height: none; margin: 0; border: 0; background: var(--av-kumkum); padding: 96px var(--av-gutter) 40px; flex-direction: column; gap: 40px; overflow: auto; overscroll-behavior: contain; }
-.av-drawer[open] { display: flex; }
+.av-drawer[open] { display: flex; animation: av-drawer-in 350ms var(--av-ease-pane) both; }
+.av-drawer[open].is-closing { animation: av-drawer-out 220ms var(--av-ease-pane) forwards; } /* av-header.js closes the dialog once this ends */
+@keyframes av-drawer-in { from { transform: translateY(-100%); } to { transform: none; } }
+@keyframes av-drawer-out { from { transform: none; } to { transform: translateY(-100%); } }
+@media (prefers-reduced-motion: reduce) { .av-drawer[open], .av-drawer[open].is-closing { animation: none; } }
 .av-drawer::backdrop { background: transparent; }
 html:has(.av-drawer[open]) { overflow: hidden; }
 .av-header__home { display: flex; justify-content: center; }
@@ -315,24 +320,27 @@ html:has(.av-drawer[open]) { overflow: hidden; }
 .av-drawer__close { position: absolute; top: 10px; right: 8px; width: 44px; height: 44px; background: none; border: 0; color: var(--av-white); cursor: pointer; }
 
 /* ---- opening sequence (once per session) ------------------------------ */
+/* Hidden unless <html>.av-opening-active was set before first paint (theme.liquid), so a return visit never flashes red.
+   Wordmark fades in 1000ms, holds 600ms, then the pane slides up 700ms while the wordmark travels into the header's box
+   (av-opening.js measures both and sets the transform). Only transform and opacity animate. */
 html:not(.av-opening-active) .av-opening { display: none; }
-.av-opening {
-  position: fixed; inset: 0; z-index: 100;
-  background: var(--av-kumkum);
-  display: flex; align-items: center; justify-content: center;
-  padding: 0 var(--av-gutter);
-  transform: translateY(0);
-  transition: transform 900ms cubic-bezier(.7,0,.2,1);
-}
+.av-opening { position: fixed; inset: 0; z-index: 100; }
+.av-opening__pane, .av-opening__pane:empty { display: block; position: absolute; inset: 0; background: var(--av-kumkum); transform: translateY(0); } /* :empty — Dawn's base.css hides empty divs */
 .av-opening__mark {
-  display: flex; flex-direction: column; align-items: center; gap: 14px; max-width: 100%;
-  opacity: 0; animation: av-logo-in 1s ease-out 200ms both;
+  position: absolute; inset: 0; padding: 0 var(--av-gutter);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+  opacity: 0; animation: av-logo-in 1000ms ease-out both;
 }
-.av-opening__wordmark { max-width: 100%; font-family: var(--av-font-wordmark); font-weight: 700; font-size: clamp(28px, 4.4vw, 64px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--av-white); line-height: 1; text-align: center; }
+.av-opening__wordmark { max-width: 100%; font-family: var(--av-font-wordmark); font-weight: 700; font-size: clamp(28px, 4.4vw, 64px); letter-spacing: 0.18em; text-transform: uppercase; color: var(--av-white); line-height: 1; text-align: center; transform-origin: 0 0; }
 .av-opening__wordmark img { height: auto; width: auto; max-width: min(84vw, 900px); max-height: 72px; }
 .av-opening__line { width: 56px; height: 1px; background: var(--av-white); opacity: 0.6; }
-.av-opening.is-leaving { transform: translateY(-100%); }
+.av-opening.is-leaving .av-opening__pane { transform: translateY(-100%); transition: transform 700ms var(--av-ease-pane); }
+.av-opening.is-leaving .av-opening__mark { transition: opacity 200ms ease, transform 700ms var(--av-ease-pane); }
+.av-opening.is-flip .av-opening__wordmark { transition: transform 700ms var(--av-ease-pane); }   /* FLIP into the header wordmark */
+.av-opening.is-slide.is-leaving .av-opening__mark { transform: translateY(-100%); }               /* fallback: the mark rides the pane */
+.av-opening.is-leaving .av-opening__line { opacity: 0; transition: opacity 200ms ease; }
 html.av-opening-active { overflow: hidden; }
+html.av-opening-active .av-header__wordmark { visibility: hidden; } /* the travelling wordmark lands on this box, then the header's takes over */
 @keyframes av-logo-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .av-opening { display: none; } }
 

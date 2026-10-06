@@ -2,6 +2,7 @@
   Muted loop with play button. `loop_video` is a Shopify video (file) metafield/setting; `film` optional full film.
   Renders a <video> whenever either source exists (the play button needs one to act on); a bare poster image only when neither does.
   Usage: {% render 'av-video', loop_video: section.settings.loop, film: section.settings.film, poster: section.settings.poster, class: 'av-film__video' %}
+  The box carries .av-reveal (scroll reveal) unless `reveal: false`. With a film, a Sound toggle shows while it plays (av-video.js).
 {%- endcomment -%}
 {%- liquid
   assign loop_src = ''
@@ -28,10 +29,13 @@
     assign poster = film.preview_image
   endif
 -%}
-<div class="av-video {{ class | escape }}"{% if film_src != blank %} data-film="{{ film_src }}"{% endif %}>
+<div class="av-video{% unless reveal == false %} av-reveal{% endunless %} {{ class | escape }}"{% if film_src != blank %} data-film="{{ film_src }}"{% endif %}>
   {%- if loop_src != blank or film_src != blank -%}
     <video{% if loop_src != blank %} src="{{ loop_src }}" muted autoplay loop{% endif %} playsinline preload="{% if loop_src != blank %}metadata{% else %}none{% endif %}" tabindex="-1"{% if poster != blank %} poster="{{ poster | image_url: width: 1600 }}"{% endif %}></video>
     <button class="av-video__play" type="button" aria-label="{% if film_src != blank %}Play the film with sound{% else %}Play with sound{% endif %}">{% render 'av-icon', name: 'play' %}</button>
+    {%- if film_src != blank -%}
+      <button class="av-video__sound" type="button" aria-pressed="true">Sound</button>
+    {%- endif -%}
   {%- elsif poster != blank -%}
     {{ poster | image_url: width: 1600 | image_tag: loading: 'lazy', alt: '' }}
   {%- endif -%}

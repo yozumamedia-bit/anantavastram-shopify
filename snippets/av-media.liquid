@@ -5,6 +5,7 @@
   `alt_image` adds a second photograph that fades in when the enclosing link is hovered or focused (see .av-media__alt).
   Lazy images sit on a blurred 24px copy of themselves and fade in once loaded; eager images (hero, first product photograph) show at once.
   `vt` names the box for the thumbnail-to-product morph; snippets/av-transitions.liquid assigns the view-transition-name at navigation time, so duplicates on a page never clash.
+  The box carries .av-reveal (scroll reveal, av-reveal.js) unless `reveal: false`; eager and priority images sit above the fold and are never revealed.
 {%- endcomment -%}
 {%- liquid
   assign ratio = ratio | default: '4 / 5'
@@ -17,8 +18,12 @@
   if alt == nil
     assign alt = image.alt | default: ''
   endif
+  assign reveal_class = ' av-reveal'
+  if reveal == false or priority or loading == 'eager'
+    assign reveal_class = ''
+  endif
 -%}
-<div class="av-media av-media--ratio {{ class | escape }}" style="--ratio: {{ ratio | escape }};"{% if vt != blank %} data-vt="{{ vt | escape }}"{% endif %}>
+<div class="av-media av-media--ratio{{ reveal_class }} {{ class | escape }}" style="--ratio: {{ ratio | escape }};"{% if vt != blank %} data-vt="{{ vt | escape }}"{% endif %}>
   {%- if image != blank -%}
     {%- if loading == 'lazy' -%}
       {{ image | image_url: width: 2400 | image_tag: widths: '400, 600, 800, 1200, 1600, 2400', sizes: sizes, loading: loading, decoding: 'async', alt: alt, class: 'av-media__img av-media__img--fade', onload: "this.classList.add('is-loaded')" }}
