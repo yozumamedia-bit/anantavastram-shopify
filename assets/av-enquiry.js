@@ -1,5 +1,7 @@
-/* Enquiry form: validate on leaving a field and on Send (never on the first keystroke), post with fetch, show the sent state in place.
-   Without JS the native post and Shopify's redirect to ?contact_posted=true render the same sent state server-side. */
+/* Enquiry form: validate on leaving a field and on Send (never on the first keystroke), then let the form post natively.
+   Shopify's spam protection attaches an hCaptcha token to native contact-form submits (a fetch post is refused with
+   "Missing CAPTCHA token"), so the sent state is the server-rendered one at ?contact_posted=true; on that load the
+   script moves focus to the sent heading. The busy state covers the moment between Send and the redirect. */
 (function () {
   if (customElements.get('av-enquiry-form')) return;
 
@@ -18,7 +20,12 @@
     connectedCallback() {
       var form = this.form = this.querySelector('form.av-form');
       this.sent = this.querySelector('.av-sent');
-      if (!form || form.classList.contains('is-sent')) return;
+      if (!form) return;
+      if (form.classList.contains('is-sent')) { // server-rendered sent state after Shopify's redirect
+        var heading = this.sent && this.sent.querySelector('h2');
+        if (heading) { heading.focus({ preventScroll: true }); this.sent.scrollIntoView({ block: 'center' }); }
+        return;
+      }
       this.email = form.elements['contact[email]'];
       this.date = form.elements['contact[date]'];
       this.occasion = form.querySelector('input[name="contact[occasion]"]');
@@ -117,55 +124,26 @@
     }
 
     onSubmit(e) {
-      e.preventDefault();
-      if (this.sending) return;
+      if (this.sending) { e.preventDefault(); return; }
       var self = this;
       var first = null;
       var required = [this.form.elements['contact[name]'], this.email, this.occasion, this.date];
       required.forEach(function (c) { if (!self.validate(c, true) && !first) first = c; });
-      if (first) { first.focus(); return; }
-
+      if (first) { e.preventDefault(); first.focus(); return; }
       this.setError('');
-      var data = new FormData(this.form); // before the fields are disabled: disabled fields are not submitted
       this.busy(true);
-      fetch(this.form.action, { method: 'POST', body: data, headers: { Accept: 'text/html' } })
-        .then(function (res) {
-          var url = res.url || '';
-          if (url.indexOf('contact_posted=true') !== -1) return self.done();
-          if (url.indexOf('/challenge') !== -1) { self.busy(false); self.form.submit(); return; } // Shopify's spam check: let the visitor complete it
-          self.fail();
-        })
-        .catch(function () { self.fail(); });
+      // no preventDefault: the native submit carries Shopify's captcha token and redirects to ?contact_posted=true
     }
 
     busy(on) {
       this.sending = on;
+      this.form.classList.toggle('is-sending', on);
       if (on) this.button.setAttribute('aria-busy', 'true'); else this.button.removeAttribute('aria-busy');
-      Array.prototype.forEach.call(this.form.elements, function (el) { if (el.type !== 'submit') el.disabled = on; });
+      // fields stay enabled: a disabled field is dropped from the post
     }
 
     setError(text) {
       if (this.formError) this.formError.textContent = text;
-    }
-
-    fail() {
-      this.busy(false);
-      this.setError(this.formError ? this.formError.dataset.text : '');
-      this.button.focus();
-    }
-
-    done() {
-      this.busy(false);
-      if (this.sent) this.sent.hidden = false;
-      this.form.classList.add('is-sent');
-      var heading = this.sent && this.sent.querySelector('h2');
-      if (heading) heading.focus();
-      try {
-        var url = new URL(location.href);
-        url.searchParams.set('contact_posted', 'true');
-        url.hash = 'av-enquiry';
-        history.replaceState(null, '', url.href); // a reload shows the server-rendered sent state
-      } catch (e) { /* the state is already on screen */ }
     }
   }
 
