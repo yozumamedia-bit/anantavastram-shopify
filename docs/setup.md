@@ -167,6 +167,10 @@ Any other menu can be picked in the header/footer sections in the theme editor. 
 - **Product template:** default shipping and care text.
 - Replace every `[bracketed]` placeholder as facts arrive.
 
+## 10a. Tamil text
+
+Motif names in Tamil (`av.motif_name_ta`) render in **Noto Sans Tamil**, self-hosted as `assets/noto-sans-tamil-300-700.woff2` (Tamil subset only, variable 300–700, SIL OFL — licence in `assets/noto-sans-tamil-OFL.txt`). Nothing to set up; it loads only for Tamil characters.
+
 ## 11. Wordmark
 
 The Montage Serif wordmark is built into the theme as SVG outlines (`snippets/av-wordmark.liquid`). To regenerate after a wordmark change, with the licensed OTF locally (never commit it):
