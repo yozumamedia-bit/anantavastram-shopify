@@ -140,6 +140,11 @@
       this.form.classList.toggle('is-sending', on);
       if (on) this.button.setAttribute('aria-busy', 'true'); else this.button.removeAttribute('aria-busy');
       // fields stay enabled: a disabled field is dropped from the post
+      clearTimeout(this.busyTimer);
+      if (on) { // if the visitor closes Shopify's captcha challenge without solving it, nothing navigates — let them Send again
+        var self = this;
+        this.busyTimer = setTimeout(function () { self.busy(false); }, 12000);
+      }
     }
 
     setError(text) {

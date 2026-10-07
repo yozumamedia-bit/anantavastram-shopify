@@ -150,6 +150,7 @@ Then open each page in **Online Store → Themes → Customize** to add images, 
 
 **Before the link is shared (sharing previews):**
 - **Online Store → Preferences:** homepage meta description, under 155 characters, plain voice, no "luxury" or "eco". This is also the description WhatsApp and Instagram show. Optionally a social sharing image (1200×630); without one the theme uses `assets/av-share.png`, the white wordmark on kumkum.
+- **Spam protection** (Online Store → Preferences) stays **on**: the enquiry and contact forms post natively so Shopify's hCaptcha token travels with them. A visitor may occasionally see the hCaptcha challenge before the sent page; if they close it without solving, the form unlocks after a moment so they can Send again.
 - **Password page** (Customize → Password page): one line under the wordmark and the letter sign-up. Sign-ups land in Customers tagged `newsletter`.
 - **Enquiries:** the Commissions form tags senders `commissions`, the Contact form `contact`. Shopify sends every contact-form message to the store contact email (Settings → General → Store contact details); to reach Kamalam, either use an address she reads or set a forward from that inbox to hers.
 
