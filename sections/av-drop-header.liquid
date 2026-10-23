@@ -1,43 +1,36 @@
-{%- comment -%} The counts loop mirrors snippets/av-drop-band.liquid (canonical copy) — change both together; remaining per piece is av-edition-line's (context 'remaining'). {%- endcomment -%}
-{%- comment -%} /collections/all (Shopify's automatic all-products collection) is the Products page: its sections live in this template too, keyed on the handle. {%- endcomment -%}
+{%- comment -%}
+  Top of a collection page. When the collection belongs to a series (collection metafield custom.series → a
+  collection_meta entry) it is that series' Pieces tab: the shared series header and tabs (snippets/av-series-head.liquid),
+  then the shipping line. Otherwise the plain collection intro.
+  /collections/all (Shopify's automatic all-products collection) is the Products page: its sections live in this
+  template too, keyed on the handle.
+{%- endcomment -%}
 {%- unless collection.handle == 'all' -%}
-{%- liquid
-  assign drop = collection.metafields.av.drop.value
-  if drop != blank
-    assign padded = drop.number.value | prepend: '00' | slice: -3, 3
-    assign pieces = collection.products_count | default: 0
-    assign remaining = 0
-    assign total = 0
-    for p in collection.products
-      capture r
-        render 'av-edition-line', product: p, context: 'remaining'
-      endcapture
-      assign r = r | strip | plus: 0
-      assign remaining = remaining | plus: r
-      assign et = p.metafields.av.edition_total.value | default: 0
-      assign total = total | plus: et
-    endfor
-  endif
--%}
+{%- assign series = collection.metafields.custom.series.value -%}
+{%- if series != blank -%}
+  <div class="av-series av-series--pieces">
+    {% render 'av-series-head', series: series, series_col: collection, active: 'pieces' %}
+    <div class="av-wrap av-series-pieces__intro">
+      {%- if section.settings.intro != blank -%}<p class="av-body av-body--s">{{ section.settings.intro | escape }}</p>{%- endif -%}
+      {%- comment -%} The shipping line is printed once here; the rows below carry none (the product page has its own accordion). {%- endcomment -%}
+      {%- if settings.av_shipping_line != blank -%}<p class="av-body av-body--meta">{{ settings.av_shipping_line | escape }}</p>{%- endif -%}
+    </div>
+  </div>
+{%- else -%}
 <section class="av-intro">
   <div class="av-stack" style="gap:28px">
-    <div class="av-label">{% if drop != blank %}Collection {{ padded }}{% if drop.season.value != blank %} · {{ drop.season.value | escape }}{% endif %}{% else %}Collection{% endif %}</div>
-    <h1 class="av-statement av-statement--xl">{% if drop != blank and drop.theme_name.value != blank %}{{ drop.theme_name.value | escape }}{% else %}{{ collection.title | escape }}{% endif %}</h1>
+    <div class="av-label">Collection</div>
+    <h1 class="av-statement av-statement--xl">{{ collection.title | escape }}</h1>
   </div>
   <div class="av-stack">
-    {%- if drop != blank and drop.design_line.value != blank -%}<div class="av-label av-label--red av-ta">The design · {{ drop.design_line.value | escape }}</div>{%- endif -%}
-    {%- if drop != blank and drop.story.value != blank -%}<div class="av-body">{{ drop.story.value | escape | newline_to_br }}</div>{%- elsif collection.description != blank -%}<div class="av-body">{{ collection.description }}</div>{%- endif -%}
-    {%- if drop != blank -%}
-    <div class="av-counts">
-      <div class="av-count"><span class="av-label">Pieces</span><span class="av-count__v">{{ pieces }}</span></div>
-      <div class="av-count"><span class="av-label">Remaining</span><span class="av-count__v">{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %}</span></div>
-    </div>
-    {%- endif -%}
-    {%- comment -%} The shipping line is printed once here; the rows below carry none (the product page has its own accordion). {%- endcomment -%}
+    {%- if collection.description != blank -%}<div class="av-body">{{ collection.description }}</div>{%- endif -%}
     {%- if settings.av_shipping_line != blank -%}<div class="av-body av-body--meta">{{ settings.av_shipping_line | escape }}</div>{%- endif -%}
   </div>
 </section>
+{%- endif -%}
 {%- endunless -%}
 {% schema %}
-{ "name": "AV Collection header", "settings": [] }
+{ "name": "AV Collection header", "settings": [
+  { "type": "text", "id": "intro", "label": "Line under the tabs (series collections)", "default": "Nothing here is on a shelf. Each piece is woven after you order it, in a numbered edition, and ships with its weaver's name." }
+] }
 {% endschema %}

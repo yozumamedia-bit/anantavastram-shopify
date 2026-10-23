@@ -1,0 +1,130 @@
+{%- comment -%}
+  The series header and its three tabs, shared by the series page (templates/metaobject/collection_meta.json) and the
+  collection page (sections/av-drop-header.liquid), so the two read as one place.
+  Usage: {% render 'av-series-head', series: metaobject, active: 'story' %}   active: 'story' | 'looks' | 'pieces'
+  On the collection page pass the collection too (series_col: collection), so the counts read it even before the
+  entry's own `collection` field is filled.
+
+  Stage comes from the entry's `status`:
+    teaser  — Story only; Looks and Pieces show as locked tabs
+    reveal  — Story and Looks; Pieces locked ("Opens [opens_on]")
+    current — the collection on sale now; all three tabs
+    open    — an earlier collection still selling; all three tabs
+    closed  — the record; all three tabs, "N of N placed"
+  On the series page Story and Looks switch in place (assets/av-series.js, data-av-tab); without JavaScript both panels
+  simply show one after the other. Pieces is always the Shopify collection page.
+  Remaining per piece is av-edition-line's (context 'remaining'), the same sum as av-drop-band.
+{%- endcomment -%}
+{%- liquid
+  assign stage = series.status.value | default: 'current' | downcase | strip
+  assign col = series_col | default: series.collection.value
+  assign padded = series.number.value | prepend: '00' | slice: -3, 3
+  assign coll_label = 'Collection ' | append: padded
+  assign series_url = series.system.url
+  assign pieces = 0
+  assign remaining = 0
+  assign total = 0
+  if col != blank
+    assign pieces = col.products_count | default: 0
+    for p in col.products
+      capture r
+        render 'av-edition-line', product: p, context: 'remaining'
+      endcapture
+      assign r = r | strip | plus: 0
+      assign remaining = remaining | plus: r
+      assign et = p.metafields.custom.edition_total.value | default: 0
+      assign total = total | plus: et
+    endfor
+  endif
+
+  assign looks_locked = false
+  assign pieces_locked = false
+  if stage == 'teaser'
+    assign looks_locked = true
+    assign pieces_locked = true
+  elsif stage == 'reveal'
+    assign pieces_locked = true
+  endif
+  if col == blank or pieces == 0
+    assign pieces_locked = true
+  endif
+
+  assign opens = ''
+  if series.opens_on.value != blank
+    assign opens = series.opens_on.value | date: '%-d %B'
+  endif
+  assign closes = ''
+  if series.closes_on.value != blank
+    assign closes = series.closes_on.value | date: '%-d %B'
+  endif
+
+  assign heading = series.name.value
+  assign eyebrow = coll_label
+  if heading == blank
+    assign heading = coll_label
+    if stage == 'current'
+      assign eyebrow = 'The current collection'
+    else
+      assign eyebrow = ''
+    endif
+  endif
+  if series.season.value != blank and eyebrow != blank
+    assign eyebrow = eyebrow | append: ' · ' | append: series.season.value
+  endif
+
+  if active == 'story' or active == 'looks'
+    assign on_page = true
+  else
+    assign on_page = false
+  endif
+-%}
+<header class="av-series-head">
+  <div class="av-series-head__title">
+    {%- if eyebrow != blank -%}<div class="av-numeral">{{ eyebrow | escape | upcase }}</div>{%- endif -%}
+    <h1 class="av-statement av-statement--xl">{{ heading | escape }}</h1>
+    {%- if series.theme.value != blank -%}<p class="av-body av-body--l av-ta">{{ series.theme.value | escape }}</p>{%- endif -%}
+  </div>
+  <div class="av-series-head__state">
+    {%- case stage -%}
+      {%- when 'teaser', 'reveal' -%}
+        <span class="av-chip av-chip--outline">{% if opens != blank %}Opens {{ opens }}{% else %}Coming{% endif %}</span>
+        <span class="av-body av-body--meta">Made to order</span>
+      {%- when 'closed' -%}
+        <span class="av-chip av-chip--outline av-chip--closed">Closed</span>
+        {%- if total > 0 -%}<span class="av-price">All {{ total }} placed</span>{%- endif -%}
+      {%- else -%}
+        {%- if pieces > 0 and remaining == 0 -%}
+          <span class="av-chip av-chip--outline av-chip--closed">Closed</span>
+          {%- if total > 0 -%}<span class="av-price">All {{ total }} placed</span>{%- endif -%}
+        {%- else -%}
+          <span class="av-chip">Open</span>
+          {%- if pieces > 0 -%}<span class="av-price">{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %} {% if remaining == 1 %}piece remains{% else %}pieces remain{% endif %}</span>{%- endif -%}
+          {%- if closes != blank -%}<span class="av-label">Orders close {{ closes }}</span>{%- endif -%}
+        {%- endif -%}
+    {%- endcase -%}
+  </div>
+  <nav class="av-series-tabs" aria-label="{{ heading | escape }}">
+    {%- comment -%} 01 Story {%- endcomment -%}
+    {%- if on_page -%}
+      <a href="#story" data-av-tab="story"{% if active == 'story' %} class="is-active" aria-current="page"{% endif %}><span>01</span> Story</a>
+    {%- else -%}
+      <a href="{{ series_url | default: '#' }}"><span>01</span> Story</a>
+    {%- endif -%}
+    {%- comment -%} 02 Looks {%- endcomment -%}
+    {%- if looks_locked -%}
+      <span class="is-locked" aria-disabled="true"><span>02</span> Looks <em>Coming</em></span>
+    {%- elsif on_page -%}
+      <a href="#looks" data-av-tab="looks"{% if active == 'looks' %} class="is-active" aria-current="page"{% endif %}><span>02</span> Looks</a>
+    {%- else -%}
+      <a href="{{ series_url | default: '#' }}#looks"><span>02</span> Looks</a>
+    {%- endif -%}
+    {%- comment -%} 03 Pieces {%- endcomment -%}
+    {%- if pieces_locked and active != 'pieces' -%}
+      <span class="is-locked" aria-disabled="true"><span>03</span> Pieces <em>{% if opens != blank %}Opens {{ opens }}{% else %}Coming{% endif %}</em></span>
+    {%- elsif active == 'pieces' -%}
+      <a href="{{ col.url | default: '#' }}" class="is-active" aria-current="page"><span>03</span> Pieces</a>
+    {%- else -%}
+      <a href="{{ col.url }}"><span>03</span> Pieces</a>
+    {%- endif -%}
+  </nav>
+</header>

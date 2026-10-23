@@ -1,0 +1,18 @@
+{%- comment -%} Story panel: the designer's note for the collection (the entry's `design_note`). Hidden when the note is empty. {%- endcomment -%}
+{%- assign series = metaobject | default: section.settings.series -%}
+{%- if series != blank and series.design_note.value != blank -%}
+<section class="av-series-note av-wrap av-section" data-av-panel="story">
+  <div class="av-stack" style="gap:12px">
+    <div class="av-label">{{ section.settings.label | escape }}</div>
+    {%- if section.settings.author != blank -%}<div class="av-body av-body--s">{{ section.settings.author | escape | newline_to_br }}</div>{%- endif -%}
+  </div>
+  <div class="av-statement av-statement--m av-series-note__text">{% render 'av-field-text', field: series.design_note %}</div>
+</section>
+{%- endif -%}
+{% schema %}
+{ "name": "AV Series note", "settings": [
+  { "type": "metaobject", "metaobject_type": "collection_meta", "id": "series", "label": "Collection (only for previewing outside a series page)" },
+  { "type": "text", "id": "label", "label": "Label", "default": "The design note" },
+  { "type": "textarea", "id": "author", "label": "Author line", "default": "Kamalam Moorthy\nChief Designer" }
+], "presets": [{ "name": "AV Series note" }] }
+{% endschema %}

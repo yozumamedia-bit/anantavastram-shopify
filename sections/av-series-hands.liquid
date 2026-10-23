@@ -1,0 +1,32 @@
+{%- comment -%}
+  Story panel: the people who made the collection — the entry's `weavers` list (weaver entries: name, unit_or_village,
+  district, in_their_words, portrait). One split row per person, alternating sides. Hidden when the list is empty.
+{%- endcomment -%}
+{%- assign series = metaobject | default: section.settings.series -%}
+{%- assign people = series.weavers.value -%}
+{%- if series != blank and people.count > 0 -%}
+<section class="av-series-hands av-wrap av-section" data-av-panel="story">
+  <div class="av-label">{{ section.settings.label | escape }}</div>
+  {%- for w in people -%}
+    <div class="av-series-hand{% cycle '', ' av-series-hand--flip' %}">
+      {% render 'av-media', image: w.portrait.value, ratio: '4 / 5', sizes: '(min-width: 900px) 55vw, 100vw', alt: w.name.value %}
+      <div class="av-stack">
+        <h2 class="av-sub av-sub--l">{{ w.name.value | escape }}</h2>
+        {%- capture place -%}{{ w.unit_or_village.value | escape }}{% if w.district.value != blank %}{% if w.unit_or_village.value != blank %}, {% endif %}{{ w.district.value | escape }}{% endif %}{%- endcapture -%}
+        {%- if place != blank -%}<div class="av-body av-body--meta">{{ section.settings.role | escape }} · {{ place }}</div>{%- endif -%}
+        {%- if w.in_their_words.value != blank -%}<blockquote class="av-statement av-statement--m av-series-hand__quote av-ta">“{{ w.in_their_words.value | escape }}”</blockquote>{%- endif -%}
+      </div>
+    </div>
+  {%- endfor -%}
+  {%- if section.settings.link_url != blank -%}<a class="av-link" href="{{ section.settings.link_url }}">{{ section.settings.link_label | escape }}</a>{%- endif -%}
+</section>
+{%- endif -%}
+{% schema %}
+{ "name": "AV Series hands", "settings": [
+  { "type": "metaobject", "metaobject_type": "collection_meta", "id": "series", "label": "Collection (only for previewing outside a series page)" },
+  { "type": "text", "id": "label", "label": "Label", "default": "The hands" },
+  { "type": "text", "id": "role", "label": "Role word before the place", "default": "Weaver" },
+  { "type": "text", "id": "link_label", "label": "Link label", "default": "Watch the loom" },
+  { "type": "url", "id": "link_url", "label": "Link" }
+], "presets": [{ "name": "AV Series hands" }] }
+{% endschema %}
