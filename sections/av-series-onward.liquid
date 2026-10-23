@@ -12,7 +12,8 @@
     assign opens = series.opens_on.value | date: '%-d %B'
   endif
   assign padded = series.number.value | prepend: '00' | slice: -3, 3
-  assign name = series.name.value | default: padded
+  assign padded_label = 'Collection ' | append: padded
+  assign name = series.name.value | default: padded_label
   assign pieces_open = true
   if stage == 'teaser' or stage == 'reveal' or col == blank or col.products_count == 0
     assign pieces_open = false

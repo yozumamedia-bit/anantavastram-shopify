@@ -68,8 +68,12 @@
       assign eyebrow = ''
     endif
   endif
-  if series.season.value != blank and eyebrow != blank
-    assign eyebrow = eyebrow | append: ' · ' | append: series.season.value
+  if series.season.value != blank
+    if eyebrow != blank
+      assign eyebrow = eyebrow | append: ' · ' | append: series.season.value
+    else
+      assign eyebrow = series.season.value
+    endif
   endif
 
   if active == 'story' or active == 'looks'

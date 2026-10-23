@@ -13,11 +13,11 @@ Admin paths are for the current Shopify admin (September 2026). `[brackets]` in 
 > **Namespace.** Shopify requires a namespace of at least three characters, so every metafield the theme reads is under **`custom`** (`custom.edition_total`), not `av`. Changed 22 Oct 2026, along with the collection metaobject's type (`drop` → `collection_meta`).
 
 ### `collection_meta` — one per numbered collection (a "series": Collection 001, Kovil, Mullai …)
-Turn on **Publish entries as web pages** (Options) with URL handle **`series`**: each entry gets its own page, `/pages/series/<entry handle>`, rendered by `templates/metaobject/collection_meta.json` — the **Story** and **Looks** tabs. The **Pieces** tab is the entry's Shopify collection.
+Turn on **Publish entries as web pages** (Options) with URL handle **`series`** and page title **Name**: each entry gets its own page, `/pages/series/<entry handle>`, rendered by `templates/metaobject/collection_meta.json` — the **Story** and **Looks** tabs. The **Pieces** tab is the entry's Shopify collection.
 
 | Field key | Type | Notes |
 |---|---|---|
-| `number` | Integer | 1, 2, 3 … — orders the collections, highest first |
+| `number` | Single line text (created that way in the admin; an integer works the same) | 1, 2, 3 … — orders the collections, highest first |
 | `name` | Single line text | e.g. Kovil. Empty → the page reads "Collection 001" |
 | `theme` | Single line text | one line under the name: what the collection is built from |
 | `season` | Single line text | e.g. Deepavali 2026 |
