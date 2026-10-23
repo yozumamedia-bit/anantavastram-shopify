@@ -1,7 +1,7 @@
 {%- liquid
-  assign mf = product.metafields.av
+  assign mf = product.metafields.custom
   assign weaver = mf.weaver.value
-  assign drop = mf.drop.value
+  assign drop = mf.collection.value
   assign v = product.selected_or_first_available_variant | default: product.variants.first
   capture state
     render 'av-edition-line', product: product, context: 'state'
@@ -50,8 +50,8 @@
   assign provenance = ''
   if weaver != blank and weaver.name.value != blank
     assign provenance = 'Woven by ' | append: weaver.name.value
-    if weaver.unit.value != blank
-      assign provenance = provenance | append: ' at ' | append: weaver.unit.value
+    if weaver.unit_or_village.value != blank
+      assign provenance = provenance | append: ' at ' | append: weaver.unit_or_village.value
     endif
   endif
   if loom_hours > 0
@@ -144,7 +144,7 @@
 
     <div class="av-product__accordions">
       {%- if mf.how_made.value != blank or weaver != blank -%}
-      <details class="av-acc"><summary><h2 class="av-acc__title">How it is made</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{% if weaver != blank %}Woven by {{ weaver.name.value | escape }}{% if weaver.unit.value != blank %} at {{ weaver.unit.value | escape }}{% endif %}. {% endif %}{{ mf.how_made.value | escape | newline_to_br }}</div></details>
+      <details class="av-acc"><summary><h2 class="av-acc__title">How it is made</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{% if weaver != blank %}Woven by {{ weaver.name.value | escape }}{% if weaver.unit_or_village.value != blank %} at {{ weaver.unit_or_village.value | escape }}{% endif %}. {% endif %}{{ mf.how_made.value | escape | newline_to_br }}</div></details>
       {%- endif -%}
       {%- if has_materials -%}
       <details class="av-acc"><summary><h2 class="av-acc__title">Materials and motif</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">
@@ -175,8 +175,8 @@
 
     {%- if weaver != blank or drop != blank or edition_total > 0 or mf.kara_colour.value != blank or loom_hours > 0 -%}
     <div class="av-facts">
-      {%- if weaver != blank -%}<div class="av-fact"><div class="av-label">Woven by</div><div class="av-body av-body--s">{{ weaver.name.value | escape }}{% if weaver.unit.value != blank %} · {{ weaver.unit.value | escape }}{% endif %}</div></div>{%- endif -%}
-      {%- if drop != blank -%}<div class="av-fact"><div class="av-label">Collection</div><div class="av-body av-body--s">{% if drop.collection.value != blank %}<a href="{{ drop.collection.value.url }}">{% endif %}{{ padded }}{% if drop.theme_name.value != blank %} · {{ drop.theme_name.value | escape }}{% endif %}{% if drop.collection.value != blank %}</a>{% endif %}</div></div>{%- endif -%}
+      {%- if weaver != blank -%}<div class="av-fact"><div class="av-label">Woven by</div><div class="av-body av-body--s">{{ weaver.name.value | escape }}{% if weaver.unit_or_village.value != blank %} · {{ weaver.unit_or_village.value | escape }}{% endif %}</div></div>{%- endif -%}
+      {%- if drop != blank -%}<div class="av-fact"><div class="av-label">Collection</div><div class="av-body av-body--s">{%- assign series_url = drop.system.url | default: drop.collection.value.url -%}{% if series_url != blank %}<a href="{{ series_url }}">{% endif %}{{ padded }}{% if drop.name.value != blank %} · {{ drop.name.value | escape }}{% endif %}{% if series_url != blank %}</a>{% endif %}</div></div>{%- endif -%}
       {%- if edition_total > 0 -%}<div class="av-fact"><div class="av-label">Edition</div><div class="av-body av-body--s">{{ edition_total }} {% if edition_total == 1 %}piece{% else %}pieces{% endif %}</div></div>{%- endif -%}
       {%- if mf.kara_colour.value != blank -%}<div class="av-fact"><div class="av-label">Kara</div><div class="av-body av-body--s">{{ mf.kara_colour.value | escape }}</div></div>{%- endif -%}
       {%- if loom_hours > 0 -%}<div class="av-fact"><div class="av-label">At the loom</div><div class="av-body av-body--s">{{ loom_hours }} {{ hours_word }}</div></div>{%- endif -%}

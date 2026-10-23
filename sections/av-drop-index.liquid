@@ -10,7 +10,7 @@
   assign done = ''
   assign current = nil
   assign current_n = -1
-  for d in shop.metaobjects.drop.values
+  for d in shop.metaobjects.collection_meta.values
     if d.status.value == 'current' and d.collection.value != blank and d.collection.value.products_count > 0
       assign dn = d.number.value | plus: 0
       if dn > current_n
@@ -32,7 +32,7 @@
   {%- liquid
     assign pick = nil
     assign pick_n = -1
-    for d in shop.metaobjects.drop.values
+    for d in shop.metaobjects.collection_meta.values
       assign key = '|' | append: d.system.id | append: '|'
       if done contains key or d.collection.value == blank or d.collection.value.products_count == 0
         continue

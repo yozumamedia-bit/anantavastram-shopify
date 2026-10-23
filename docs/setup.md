@@ -8,35 +8,81 @@ Admin paths are for the current Shopify admin (September 2026). `[brackets]` in 
 
 ## 1. Metaobject definitions
 
-**Settings → Custom data → Metaobjects → Add definition.** For each definition, turn on **Storefronts access** (otherwise Liquid cannot read it) and set entries to **Active**.
+**Settings → Custom data → Metaobjects → Add definition.** For each definition, turn on **Storefronts access** (otherwise Liquid cannot read it) and set entries to **Active**. The *Field key* column is what the theme reads: Shopify builds the key from the field's name, so name each field so its key matches (or edit the key before saving).
 
-### `drop` — one per numbered collection (the metaobject keeps the key `drop`; customers read "Collection 001")
+> **Namespace.** Shopify requires a namespace of at least three characters, so every metafield the theme reads is under **`custom`** (`custom.edition_total`), not `av`. Changed 22 Oct 2026, along with the collection metaobject's type (`drop` → `collection_meta`).
+
+### `collection_meta` — one per numbered collection (a "series": Collection 001, Kovil, Mullai …)
+Turn on **Publish entries as web pages** (Options) with URL handle **`series`**: each entry gets its own page, `/pages/series/<entry handle>`, rendered by `templates/metaobject/collection_meta.json` — the **Story** and **Looks** tabs. The **Pieces** tab is the entry's Shopify collection.
+
 | Field key | Type | Notes |
 |---|---|---|
-| `number` | Integer | 1, 2, 3 … |
-| `theme_name` | Single line text | e.g. the collection's idea |
-| `season` | Single line text | e.g. Pongal 2027 |
-| `status` | Single line text, **choices**: `current`, `open`, `closed` | exactly one collection `current` at a time |
-| `design_line` | Single line text | "The design · …" line |
-| `story` | Multi-line text | paragraph from Kamalam |
-| `ensemble_image` | File (image) | large image on Collections |
+| `number` | Integer | 1, 2, 3 … — orders the collections, highest first |
+| `name` | Single line text | e.g. Kovil. Empty → the page reads "Collection 001" |
+| `theme` | Single line text | one line under the name: what the collection is built from |
+| `season` | Single line text | e.g. Deepavali 2026 |
+| `status` | Single line text | `teaser`, `reveal`, `current`, `open` or `closed` — the stage (below) |
+| `opens_on` | Date | "Opens 14 November" on locked tabs and the notify band |
+| `closes_on` | Date | "Orders close …" while open |
+| `story` | Rich text or multi-line text | the paragraph on Collections and the homepage |
+| `design_note` | Multi-line text | Kamalam's note, 80–150 words, on the Story tab |
+| `ensemble_image` | File (image) | the opening photograph of the Story tab and the large image on Collections |
+| `film` | File (video) | the collection film (Story tab); also the opening when there is no image |
 | `collection` | Collection reference | the Shopify collection holding its pieces |
+| `motifs` | Metaobject reference, **list** → `motif` | the motif plates |
+| `weavers` | Metaobject reference, **list** → `weaver` | "The hands"; also "Woven by …" under each look |
+| `looks` | Metaobject reference, **list** → `look` | the Looks tab, in order |
+| `credits` | Multi-line text | one line per credit, "Role: names" — e.g. `Photography: Memory Lane Studios` |
 
-**Ordering.** Collections (`drop` entries) are ordered by their `number` field, highest first — the handle does not matter. Give every entry a number. Rules the pages rely on:
-- The newest entry with status `current` is the large band on Collections and is always shown first. If more than one is `current`, the newest wins and the others show under "Past collections".
-- `open` = past collection still selling; `closed` = past collection kept as a record. A collection with no stock left shows "Closed" regardless.
-- An entry whose Shopify collection is empty is hidden.
+**Stages** (`status`). The same series URL serves every stage, so a link posted with the first teaser never changes.
 
-> **Shortcut for the About and Gallery pages.** Both work without metaobjects: on About, each person in chapter III has its own name, role, years and portrait fields; on Gallery, each campaign section has title, season, credits, film and eight image slots. Fill those in the theme editor to get the pages up first. Metaobjects are still the way to reuse a weaver across product pages and to keep campaign records in one place — when an entry is chosen, the section's own fields are ignored.
+| Stage | Story | Looks | Pieces |
+|---|---|---|---|
+| `teaser` | live: motifs, note, film | locked, "Coming" | locked, "Opens [opens_on]", notify band |
+| `reveal` | live | live | locked, notify band |
+| `current` | live | live | live — the collection on sale now |
+| `open` | live | live | live — an earlier collection still selling |
+| `closed` | live | live | "All N placed" — kept as the record |
 
-### `weaver` — people on the About page and product pages
+**Ordering.** Collections are ordered by `number`, highest first; the handle does not matter. The newest `current` entry is the large band on Collections; `open` and `closed` entries follow under "Past collections". An entry whose Shopify collection is empty is hidden from Collections and the homepage (its series page still works, for teasers).
+
+### `look` — one per look on a series' Looks tab
+| Field key | Type | Notes |
+|---|---|---|
+| `number` | Integer | Look 01, 02 … |
+| `title` | Single line text | e.g. Red set |
+| `images` | File, **list** (images) | first is the grid image; the panel shows up to three |
+| `wearer_name` | Single line text | real wearers only, named with consent |
+| `wearer_occupation` | Single line text | |
+| `wearer_city` | Single line text | |
+| `pieces` | Product reference, **list** | the products in the look, with price and edition state |
+| `commission_piece` | Single line text | a piece shown but not sold, e.g. Gold groom set — prints "By commission" and links to Commissions |
+| `commission_note` | Multi-line text | one line describing it |
+| `consent_date` | Date | when the wearer agreed to be named |
+
+### `motif` — one per motif plate
+| Field key | Type |
+|---|---|
+| `name_en` | Single line text |
+| `name_ta` | Single line text (Tamil) |
+| `source` | Single line text — the temple, text or place it is drawn from |
+| `source_image` | File (image) — the source |
+| `plate_image` | File (image) — the motif on the cloth |
+| `note` | Multi-line text — one line |
+
+### `weaver` — the hands, on series pages, About and product pages
 | Field key | Type |
 |---|---|
 | `name` | Single line text |
+| `unit_or_village` | Single line text |
+| `district` | Single line text |
+| `in_their_words` | Multi-line text — one line, recorded at the loom |
 | `portrait` | File (image) |
-| `role` | Single line text |
-| `years` | Integer (years at the loom) |
-| `unit` | Single line text (weaving unit / place) |
+| `consent_date` | Date |
+| `role` | Single line text — About page only |
+| `years` | Integer (years at the loom) — About page only |
+
+> **Shortcut for the About and Gallery pages.** Both work without metaobjects: on About, each person in chapter III has its own name, role, years and portrait fields; on Gallery, each campaign section has title, season, credits, film and eight image slots. Fill those in the theme editor to get the pages up first.
 
 ### `campaign` — Gallery page
 | Field key | Type |
@@ -50,51 +96,55 @@ Admin paths are for the current Shopify admin (September 2026). `[brackets]` in 
 | `film` | File (video) — optional, replaces the last image |
 | `pieces` | Product reference, **list** |
 | `story` | Multi-line text |
+| `consent_date` | Date |
 
 ---
 
 ## 2. Metafield definitions
 
-**Settings → Custom data**, pick the owner type, **Add definition**. Namespace `av` for all. Turn on storefront access where offered.
+**Settings → Custom data**, pick the owner type, **Add definition**. Namespace **`custom`** for all. Turn on storefront access where offered.
 
 ### Products
 | Key | Type | Used for |
 |---|---|---|
-| `av.drop` | Metaobject reference → `drop` | label "Collection 001", collection fact link, edition line |
-| `av.numeral` | Single line text | "No. IV" |
-| `av.tier` | Single line text, choices `everyday`, `occasion`, `commission` | label; also add the same word as a **tag** (§3) |
-| `av.weaver` | Metaobject reference → `weaver` | "Woven by …" |
-| `av.edition_total` | Integer | the edition's size — "3 of 8 left"; hides edition lines when empty |
-| `av.edition_placed` | Integer | pieces placed so far (0 when empty). Remaining = `edition_total − edition_placed`; the piece is sold out when this reaches `edition_total`. Raise it by one as each number is placed |
-| `av.lead_time_weeks` | Integer | "Made to order. 6 weeks from confirmation." |
-| `av.loom_hours` | Integer | Materials and motif accordion |
-| `av.motif_name_ta` | Single line text | motif (Tamil) |
-| `av.motif_name_en` | Single line text | motif (English) |
-| `av.yarn` | Single line text | Materials and motif |
-| `av.dye` | Single line text | Materials and motif |
-| `av.kara_colour` | Single line text | Kara fact |
-| `av.cloth_weight` | Single line text | Materials and motif — e.g. `320 g` |
-| `av.cloth_width` | Single line text | Materials and motif — e.g. `122 cm` |
-| `av.cloth_length` | Single line text | Materials and motif — e.g. `4 m` |
-| `av.worn_with` | Product reference, **list** | "Worn with" — the other pieces of the set on the product page (up to 3) |
-| `av.how_made` | Multi-line text | How it is made |
-| `av.care` | Multi-line text | Care accordion (falls back to the product section's default care text) |
+| `custom.collection` | Metaobject reference → `collection_meta` | label "Collection 001", the collection fact (links to the series page), edition line |
+| `custom.numeral` | Single line text | "No. IV" |
+| `custom.tier` | Single line text, choices `everyday`, `occasion`, `commission` | label; also add the same word as a **tag** (§3) |
+| `custom.weaver` | Metaobject reference → `weaver` | "Woven by …" |
+| `custom.edition_total` | Integer | the edition's size — "3 of 8 left"; hides edition lines when empty |
+| `custom.edition_placed` | Integer | pieces placed so far (0 when empty). Remaining = `edition_total − edition_placed`; the piece is sold out when this reaches `edition_total`. Raise it by one as each number is placed |
+| `custom.lead_time_weeks` | Integer | "Made to order. 6 weeks from confirmation." |
+| `custom.loom_hours` | Integer | Materials and motif accordion |
+| `custom.motif_name_ta` | Single line text | motif (Tamil) |
+| `custom.motif_name_en` | Single line text | motif (English) |
+| `custom.yarn` | Single line text | Materials and motif |
+| `custom.dye` | Single line text | Materials and motif |
+| `custom.kara_colour` | Single line text | Kara fact |
+| `custom.cloth_weight` | Single line text | e.g. `320 g` |
+| `custom.cloth_width` | Single line text | e.g. `122 cm` |
+| `custom.cloth_length` | Single line text | e.g. `4 m` |
+| `custom.worn_with` | Product reference, **list** | "Worn with" on the product page (up to 3) |
+| `custom.how_made` | Multi-line text | How it is made |
+| `custom.care` | Multi-line text | Care accordion (falls back to the product section's default care text) |
+| `custom.hsn` | Single line text | HSN code for the GST invoice app; not shown on the site |
+
+`custom.zari`, `custom.dimensions` and `custom.border_width` also exist in the admin for Kamalam's records; the theme does not print them yet.
 
 ### Collections
 | Key | Type |
 |---|---|
-| `av.drop` | Metaobject reference → `drop` (set on each numbered collection; drives the collection page header and counts) |
+| `custom.series` | Metaobject reference → `collection_meta` (set on each numbered collection: its page becomes that series' **Pieces** tab) |
 
 ### Blog posts (articles)
 | Key | Type |
 |---|---|
-| `av.read_time` | Integer (minutes) |
-| `av.video` | File — **restrict to Video**; the row and article show the video instead of the image |
+| `custom.read_time` | Integer (minutes) |
+| `custom.video` | File — **restrict to Video**; the row and article show the video instead of the image |
 
 ### Blogs
 | Key | Type |
 |---|---|
-| `av.featured_article` | Article reference — the featured story on the Stories page. Leave empty to feature the newest article. If your admin does not offer an article reference type, leave it out: the newest article is featured. |
+| `custom.featured_article` | Article reference — the featured story on the Stories page. Leave empty to feature the newest article. |
 
 ---
 
@@ -102,14 +152,14 @@ Admin paths are for the current Shopify admin (September 2026). `[brackets]` in 
 
 For every numbered piece:
 1. **One variant.** Price in INR.
-2. **Inventory:** "Track quantity" **on**, quantity = pieces in stock. **Sold out means the edition is complete**, not stock at 0: a piece is sold out when `av.edition_placed` reaches `av.edition_total` (or when Shopify itself stops the sale). So for a piece with an open edition, "Continue selling when out of stock" must be **ON** — at 0 it reads "Made to order" on tiles, rows and the list, and stays orderable; the counts ("3 of 8 left", "pieces remain") come from the two metafields. Once the edition is complete the theme shows "Sold out", "All 8 placed" and the notify-me form. A piece with no `av.edition_total` keeps the plain inventory rule: tracked and at 0 is sold out.
+2. **Inventory:** "Track quantity" **on**, quantity = pieces in stock. **Sold out means the edition is complete**, not stock at 0: a piece is sold out when `custom.edition_placed` reaches `custom.edition_total` (or when Shopify itself stops the sale). So for a piece with an open edition, "Continue selling when out of stock" must be **ON** — at 0 it reads "Made to order" on tiles, rows and the list, and stays orderable; the counts ("3 of 8 left", "pieces remain") come from the two metafields. Once the edition is complete the theme shows "Sold out", "All 8 placed" and the notify-me form. A piece with no `custom.edition_total` keeps the plain inventory rule: tracked and at 0 is sold out.
 3. **Tag** with its tier: `everyday` or `occasion` (drives the Products page filter tabs).
 4. Add to its numbered collection.
-5. Fill the `av.*` metafields (§2). Upload photographs in order — the first is the lead image.
+5. Fill the `custom.*` metafields (§2). Upload photographs in order — the first is the lead image.
 
 ## 4. Collections
 
-- **One manual collection per numbered collection** (e.g. "Collection 001"), default template, with `av.drop` pointing at the `drop` entry.
+- **One manual collection per numbered collection** (e.g. "Collection 001"), default template, with `custom.series` pointing at its `collection_meta` entry, and the entry's `collection` field pointing back at the collection.
 - **Products page:** `/collections/all` works without any setup — Shopify's automatic all-products collection renders the compact list, and `/collections/all/everyday` and `/collections/all/occasion` filter by tag. To control its sort order, create a collection with handle **`all`** (title "Products"), automated, condition *Inventory stock is greater than -1* (if rejected, use *Product price is greater than 0*), sort **Newest**, theme template **`collection.products-all`**.
 
 ## 5. Pages
@@ -170,7 +220,7 @@ Any other menu can be picked in the header/footer sections in the theme editor. 
 
 ## 10a. Tamil text
 
-Motif names in Tamil (`av.motif_name_ta`) render in **Noto Sans Tamil**, self-hosted as `assets/noto-sans-tamil-300-700.woff2` (Tamil subset only, variable 300–700, SIL OFL — licence in `assets/noto-sans-tamil-OFL.txt`). Nothing to set up; it loads only for Tamil characters.
+Motif names in Tamil (`custom.motif_name_ta`) render in **Noto Sans Tamil**, self-hosted as `assets/noto-sans-tamil-300-700.woff2` (Tamil subset only, variable 300–700, SIL OFL — licence in `assets/noto-sans-tamil-OFL.txt`). Nothing to set up; it loads only for Tamil characters.
 
 ## 11. Wordmark
 

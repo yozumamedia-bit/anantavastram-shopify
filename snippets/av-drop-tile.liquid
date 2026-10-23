@@ -5,7 +5,7 @@
   Sold out / made to order comes from snippets/av-edition-line.liquid (context 'state').
 {%- endcomment -%}
 {%- liquid
-  assign mf = product.metafields.av
+  assign mf = product.metafields.custom
   capture state
     render 'av-edition-line', product: product, context: 'state'
   endcapture

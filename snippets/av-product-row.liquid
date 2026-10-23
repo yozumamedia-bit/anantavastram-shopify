@@ -4,7 +4,7 @@
   The shipping line is printed once under the collection banner (av-drop-banner), never per row.
 {%- endcomment -%}
 {%- liquid
-  assign mf = product.metafields.av
+  assign mf = product.metafields.custom
   assign weaver = mf.weaver.value
   assign edition_total = mf.edition_total.value | default: 0
   capture state
@@ -27,7 +27,7 @@
     <div class="av-row__making">
       <div class="av-label av-label--red">How it is made</div>
       <div class="av-body av-body--s">
-        {%- if weaver != blank -%}Woven by {{ weaver.name.value | escape }}{% if weaver.unit.value != blank %} at {{ weaver.unit.value | escape }}{% endif %}. {% endif -%}
+        {%- if weaver != blank -%}Woven by {{ weaver.name.value | escape }}{% if weaver.unit_or_village.value != blank %} at {{ weaver.unit_or_village.value | escape }}{% endif %}. {% endif -%}
         {{ mf.how_made.value | escape | newline_to_br }}
       </div>
     </div>

@@ -13,8 +13,8 @@
 {%- endcomment -%}
 {%- liquid
   assign v = product.selected_or_first_available_variant | default: product.variants.first
-  assign total = product.metafields.av.edition_total.value | default: 0
-  assign placed = product.metafields.av.edition_placed.value | default: 0
+  assign total = product.metafields.custom.edition_total.value | default: 0
+  assign placed = product.metafields.custom.edition_placed.value | default: 0
   assign tracked_out = false
   if v.inventory_management == 'shopify' and v.inventory_quantity <= 0
     assign tracked_out = true
@@ -40,7 +40,7 @@
   if sold or remaining < 0
     assign remaining = 0
   endif
-  assign drop_no = product.metafields.av.drop.value.number.value
+  assign drop_no = product.metafields.custom.collection.value.number.value
 -%}
 {%- case context -%}
 {%- when 'state' -%}

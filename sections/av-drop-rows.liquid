@@ -7,7 +7,7 @@
     for k in (1..want)
       assign pick = nil
       assign pick_n = -1
-      for d in shop.metaobjects.drop.values
+      for d in shop.metaobjects.collection_meta.values
         assign key = '|' | append: d.system.id | append: '|'
         if done contains key or d.status.value == 'closed' or d.collection.value == blank or d.collection.value.products_count == 0
           continue
@@ -33,7 +33,7 @@
     assign count = col.products_count
     assign padded = drop.number.value | prepend: '00' | slice: -3, 3
     assign label = 'Collection ' | append: padded
-    assign title = drop.theme_name.value | default: label
+    assign title = drop.name.value | default: label
     if count == 1
       assign meta = '1 piece'
     else
@@ -52,7 +52,7 @@
 {%- endif -%}
 {% schema %}
 { "name": "AV Collection rows", "settings": [
-  { "type": "metaobject", "metaobject_type": "drop", "id": "drop", "label": "Collection (leave empty to pick automatically)", "info": "Set both collection rows the same way — both automatic or both chosen — so they never show the same collection." },
+  { "type": "metaobject", "metaobject_type": "collection_meta", "id": "drop", "label": "Collection (leave empty to pick automatically)", "info": "Set both collection rows the same way — both automatic or both chosen — so they never show the same collection." },
   { "type": "range", "id": "auto_index", "min": 1, "max": 3, "step": 1, "default": 1, "label": "Automatic pick: Nth newest open collection", "info": "Closed collections and collections with no products are skipped." }
 ], "presets": [{ "name": "AV Collection rows" }] }
 {% endschema %}

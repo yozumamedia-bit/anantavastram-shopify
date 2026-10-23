@@ -7,8 +7,8 @@
   if state contains 'sold'
     assign sold = true
   endif
-  assign mf = product.metafields.av
-  assign drop = mf.drop.value
+  assign mf = product.metafields.custom
+  assign drop = mf.collection.value
   assign label = ''
   if drop != blank and drop.number.value != blank
     assign padded = drop.number.value | prepend: '00' | slice: -3, 3
