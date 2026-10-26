@@ -1,4 +1,4 @@
-<section class="av-hero">
+<section class="av-hero" style="--av-hero-y: {{ section.settings.focus_y | default: 50 }}%">
   <h1 class="visually-hidden">{{ shop.name | escape }}</h1>
   {%- if section.settings.image != blank -%}
     {{ section.settings.image | image_url: width: 2800 | image_tag: widths: '800, 1200, 1600, 2000, 2800', sizes: '100vw', loading: 'eager', fetchpriority: 'high', alt: section.settings.image.alt | default: '' }}
@@ -7,5 +7,6 @@
   {%- endif -%}
 </section>
 {% schema %}
-{ "name": "AV Hero", "settings": [ { "type": "image_picker", "id": "image", "label": "Full-viewport still (no copy, no button)" } ], "presets": [{ "name": "AV Hero" }] }
+{ "name": "AV Hero", "settings": [ { "type": "image_picker", "id": "image", "label": "Full-viewport still (no copy, no button)" },
+  { "type": "range", "id": "focus_y", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50, "label": "Vertical focus", "info": "Which part of the photograph stays in view when the screen crops it: 0 = top, 100 = bottom." } ], "presets": [{ "name": "AV Hero" }] }
 {% endschema %}

@@ -30,7 +30,9 @@
       {%- if label != blank -%}<div class="av-label">{{ label }}</div>{%- endif -%}
       <h3 class="av-name"><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
     </div>
-    <div class="av-body av-body--s">{{ product.description }}</div>
+    {%- comment -%} The row carries the opening of the description only; the full text, with its details list, is on the product page. {%- endcomment -%}
+    {%- assign lede = product.description | split: '</p>' | first | strip_html | strip -%}
+    {%- if lede != blank -%}<p class="av-body av-body--s">{{ lede | truncatewords: 60 }}</p>{%- endif -%}
     {%- if mf.how_made.value != blank or weaver != blank -%}
     <div class="av-row__making">
       <div class="av-label av-label--red">How it is made</div>

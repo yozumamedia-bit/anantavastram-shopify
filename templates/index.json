@@ -3,7 +3,8 @@
     "hero": {
       "type": "av-hero",
       "settings": {
-        "image": "shopify://shop_images/av-home-hero.jpg"
+        "image": "shopify://shop_images/av-home-hero.jpg",
+        "focus_y": 80
       }
     },
     "credo": {
