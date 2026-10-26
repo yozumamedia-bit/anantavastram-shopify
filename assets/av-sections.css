@@ -5,6 +5,7 @@
 .av-hero { height: calc(100vh - var(--av-header-h)); height: calc(100svh - var(--av-header-h)); min-height: 520px; }
 .av-header-over .av-hero { height: 100vh; height: 100svh; }
 .av-hero { overflow: hidden; overflow: clip; }
+.av-hero picture { display: block; width: 100%; height: 100%; }
 .av-hero img { width: 100%; height: 100%; object-fit: cover; object-position: 50% var(--av-hero-y, 50%); }
 /* a slow drift as the page scrolls past the hero: transform only, so it stays on the compositor */
 @supports (animation-timeline: scroll()) {
