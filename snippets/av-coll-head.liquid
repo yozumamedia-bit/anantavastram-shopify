@@ -47,7 +47,8 @@
   elsif stage == 'reveal'
     assign pieces_locked = true
   endif
-  if meta.looks.value.count == 0
+  assign look_count = meta.looks.value.count | default: 0
+  if look_count == 0
     assign looks_locked = true
   endif
   if pieces == 0
