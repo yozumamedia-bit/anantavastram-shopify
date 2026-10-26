@@ -6,7 +6,7 @@
         "label": "About the house",
         "statement": "Cloth without end.",
         "text": "<p>Ananta means without end. Vastram means cloth. The name is a description of the work: a length of handwoven cloth with no seam, made on a loom that has been running in [town] for [how long], by weavers whose names we print on every piece.</p>",
-        "note": "Ananta Vastram is a menswear house from Tamil Nadu. We make veshtis and the garments worn with them, in numbered editions, to order. The people in our photographs are the wearers of the pieces, named with their consent.",
+        "note": "Ananta Vastram is a menswear house from Tamil Nadu. We make veshtis and the garments worn with them, in limited number; commissions are made to order. The people in our photographs are the wearers of the pieces, named with their consent.",
         "large_body": true,
         "open": true
       }
@@ -122,15 +122,15 @@
         "i1": {
           "type": "item",
           "settings": {
-            "title": "Numbered editions",
-            "text": "Each collection is a fixed, honest count. When the number is reached the piece is finished. It is not re-run."
+            "title": "Limited number",
+            "text": "Each design is made in a small, fixed number. When the last piece is placed, it is finished. It is not re-run."
           }
         },
         "i2": {
           "type": "item",
           "settings": {
-            "title": "Made to order",
-            "text": "Nothing sits in a warehouse. A piece is begun when it is asked for, and you are told how long it will take."
+            "title": "Commissions, made to order",
+            "text": "Everyday and Occasional pieces are woven ahead and ready to wear. A commission begins only when it is asked for, after a conversation, and you are told how long it will take."
           }
         },
         "i3": {

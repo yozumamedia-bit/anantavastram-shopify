@@ -1,20 +1,28 @@
 {%- comment -%}
-  Looks panel (tab 02) of the series page: the entry's `looks` list, each a `look` entry
+  Looks panel (tab 02) of the meta page: the entry's `looks` list, each a `look` entry
   (number, title, images, wearer_name, wearer_occupation, wearer_city, pieces, commission_piece, commission_note).
   The grid is editorial — a wide look, an offset look, then rows of three — and collapses to one column on phones.
   Each look opens a <dialog> panel from the right listing what it is made of, with price and edition state, plus a
-  "By commission" row for a piece that is not sold as a product (the gold groom set). assets/av-series.js opens it;
+  "By commission" row for a piece that is not sold as a product (the gold groom set). assets/av-coll.js opens it;
   the dialog closes on its button, Escape, or a click on the dimmed page.
   Hidden at the teaser stage, when the Looks tab is locked.
 {%- endcomment -%}
 {%- liquid
-  assign series = metaobject | default: section.settings.series
-  assign looks = series.looks.value
-  assign stage = series.status.value | default: 'current' | downcase | strip
+  assign meta = nil
+  if collection != blank and collection.handle != 'all'
+    for m in shop.metaobjects.collection_meta.values
+      if m.collection.value.id == collection.id
+        assign meta = m
+        break
+      endif
+    endfor
+  endif
+  assign looks = meta.looks.value
+  assign stage = meta.status.value | default: 'open' | downcase | strip
   assign footnote = section.settings.footnote
-  if footnote == blank and series.weavers.value.count > 0
+  if footnote == blank and meta.weavers.value.count > 0
     assign names = ''
-    for w in series.weavers.value
+    for w in meta.weavers.value
       if w.name.value != blank
         if names != blank
           assign names = names | append: ', '
@@ -27,11 +35,11 @@
     endif
   endif
 -%}
-{%- if series != blank and looks.count > 0 and stage != 'teaser' -%}
-<section class="av-series-looks av-wrap" id="looks" data-av-panel="looks">
+{%- if meta != blank and looks.count > 0 and stage != 'teaser' -%}
+<section class="av-coll-looks av-wrap" id="looks" data-av-panel="looks">
   <h2 class="visually-hidden">Looks</h2>
-  {%- if section.settings.intro != blank -%}<p class="av-body av-body--s av-series-looks__intro">{{ section.settings.intro | escape }}</p>{%- endif -%}
-  <div class="av-series-looks__grid">
+  {%- if section.settings.intro != blank -%}<p class="av-body av-body--s av-coll-looks__intro">{{ section.settings.intro | escape }}</p>{%- endif -%}
+  <div class="av-coll-looks__grid">
     {%- for look in looks -%}
       {%- liquid
         assign n = look.number.value | default: forloop.index
@@ -87,7 +95,8 @@
                   <div class="av-stack" style="gap:6px">
                     <a href="{{ p.url }}" class="av-sub av-sub--s">{{ p.title | escape }}</a>
                     {%- if p.description != blank -%}<span class="av-body av-body--s">{{ p.description | strip_html | truncatewords: 18 }}</span>{%- endif -%}
-                    <span class="av-price av-look-piece__price">{{ p.price | money }} · {% render 'av-edition-line', product: p, context: 'tile' %}</span>
+                    {%- capture p_state -%}{% render 'av-edition-line', product: p, context: 'state' %}{%- endcapture -%}
+                    <span class="av-price av-look-piece__price">{% if p_state contains 'enquiry' %}On enquiry · Made to order{% else %}{{ p.price | money }} · {% render 'av-edition-line', product: p, context: 'tile' %}{% endif %}</span>
                     <a class="av-link" href="{{ p.url }}">View the piece</a>
                   </div>
                 </li>
@@ -111,13 +120,12 @@
     {%- endfor -%}
   </div>
 </section>
-<script src="{{ 'av-series.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'av-coll.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 {% schema %}
-{ "name": "AV Series looks", "settings": [
-  { "type": "metaobject", "metaobject_type": "collection_meta", "id": "series", "label": "Collection (only for previewing outside a series page)" },
+{ "name": "AV Collection looks", "settings": [
   { "type": "text", "id": "intro", "label": "Intro line", "default": "Worn by the people in them. Choose a look to see what it is made of." },
   { "type": "url", "id": "commission_url", "label": "Commissions page", "info": "Where a \"By commission\" piece links. Defaults to /pages/commissions." },
   { "type": "text", "id": "footnote", "label": "Line at the foot of each look", "info": "Leave empty to print \"Woven by\" and the collection's weavers." }
-], "presets": [{ "name": "AV Series looks" }] }
+], "presets": [{ "name": "AV Collection looks" }] }
 {% endschema %}

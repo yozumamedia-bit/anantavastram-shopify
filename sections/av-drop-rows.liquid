@@ -1,4 +1,8 @@
-{%- comment -%} Automatic pick: the Nth highest-numbered drop that is not closed and has pieces (same scan as av-drop-index). {%- endcomment -%}
+{%- comment -%}
+  Homepage: one collection's pieces, one per row, under a banner with its name. Automatic pick: the Nth latest open
+  collection (by `opens_on`, the same rule as av-drop-index) that has pieces; collections before opening (teaser,
+  reveal) and closed collections are skipped.
+{%- endcomment -%}
 {%- liquid
   assign drop = section.settings.drop
   if drop == blank
@@ -6,16 +10,20 @@
     assign done = ''
     for k in (1..want)
       assign pick = nil
-      assign pick_n = -1
+      assign pick_t = -1
       for d in shop.metaobjects.collection_meta.values
         assign key = '|' | append: d.system.id | append: '|'
-        if done contains key or d.status.value == 'closed' or d.collection.value == blank or d.collection.value.products_count == 0
+        assign st = d.status.value | downcase | strip
+        if done contains key or st == 'closed' or st == 'teaser' or st == 'reveal' or d.collection.value == blank or d.collection.value.products_count == 0
           continue
         endif
-        assign dn = d.number.value | plus: 0
-        if dn > pick_n
+        assign t = 0
+        if d.opens_on.value != blank
+          assign t = d.opens_on.value | date: '%s' | plus: 0
+        endif
+        if t > pick_t
           assign pick = d
-          assign pick_n = dn
+          assign pick_t = t
         endif
       endfor
       if pick == blank
@@ -31,9 +39,7 @@
   {%- liquid
     assign col = drop.collection.value
     assign count = col.products_count
-    assign padded = drop.number.value | prepend: '00' | slice: -3, 3
-    assign label = 'Collection ' | append: padded
-    assign title = drop.name.value | default: label
+    assign title = drop.name.value | default: col.title
     if count == 1
       assign meta = '1 piece'
     else
@@ -44,15 +50,17 @@
     endif
   -%}
   <section class="av-drop-rows">
-    {% render 'av-drop-banner', label: label, title: title, meta: meta, shipping: true %}
+    {% render 'av-drop-banner', label: 'Collection', title: title, meta: meta, shipping: false %}
     <div class="av-rows">
-      {%- for product in col.products limit: 12 -%}{% render 'av-product-row', product: product %}{%- endfor -%}
+      {%- for product in col.products limit: section.settings.limit -%}{% render 'av-product-row', product: product %}{%- endfor -%}
     </div>
+    {%- if count > section.settings.limit -%}<div class="av-wrap av-drop-rows__more"><a class="av-link" href="{{ col.url }}#pieces">All {{ count }} pieces in {{ title | escape }}</a></div>{%- endif -%}
   </section>
 {%- endif -%}
 {% schema %}
 { "name": "AV Collection rows", "settings": [
   { "type": "metaobject", "metaobject_type": "collection_meta", "id": "drop", "label": "Collection (leave empty to pick automatically)", "info": "Set both collection rows the same way — both automatic or both chosen — so they never show the same collection." },
-  { "type": "range", "id": "auto_index", "min": 1, "max": 3, "step": 1, "default": 1, "label": "Automatic pick: Nth newest open collection", "info": "Closed collections and collections with no products are skipped." }
+  { "type": "range", "id": "auto_index", "min": 1, "max": 3, "step": 1, "default": 1, "label": "Automatic pick: Nth latest open collection", "info": "Collections not yet open, closed collections and collections with no products are skipped." },
+  { "type": "range", "id": "limit", "min": 1, "max": 12, "step": 1, "default": 3, "label": "Pieces shown" }
 ], "presets": [{ "name": "AV Collection rows" }] }
 {% endschema %}

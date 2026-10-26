@@ -1,0 +1,50 @@
+{%- comment -%}
+  Foot of the Story panel. Open stages: a red band of two routes, "See the looks" and "See the pieces".
+  Teaser and reveal stages: a red band with the opening date and the notify sign-up (the newsletter form, tagged with
+  the collection so the list can be split later). Routes to a locked tab are left out.
+{%- endcomment -%}
+{%- liquid
+  assign meta = nil
+  if collection != blank and collection.handle != 'all'
+    for m in shop.metaobjects.collection_meta.values
+      if m.collection.value.id == collection.id
+        assign meta = m
+        break
+      endif
+    endfor
+  endif
+  assign stage = meta.status.value | default: 'open' | downcase | strip
+  assign col = meta.collection.value
+  assign opens = ''
+  if meta.opens_on.value != blank
+    assign opens = meta.opens_on.value | date: '%-d %B'
+  endif
+  assign name = meta.name.value | default: collection.title
+  assign pieces_open = true
+  if stage == 'teaser' or stage == 'reveal' or col == blank or col.products_count == 0
+    assign pieces_open = false
+  endif
+-%}
+{%- if meta != blank -%}
+<section class="av-coll-onward" data-av-panel="story">
+  {%- if pieces_open -%}
+    <div class="av-coll-onward__routes">
+      {%- if meta.looks.value.count > 0 -%}<a href="#looks" data-av-tab="looks"><span class="av-label av-label--light">02</span><span class="av-statement av-statement--m">See the looks</span></a>{%- endif -%}
+      <a href="#pieces" data-av-tab="pieces"><span class="av-label av-label--light">03</span><span class="av-statement av-statement--m">See the pieces</span></a>
+    </div>
+  {%- else -%}
+    <div class="av-band av-coll-onward__notify">
+      <div class="av-stack" style="gap:10px">
+        <div class="av-label">{% if opens != blank %}The pieces open {{ opens }}{% else %}The pieces open soon{% endif %}</div>
+        <p class="av-statement av-statement--m">Be told when {{ name | escape }} opens.</p>
+      </div>
+      {% render 'av-newsletter-form', id: section.id, placeholder: 'Your email', class: 'av-footer__news av-coll-onward__form' %}
+      {%- if stage == 'reveal' and meta.looks.value.count > 0 -%}<a class="av-link av-link--light" href="#looks" data-av-tab="looks">See the looks</a>{%- endif -%}
+    </div>
+  {%- endif -%}
+</section>
+{%- endif -%}
+{% schema %}
+{ "name": "AV Collection onward", "settings": [
+], "presets": [{ "name": "AV Collection onward" }] }
+{% endschema %}

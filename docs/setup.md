@@ -12,41 +12,45 @@ Admin paths are for the current Shopify admin (September 2026). `[brackets]` in 
 
 > **Namespace.** Shopify requires a namespace of at least three characters, so every metafield the theme reads is under **`custom`** (`custom.edition_total`), not `av`. Changed 22 Oct 2026, along with the collection metaobject's type (`drop` → `collection_meta`).
 
-### `collection_meta` — one per numbered collection (a "series": Collection 001, Kovil, Mullai …)
-Turn on **Publish entries as web pages** (Options) with URL handle **`series`** and page title **Name**: each entry gets its own page, `/pages/series/<entry handle>`, rendered by `templates/metaobject/collection_meta.json` — the **Story** and **Looks** tabs. The **Pieces** tab is the entry's Shopify collection.
+### `collection_meta` — one per collection (Mullai, Kovil …)
+A collection is named, never numbered, and opens on its own date. Its page is the Shopify collection itself,
+`/collections/<handle>` (templates/collection.json), with three tabs: **01 Story · 02 Looks · 03 Pieces**. The theme
+finds the entry by its `collection` field — nothing to set on the collection. **Publish entries as web pages** stays
+**off** (the series pages under `/pages/series/` were retired 26 Oct 2026).
 
 | Field key | Type | Notes |
 |---|---|---|
-| `number` | Single line text (created that way in the admin; an integer works the same) | 1, 2, 3 … — orders the collections, highest first |
-| `name` | Single line text | e.g. Kovil. Empty → the page reads "Collection 001" |
-| `theme` | Single line text | one line under the name: what the collection is built from |
-| `season` | Single line text | e.g. Deepavali 2026 |
-| `status` | Single line text | `teaser`, `reveal`, `current`, `open` or `closed` — the stage (below) |
-| `opens_on` | Date | "Opens 14 November" on locked tabs and the notify band |
-| `closes_on` | Date | "Orders close …" while open |
-| `story` | Rich text or multi-line text | the paragraph on Collections and the homepage |
+| `name` | Single line text | e.g. Mullai — the page heading (empty → the Shopify collection's title) |
+| `theme` | Single line text | one line under the name: what the collection is built from (e.g. the forest — the Tree of Life, the Golden Deer) |
+| `season` | Single line text | e.g. Deepavali 2026 — shown after "Collection ·" |
+| `status` | Single line text | `teaser`, `reveal`, `open` or `closed` — the stage (below). `current` reads as `open` |
+| `opens_on` | Date | the order of collections everywhere (latest first), and "Opens 14 November" on locked tabs and bands |
+| `closes_on` | Date | "Orders close …" while open (optional) |
+| `story` | Rich text or multi-line text | the paragraph on Collections |
 | `design_note` | Multi-line text | Kamalam's note, 80–150 words, on the Story tab |
 | `ensemble_image` | File (image) | the opening photograph of the Story tab and the large image on Collections |
 | `film` | File (video) | the collection film (Story tab); also the opening when there is no image |
-| `collection` | Collection reference | the Shopify collection holding its pieces |
+| `collection` | Collection reference | **required** — the Shopify collection holding its pieces; this is how the page finds the entry |
 | `motifs` | Metaobject reference, **list** → `motif` | the motif plates |
 | `weavers` | Metaobject reference, **list** → `weaver` | "The hands"; also "Woven by …" under each look |
 | `looks` | Metaobject reference, **list** → `look` | the Looks tab, in order |
 | `credits` | Multi-line text | one line per credit, "Role: names" — e.g. `Photography: Memory Lane Studios` |
 
-**Stages** (`status`). The same series URL serves every stage, so a link posted with the first teaser never changes.
+`number` still exists in the admin from the numbered model; the theme no longer reads it.
 
-| Stage | Story | Looks | Pieces |
-|---|---|---|---|
-| `teaser` | live: motifs, note, film | locked, "Coming" | locked, "Opens [opens_on]", notify band |
-| `reveal` | live | live | locked, notify band |
-| `current` | live | live | live — the collection on sale now |
-| `open` | live | live | live — an earlier collection still selling |
-| `closed` | live | live | "All N placed" — kept as the record |
+**Stages** (`status`). The collection URL never changes, so a link posted with the first teaser keeps working.
 
-**Ordering.** Collections are ordered by `number`, highest first; the handle does not matter. The newest `current` entry is the large band on Collections; `open` and `closed` entries follow under "Past collections". An entry whose Shopify collection is empty is hidden from Collections and the homepage (its series page still works, for teasers).
+| Stage | Story | Looks | Pieces | Elsewhere |
+|---|---|---|---|---|
+| `teaser` | live: motifs, note, film, notify band | locked, "Coming" | locked, "Opens [opens_on]" | Collections: band with the opening date, no tiles. Homepage: not shown |
+| `reveal` | live | live | locked, notify band | as teaser |
+| `open` | live | live | live — in stock | Collections: large band with tiles. Homepage: rows |
+| `closed` | live | live | listed as the record | Collections: compact, under "Closed collections" |
 
-### `look` — one per look on a series' Looks tab
+**Ordering.** By `opens_on`, latest first (no date sorts last). The homepage's two collection rows take the two latest
+*open* collections that have pieces, three pieces each with a link to the rest.
+
+### `look` — one per look on a collection's Looks tab
 | Field key | Type | Notes |
 |---|---|---|
 | `number` | Integer | Look 01, 02 … |
@@ -70,7 +74,7 @@ Turn on **Publish entries as web pages** (Options) with URL handle **`series`** 
 | `plate_image` | File (image) — the motif on the cloth |
 | `note` | Multi-line text — one line |
 
-### `weaver` — the hands, on series pages, About and product pages
+### `weaver` — the hands, on collection pages, About and product pages
 | Field key | Type |
 |---|---|
 | `name` | Single line text |
@@ -107,13 +111,13 @@ Turn on **Publish entries as web pages** (Options) with URL handle **`series`** 
 ### Products
 | Key | Type | Used for |
 |---|---|---|
-| `custom.collection` | Metaobject reference → `collection_meta` | label "Collection 001", the collection fact (links to the series page), edition line |
+| `custom.collection` | Metaobject reference → `collection_meta` | the collection's name in the label and the Collection fact (links to the collection page) |
 | `custom.numeral` | Single line text | "No. IV" |
-| `custom.tier` | Single line text, choices `everyday`, `occasion`, `commission` | label; also add the same word as a **tag** (§3) |
+| `custom.tier` | Single line text, choices `everyday`, `occasional`, `commission` | the line. `commission` makes the piece made to order: "On enquiry", no price, no order button. Also add the word as a **tag** (§3). (`occasion` from before 26 Oct still reads as Occasional) |
 | `custom.weaver` | Metaobject reference → `weaver` | "Woven by …" |
-| `custom.edition_total` | Integer | the edition's size — "3 of 8 left"; hides edition lines when empty |
-| `custom.edition_placed` | Integer | pieces placed so far (0 when empty). Remaining = `edition_total − edition_placed`; the piece is sold out when this reaches `edition_total`. Raise it by one as each number is placed |
-| `custom.lead_time_weeks` | Integer | "Made to order. 6 weeks from confirmation." |
+| `custom.edition_total` | Integer | optional — how many of the design were ever made: "3 of 8 remain". Empty → "3 remain" |
+| `custom.edition_placed` | Integer | **not used** since 26 Oct 2026 — what remains is Shopify inventory (§3) |
+| `custom.lead_time_weeks` | Integer | commission pieces only: "Made to order, after a conversation. About 6 weeks from confirmation." |
 | `custom.loom_hours` | Integer | Materials and motif accordion |
 | `custom.motif_name_ta` | Single line text | motif (Tamil) |
 | `custom.motif_name_en` | Single line text | motif (English) |
@@ -133,7 +137,7 @@ Turn on **Publish entries as web pages** (Options) with URL handle **`series`** 
 ### Collections
 | Key | Type |
 |---|---|
-| `custom.series` | Metaobject reference → `collection_meta` (set on each numbered collection: its page becomes that series' **Pieces** tab) |
+| `custom.series` | **not used** since 26 Oct 2026 — the page finds its entry through the entry's `collection` field. The definition can be deleted |
 
 ### Blog posts (articles)
 | Key | Type |
@@ -150,17 +154,18 @@ Turn on **Publish entries as web pages** (Options) with URL handle **`series`** 
 
 ## 3. Products
 
-For every numbered piece:
-1. **One variant.** Price in INR.
-2. **Inventory:** "Track quantity" **on**, quantity = pieces in stock. **Sold out means the edition is complete**, not stock at 0: a piece is sold out when `custom.edition_placed` reaches `custom.edition_total` (or when Shopify itself stops the sale). So for a piece with an open edition, "Continue selling when out of stock" must be **ON** — at 0 it reads "Made to order" on tiles, rows and the list, and stays orderable; the counts ("3 of 8 left", "pieces remain") come from the two metafields. Once the edition is complete the theme shows "Sold out", "All 8 placed" and the notify-me form. A piece with no `custom.edition_total` keeps the plain inventory rule: tracked and at 0 is sold out.
-3. **Tag** with its tier: `everyday` or `occasion` (drives the Products page filter tabs).
-4. Add to its numbered collection.
+For every piece:
+1. **One variant.** Price in INR (commission pieces too — it is never shown).
+2. **Inventory — Everyday and Occasional:** "Track quantity" **on**, quantity = pieces in stock, "Continue selling when out of stock" **off**. The count on tiles, rows and the collection header is this number ("3 of 8 remain" with `custom.edition_total`, "3 remain" without); at 0 the piece is sold out — no price, a notify-me form — and stays listed, last, as the record.
+   **Commission pieces** (`custom.tier` = `commission`): inventory does not matter; the piece shows "On enquiry" and an "Enquire about this piece" link to the Commissions page, never an order button.
+3. **Tag** with its line: `everyday`, `occasional` or `commission` (drives the Products page filter tabs).
+4. Add to its collection (Mullai, Kovil …).
 5. Fill the `custom.*` metafields (§2). Upload photographs in order — the first is the lead image.
 
 ## 4. Collections
 
-- **One manual collection per numbered collection** (e.g. "Collection 001"), default template, with `custom.series` pointing at its `collection_meta` entry, and the entry's `collection` field pointing back at the collection.
-- **Products page:** `/collections/all` works without any setup — Shopify's automatic all-products collection renders the compact list, and `/collections/all/everyday` and `/collections/all/occasion` filter by tag. To control its sort order, create a collection with handle **`all`** (title "Products"), automated, condition *Inventory stock is greater than -1* (if rejected, use *Product price is greater than 0*), sort **Newest**, theme template **`collection.products-all`**.
+- **One manual collection per collection** (Mullai, Kovil …), default template, and a `collection_meta` entry whose `collection` field points at it. Handle = the name in lower case (`/collections/mullai`).
+- **Products page:** `/collections/all` works without any setup — Shopify's automatic all-products collection renders the compact list, and `/collections/all/everyday` and `/collections/all/occasional` filter by tag. To control its sort order, create a collection with handle **`all`** (title "Products"), automated, condition *Inventory stock is greater than -1* (if rejected, use *Product price is greater than 0*), sort **Newest**, theme template **`collection.products-all`**.
 
 ## 5. Pages
 
@@ -195,7 +200,7 @@ Then open each page in **Online Store → Themes → Customize** to add images, 
 - **Product photographs:** upload at least two per piece — tiles, list rows and product rows fade to the second photograph on hover.
 - **Social media:** Instagram URL (footer *Contact* column).
 - **Store details** (Settings → General): store email receives contact-form enquiries and notify-me requests.
-- **Account icon:** "Show the account icon" stays off until Collection 001 is on sale.
+- **Account icon:** "Show the account icon" stays off until the first collection is on sale.
 - **Favicon** (Theme settings → Favicon): upload the mark as a square PNG, at least 180×180. Without it the browser tab shows a globe.
 
 **Before the link is shared (sharing previews):**
@@ -241,12 +246,12 @@ python3 -m venv .venv && .venv/bin/pip install fonttools
 
 ## Check after setup
 
-- `/` — hero, credo, showcase, story, film, two collection rows (shipping line once under each banner), Commissions band.
-- `/collections` — current collection band first, six tiles (name, price, "N of N left"), past collections below with the outline chip.
+- `/` — hero, credo, showcase, story, film, the two latest open collections (three pieces each), Commissions band with the line for wedding buyers.
+- `/collections` — open and upcoming collections as large bands (tiles once open: name, price, "N of N remain"), closed collections below.
 - `/blogs/stories` — featured story, then three rows (5/7, 7/5, full-width), then the Earlier grid of six.
-- `/collections/drop-001` — collection header with counts, one piece per row.
-- `/collections/all`, `/collections/all/occasion` — compact list, sold-out pieces last.
-- A product — sticky panel, order button adds to cart; set a piece to 0 to see the notify-me form.
+- `/collections/mullai` — header and tabs; Story, Looks (a look opens its panel from the right), Pieces (one per row). Try `#looks` and `#pieces` in the address.
+- `/collections/all`, `/collections/all/occasional` — compact list, sold-out pieces last; a commission piece reads "On enquiry".
+- A product — sticky panel, order button adds to cart; set a piece to 0 to see the notify-me form; set `custom.tier` to `commission` to see the enquiry state.
 - `/pages/commissions` — send a test enquiry; it arrives at the store email.
 - `/pages/about`, `/pages/gallery`, `/blogs/stories`, `/blogs/stories/tagged/weavers`, an article.
 - Phone width: burger menu, product image rail, stacked rows.

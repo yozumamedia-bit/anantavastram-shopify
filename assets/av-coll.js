@@ -1,26 +1,31 @@
-/* Ananta Vastram — series page (templates/metaobject/collection_meta.json)
-   1. Tabs: links carrying data-av-tab="story" | "looks" switch the panels in place. Every section of the page is
-      marked data-av-panel="story" or "looks"; the other panel's sections are hidden. The hash (#story, #looks) keeps
-      the choice, so an Instagram link to …#looks opens on the looks. Without this script both panels show in order.
+/* Ananta Vastram — collection page (templates/collection.json, a collection with a collection_meta entry)
+   1. Tabs: links carrying data-av-tab="story" | "looks" | "pieces" switch the panels in place. Every section of the
+      page is marked data-av-panel with one of those names; the other panels' sections are hidden. The hash (#looks,
+      #pieces) keeps the choice, so an Instagram link to …#pieces opens on the pieces. Without this script every panel
+      shows in order.
    2. Looks: buttons carrying data-av-look-open="<dialog id>" open that <dialog> as a modal panel. It closes on its
       own button (form method="dialog"), on Escape (native), and on a click on the dimmed page around it. */
 (() => {
-  if (window.avSeries) return;
-  window.avSeries = true;
+  if (window.avColl) return;
+  window.avColl = true;
 
   const ready = (fn) => (document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn());
 
   ready(() => {
-    const root = document.querySelector('[data-av-series]');
+    const root = document.querySelector('[data-av-coll]');
 
     /* ---- tabs ------------------------------------------------------------ */
     if (root) {
-      const tabs = Array.from(document.querySelectorAll('.av-series-tabs [data-av-tab]'));
+      const tabs = Array.from(document.querySelectorAll('.av-coll-tabs [data-av-tab]'));
       const sections = Array.from(document.querySelectorAll('[data-av-panel]'));
-      const hasLooks = sections.some((el) => el.dataset.avPanel === 'looks');
+      const has = (name) => sections.some((el) => el.dataset.avPanel === name);
+      const fromHash = () => {
+        const name = location.hash.slice(1);
+        return (name === 'looks' || name === 'pieces') && has(name) ? name : 'story';
+      };
 
       const show = (name, scroll) => {
-        if (name === 'looks' && !hasLooks) name = 'story';
+        if (!has(name)) name = 'story';
         sections.forEach((el) => {
           // a panel part inside the header section (the opening photograph) hides on its own, so the tabs stay
           const wrap = root.contains(el) ? el : el.closest('.shopify-section') || el;
@@ -33,7 +38,7 @@
           else t.removeAttribute('aria-current');
         });
         if (scroll) {
-          const nav = root.querySelector('.av-series-tabs');
+          const nav = root.querySelector('.av-coll-tabs');
           const header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--av-header-h')) || 0;
           const top = nav.getBoundingClientRect().top + window.scrollY - header - 8;
           if (window.scrollY > top) window.scrollTo({ top, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
@@ -49,8 +54,8 @@
         show(name, true);
       });
 
-      show(location.hash === '#looks' ? 'looks' : 'story', false);
-      window.addEventListener('hashchange', () => show(location.hash === '#looks' ? 'looks' : 'story', true));
+      show(fromHash(), false);
+      window.addEventListener('hashchange', () => show(fromHash(), true));
     }
 
     /* ---- look panels ----------------------------------------------------- */

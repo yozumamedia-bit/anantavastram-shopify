@@ -2,12 +2,22 @@
   Story panel: the credits strip. The entry's `credits` field holds one line per credit, written "Role: names"
   (e.g. "Photography: Memory Lane Studios"). A line without a colon prints with an empty label.
 {%- endcomment -%}
-{%- assign series = metaobject | default: section.settings.series -%}
-{%- if series != blank and series.credits.value != blank -%}
-  {%- assign lines = series.credits.value | newline_to_br | split: '<br />' -%}
-<section class="av-series-credits av-wrap" data-av-panel="story">
+{%- liquid
+  assign meta = nil
+  if collection != blank and collection.handle != 'all'
+    for m in shop.metaobjects.collection_meta.values
+      if m.collection.value.id == collection.id
+        assign meta = m
+        break
+      endif
+    endfor
+  endif
+-%}
+{%- if meta != blank and meta.credits.value != blank -%}
+  {%- assign lines = meta.credits.value | newline_to_br | split: '<br />' -%}
+<section class="av-coll-credits av-wrap" data-av-panel="story">
   <h2 class="visually-hidden">Credits</h2>
-  <dl class="av-series-credits__list">
+  <dl class="av-coll-credits__list">
     {%- for line in lines -%}
       {%- assign l = line | strip -%}
       {%- if l == blank -%}{%- continue -%}{%- endif -%}
@@ -24,7 +34,6 @@
 </section>
 {%- endif -%}
 {% schema %}
-{ "name": "AV Series credits", "settings": [
-  { "type": "metaobject", "metaobject_type": "collection_meta", "id": "series", "label": "Collection (only for previewing outside a series page)" }
-], "presets": [{ "name": "AV Series credits" }] }
+{ "name": "AV Collection credits", "settings": [
+], "presets": [{ "name": "AV Collection credits" }] }
 {% endschema %}

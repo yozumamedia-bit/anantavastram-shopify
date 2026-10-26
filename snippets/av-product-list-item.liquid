@@ -1,41 +1,20 @@
-{%- comment -%} One compact list row. Usage (inside a <ul class="av-list__items">): {% render 'av-product-list-item', product: product %}  Sold out comes from snippets/av-edition-line.liquid (context 'state'). {%- endcomment -%}
+{%- comment -%} One compact list row. Usage (inside a <ul class="av-list__items">): {% render 'av-product-list-item', product: product %}  Availability comes from snippets/av-edition-line.liquid (context 'state'); the label from av-piece-label (collection name · numeral · line). {%- endcomment -%}
 {%- liquid
   capture state
     render 'av-edition-line', product: product, context: 'state'
   endcapture
-  assign sold = false
-  if state contains 'sold'
-    assign sold = true
-  endif
-  assign mf = product.metafields.custom
-  assign drop = mf.collection.value
-  assign label = ''
-  if drop != blank and drop.number.value != blank
-    assign padded = drop.number.value | prepend: '00' | slice: -3, 3
-    assign label = 'Collection ' | append: padded
-  endif
-  if mf.numeral.value != blank
-    if label != blank
-      assign label = label | append: ' · '
-    endif
-    assign label = label | append: mf.numeral.value
-  endif
-  if mf.tier.value != blank
-    if label != blank
-      assign label = label | append: ' · '
-    endif
-    assign tier_cap = mf.tier.value | capitalize
-    assign label = label | append: tier_cap
-  endif
+  capture label
+    render 'av-piece-label', product: product, with_collection: true
+  endcapture
 -%}
 <li class="av-list__row">
-  <a class="av-list__item{% if sold %} av-list__item--sold{% endif %}" href="{{ product.url }}">
+  <a class="av-list__item{% if state contains 'sold' %} av-list__item--sold{% endif %}" href="{{ product.url }}">
     {% render 'av-media', image: product.featured_image, alt_image: product.images[1], vt: product.handle, ratio: '4 / 5', sizes: '(min-width: 900px) 160px, 96px', alt: '' %}
     <div class="av-list__name">
-      {%- if label != blank -%}<span class="av-label">{{ label | escape }}</span>{%- endif -%}
+      {%- if label != blank -%}<span class="av-label">{{ label }}</span>{%- endif -%}
       <h3 class="av-name">{{ product.title | escape }}</h3>
     </div>
     <span class="av-list__left">{% render 'av-edition-line', product: product, context: 'tile' %}</span>
-    <span class="av-price">{{ product.price | money }}</span>
+    <span class="av-price">{% if state contains 'enquiry' %}On enquiry{% elsif state contains 'open' %}{{ product.price | money }}{% endif %}</span>
   </a>
 </li>

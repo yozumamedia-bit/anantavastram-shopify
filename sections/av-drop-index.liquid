@@ -1,66 +1,60 @@
 {%- comment -%}
-  Drop ordering rule (the one place it is documented): drops are ordered by their `number` field, highest first.
-  Handles do not matter. Liquid cannot sort metaobjects by a field, so each pass scans the entries for the highest
-  number not yet rendered (at most 50 entries, so the cost is trivial). av-drop-rows uses the same scan.
-  The current drop (highest-numbered entry with status `current`) always renders first; every other drop with a
-  non-empty collection follows under "Past collections".
+  The Collections index. Every collection_meta entry whose `collection` is set is listed: collections not closed as
+  large bands, newest first; closed collections after them, compact, under "Closed collections".
+  Ordering rule (the one place it is documented; av-drop-rows uses the same scan): by `opens_on`, latest first;
+  entries with no date sort last. Liquid cannot sort metaobjects by a field, so each pass scans for the latest date not
+  yet rendered (a handful of entries, so the cost is trivial).
 {%- endcomment -%}
 {%- liquid
   assign found = 0
   assign done = ''
-  assign current = nil
-  assign current_n = -1
-  for d in shop.metaobjects.collection_meta.values
-    if d.status.value == 'current' and d.collection.value != blank and d.collection.value.products_count > 0
-      assign dn = d.number.value | plus: 0
-      if dn > current_n
-        assign current = d
-        assign current_n = dn
-      endif
-    endif
-  endfor
 -%}
-{%- if current != blank -%}
-  {%- liquid
-    assign found = found | plus: 1
-    assign done = done | append: '|' | append: current.system.id | append: '|'
-  -%}
-  {% render 'av-drop-band', drop: current, mode: 'current' %}
-{%- endif -%}
-{%- assign past_head_done = false -%}
-{%- for k in (1..50) -%}
-  {%- liquid
-    assign pick = nil
-    assign pick_n = -1
-    for d in shop.metaobjects.collection_meta.values
-      assign key = '|' | append: d.system.id | append: '|'
-      if done contains key or d.collection.value == blank or d.collection.value.products_count == 0
-        continue
+{%- for pass in (1..2) -%}
+  {%- assign head_done = false -%}
+  {%- for k in (1..50) -%}
+    {%- liquid
+      assign pick = nil
+      assign pick_t = -1
+      for d in shop.metaobjects.collection_meta.values
+        assign key = '|' | append: d.system.id | append: '|'
+        if done contains key or d.collection.value == blank
+          continue
+        endif
+        assign st = d.status.value | downcase | strip
+        if pass == 1 and st == 'closed'
+          continue
+        endif
+        if pass == 2 and st != 'closed'
+          continue
+        endif
+        assign t = 0
+        if d.opens_on.value != blank
+          assign t = d.opens_on.value | date: '%s' | plus: 0
+        endif
+        if t > pick_t
+          assign pick = d
+          assign pick_t = t
+        endif
+      endfor
+      if pick == blank
+        break
       endif
-      assign dn = d.number.value | plus: 0
-      if dn > pick_n
-        assign pick = d
-        assign pick_n = dn
-      endif
-    endfor
-    if pick == blank
-      break
-    endif
-    assign done = done | append: '|' | append: pick.system.id | append: '|'
-    assign found = found | plus: 1
-  -%}
-  {%- unless past_head_done -%}
-    <div class="av-past-head">
-      <div class="av-stack" style="gap:12px"><div class="av-label">Past collections</div><h2 class="av-sub av-sub--m">Still open while pieces remain</h2></div>
-      <div class="av-body" style="max-width:560px">{{ section.settings.past_text }}</div>
-    </div>
-    {%- assign past_head_done = true -%}
-  {%- endunless -%}
-  {% render 'av-drop-band', drop: pick, mode: 'past' %}
+      assign done = done | append: '|' | append: pick.system.id | append: '|'
+      assign found = found | plus: 1
+    -%}
+    {%- if pass == 2 and head_done == false -%}
+      <div class="av-past-head">
+        <div class="av-stack" style="gap:12px"><div class="av-label">Closed collections</div><h2 class="av-sub av-sub--m">Kept as the record</h2></div>
+        {%- if section.settings.past_text != blank -%}<div class="av-body" style="max-width:560px">{{ section.settings.past_text }}</div>{%- endif -%}
+      </div>
+      {%- assign head_done = true -%}
+    {%- endif -%}
+    {%- if pass == 1 -%}{% render 'av-drop-band', drop: pick, mode: 'open' %}{%- else -%}{% render 'av-drop-band', drop: pick, mode: 'past' %}{%- endif -%}
+  {%- endfor -%}
 {%- endfor -%}
 {%- if found == 0 -%}<div class="av-wrap av-section av-body">No collections yet.</div>{%- endif -%}
 {% schema %}
 { "name": "AV Collection index", "settings": [
-  { "type": "richtext", "id": "past_text", "label": "Past collections paragraph", "default": "<p>Earlier collections are listed in full. A piece with an edition number left can still be ordered; a sold-out piece stays on the page, with its weaver and its count, as part of the record.</p>" }
+  { "type": "richtext", "id": "past_text", "label": "Closed collections paragraph", "default": "<p>Every piece of a closed collection stays here, with its weaver, as part of the record.</p>" }
 ], "presets": [{ "name": "AV Collection index" }] }
 {% endschema %}

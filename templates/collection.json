@@ -1,8 +1,48 @@
 {
   "sections": {
     "header": {
-      "type": "av-drop-header",
+      "type": "av-coll-header",
       "settings": {}
+    },
+    "note": {
+      "type": "av-coll-note",
+      "settings": {
+        "label": "The design note",
+        "author": "Kamalam Moorthy\nChief Designer"
+      }
+    },
+    "motifs": {
+      "type": "av-coll-motifs",
+      "settings": {
+        "label": "The motifs",
+        "heading": "Where the borders come from"
+      }
+    },
+    "hands": {
+      "type": "av-coll-hands",
+      "settings": {
+        "label": "The hands",
+        "role": "Weaver",
+        "link_label": "Watch the loom"
+      }
+    },
+    "film": {
+      "type": "av-coll-film",
+      "settings": {}
+    },
+    "credits": {
+      "type": "av-coll-credits",
+      "settings": {}
+    },
+    "onward": {
+      "type": "av-coll-onward",
+      "settings": {}
+    },
+    "looks": {
+      "type": "av-coll-looks",
+      "settings": {
+        "intro": "Worn by the people in them. Choose a look to see what it is made of."
+      }
     },
     "rows": {
       "type": "av-product-rows",
@@ -11,20 +51,57 @@
     "products-intro": {
       "type": "av-page-intro",
       "blocks": {
-        "all": { "type": "key", "settings": { "label": "All", "url": "/collections/all" } },
-        "everyday": { "type": "key", "settings": { "label": "Everyday", "url": "/collections/all/everyday" } },
-        "occasion": { "type": "key", "settings": { "label": "Occasion", "url": "/collections/all/occasion" } }
+        "all": {
+          "type": "key",
+          "settings": {
+            "label": "All",
+            "url": "/collections/all"
+          }
+        },
+        "everyday": {
+          "type": "key",
+          "settings": {
+            "label": "Everyday",
+            "url": "/collections/all/everyday"
+          }
+        },
+        "occasional": {
+          "type": "key",
+          "settings": {
+            "label": "Occasional",
+            "url": "/collections/all/occasional"
+          }
+        }
       },
-      "block_order": ["all", "everyday", "occasion"],
+      "block_order": [
+        "all",
+        "everyday",
+        "occasional"
+      ],
       "settings": {
         "all_products_only": true,
         "label": "Products",
         "statement": "Every piece, across the collections.",
-        "text": "<p>Each is one of a numbered edition. A piece that has found all its wearers stays listed, at the end, as the record.</p>",
+        "text": "<p>Everyday and Occasional pieces are made in limited number and held in stock. A piece that has found all its wearers stays listed, at the end, as the record.</p>",
         "open": true
       }
     },
-    "products-list": { "type": "av-product-list", "settings": {} }
+    "products-list": {
+      "type": "av-product-list",
+      "settings": {}
+    }
   },
-  "order": ["header", "rows", "products-intro", "products-list"]
+  "order": [
+    "header",
+    "note",
+    "motifs",
+    "hands",
+    "film",
+    "credits",
+    "onward",
+    "looks",
+    "rows",
+    "products-intro",
+    "products-list"
+  ]
 }
