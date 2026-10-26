@@ -8,17 +8,10 @@
           "settings": {
             "label": "Wedding sets"
           }
-        },
-        "k2": {
-          "type": "key",
-          "settings": {
-            "label": "[Second category]"
-          }
         }
       },
       "block_order": [
-        "k1",
-        "k2"
+        "k1"
       ],
       "settings": {
         "label": "Commissions",
@@ -30,8 +23,9 @@
     "exemplar": {
       "type": "av-full-bleed",
       "settings": {
-        "left": "The groom set · made for [wearer], [occasion, year]",
-        "right": "Woven by [weaver] · [loom hours] hours · gold zari"
+        "image": "shopify://shop_images/av-comm-exemplar.jpg",
+        "left": "The groom set · by commission",
+        "right": "Photograph · Memory Lane Studios"
       }
     },
     "steps": {
@@ -42,7 +36,7 @@
           "settings": {
             "numeral": "I",
             "title": "The conversation",
-            "text": "Write to us with the occasion and the date. Kamalam replies within [n] days and, if the dates allow, a call is set. Tamil or English."
+            "text": "Write to us with the occasion and the date. Kamalam replies herself and, if the dates allow, a call is set. Tamil or English."
           }
         },
         "s2": {
@@ -66,7 +60,7 @@
           "settings": {
             "numeral": "IV",
             "title": "Fitting and delivery",
-            "text": "One fitting, in [city] or by measurement. Delivered by hand within Tamil Nadu; insured courier elsewhere. The piece carries the weaver's name and yours."
+            "text": "One fitting, in Chennai or by measurement. Delivered by hand within Tamil Nadu; insured courier elsewhere. The piece carries the weaver's name and yours."
           }
         }
       },
@@ -84,21 +78,14 @@
         "c1": {
           "type": "card",
           "settings": {
+            "image": "shopify://shop_images/av-comm-card-wedding.jpg",
             "title": "The wedding set",
-            "text": "Veshti, kurta and angavastram as one piece. Gold or tested zari, motifs drawn for the family. [Lead time] weeks. From ₹ [PRICE]."
-          }
-        },
-        "c2": {
-          "type": "card",
-          "settings": {
-            "title": "[Second category]",
-            "text": "[What it is, who it is for, what is decided together. Lead time and starting price.]"
+            "text": "Veshti, kurta and angavastram as one set, in gold or tested zari, with motifs drawn for the family. Lead time and price are agreed after the first conversation."
           }
         }
       },
       "block_order": [
-        "c1",
-        "c2"
+        "c1"
       ],
       "settings": {}
     },
@@ -109,21 +96,21 @@
           "type": "item",
           "settings": {
             "title": "Capacity",
-            "text": "[X] pieces a season. Dates are taken in order of the first conversation."
+            "text": "A few pieces a season, so that each has the time it needs. Dates are taken in order of the first conversation."
           }
         },
         "t2": {
           "type": "item",
           "settings": {
             "title": "Deposit",
-            "text": "[Deposit terms] on agreement of cloth and motif; balance at fitting."
+            "text": "A deposit on agreement of cloth and motif; the balance at fitting."
           }
         },
         "t3": {
           "type": "item",
           "settings": {
             "title": "Lead time",
-            "text": "[Y] weeks from sample approval. Wedding dates inside that window cannot be taken."
+            "text": "Set in writing from sample approval. A wedding date too close to allow it cannot be taken."
           }
         },
         "t4": {

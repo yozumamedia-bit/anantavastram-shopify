@@ -3,72 +3,210 @@
     "c1": {
       "type": "av-campaign",
       "blocks": {
-        "i1": { "type": "image", "settings": {} },
-        "i2": { "type": "image", "settings": {} },
-        "i3": { "type": "image", "settings": {} },
-        "i4": { "type": "image", "settings": {} },
-        "i5": { "type": "image", "settings": {} },
-        "i6": { "type": "image", "settings": {} },
-        "i7": { "type": "image", "settings": {} },
-        "i8": { "type": "image", "settings": {} }
+        "i1": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-gal1-1.jpg"
+          }
+        },
+        "i2": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-gal1-2.jpg"
+          }
+        },
+        "i3": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-home-look-2.jpg"
+          }
+        },
+        "i4": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-home-look-3.jpg"
+          }
+        },
+        "i5": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-gal1-5.jpg"
+          }
+        },
+        "i6": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-gal1-6.jpg"
+          }
+        },
+        "i7": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-gal1-7.jpg"
+          }
+        },
+        "i8": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-gal1-8.jpg"
+          }
+        }
       },
-      "block_order": ["i1", "i2", "i3", "i4", "i5", "i6", "i7", "i8"],
+      "block_order": [
+        "i1",
+        "i2",
+        "i3",
+        "i4",
+        "i5",
+        "i6",
+        "i7",
+        "i8"
+      ],
       "settings": {
         "label": "Campaign 001",
         "page_heading": true,
-        "title": "[Campaign title]",
-        "season": "[Season]",
-        "photographer": "[Photographer]",
-        "wearers": "[Wearer], [wearer]",
-        "location": "[Location]"
+        "title": "Collection 1",
+        "season": "",
+        "photographer": "Memory Lane Studios",
+        "wearers": "",
+        "location": "Boston, Massachusetts"
       }
     },
     "c2": {
       "type": "av-campaign",
       "blocks": {
-        "i1": { "type": "image", "settings": {} },
-        "i2": { "type": "image", "settings": {} },
-        "i3": { "type": "image", "settings": {} },
-        "i4": { "type": "image", "settings": {} },
-        "i5": { "type": "image", "settings": {} },
-        "i6": { "type": "image", "settings": {} },
-        "i7": { "type": "image", "settings": {} },
-        "i8": { "type": "image", "settings": {} }
+        "i1": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-home-hero.jpg"
+          }
+        },
+        "i2": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-home-look-1.jpg"
+          }
+        },
+        "i3": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-gal2-3.jpg"
+          }
+        },
+        "i4": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-gal2-4.jpg"
+          }
+        },
+        "i5": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-gal2-5.jpg"
+          }
+        },
+        "i6": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-gal2-6.jpg"
+          }
+        },
+        "i7": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-gal2-7.jpg"
+          }
+        },
+        "i8": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-about-place.jpg"
+          }
+        }
       },
-      "block_order": ["i1", "i2", "i3", "i4", "i5", "i6", "i7", "i8"],
+      "block_order": [
+        "i1",
+        "i2",
+        "i3",
+        "i4",
+        "i5",
+        "i6",
+        "i7",
+        "i8"
+      ],
       "settings": {
         "label": "Campaign 002",
-        "title": "[Campaign title]",
-        "season": "[Season]",
-        "photographer": "[Photographer]",
-        "wearers": "[Wearer], [wearer]",
-        "location": "[Location]"
+        "title": "The elephant shoot",
+        "season": "",
+        "photographer": "Memory Lane Studios",
+        "wearers": "",
+        "location": "Boston, Massachusetts",
+        "archive_label": "The archive",
+        "archive_url": "/blogs/stories/tagged/campaigns"
       }
     },
     "c3": {
       "type": "av-campaign",
       "blocks": {
-        "i1": { "type": "image", "settings": {} },
-        "i2": { "type": "image", "settings": {} },
-        "i3": { "type": "image", "settings": {} },
-        "i4": { "type": "image", "settings": {} },
-        "i5": { "type": "image", "settings": {} },
-        "i6": { "type": "image", "settings": {} },
-        "i7": { "type": "image", "settings": {} },
-        "i8": { "type": "image", "settings": {} }
+        "i1": {
+          "type": "image",
+          "settings": {}
+        },
+        "i2": {
+          "type": "image",
+          "settings": {}
+        },
+        "i3": {
+          "type": "image",
+          "settings": {}
+        },
+        "i4": {
+          "type": "image",
+          "settings": {}
+        },
+        "i5": {
+          "type": "image",
+          "settings": {}
+        },
+        "i6": {
+          "type": "image",
+          "settings": {}
+        },
+        "i7": {
+          "type": "image",
+          "settings": {}
+        },
+        "i8": {
+          "type": "image",
+          "settings": {}
+        }
       },
-      "block_order": ["i1", "i2", "i3", "i4", "i5", "i6", "i7", "i8"],
+      "block_order": [
+        "i1",
+        "i2",
+        "i3",
+        "i4",
+        "i5",
+        "i6",
+        "i7",
+        "i8"
+      ],
       "settings": {
         "label": "Campaign 003",
-        "title": "[Campaign title]",
-        "season": "[Season]",
-        "photographer": "[Photographer]",
-        "wearers": "[Wearer], [wearer]",
-        "location": "[Location]",
+        "title": "",
+        "season": "",
+        "photographer": "",
+        "wearers": "",
+        "location": "",
         "archive_label": "The archive",
         "archive_url": "/blogs/stories/tagged/campaigns"
-      }
+      },
+      "disabled": true
     }
   },
-  "order": ["c1", "c2", "c3"]
+  "order": [
+    "c1",
+    "c2",
+    "c3"
+  ]
 }

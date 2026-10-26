@@ -2,8 +2,12 @@
   "sections": {
     "main": {
       "type": "av-product",
-      "settings": {}
+      "settings": {
+        "care": "<p>Dry clean only. Store folded in cotton or muslin, away from damp. Iron on the reverse, never over the embroidery.</p>"
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }
