@@ -504,3 +504,8 @@ html.av-look-open { overflow: hidden; }
 .av-rows__ship { padding-top: 32px; padding-bottom: 8px; }
 .av-drop-rows__more { padding-top: 24px; padding-bottom: 8px; }
 .av-commissions__routing { max-width: 520px; }
+
+/* phones: every text input at 16px or more, so iOS Safari does not zoom the page on focus */
+@media (max-width: 900px) {
+  .av-field input, .av-field textarea, .av-field select, .av-newsline input, .av-notify input { font-size: 16px; }
+}
