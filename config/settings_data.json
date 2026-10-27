@@ -141,6 +141,7 @@
         }
       },
       "av_whatsapp_float": true,
+      "av_show_account": true,
       "av_header_over_hero": true,
       "av_tax_line": "Inclusive of all taxes",
       "av_whatsapp_number": "919840002288"

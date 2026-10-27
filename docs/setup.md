@@ -200,7 +200,7 @@ Then open each page in **Online Store → Themes → Customize** to add images, 
 - **Product photographs:** upload at least two per piece — tiles, list rows and product rows fade to the second photograph on hover.
 - **Social media:** Instagram URL (footer *Contact* column).
 - **Store details** (Settings → General): store email receives contact-form enquiries and notify-me requests.
-- **Account icon:** "Show the account icon" stays off until the first collection is on sale.
+- **Account icon:** "Show the account icon" is on; the icon appears in the header (search, account, bag) whenever customer accounts are on in Settings → Customer accounts.
 - **Favicon** (Theme settings → Favicon): upload the mark as a square PNG, at least 180×180. Without it the browser tab shows a globe.
 
 **Before the link is shared (sharing previews):**
