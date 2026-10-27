@@ -19,21 +19,21 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/av-home-look-1.jpg",
-            "caption": "I · The Circular Tree of Life"
+            "caption": "I"
           }
         },
         "b": {
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/av-home-look-2.jpg",
-            "caption": "II · The Chariot That Carried a Culture"
+            "caption": "II"
           }
         },
         "c": {
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/av-home-look-3.jpg",
-            "caption": "III · Puri Jagannath Temple"
+            "caption": "III"
           }
         }
       },
