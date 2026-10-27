@@ -1,8 +1,8 @@
 {%- comment -%}
   Default links used when a header/footer menu is not set up in admin (Online Store → Navigation).
   Usage: {% render 'av-nav-fallback', group: 'house' %}   groups: house | shop | orders | contact
-  House and Shop always render (they are the site's structure); Orders always links the shipping and
-  refund policies. Optional pages (care, size, contact, visit) only appear once they exist.
+  House and Shop always render (they are the site's structure); Orders links the shipping and
+  refund policies once they are written. Optional pages (care, size, contact, visit) only appear once they exist.
 {%- endcomment -%}
 {%- case group -%}
   {%- when 'house' -%}
@@ -22,9 +22,9 @@
     <a href="{{ routes.all_products_collection_url }}"{% if request.path contains routes.all_products_collection_url %} aria-current="page"{% endif %}>Products</a>
     <a href="/pages/commissions"{% if request.path == '/pages/commissions' %} aria-current="page"{% endif %}>Commissions</a>
   {%- when 'orders' -%}
-    {%- comment -%} Shipping and refund policies are standard store setup (Settings → Policies), so they are always linked. {%- endcomment -%}
-    <a href="{{ shop.shipping_policy.url | default: '/policies/shipping-policy' }}">Shipping</a>
-    <a href="{{ shop.refund_policy.url | default: '/policies/refund-policy' }}">Returns and exchanges</a>
+    {%- comment -%} Shipping and refund policies (Settings → Policies) are linked once they have a body; an empty policy page is never linked. {%- endcomment -%}
+    {%- if shop.shipping_policy.body != blank -%}<a href="{{ shop.shipping_policy.url }}">Shipping</a>{%- endif -%}
+    {%- if shop.refund_policy.body != blank -%}<a href="{{ shop.refund_policy.url }}">Returns and exchanges</a>{%- endif -%}
     {%- if pages['care'].url != blank -%}<a href="{{ pages['care'].url }}">Care</a>{%- endif -%}
     {%- if pages['size-and-measure'].url != blank -%}<a href="{{ pages['size-and-measure'].url }}">Size and measure</a>{%- endif -%}
   {%- when 'contact' -%}
