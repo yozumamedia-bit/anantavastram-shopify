@@ -1,0 +1,13 @@
+{%- comment -%}
+  A price as the house writes it: ₹ 12,500 — the rupee sign, no "Rs.", no "INR" suffix, no ".00".
+  Usage: {% render 'av-money', price: product.price %}
+  In any other presentment currency (a market abroad) it falls back to the shop's own money format.
+{%- endcomment -%}
+{%- if cart.currency.iso_code == 'INR' or cart.currency.iso_code == blank -%}
+  {%- assign amount = price | money_without_currency -%}
+  {%- assign tail = amount | slice: -3, 3 -%}
+  {%- if tail == '.00' -%}{%- assign amount = amount | remove_last: '.00' -%}{%- endif -%}
+  ₹&nbsp;{{- amount -}}
+{%- else -%}
+  {{- price | money -}}
+{%- endif -%}

@@ -96,7 +96,7 @@
                     <a href="{{ p.url }}" class="av-sub av-sub--s">{{ p.title | escape }}</a>
                     {%- if p.description != blank -%}<span class="av-body av-body--s">{{ p.description | strip_html | truncatewords: 18 }}</span>{%- endif -%}
                     {%- capture p_state -%}{% render 'av-edition-line', product: p, context: 'state' %}{%- endcapture -%}
-                    <span class="av-price av-look-piece__price">{% if p_state contains 'enquiry' %}On enquiry · Made to order{% elsif p_state contains 'sold' %}Sold out{% else %}{{ p.price | money }} · {% render 'av-edition-line', product: p, context: 'tile' %}{% endif %}</span>
+                    <span class="av-price av-look-piece__price">{% if p_state contains 'enquiry' %}On enquiry · Made to order{% elsif p_state contains 'sold' %}Sold out{% else %}{% render 'av-money', price: p.price %} · {% render 'av-edition-line', product: p, context: 'tile' %}{% endif %}</span>
                     <a class="av-link" href="{{ p.url }}">See the piece</a>
                   </div>
                 </li>

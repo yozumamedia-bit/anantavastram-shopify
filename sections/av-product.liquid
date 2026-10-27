@@ -93,7 +93,7 @@
       {%- if enquiry -%}
       <div class="av-price">On enquiry</div>
       {%- else -%}
-      <div class="av-price">{{ v.price | money }}</div>
+      <div class="av-price">{% render 'av-money', price: v.price %}</div>
       {%- endif -%}
       {%- if settings.av_tax_line != blank and enquiry == false -%}<div class="av-label av-price__note">{{ settings.av_tax_line | escape }}</div>{%- endif -%}
     </div>
@@ -192,7 +192,7 @@
 {%- unless sold_out or enquiry -%}
 {%- comment -%} Phones only: a slim order bar once the main button has scrolled out of view. The button submits the product form above via its form attribute. {%- endcomment -%}
 <div class="av-orderbar" id="av-orderbar" aria-hidden="true">
-  <div class="av-orderbar__info"><span class="av-orderbar__name">{{ product.title | escape }}</span><span class="av-orderbar__price">{{ v.price | money }}</span></div>
+  <div class="av-orderbar__info"><span class="av-orderbar__name">{{ product.title | escape }}</span><span class="av-orderbar__price">{% render 'av-money', price: v.price %}</span></div>
   <button class="av-button av-orderbar__button" type="submit" form="{{ form_id }}" tabindex="-1">Order</button>
 </div>
 {%- endunless -%}

@@ -53,7 +53,7 @@
         {%- comment -%} The row stays as the record; no price once every piece is placed. {%- endcomment -%}
         <div class="av-label av-label--red">{% if edition_total > 0 %}Edition of {{ edition_total }} · all placed{% else %}All placed{% endif %}</div>
       {%- else -%}
-        <div class="av-price">{{ product.price | money }}</div>
+        <div class="av-price">{% render 'av-money', price: product.price %}</div>
       {%- endif -%}
       <div class="av-row__note"><div class="av-label">Availability</div><div class="av-body av-body--s">{% if sold_out %}Sold out.{% else %}{% capture pg %}{% render 'av-edition-line', product: product, context: 'page' %}{% endcapture %}In stock.{% unless pg == 'In stock' %} {{ pg }}.{% endunless %}{% endif %}</div></div>
       <a class="av-link" href="{{ product.url }}">See the piece</a>

@@ -15,6 +15,6 @@
       <h3 class="av-name">{{ product.title | escape }}</h3>
     </div>
     <span class="av-list__left">{% render 'av-edition-line', product: product, context: 'tile' %}</span>
-    <span class="av-price">{% if state contains 'enquiry' %}On enquiry{% elsif state contains 'open' %}{{ product.price | money }}{% endif %}</span>
+    <span class="av-price">{% if state contains 'enquiry' %}On enquiry{% elsif state contains 'open' %}{% render 'av-money', price: product.price %}{% endif %}</span>
   </a>
 </li>

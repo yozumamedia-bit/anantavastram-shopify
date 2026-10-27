@@ -89,7 +89,7 @@
                     <a href="{{ item.url }}" class="cart-item__name h4 break">{{ item.product.title | escape }}</a>
 
                     <div class="product-option">
-                      {{ item.final_price | money }}
+                      {% render 'av-money', price: item.final_price %}
                     </div>
 
                     {%- if item.product.has_only_default_variant == false
@@ -145,13 +145,13 @@
                     </div>
                     <div class="cart-item__price-wrapper">
                       <span class="price price--end">
-                        {{ item.final_line_price | money }}
+                        {% render 'av-money', price: item.final_line_price %}
                       </span>
 
                       {%- if item.variant.available and item.unit_price_measurement -%}
                         <div class="unit-price caption">
                           <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
-                          {{ item.variant.unit_price | money }}
+                          {% render 'av-money', price: item.variant.unit_price %}
                           <span aria-hidden="true">/</span>
                           <span class="visually-hidden"
                             >&nbsp;{{ 'accessibility.unit_price_separator' | t }}&nbsp;</span
@@ -224,13 +224,13 @@
 
                     <div class="cart-item__price-wrapper">
                       <span class="price price--end">
-                        {{ item.final_line_price | money }}
+                        {% render 'av-money', price: item.final_line_price %}
                       </span>
 
                       {%- if item.variant.available and item.unit_price_measurement -%}
                         <div class="unit-price caption">
                           <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
-                          {{ item.variant.unit_price | money }}
+                          {% render 'av-money', price: item.variant.unit_price %}
                           <span aria-hidden="true">/</span>
                           <span class="visually-hidden"
                             >&nbsp;{{ 'accessibility.unit_price_separator' | t }}&nbsp;</span

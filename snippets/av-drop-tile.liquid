@@ -16,7 +16,7 @@
   {% render 'av-media', image: product.featured_image, alt_image: product.images[1], vt: product.handle, ratio: '3 / 4', sizes: '(min-width: 900px) 16vw, 50vw', alt: '' %}
   <span class="av-tile__text">
     <span class="av-name av-tile__name">{{ product.title | escape }}</span>
-    {%- if state contains 'enquiry' -%}<span class="av-price av-tile__price">On enquiry</span>{%- elsif state contains 'open' -%}<span class="av-price av-tile__price">{{ product.price | money }}</span>{%- endif -%}
+    {%- if state contains 'enquiry' -%}<span class="av-price av-tile__price">On enquiry</span>{%- elsif state contains 'open' -%}<span class="av-price av-tile__price">{% render 'av-money', price: product.price %}</span>{%- endif -%}
     <span class="av-tile__meta">
       {%- if label != blank -%}<span class="av-label">{{ label }}</span>{%- endif -%}
       <span class="av-tile__left">{% render 'av-edition-line', product: product, context: 'tile' %}</span>
