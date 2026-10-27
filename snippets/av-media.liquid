@@ -26,13 +26,13 @@
 <div class="av-media av-media--ratio{{ reveal_class }} {{ class | escape }}" style="--ratio: {{ ratio | escape }};"{% if vt != blank %} data-vt="{{ vt | escape }}"{% endif %}>
   {%- if image != blank -%}
     {%- if loading == 'lazy' -%}
-      {{ image | image_url: width: 2400 | image_tag: widths: '400, 600, 800, 1200, 1600, 2400', sizes: sizes, loading: loading, decoding: 'async', alt: alt, class: 'av-media__img av-media__img--fade', onload: "this.classList.add('is-loaded')" }}
+      {{ image | image_url: width: 3200 | image_tag: widths: '400, 600, 800, 1200, 1600, 2000, 2400, 3200', sizes: sizes, loading: loading, decoding: 'async', alt: alt, class: 'av-media__img av-media__img--fade', onload: "this.classList.add('is-loaded')" }}
       <span class="av-media__lqip" style="background-image: url('{{ image | image_url: width: 24 }}');" aria-hidden="true"></span>
     {%- else -%}
-      {{ image | image_url: width: 2400 | image_tag: widths: '400, 600, 800, 1200, 1600, 2400', sizes: sizes, loading: loading, fetchpriority: fetch_priority, alt: alt, class: 'av-media__img' }}
+      {{ image | image_url: width: 3200 | image_tag: widths: '400, 600, 800, 1200, 1600, 2000, 2400, 3200', sizes: sizes, loading: loading, fetchpriority: fetch_priority, alt: alt, class: 'av-media__img' }}
     {%- endif -%}
     {%- if alt_image != blank -%}
-      {{ alt_image | image_url: width: 1600 | image_tag: widths: '400, 600, 800, 1200, 1600', sizes: sizes, loading: 'lazy', decoding: 'async', alt: '', class: 'av-media__alt' }}
+      {{ alt_image | image_url: width: 3200 | image_tag: widths: '400, 600, 800, 1200, 1600, 2000, 2400, 3200', sizes: sizes, loading: 'lazy', decoding: 'async', alt: '', class: 'av-media__alt' }}
     {%- endif -%}
   {%- endif -%}
 </div>
