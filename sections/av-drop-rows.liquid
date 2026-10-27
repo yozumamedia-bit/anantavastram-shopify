@@ -50,7 +50,7 @@
     endif
   -%}
   <section class="av-drop-rows">
-    {% render 'av-drop-banner', label: 'Collection', title: title, meta: meta, shipping: false %}
+    {% render 'av-drop-banner', label: 'Collection', title: title, meta: meta, shipping: true %}
     <div class="av-rows">
       {%- for product in col.products limit: section.settings.limit -%}{% render 'av-product-row', product: product %}{%- endfor -%}
     </div>
