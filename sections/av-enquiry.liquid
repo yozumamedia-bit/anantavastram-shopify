@@ -8,8 +8,12 @@
   assign today = 'now' | date: '%Y-%m-%d'
   assign lead_weeks = section.settings.lead_weeks | default: 8
   assign reply_line = section.settings.reply_line | strip
-  assign wa_label = 'WhatsApp · ' | append: settings.av_whatsapp_number
-  assign wa_text = 'A commission enquiry'
+  assign ask_occasion = section.settings.ask_occasion
+  assign wa_label = 'WhatsApp'
+  assign wa_text = 'Hello Ananta Vastram'
+  if ask_occasion
+    assign wa_text = 'A commission enquiry'
+  endif
   assign sent = false
   assign email_invalid = false
   assign other_error = false
@@ -57,6 +61,7 @@
           <input id="enq-phone" type="tel" name="contact[phone]" value="{{ form.phone | escape }}" placeholder="With country code" autocomplete="tel">
         </div>
 
+        {%- if ask_occasion -%}
         <fieldset class="av-field av-chips" id="enq-occasion">
           <legend class="av-field__label">The occasion <abbr title="required">*</abbr></legend>
           <div class="av-chips__row">
@@ -73,10 +78,11 @@
           <p class="av-field__error" id="enq-date-error" data-missing="Choose a date." data-past="Choose a date from today on.">Choose a date.</p>
           <p class="av-field__hint" id="enq-date-hint" role="status" data-text="That date is inside the {{ lead_weeks }}-week lead time. Kamalam can still reply — say so in your note, or choose a later date."></p>
         </div>
+        {%- endif -%}
 
         <div class="av-field">
           <label class="av-field__label" for="enq-city">City</label>
-          <input id="enq-city" type="text" name="contact[city]" placeholder="Where the fitting would be" autocomplete="address-level2">
+          <input id="enq-city" type="text" name="contact[city]" placeholder="{% if ask_occasion %}Where the fitting would be{% else %}Where you are{% endif %}" autocomplete="address-level2">
         </div>
 
         <fieldset class="av-field av-chips" id="enq-language">
@@ -89,7 +95,7 @@
 
         <div class="av-field av-field--wide">
           <label class="av-field__label" for="enq-notes">A few lines</label>
-          <textarea id="enq-notes" name="contact[body]" rows="4" placeholder="What you have in mind — a border you remember, a colour, a family motif, the pieces in the set">{{ form.body | escape }}</textarea>
+          <textarea id="enq-notes" name="contact[body]" rows="4" placeholder="{% if ask_occasion %}What you have in mind — a border you remember, a colour, a family motif, the pieces in the set{% else %}What it is about — a piece, an order, a visit{% endif %}">{{ form.body | escape }}</textarea>
         </div>
 
         <p class="av-form__error" role="alert" aria-live="polite" data-text="That did not send. Nothing was lost — try again, or write on WhatsApp.">{% if other_error %}{{ form.errors | default_errors }}{% endif %}</p>
@@ -121,7 +127,8 @@
   { "type": "textarea", "id": "text", "label": "Text", "default": "Three lines are enough: the occasion, the date, and where you are. Or send the same on WhatsApp." },
   { "type": "text", "id": "subject", "label": "Email subject line", "info": "Subject of the email the store receives.", "default": "Commissions enquiry" },
   { "type": "text", "id": "tag", "label": "Customer tag", "info": "Added to the sender's customer record, so enquiries can be filtered in Customers.", "default": "commissions" },
-  { "type": "text", "id": "reply_line", "label": "Reply-time line", "info": "Shown under the form and after sending, e.g. Kamalam replies within 3 days", "default": "Kamalam replies within [n] days" },
+  { "type": "text", "id": "reply_line", "label": "Reply-time line", "info": "Shown under the form and after sending, e.g. Kamalam replies within 3 days", "default": "Kamalam replies herself" },
+  { "type": "checkbox", "id": "ask_occasion", "label": "Ask for the occasion and the date (Commissions)", "info": "Off on the Contact page: the form asks only name, email, phone, city, language and a note.", "default": true },
   { "type": "number", "id": "lead_weeks", "label": "Lead time (weeks)", "info": "A date inside this window gets a note under the date field. It is not blocked.", "default": 8 },
   { "type": "header", "content": "Book a call" },
   { "type": "url", "id": "calendar_url", "label": "Booking link", "info": "A Google Calendar appointment schedule link (calendar.app.google/…) or similar. Hidden until set." },

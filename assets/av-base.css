@@ -314,8 +314,8 @@ html.no-js .av-reveal > .av-media__img, html.shopify-design-mode .av-reveal > .a
 .av-drawer::backdrop { background: transparent; }
 html:has(.av-drawer[open]) { overflow: hidden; }
 .av-header__home { display: flex; justify-content: center; }
-.av-drawer__group { display: flex; flex-direction: column; gap: 22px; }
-.av-drawer__group a { font-family: var(--av-font-heading); font-weight: 300; font-size: 28px; color: var(--av-white); }
+.av-drawer__group { display: flex; flex-direction: column; gap: 10px; }
+.av-drawer__group a { font-family: var(--av-font-heading); font-weight: 300; font-size: 28px; color: var(--av-white); min-height: 48px; display: flex; align-items: center; } /* 44px+ tap targets; the smaller gap keeps the old rhythm */
 /* floating WhatsApp button */
 .av-wa-float { position: fixed; right: 20px; bottom: 20px; z-index: 40; width: 52px; height: 52px; border-radius: 50%; background: var(--av-kumkum); color: var(--av-white); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(30, 26, 23, 0.18); transition: background-color 200ms ease, transform 200ms ease; }
 .av-wa-float:focus-visible { background: var(--av-kumkum-hover); color: var(--av-white); transform: translateY(-2px); }
@@ -368,3 +368,11 @@ html.av-opening-active .av-header__wordmark { visibility: hidden; } /* the trave
 .av-footer__bottom { display: flex; justify-content: space-between; align-items: center; gap: 16px; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 24px; font-family: var(--av-font-nav); font-weight: 400; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--av-ivory); opacity: 0.7; flex-wrap: wrap; }
 .av-footer__bottom a { color: var(--av-ivory); }
 @media (max-width: 900px) { .av-footer__grid { grid-template-columns: 1fr 1fr; } .av-footer__brand { grid-column: span 2; } }
+/* phones: footer links and the legal line are 44px tap targets; inputs at 16px so iOS does not zoom on focus */
+@media (max-width: 900px) {
+  .av-footer__col { gap: 0; }
+  .av-footer__title { margin-bottom: 6px; }
+  .av-footer__col a { min-height: 44px; display: flex; align-items: center; }
+  .av-footer__bottom a { display: inline-flex; align-items: center; min-height: 44px; }
+  .av-footer__news input { font-size: 16px; }
+}

@@ -3,6 +3,14 @@
     assign count = paginate.items
   endpaginate
   assign active_tag = current_tags.first | handleize
+  comment
+    A tab shows only once a story carries its tag (blog.all_tags), so no tab leads to an empty page.
+  endcomment
+  assign live_tags = '|'
+  for t in blog.all_tags
+    assign th = t | handleize
+    assign live_tags = live_tags | append: th | append: '|'
+  endfor
   assign featured_shown = false
   if blog.articles_count > 0 and current_tags == blank and current_page == 1
     assign featured_shown = true
@@ -16,7 +24,8 @@
     <a href="{{ blog.url }}"{% if current_tags == blank %} class="is-active" aria-current="page"{% endif %}>All</a>
     {%- for block in section.blocks -%}
       {%- assign tag_handle = block.settings.tag | handleize -%}
-      {%- if tag_handle != blank -%}
+      {%- assign tag_key = '|' | append: tag_handle | append: '|' -%}
+      {%- if tag_handle != blank and live_tags contains tag_key -%}
         <a href="{{ blog.url }}/tagged/{{ tag_handle }}"{% if tag_handle == active_tag %} class="is-active" aria-current="page"{% endif %} {{ block.shopify_attributes }}>{{ block.settings.label | default: block.settings.tag | escape }}</a>
       {%- endif -%}
     {%- endfor -%}
@@ -24,5 +33,5 @@
   <span class="av-label">{% if count == 1 %}1 story{% else %}{{ count }} stories{% endif %}</span>
 </div>
 {% schema %}
-{ "name": "AV Story tabs", "settings": [], "blocks": [ { "type": "tab", "name": "Tab", "settings": [ { "type": "text", "id": "label", "label": "Label", "default": "[Section]" }, { "type": "text", "id": "tag", "label": "Article tag (handle, e.g. motifs-and-design)" } ] } ] }
+{ "name": "AV Story tabs", "settings": [], "blocks": [ { "type": "tab", "name": "Tab", "settings": [ { "type": "text", "id": "label", "label": "Label" }, { "type": "text", "id": "tag", "label": "Article tag (handle, e.g. motifs-and-design)" } ] } ] }
 {% endschema %}

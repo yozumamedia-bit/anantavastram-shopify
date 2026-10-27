@@ -4,7 +4,7 @@
   "All stories" continues to page 2, which starts at the eleventh story. per_page and rows mirror av-posts.
 {%- endcomment -%}
 {%- liquid
-  assign featured = blog.metafields.av.featured_article.value | default: blog.articles.first
+  assign featured = blog.metafields.custom.featured_article.value | default: blog.articles.first
   assign per_page = 10
   assign rows = 3
   assign passed = 0

@@ -4,12 +4,16 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="">
+    <meta name="theme-color" content="#9E1B1E">
     <link rel="canonical" href="{{ canonical_url }}">
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
 
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+      <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
+    {%- else -%}
+      {%- comment -%} Until the mark is uploaded (Theme settings → Favicon): a plain kumkum square, never the browser's globe. {%- endcomment -%}
+      <link rel="icon" type="image/svg+xml" href="{{ 'av-favicon.svg' | asset_url }}">
     {%- endif -%}
 
     {%- unless settings.type_body_font.system? -%}
@@ -301,6 +305,7 @@
     </script>
 
     {%- if settings.predictive_search_enabled -%}
+      <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
   </body>

@@ -1,0 +1,39 @@
+{%- comment -%}
+  Story panel: the credits strip. The entry's `credits` field holds one line per credit, written "Role: names"
+  (e.g. "Photography: Memory Lane Studios"). A line without a colon prints with an empty label.
+{%- endcomment -%}
+{%- liquid
+  assign meta = nil
+  if collection != blank and collection.handle != 'all'
+    for m in shop.metaobjects.collection_meta.values
+      if m.collection.value.id == collection.id
+        assign meta = m
+        break
+      endif
+    endfor
+  endif
+-%}
+{%- if meta != blank and meta.credits.value != blank -%}
+  {%- assign lines = meta.credits.value | newline_to_br | split: '<br />' -%}
+<section class="av-coll-credits av-wrap" data-av-panel="story">
+  <h2 class="visually-hidden">Credits</h2>
+  <dl class="av-coll-credits__list">
+    {%- for line in lines -%}
+      {%- assign l = line | strip -%}
+      {%- if l == blank -%}{%- continue -%}{%- endif -%}
+      {%- if l contains ':' -%}
+        {%- assign role = l | split: ':' | first | strip -%}
+        {%- assign who = l | remove_first: role | remove_first: ':' | strip -%}
+      {%- else -%}
+        {%- assign role = '' -%}
+        {%- assign who = l -%}
+      {%- endif -%}
+      <div><dt class="av-label">{{ role | escape }}</dt><dd class="av-body av-body--s">{{ who | escape }}</dd></div>
+    {%- endfor -%}
+  </dl>
+</section>
+{%- endif -%}
+{% schema %}
+{ "name": "AV Collection credits", "settings": [
+], "presets": [{ "name": "AV Collection credits" }] }
+{% endschema %}

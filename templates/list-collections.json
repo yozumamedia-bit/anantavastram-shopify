@@ -6,23 +6,33 @@
         "k1": {
           "type": "key",
           "settings": {
-            "label": "Everyday"
+            "label": "Everyday",
+            "url": "/collections/all/everyday"
           }
         },
         "k2": {
           "type": "key",
           "settings": {
-            "label": "Occasion"
+            "label": "Occasional",
+            "url": "/collections/all/occasional"
+          }
+        },
+        "k3": {
+          "type": "key",
+          "settings": {
+            "label": "Commissions",
+            "url": "/pages/commissions"
           }
         }
       },
       "block_order": [
         "k1",
-        "k2"
+        "k2",
+        "k3"
       ],
       "settings": {
         "label": "Collections",
-        "statement": "Numbered collections, each on one idea."
+        "statement": "Each collection is built on one design, and opens on its own."
       }
     },
     "index": {

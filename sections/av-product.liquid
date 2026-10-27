@@ -1,7 +1,7 @@
 {%- liquid
-  assign mf = product.metafields.av
+  assign mf = product.metafields.custom
   assign weaver = mf.weaver.value
-  assign drop = mf.drop.value
+  assign drop = mf.collection.value
   assign v = product.selected_or_first_available_variant | default: product.variants.first
   capture state
     render 'av-edition-line', product: product, context: 'state'
@@ -14,27 +14,14 @@
   assign edition_total = mf.edition_total.value | default: 0
   assign lead_weeks = mf.lead_time_weeks.value | default: 0
   assign loom_hours = mf.loom_hours.value | default: 0
-  assign padded = ''
-  if drop != blank
-    assign padded = drop.number.value | prepend: '00' | slice: -3, 3
+  capture label
+    render 'av-piece-label', product: product, with_collection: true, numeral_prefix: 'No. '
+  endcapture
+  assign enquiry = false
+  if state contains 'enquiry'
+    assign enquiry = true
   endif
-  assign label = ''
-  if padded != blank
-    assign label = 'Collection ' | append: padded
-  endif
-  if mf.numeral.value != blank
-    if label != blank
-      assign label = label | append: ' · '
-    endif
-    assign label = label | append: 'No. ' | append: mf.numeral.value
-  endif
-  if mf.tier.value != blank
-    if label != blank
-      assign label = label | append: ' · '
-    endif
-    assign tier_cap = mf.tier.value | capitalize
-    assign label = label | append: tier_cap
-  endif
+  assign commission_url = section.settings.commission_url | default: '/pages/commissions'
   assign wa_text = 'About ' | append: product.title | append: ' — ' | append: shop.url | append: product.url
   assign has_materials = false
   if mf.yarn.value != blank or mf.dye.value != blank or mf.motif_name_ta.value != blank or mf.motif_name_en.value != blank or mf.cloth_weight.value != blank or mf.cloth_width.value != blank or mf.cloth_length.value != blank
@@ -50,8 +37,8 @@
   assign provenance = ''
   if weaver != blank and weaver.name.value != blank
     assign provenance = 'Woven by ' | append: weaver.name.value
-    if weaver.unit.value != blank
-      assign provenance = provenance | append: ' at ' | append: weaver.unit.value
+    if weaver.unit_or_village.value != blank
+      assign provenance = provenance | append: ' at ' | append: weaver.unit_or_village.value
     endif
   endif
   if loom_hours > 0
@@ -64,9 +51,9 @@
   assign worn_with = mf.worn_with.value
   assign measure_page = pages['size-and-measure']
   comment
-    Sold out is snippets/av-edition-line.liquid's rule (edition complete, or variant.available false); tiles, rows and
-    the list read the same snippet. A piece at inventory 0 with an open edition is made to order and keeps the order form,
-    which needs "continue selling when out of stock" ON for that piece (docs/setup.md §3).
+    Availability is snippets/av-edition-line.liquid's rule; tiles, rows and the list read the same snippet.
+    Everyday and Occasional pieces are in stock: sold out at inventory 0 ("continue selling" OFF), then a notify form.
+    Commission pieces (custom.tier = commission) are made to order: no price, no order form, an enquiry link instead.
   endcomment
   assign renderable_media = 0
   for m in product.media
@@ -100,30 +87,38 @@
 
   <div class="av-product__panel">
     <div class="av-product__title">
-      {%- if label != blank -%}<div class="av-label">{{ label | escape }}</div>{%- endif -%}
+      {%- if label != blank -%}<div class="av-label">{{ label }}</div>{%- endif -%}
       <h1 class="av-name">{{ product.title | escape }}</h1>
       {%- if provenance != blank -%}<p class="av-provenance av-body av-body--s">{{ provenance | escape }}</p>{%- endif -%}
-      <div class="av-price">{{ v.price | money }}</div>
-      {%- if settings.av_tax_line != blank -%}<div class="av-label av-price__note">{{ settings.av_tax_line | escape }}</div>{%- endif -%}
+      {%- if enquiry -%}
+      <div class="av-price">On enquiry</div>
+      {%- else -%}
+      <div class="av-price">{% render 'av-money', price: v.price %}</div>
+      {%- endif -%}
+      {%- if settings.av_tax_line != blank and enquiry == false -%}<div class="av-label av-price__note">{{ settings.av_tax_line | escape }}</div>{%- endif -%}
     </div>
     {%- if product.description != blank -%}<div class="av-body av-body--s">{{ product.description }}</div>{%- endif -%}
 
     <div class="av-product__notes">
-      {%- if edition_total > 0 -%}
-      <div class="av-row__note"><div class="av-label">Edition</div><div class="av-body av-body--s">{% render 'av-edition-line', product: product, context: 'page' %}</div></div>
+      {%- if enquiry -%}
+      <div class="av-row__note"><div class="av-label">Availability</div><div class="av-body av-body--s">Made to order, after a conversation.{% if lead_weeks > 0 %} About {{ lead_weeks }} {% if lead_weeks == 1 %}week{% else %}weeks{% endif %} from confirmation.{% endif %}</div></div>
+      {%- else -%}
+      {%- capture pg -%}{% render 'av-edition-line', product: product, context: 'page' %}{%- endcapture -%}
+      <div class="av-row__note"><div class="av-label">Availability</div><div class="av-body av-body--s">{% if sold_out %}{{ pg }}.{% else %}In stock.{% unless pg == 'In stock' %} {{ pg }}.{% endunless %}{% endif %}</div></div>
       {%- endif -%}
-      <div class="av-row__note"><div class="av-label">Availability</div><div class="av-body av-body--s">{% if sold_out %}This number is placed.{% else %}Made to order.{% if lead_weeks > 0 %} {{ lead_weeks }} {% if lead_weeks == 1 %}week{% else %}weeks{% endif %} from confirmation.{% endif %}{% endif %}</div></div>
     </div>
 
     <div class="av-product__actions">
-      {%- if sold_out -%}
+      {%- if enquiry -%}
+        <a class="av-button" href="{{ commission_url }}">Enquire about this piece</a>
+      {%- elsif sold_out -%}
         {%- form 'contact', id: 'av-notify', class: 'av-notify' -%}
           <input type="hidden" name="contact[product]" value="{{ product.handle }}">
           <input type="hidden" name="contact[subject]" value="Notify me: {{ product.title | escape }}">
           {%- if form.posted_successfully? -%}
-            <div class="av-body av-body--s" role="status">Noted. If a number comes back, you hear first.</div>
+            <div class="av-body av-body--s" role="status">Noted. If this piece comes back, you hear first.</div>
           {%- else -%}
-            <label class="av-label" for="av-notify-email">Notify me if a number comes back</label>
+            <label class="av-label" for="av-notify-email">Notify me if it comes back</label>
             <input id="av-notify-email" type="email" name="contact[email]" value="{{ form.email | escape }}" placeholder="Your email" autocomplete="email" required{% if form.errors %} aria-invalid="true" aria-describedby="av-notify-err"{% endif %}>
             {%- if form.errors -%}<div id="av-notify-err" class="av-body av-body--s" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
             <button class="av-button" type="submit">Notify me</button>
@@ -143,8 +138,9 @@
     </div>
 
     <div class="av-product__accordions">
-      {%- if mf.how_made.value != blank or weaver != blank -%}
-      <details class="av-acc"><summary><h2 class="av-acc__title">How it is made</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{% if weaver != blank %}Woven by {{ weaver.name.value | escape }}{% if weaver.unit.value != blank %} at {{ weaver.unit.value | escape }}{% endif %}. {% endif %}{{ mf.how_made.value | escape | newline_to_br }}</div></details>
+      {%- comment -%} The weaver is named once on this page, in the provenance line under the title. {%- endcomment -%}
+      {%- if mf.how_made.value != blank -%}
+      <details class="av-acc"><summary><h2 class="av-acc__title">How it is made</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{{ mf.how_made.value | escape | newline_to_br }}</div></details>
       {%- endif -%}
       {%- if has_materials -%}
       <details class="av-acc"><summary><h2 class="av-acc__title">Materials and motif</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">
@@ -173,18 +169,17 @@
       {%- endif -%}
     </div>
 
-    {%- if weaver != blank or drop != blank or edition_total > 0 or mf.kara_colour.value != blank or loom_hours > 0 -%}
+    {%- if drop != blank or edition_total > 0 or mf.kara_colour.value != blank or loom_hours > 0 -%}
     <div class="av-facts">
-      {%- if weaver != blank -%}<div class="av-fact"><div class="av-label">Woven by</div><div class="av-body av-body--s">{{ weaver.name.value | escape }}{% if weaver.unit.value != blank %} · {{ weaver.unit.value | escape }}{% endif %}</div></div>{%- endif -%}
-      {%- if drop != blank -%}<div class="av-fact"><div class="av-label">Collection</div><div class="av-body av-body--s">{% if drop.collection.value != blank %}<a href="{{ drop.collection.value.url }}">{% endif %}{{ padded }}{% if drop.theme_name.value != blank %} · {{ drop.theme_name.value | escape }}{% endif %}{% if drop.collection.value != blank %}</a>{% endif %}</div></div>{%- endif -%}
-      {%- if edition_total > 0 -%}<div class="av-fact"><div class="av-label">Edition</div><div class="av-body av-body--s">{{ edition_total }} {% if edition_total == 1 %}piece{% else %}pieces{% endif %}</div></div>{%- endif -%}
+      {%- if drop != blank -%}{%- assign coll = drop.collection.value -%}<div class="av-fact"><div class="av-label">Collection</div><div class="av-body av-body--s">{% if coll != blank %}<a href="{{ coll.url }}">{{ drop.name.value | default: coll.title | escape }}</a>{% else %}{{ drop.name.value | escape }}{% endif %}</div></div>{%- endif -%}
+      {%- if edition_total > 0 and enquiry == false -%}<div class="av-fact"><div class="av-label">Edition</div><div class="av-body av-body--s">{{ edition_total }} {% if edition_total == 1 %}piece{% else %}pieces{% endif %}</div></div>{%- endif -%}
       {%- if mf.kara_colour.value != blank -%}<div class="av-fact"><div class="av-label">Kara</div><div class="av-body av-body--s">{{ mf.kara_colour.value | escape }}</div></div>{%- endif -%}
       {%- if loom_hours > 0 -%}<div class="av-fact"><div class="av-label">At the loom</div><div class="av-body av-body--s">{{ loom_hours }} {{ hours_word }}</div></div>{%- endif -%}
     </div>
     {%- endif -%}
 
     {%- if worn_with.size > 0 -%}
-    {%- comment -%} The other pieces of the set (product metafield av.worn_with). Three at most; a swipe rail on phones. {%- endcomment -%}
+    {%- comment -%} The other pieces of the set (product metafield custom.worn_with). Three at most; a swipe rail on phones. {%- endcomment -%}
     <div class="av-worn">
       <h2 class="av-label">Worn with</h2>
       <div class="av-worn__tiles">
@@ -194,10 +189,10 @@
     {%- endif -%}
   </div>
 </section>
-{%- unless sold_out -%}
+{%- unless sold_out or enquiry -%}
 {%- comment -%} Phones only: a slim order bar once the main button has scrolled out of view. The button submits the product form above via its form attribute. {%- endcomment -%}
 <div class="av-orderbar" id="av-orderbar" aria-hidden="true">
-  <div class="av-orderbar__info"><span class="av-orderbar__name">{{ product.title | escape }}</span><span class="av-orderbar__price">{{ v.price | money }}</span></div>
+  <div class="av-orderbar__info"><span class="av-orderbar__name">{{ product.title | escape }}</span><span class="av-orderbar__price">{% render 'av-money', price: v.price %}</span></div>
   <button class="av-button av-orderbar__button" type="submit" form="{{ form_id }}" tabindex="-1">Order</button>
 </div>
 {%- endunless -%}
@@ -206,6 +201,7 @@
 {% schema %}
 { "name": "AV Product", "settings": [
   { "type": "richtext", "id": "shipping", "label": "Shipping text (overrides theme setting)" },
-  { "type": "richtext", "id": "care", "label": "Default care text", "default": "<p>[Care instructions — wash, dry, store]</p>" }
+  { "type": "url", "id": "commission_url", "label": "Commissions page (enquiry link on commission pieces)" },
+  { "type": "richtext", "id": "care", "label": "Default care text" }
 ] }
 {% endschema %}

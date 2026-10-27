@@ -1,6 +1,29 @@
+{%- comment -%}
+  The pieces of a collection, one per row. On a collection with a collection_meta entry this is the Pieces panel
+  (data-av-panel="pieces", switched by assets/av-coll.js); the shipping line is printed once, above the rows.
+  Hidden at the teaser and reveal stages, when the Pieces tab is locked.
+{%- endcomment -%}
 {%- unless collection.handle == 'all' -%}
-<section class="av-rows av-rows--page">
+{%- liquid
+  assign meta = nil
+  for m in shop.metaobjects.collection_meta.values
+    if m.collection.value.id == collection.id
+      assign meta = m
+      break
+    endif
+  endfor
+  assign stage = meta.status.value | default: 'open' | downcase | strip
+  assign locked = false
+  if meta != blank
+    if stage == 'teaser' or stage == 'reveal'
+      assign locked = true
+    endif
+  endif
+-%}
+{%- unless locked -%}
+<section class="av-rows av-rows--page"{% if meta != blank %} id="pieces" data-av-panel="pieces"{% endif %}>
   <h2 class="visually-hidden">Pieces</h2>
+  {%- if meta != blank and settings.av_shipping_line != blank -%}<p class="av-wrap av-body av-body--meta av-rows__ship">{{ settings.av_shipping_line | escape }}</p>{%- endif -%}
   {%- paginate collection.products by 12 -%}
     {%- if collection.products.size == 0 -%}
       <p class="av-body av-list__empty">No pieces yet.</p>
@@ -10,6 +33,7 @@
     {%- if paginate.pages > 1 -%}<nav class="av-wrap" aria-label="Pagination" style="padding-top:40px">{{ paginate | default_pagination }}</nav>{%- endif -%}
   {%- endpaginate -%}
 </section>
+{%- endunless -%}
 {%- endunless -%}
 {% schema %}
 { "name": "AV Product rows", "settings": [] }

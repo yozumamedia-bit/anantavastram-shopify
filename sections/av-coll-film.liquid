@@ -1,0 +1,27 @@
+{%- comment -%} Story panel: the collection film (the entry's `film`), muted loop with tap-for-sound. Hidden when there is no film. {%- endcomment -%}
+{%- liquid
+  assign meta = nil
+  if collection != blank and collection.handle != 'all'
+    for m in shop.metaobjects.collection_meta.values
+      if m.collection.value.id == collection.id
+        assign meta = m
+        break
+      endif
+    endfor
+  endif
+-%}
+{%- if meta != blank and meta.film.value != blank -%}
+<section class="av-coll-film av-wrap" data-av-panel="story">
+  {% render 'av-video', loop_video: meta.film.value, film: meta.film.value, poster: meta.ensemble_image.value, class: 'av-coll-film__video' %}
+  <div class="av-film__caption">
+    <div class="av-sub av-sub--xs">{{ section.settings.caption | escape }}</div>
+    <div class="av-label">{{ section.settings.meta | escape }}</div>
+  </div>
+</section>
+{%- endif -%}
+{% schema %}
+{ "name": "AV Collection film", "settings": [
+  { "type": "text", "id": "caption", "label": "Caption", "default": "The collection film — loom, hands, a voice in Tamil" },
+  { "type": "text", "id": "meta", "label": "Meta", "default": "about 1:30 · subtitled" }
+], "presets": [{ "name": "AV Collection film" }] }
+{% endschema %}

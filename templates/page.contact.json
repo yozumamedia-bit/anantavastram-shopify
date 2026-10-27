@@ -5,7 +5,7 @@
       "settings": {
         "label": "Contact",
         "statement": "Write to the house.",
-        "text": "<p>For a piece made to order, a question about a collection, an order already placed, or a visit to the unit. Kamalam reads every message herself.</p>",
+        "text": "<p>For a commission, a question about a collection, an order already placed, or a visit to the unit. Kamalam reads every message herself.</p>",
         "open": true
       }
     },
@@ -14,14 +14,18 @@
       "settings": {
         "label": "Write",
         "heading": "Write to Kamalam",
-        "text": "Tell us the occasion, the date, where you are and who will wear the piece — and anything you already have in mind. Or book a call, or send the same on WhatsApp.",
+        "text": "Tell us what it is about, where you are, and anything you already have in mind. Or send the same on WhatsApp.",
+        "ask_occasion": false,
         "subject": "Contact enquiry",
         "tag": "contact",
-        "reply_line": "Kamalam replies within [n] days",
+        "reply_line": "Kamalam replies herself",
         "calendar_label": "Book a call with Kamalam",
-        "calendar_note": "[20] minutes · Tamil or English"
+        "calendar_note": "Tamil or English"
       }
     }
   },
-  "order": ["intro", "enquiry"]
+  "order": [
+    "intro",
+    "enquiry"
+  ]
 }

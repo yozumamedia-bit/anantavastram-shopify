@@ -1,0 +1,103 @@
+{%- comment -%}
+  Header and tabs of a collection page (Mullai, Kovil …): name, the one line under it, the stage chips, then
+  01 Story · 02 Looks · 03 Pieces. All three panels live on the collection page itself (templates/collection.json);
+  assets/av-coll.js switches them in place and the hash (#looks, #pieces) keeps the choice. Without JavaScript the
+  panels simply show one after the other.
+  Usage: {% render 'av-coll-head', meta: meta, col: collection %}
+    meta — the collection's collection_meta entry (the one whose `collection` field is this collection)
+
+  Stage comes from the entry's `status`:
+    teaser — Story only; Looks and Pieces show as locked tabs ("Opens [opens_on]")
+    reveal — Story and Looks; Pieces locked
+    open   — all three (`current` is read the same way)
+    closed — all three; the pieces stay listed as the record
+  Counts: Everyday and Occasional pieces are held in stock in limited number, so "remaining" is Shopify inventory,
+  summed by snippets/av-edition-line.liquid (context 'remaining'). Commission pieces are made to order and are not
+  counted.
+{%- endcomment -%}
+{%- liquid
+  assign stage = meta.status.value | default: 'open' | downcase | strip
+  if stage == 'current'
+    assign stage = 'open'
+  endif
+  assign pieces = 0
+  assign remaining = 0
+  assign total = 0
+  if col != blank
+    assign pieces = col.products_count | default: 0
+    for p in col.products
+      capture r
+        render 'av-edition-line', product: p, context: 'remaining'
+      endcapture
+      assign r = r | strip | plus: 0
+      assign remaining = remaining | plus: r
+      capture t
+        render 'av-edition-line', product: p, context: 'total'
+      endcapture
+      assign t = t | strip | plus: 0
+      assign total = total | plus: t
+    endfor
+  endif
+
+  assign looks_locked = false
+  assign pieces_locked = false
+  if stage == 'teaser'
+    assign looks_locked = true
+    assign pieces_locked = true
+  elsif stage == 'reveal'
+    assign pieces_locked = true
+  endif
+  assign look_count = meta.looks.value.count | default: 0
+  if look_count == 0
+    assign looks_locked = true
+  endif
+  if pieces == 0
+    assign pieces_locked = true
+  endif
+
+  assign opens = ''
+  if meta.opens_on.value != blank
+    assign opens = meta.opens_on.value | date: '%-d %B'
+  endif
+  assign closes = ''
+  if meta.closes_on.value != blank
+    assign closes = meta.closes_on.value | date: '%-d %B'
+  endif
+  assign heading = meta.name.value | default: col.title
+-%}
+<header class="av-coll-head">
+  <div class="av-coll-head__title">
+    <div class="av-label">Collection{% if meta.season.value != blank %} · {{ meta.season.value | escape }}{% endif %}</div>
+    <h1 class="av-statement av-statement--xl">{{ heading | escape }}</h1>
+    {%- if meta.theme.value != blank -%}<p class="av-body av-body--l av-ta">{{ meta.theme.value | escape }}</p>{%- endif -%}
+  </div>
+  <div class="av-coll-head__state">
+    {%- case stage -%}
+      {%- when 'teaser', 'reveal' -%}
+        <span class="av-chip av-chip--outline">{% if opens != blank %}Opens {{ opens }}{% else %}Coming{% endif %}</span>
+      {%- when 'closed' -%}
+        <span class="av-chip av-chip--outline av-chip--closed">Closed</span>
+      {%- else -%}
+        {%- if pieces > 0 and remaining == 0 and total > 0 -%}
+          <span class="av-chip av-chip--outline av-chip--closed">All placed</span>
+        {%- else -%}
+          <span class="av-chip">Open</span>
+          {%- if total > 0 -%}<span class="av-price">{{ remaining }} of {{ total }} {% if remaining == 1 %}piece remains{% else %}pieces remain{% endif %}</span>{%- endif -%}
+          {%- if closes != blank -%}<span class="av-label">Orders close {{ closes }}</span>{%- endif -%}
+        {%- endif -%}
+    {%- endcase -%}
+  </div>
+  <nav class="av-coll-tabs" aria-label="{{ heading | escape }}">
+    <a href="#story" data-av-tab="story" class="is-active" aria-current="page"><span>01</span> Story</a>
+    {%- if looks_locked -%}
+      <span class="is-locked" aria-disabled="true"><span>02</span> Looks <em>Coming</em></span>
+    {%- else -%}
+      <a href="#looks" data-av-tab="looks"><span>02</span> Looks</a>
+    {%- endif -%}
+    {%- if pieces_locked -%}
+      <span class="is-locked" aria-disabled="true"><span>03</span> Pieces <em>{% if opens != blank %}Opens {{ opens }}{% else %}Coming{% endif %}</em></span>
+    {%- else -%}
+      <a href="#pieces" data-av-tab="pieces"><span>03</span> Pieces</a>
+    {%- endif -%}
+  </nav>
+</header>

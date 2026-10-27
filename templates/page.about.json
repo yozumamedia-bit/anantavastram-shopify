@@ -5,8 +5,8 @@
       "settings": {
         "label": "About the house",
         "statement": "Cloth without end.",
-        "text": "<p>Ananta means without end. Vastram means cloth. The name is a description of the work: a length of handwoven cloth with no seam, made on a loom that has been running in [town] for [how long], by weavers whose names we print on every piece.</p>",
-        "note": "Ananta Vastram is a menswear house from Tamil Nadu. We make veshtis and the garments worn with them, in numbered editions, to order. The people in our photographs are the wearers of the pieces, named with their consent.",
+        "text": "<p>Ananta means without end. Vastram means cloth. The name is a description of the work: a length of handwoven cloth with no seam, woven on pit looms in Tamil Nadu, by weavers whose names we print on every piece.</p>",
+        "note": "Ananta Vastram is a menswear house from Tamil Nadu. We make veshtis and the garments worn with them, in limited number; commissions are made to order. The people in our photographs are the wearers of the pieces, named with their consent.",
         "large_body": true,
         "open": true
       }
@@ -14,8 +14,9 @@
     "place": {
       "type": "av-full-bleed",
       "settings": {
-        "left": "[Unit name], [town], Tamil Nadu",
-        "right": "Photograph · [credit]"
+        "image": "shopify://shop_images/av-about-place.jpg",
+        "left": "Worn in Boston, Massachusetts",
+        "right": "Photograph · Memory Lane Studios"
       }
     },
     "film": {
@@ -23,14 +24,15 @@
       "settings": {
         "title": "The collection film",
         "meta": "Loom · hands · weaver voice in Tamil, subtitled · plays muted, sound on tap"
-      }
+      },
+      "disabled": true
     },
     "ch1": {
       "type": "av-chapter",
       "settings": {
         "numeral": "I",
         "title": "The loom decides first",
-        "text": "<p>[Paragraph — the veshti as a plain length of cloth: width, border, the kara. What is fixed before a thread is thrown, and by whom.]</p><p>[Paragraph — yarn and dye: cotton count or silk grade, the zari, where the dye comes from. What we changed at the loom and what we refused to change.]</p><p>[Paragraph — time: loom hours per piece, why the number is what it is, and why it will not go down.]</p>",
+        "text": "<p>A veshti is fixed before a thread is thrown: its width, its border, the kara at its edge. Kamalam Moorthy, who designs every piece, decides these first.</p><p>The cloth is silk cotton, with a weft spun by hand and woven on a pit loom. Borders carry zari. The embroidery is aari work in metallic thread, done by hand by our senior artisan.</p><p>A piece takes about six weeks from the loom to the last stitch. That time is the reason there are only a few of each.</p>",
         "link_label": "The craft, in detail",
         "link": "shopify://blogs/stories"
       }
@@ -55,7 +57,8 @@
         "a",
         "b"
       ],
-      "settings": {}
+      "settings": {},
+      "disabled": true
     },
     "ch2": {
       "type": "av-chapter-split",
@@ -63,10 +66,11 @@
         "numeral": "II",
         "title": "Kamalam Moorthy",
         "role": "Chief designer · Head of production · Weaver",
-        "quote": "[A line from Kamalam, in her words, from the founder interview — about the cloth, not the brand.]",
-        "text": "<p>[Paragraph — who she is, how long she has woven, the unit she runs, what she is responsible for on every piece.]</p><p>[Paragraph — what she will not do: no shortcuts on yarn, no unnamed work, no piece she has not passed.]</p>",
+        "quote": "",
+        "text": "",
         "video_caption": "In her words · from the founder interview"
-      }
+      },
+      "disabled": true
     },
     "ch3": {
       "type": "av-people-grid",
@@ -75,32 +79,32 @@
           "type": "person",
           "settings": {
             "at_loom": true,
-            "name": "[Weaver name]",
-            "role": "[Role]"
+            "name": "",
+            "role": ""
           }
         },
         "p2": {
           "type": "person",
           "settings": {
             "at_loom": true,
-            "name": "[Weaver name]",
-            "role": "[Role]"
+            "name": "",
+            "role": ""
           }
         },
         "p3": {
           "type": "person",
           "settings": {
             "at_loom": true,
-            "name": "[Weaver name]",
-            "role": "[Role]"
+            "name": "",
+            "role": ""
           }
         },
         "p4": {
           "type": "person",
           "settings": {
             "at_loom": false,
-            "name": "[Weaver name]",
-            "role": "[Role]"
+            "name": "",
+            "role": ""
           }
         }
       },
@@ -114,7 +118,8 @@
         "numeral": "III",
         "title": "Every piece carries a name",
         "text": "The weaver's name is woven into the label and printed on the page. It is not a credit. It is the record of who made the cloth, kept where the buyer can see it."
-      }
+      },
+      "disabled": true
     },
     "ch4": {
       "type": "av-band",
@@ -122,15 +127,15 @@
         "i1": {
           "type": "item",
           "settings": {
-            "title": "Numbered editions",
-            "text": "Each collection is a fixed, honest count. When the number is reached the piece is finished. It is not re-run."
+            "title": "Limited number",
+            "text": "Each design is made in a small, fixed number. When the last piece is placed, it is finished. It is not re-run."
           }
         },
         "i2": {
           "type": "item",
           "settings": {
-            "title": "Made to order",
-            "text": "Nothing sits in a warehouse. A piece is begun when it is asked for, and you are told how long it will take."
+            "title": "Commissions, made to order",
+            "text": "Everyday and Occasional pieces are woven ahead and ready to wear. A commission begins only when it is asked for, after a conversation, and you are told how long it will take."
           }
         },
         "i3": {
@@ -156,7 +161,7 @@
       ],
       "settings": {
         "mode": "list",
-        "numeral": "IV",
+        "numeral": "II",
         "heading": "How the house works"
       }
     },
@@ -196,7 +201,10 @@
         "r2",
         "r3"
       ],
-      "settings": {}
+      "settings": {
+        "image_left": "shopify://shop_images/av-about-route-left.jpg",
+        "image_right": "shopify://shop_images/av-about-route-right.jpg"
+      }
     }
   },
   "order": [

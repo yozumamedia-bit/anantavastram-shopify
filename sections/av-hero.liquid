@@ -1,11 +1,24 @@
-<section class="av-hero">
+{%- comment -%}
+  Full-viewport still, no copy, no button. A separate portrait photograph can be set for phones (below 750px wide);
+  without one, phones crop the main image. "Vertical focus" keeps the part of the main image that matters in frame.
+{%- endcomment -%}
+<section class="av-hero" style="--av-hero-y: {{ section.settings.focus_y | default: 50 }}%">
   <h1 class="visually-hidden">{{ shop.name | escape }}</h1>
   {%- if section.settings.image != blank -%}
-    {{ section.settings.image | image_url: width: 2800 | image_tag: widths: '800, 1200, 1600, 2000, 2800', sizes: '100vw', loading: 'eager', fetchpriority: 'high', alt: section.settings.image.alt | default: '' }}
+    <picture>
+      {%- if section.settings.image_mobile != blank -%}
+        <source media="(max-width: 749px)" srcset="{{ section.settings.image_mobile | image_url: width: 750 }} 750w, {{ section.settings.image_mobile | image_url: width: 1100 }} 1100w, {{ section.settings.image_mobile | image_url: width: 1500 }} 1500w, {{ section.settings.image_mobile | image_url: width: 2000 }} 2000w" sizes="100vw">
+      {%- endif -%}
+      {{ section.settings.image | image_url: width: 3840 | image_tag: widths: '800, 1200, 1600, 2000, 2800, 3840', sizes: '100vw', loading: 'eager', fetchpriority: 'high', alt: section.settings.image.alt | default: '' }}
+    </picture>
   {%- else -%}
     <div class="av-media" style="height:100%"></div>
   {%- endif -%}
 </section>
 {% schema %}
-{ "name": "AV Hero", "settings": [ { "type": "image_picker", "id": "image", "label": "Full-viewport still (no copy, no button)" } ], "presets": [{ "name": "AV Hero" }] }
+{ "name": "AV Hero", "settings": [
+  { "type": "image_picker", "id": "image", "label": "Full-viewport still (no copy, no button)" },
+  { "type": "image_picker", "id": "image_mobile", "label": "Phone photograph (portrait, optional)" },
+  { "type": "range", "id": "focus_y", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50, "label": "Vertical focus", "info": "Which part of the photograph stays in view when the screen crops it: 0 = top, 100 = bottom." }
+], "presets": [{ "name": "AV Hero" }] }
 {% endschema %}

@@ -1,27 +1,10 @@
-{{ 'section-main-page.css' | asset_url | stylesheet_tag }}
-
-{%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-  }
-
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
-  }
-{%- endstyle -%}
-
-<div class="page-width page-width--narrow section-{{ section.id }}-padding">
-  <h1 class="main-page-title page-title h0">
-    {{ page.title | escape }}
-  </h1>
-  <div class="rte">
-    {{ page.content }}
+{%- comment -%} Plain pages (Care, Size and measure, Visit the unit …) use the article layout: 2/8/2, a Light title, 18px body. {%- endcomment -%}
+<article class="av-article">
+  <div class="av-article__body">
+    <h1 class="av-statement av-statement--l">{{ page.title | escape }}</h1>
+    <div class="av-body rte">{{ page.content }}</div>
   </div>
-</div>
+</article>
 
 {% schema %}
 {

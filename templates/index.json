@@ -1,22 +1,92 @@
 {
   "sections": {
-    "hero": { "type": "av-hero", "settings": {} },
-    "credo": { "type": "av-credo", "settings": {} },
+    "hero": {
+      "type": "av-hero",
+      "settings": {
+        "image": "shopify://shop_images/av-home-hero.jpg",
+        "focus_y": 80,
+        "image_mobile": "shopify://shop_images/av-home-hero-mobile.jpg"
+      }
+    },
+    "credo": {
+      "type": "av-credo",
+      "settings": {}
+    },
     "showcase": {
       "type": "av-showcase-three",
       "blocks": {
-        "a": { "type": "image", "settings": { "caption": "I · Red set" } },
-        "b": { "type": "image", "settings": { "caption": "II · Rust set" } },
-        "c": { "type": "image", "settings": { "caption": "III · Linen set" } }
+        "a": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-home-look-1.jpg",
+            "caption": "I"
+          }
+        },
+        "b": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-home-look-2.jpg",
+            "caption": "II"
+          }
+        },
+        "c": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-home-look-3.jpg",
+            "caption": "III"
+          }
+        }
       },
-      "block_order": ["a", "b", "c"],
+      "block_order": [
+        "a",
+        "b",
+        "c"
+      ],
       "settings": {}
     },
-    "story": { "type": "av-story", "settings": {} },
-    "film": { "type": "av-film-banner", "settings": {} },
-    "drop-1": { "type": "av-drop-rows", "settings": { "auto_index": 1 } },
-    "drop-2": { "type": "av-drop-rows", "settings": { "auto_index": 2 } },
-    "commissions": { "type": "av-commissions-row", "settings": { "link": "shopify://pages/commissions" } }
+    "story": {
+      "type": "av-story",
+      "settings": {
+        "image": "shopify://shop_images/av-home-story.jpg",
+        "label": "The house",
+        "text": "<p>Every piece begins as a length of silk cotton, its weft spun by hand and woven on a pit loom in Tamil Nadu. Kamalam Moorthy, who designs the cloth and runs its production, draws each motif from the temples, the forests and the stories told about them.</p><p>The embroidery is aari work in metallic thread, done by hand by our senior artisan. A veshti spends about six weeks between the loom and the embroidery frame before it is finished, which is why there are only a few of each.</p>",
+        "link_label": "About the house",
+        "link": "shopify://pages/about"
+      }
+    },
+    "film": {
+      "type": "av-film-banner",
+      "settings": {},
+      "disabled": true
+    },
+    "drop-1": {
+      "type": "av-drop-rows",
+      "settings": {
+        "auto_index": 1
+      }
+    },
+    "drop-2": {
+      "type": "av-drop-rows",
+      "settings": {
+        "auto_index": 2
+      }
+    },
+    "commissions": {
+      "type": "av-commissions-row",
+      "settings": {
+        "link": "shopify://pages/commissions",
+        "image": "shopify://shop_images/av-home-commissions.jpg"
+      }
+    }
   },
-  "order": ["hero", "credo", "showcase", "story", "film", "drop-1", "drop-2", "commissions"]
+  "order": [
+    "hero",
+    "credo",
+    "showcase",
+    "story",
+    "film",
+    "drop-1",
+    "drop-2",
+    "commissions"
+  ]
 }

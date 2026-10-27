@@ -1,50 +1,62 @@
 {%- comment -%}
   One product, one row. Usage: {% render 'av-product-row', product: product %}
-  Sold out / made to order comes from snippets/av-edition-line.liquid (context 'state'), the one source of that rule.
-  The shipping line is printed once under the collection banner (av-drop-banner), never per row.
+  Availability comes from snippets/av-edition-line.liquid (context 'state'), the one source of that rule:
+  open (in stock) · sold (stays listed, no price) · enquiry (a commission piece: made to order, no price, "Enquire").
+  The shipping line is printed once above the rows, never per row.
 {%- endcomment -%}
 {%- liquid
-  assign mf = product.metafields.av
+  assign mf = product.metafields.custom
   assign weaver = mf.weaver.value
   assign edition_total = mf.edition_total.value | default: 0
   capture state
     render 'av-edition-line', product: product, context: 'state'
   endcapture
   assign sold_out = false
+  assign enquiry = false
   if state contains 'sold'
     assign sold_out = true
+  elsif state contains 'enquiry'
+    assign enquiry = true
   endif
+  capture label
+    render 'av-piece-label', product: product, numeral_prefix: 'No. '
+  endcapture
+  assign lead_weeks = mf.lead_time_weeks.value | default: 0
 -%}
 <article class="av-row{% if sold_out %} av-row--sold{% endif %}">
   <a href="{{ product.url }}" aria-label="{{ product.title | escape }}">{% render 'av-media', image: product.featured_image, alt_image: product.images[1], vt: product.handle, ratio: '520 / 560', sizes: '(min-width: 1100px) 520px, (min-width: 900px) 50vw, 100vw' %}</a>
   <div class="av-row__story">
     <div class="av-stack" style="gap:8px">
-      <div class="av-label">{% if mf.numeral.value != blank %}No. {{ mf.numeral.value | escape }}{% if mf.tier.value != blank %} · {% endif %}{% endif %}{% if mf.tier.value != blank %}{{ mf.tier.value | capitalize | escape }}{% endif %}</div>
+      {%- if label != blank -%}<div class="av-label">{{ label }}</div>{%- endif -%}
       <h3 class="av-name"><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
     </div>
-    <div class="av-body av-body--s">{{ product.description }}</div>
+    {%- comment -%} The row carries the opening of the description only; the full text, with its details list, is on the product page. {%- endcomment -%}
+    {%- assign lede = product.description | split: '</p>' | first | strip_html | strip -%}
+    {%- if lede != blank -%}<p class="av-body av-body--s">{{ lede | truncatewords: 60 }}</p>{%- endif -%}
     {%- if mf.how_made.value != blank or weaver != blank -%}
     <div class="av-row__making">
       <div class="av-label av-label--red">How it is made</div>
       <div class="av-body av-body--s">
-        {%- if weaver != blank -%}Woven by {{ weaver.name.value | escape }}{% if weaver.unit.value != blank %} at {{ weaver.unit.value | escape }}{% endif %}. {% endif -%}
+        {%- if weaver != blank -%}Woven by {{ weaver.name.value | escape }}{% if weaver.unit_or_village.value != blank %} at {{ weaver.unit_or_village.value | escape }}{% endif %}. {% endif -%}
         {{ mf.how_made.value | escape | newline_to_br }}
       </div>
     </div>
     {%- endif -%}
   </div>
   <div class="av-row__notes">
-    {%- if sold_out -%}
-      {%- comment -%} The row stays as the record of the edition; no price once it is complete. {%- endcomment -%}
-      <div class="av-label av-label--red">{% if edition_total > 0 %}Edition of {{ edition_total }} · complete{% else %}Edition complete{% endif %}</div>
+    {%- if enquiry -%}
+      <div class="av-price">On enquiry</div>
+      <div class="av-row__note"><div class="av-label">Availability</div><div class="av-body av-body--s">Made to order, after a conversation.{% if lead_weeks > 0 %} About {{ lead_weeks }} {% if lead_weeks == 1 %}week{% else %}weeks{% endif %} from confirmation.{% endif %}</div></div>
+      <a class="av-link" href="{{ product.url }}">See the piece</a>
     {%- else -%}
-      <div class="av-price">{{ product.price | money }}</div>
-      {%- if settings.av_tax_line != blank -%}<div class="av-label av-price__note">{{ settings.av_tax_line | escape }}</div>{%- endif -%}
+      {%- if sold_out -%}
+        {%- comment -%} The row stays as the record; no price once every piece is placed. {%- endcomment -%}
+        <div class="av-label av-label--red">{% if edition_total > 0 %}Edition of {{ edition_total }} · all placed{% else %}All placed{% endif %}</div>
+      {%- else -%}
+        <div class="av-price">{% render 'av-money', price: product.price %}</div>
+      {%- endif -%}
+      <div class="av-row__note"><div class="av-label">Availability</div><div class="av-body av-body--s">{% if sold_out %}Sold out.{% else %}{% capture pg %}{% render 'av-edition-line', product: product, context: 'page' %}{% endcapture %}In stock.{% unless pg == 'In stock' %} {{ pg }}.{% endunless %}{% endif %}</div></div>
+      <a class="av-link" href="{{ product.url }}">See the piece</a>
     {%- endif -%}
-    {%- if edition_total > 0 -%}
-    <div class="av-row__note"><div class="av-label">Edition</div><div class="av-body av-body--s">{% render 'av-edition-line', product: product, context: 'row' %}</div></div>
-    {%- endif -%}
-    <div class="av-row__note"><div class="av-label">Availability</div><div class="av-body av-body--s">{% if sold_out %}Sold out.{% else %}Made to order.{% if mf.lead_time_weeks.value != blank %} {{ mf.lead_time_weeks.value }} {% if mf.lead_time_weeks.value == 1 %}week{% else %}weeks{% endif %} from confirmation.{% endif %}{% endif %}</div></div>
-    <a class="av-link" href="{{ product.url }}">View the piece</a>
   </div>
 </article>

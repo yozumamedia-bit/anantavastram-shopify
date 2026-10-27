@@ -2,7 +2,6 @@
 {{ 'component-cart-items.css' | asset_url | stylesheet_tag }}
 {{ 'component-totals.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
-{{ 'component-discounts.css' | asset_url | stylesheet_tag }}
 {{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
@@ -24,23 +23,17 @@
 {%- endunless -%}
 
 <cart-items class="page-width{% if cart == empty %} is-empty{% else %} section-{{ section.id }}-padding{% endif %}">
+  {%- comment -%}
+    The house's bag: no "Continue shopping", no log-in nudge, no quantity steppers (each piece is one of a limited
+    number, so a line is one piece and can only be removed), no discount or sale markup.
+  {%- endcomment -%}
   <div class="title-wrapper-with-link">
     <h1 class="title title--primary">{{ 'sections.cart.title' | t }}</h1>
-    <a href="{{ routes.all_products_collection_url }}" class="underlined-link">{{ 'general.continue_shopping' | t }}</a>
   </div>
 
   <div class="cart__warnings">
     <h1 class="cart__empty-text">{{ 'sections.cart.empty' | t }}</h1>
-    <a href="{{ routes.all_products_collection_url }}" class="button">
-      {{ 'general.continue_shopping' | t }}
-    </a>
-
-    {%- if shop.customer_accounts_enabled and customer == null -%}
-      <h2 class="cart__login-title">{{ 'sections.cart.login.title' | t }}</h2>
-      <p class="cart__login-paragraph">
-        {{ 'sections.cart.login.paragraph_html' | t: link: routes.account_login_url }}
-      </p>
-    {%- endif -%}
+    <a href="{{ routes.collections_url }}" class="av-link">See the collections</a>
   </div>
 
   <form action="{{ routes.cart_url }}" class="cart__contents critical-hidden" method="post" id="cart">
@@ -95,26 +88,9 @@
 
                     <a href="{{ item.url }}" class="cart-item__name h4 break">{{ item.product.title | escape }}</a>
 
-                    {%- if item.original_price != item.final_price -%}
-                      <div class="cart-item__discounted-prices">
-                        <span class="visually-hidden">
-                          {{ 'products.product.price.regular_price' | t }}
-                        </span>
-                        <s class="cart-item__old-price product-option">
-                          {{- item.original_price | money -}}
-                        </s>
-                        <span class="visually-hidden">
-                          {{ 'products.product.price.sale_price' | t }}
-                        </span>
-                        <strong class="cart-item__final-price product-option">
-                          {{ item.final_price | money }}
-                        </strong>
-                      </div>
-                    {%- else -%}
-                      <div class="product-option">
-                        {{ item.original_price | money }}
-                      </div>
-                    {%- endif -%}
+                    <div class="product-option">
+                      {% render 'av-money', price: item.final_price %}
+                    </div>
 
                     {%- if item.product.has_only_default_variant == false
                       or item.properties.size != 0
@@ -151,15 +127,6 @@
 
                       <p class="product-option">{{ item.selling_plan_allocation.selling_plan.name }}</p>
                     {%- endif -%}
-
-                    <ul class="discounts list-unstyled" role="list" aria-label="{{ 'customer.order.discount' | t }}">
-                      {%- for discount in item.discounts -%}
-                        <li class="discounts__discount">
-                          {%- render 'icon-discount' -%}
-                          {{ discount.title }}
-                        </li>
-                      {%- endfor -%}
-                    </ul>
                   </td>
 
                   <td class="cart-item__totals right medium-hide large-up-hide">
@@ -177,33 +144,14 @@
                       </div>
                     </div>
                     <div class="cart-item__price-wrapper">
-                      {%- if item.original_line_price != item.final_line_price -%}
-                        <dl class="cart-item__discounted-prices">
-                          <dt class="visually-hidden">
-                            {{ 'products.product.price.regular_price' | t }}
-                          </dt>
-                          <dd>
-                            <s class="cart-item__old-price price price--end">
-                              {{ item.original_line_price | money }}
-                            </s>
-                          </dd>
-                          <dt class="visually-hidden">
-                            {{ 'products.product.price.sale_price' | t }}
-                          </dt>
-                          <dd class="price price--end">
-                            {{ item.final_line_price | money }}
-                          </dd>
-                        </dl>
-                      {%- else -%}
-                        <span class="price price--end">
-                          {{ item.original_line_price | money }}
-                        </span>
-                      {%- endif -%}
+                      <span class="price price--end">
+                        {% render 'av-money', price: item.final_line_price %}
+                      </span>
 
                       {%- if item.variant.available and item.unit_price_measurement -%}
                         <div class="unit-price caption">
                           <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
-                          {{ item.variant.unit_price | money }}
+                          {% render 'av-money', price: item.variant.unit_price %}
                           <span aria-hidden="true">/</span>
                           <span class="visually-hidden"
                             >&nbsp;{{ 'accessibility.unit_price_separator' | t }}&nbsp;</span
@@ -219,41 +167,16 @@
 
                   <td class="cart-item__quantity">
                     <div class="cart-item__quantity-wrapper">
-                      <label class="visually-hidden" for="Quantity-{{ item.index | plus: 1 }}">
-                        {{ 'products.product.quantity.label' | t }}
-                      </label>
-                      <quantity-input class="quantity cart-quantity">
-                        <button class="quantity__button no-js-hidden" name="minus" type="button">
-                          <span class="visually-hidden">
-                            {{- 'products.product.quantity.decrease' | t: product: item.product.title | escape -}}
-                          </span>
-                          {% render 'icon-minus' %}
-                        </button>
-                        <input
-                          class="quantity__input"
-                          data-quantity-variant-id="{{ item.variant.id }}"
-                          type="number"
-                          name="updates[]"
-                          value="{{ item.quantity }}"
-                          {% # theme-check-disable %}
-                          data-cart-quantity="{{ cart | item_count_for_variant: item.variant.id }}"
-                          min="{{ item.variant.quantity_rule.min }}"
-                          {% if item.variant.quantity_rule.max != null %}
-                            max="{{ item.variant.quantity_rule.max }}"
-                          {% endif %}
-                          step="{{ item.variant.quantity_rule.increment }}"
-                          {% # theme-check-enable %}
-                          aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}"
-                          id="Quantity-{{ item.index | plus: 1 }}"
-                          data-index="{{ item.index | plus: 1 }}"
-                        >
-                        <button class="quantity__button no-js-hidden" name="plus" type="button">
-                          <span class="visually-hidden">
-                            {{- 'products.product.quantity.increase' | t: product: item.product.title | escape -}}
-                          </span>
-                          {% render 'icon-plus' %}
-                        </button>
-                      </quantity-input>
+                      <span class="visually-hidden">{{ 'products.product.quantity.label' | t }}</span>
+                      {%- comment -%} The quantity is shown, not edited; the hidden field keeps cart.js and the no-JS form working. {%- endcomment -%}
+                      <span class="cart-item__qty caption-large">{{ item.quantity }}</span>
+                      <input
+                        type="hidden"
+                        name="updates[]"
+                        value="{{ item.quantity }}"
+                        id="Quantity-{{ item.index | plus: 1 }}"
+                        data-index="{{ item.index | plus: 1 }}"
+                      >
 
                       <cart-remove-button
                         id="Remove-{{ item.index | plus: 1 }}"
@@ -300,33 +223,14 @@
                     </div>
 
                     <div class="cart-item__price-wrapper">
-                      {%- if item.original_line_price != item.final_line_price -%}
-                        <dl class="cart-item__discounted-prices">
-                          <dt class="visually-hidden">
-                            {{ 'products.product.price.regular_price' | t }}
-                          </dt>
-                          <dd>
-                            <s class="cart-item__old-price price price--end">
-                              {{ item.original_line_price | money }}
-                            </s>
-                          </dd>
-                          <dt class="visually-hidden">
-                            {{ 'products.product.price.sale_price' | t }}
-                          </dt>
-                          <dd class="price price--end">
-                            {{ item.final_line_price | money }}
-                          </dd>
-                        </dl>
-                      {%- else -%}
-                        <span class="price price--end">
-                          {{ item.original_line_price | money }}
-                        </span>
-                      {%- endif -%}
+                      <span class="price price--end">
+                        {% render 'av-money', price: item.final_line_price %}
+                      </span>
 
                       {%- if item.variant.available and item.unit_price_measurement -%}
                         <div class="unit-price caption">
                           <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
-                          {{ item.variant.unit_price | money }}
+                          {% render 'av-money', price: item.variant.unit_price %}
                           <span aria-hidden="true">/</span>
                           <span class="visually-hidden"
                             >&nbsp;{{ 'accessibility.unit_price_separator' | t }}&nbsp;</span

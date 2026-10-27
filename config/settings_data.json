@@ -16,7 +16,7 @@
       "gradient_background_2": "",
       "heading_scale": 100,
       "type_body_font": "karla_n4",
-      "av_shipping_line": "[Shipping terms — India and worldwide, duties note]",
+      "av_shipping_line": "Shipped from Chennai by insured courier across India. For orders from abroad, write to us.",
       "av_currency_line": "India (INR ₹)",
       "body_scale": 100,
       "page_width": 1200,
@@ -141,8 +141,10 @@
         }
       },
       "av_whatsapp_float": true,
+      "av_show_account": true,
       "av_header_over_hero": true,
-      "av_tax_line": "Inclusive of all taxes"
+      "av_tax_line": "Inclusive of all taxes",
+      "av_whatsapp_number": "919840002288"
     }
   }
 }
