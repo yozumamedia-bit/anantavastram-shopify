@@ -17,7 +17,8 @@
     capture r
       render 'av-edition-line', product: p, context: 'remaining'
     endcapture
-    assign remaining = remaining | plus: r | strip
+    assign r = r | strip | plus: 0
+    assign remaining = remaining | plus: r
     capture t
       render 'av-edition-line', product: p, context: 'total'
     endcapture
@@ -76,7 +77,7 @@
       </div>
       {%- endunless -%}
     </div>
-    <a class="av-link" href="{{ col.url }}">{% if upcoming %}Read the story{% else %}Enter the collection{% endif %}</a>
+    <a class="av-link" href="{{ col.url }}">{% if upcoming %}Read the story{% else %}See the collection{% endif %}</a>
   </div>
 </section>
 {%- unless upcoming -%}<div class="av-tiles">{%- for p in col.products limit: 6 -%}{% render 'av-drop-tile', product: p %}{%- endfor -%}</div>{%- endunless -%}
