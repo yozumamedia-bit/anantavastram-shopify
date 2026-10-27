@@ -64,7 +64,7 @@
       -%}
       <button type="button" class="av-look" data-av-look-open="{{ dialog_id }}" aria-haspopup="dialog" aria-controls="{{ dialog_id }}">
         {% render 'av-media', image: img, ratio: '4 / 5', sizes: '(min-width: 900px) 40vw, 100vw', alt: title %}
-        <span class="av-look__meta"><span class="av-numeral">Look {{ num }}</span><span class="av-link" aria-hidden="true">View the look</span></span>
+        <span class="av-look__meta"><span class="av-numeral">Look {{ num }}</span><span class="av-link" aria-hidden="true">See the look</span></span>
         <span class="av-name av-look__title">{{ title | escape }}</span>
         {%- if wearer != blank -%}<span class="av-body av-body--meta">{{ wearer }}</span>{%- endif -%}
       </button>
@@ -96,8 +96,8 @@
                     <a href="{{ p.url }}" class="av-sub av-sub--s">{{ p.title | escape }}</a>
                     {%- if p.description != blank -%}<span class="av-body av-body--s">{{ p.description | strip_html | truncatewords: 18 }}</span>{%- endif -%}
                     {%- capture p_state -%}{% render 'av-edition-line', product: p, context: 'state' %}{%- endcapture -%}
-                    <span class="av-price av-look-piece__price">{% if p_state contains 'enquiry' %}On enquiry · Made to order{% else %}{{ p.price | money }} · {% render 'av-edition-line', product: p, context: 'tile' %}{% endif %}</span>
-                    <a class="av-link" href="{{ p.url }}">View the piece</a>
+                    <span class="av-price av-look-piece__price">{% if p_state contains 'enquiry' %}On enquiry · Made to order{% elsif p_state contains 'sold' %}Sold out{% else %}{{ p.price | money }} · {% render 'av-edition-line', product: p, context: 'tile' %}{% endif %}</span>
+                    <a class="av-link" href="{{ p.url }}">See the piece</a>
                   </div>
                 </li>
               {%- endfor -%}

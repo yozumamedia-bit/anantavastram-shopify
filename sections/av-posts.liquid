@@ -52,7 +52,7 @@
           {% render 'av-article-meta', article: article %}
           <h3 class="av-sub av-sub--m av-post__title"><a href="{{ article.url }}">{{ article.title | escape }}</a></h3>
           <div class="av-body">{{ article.excerpt_or_content | replace: '</p>', ' </p>' | strip_html | truncatewords: 40, '…' }}</div>
-          <a class="av-link" href="{{ article.url }}">Read</a>
+          <a class="av-link" href="{{ article.url }}">Read the story</a>
         </div>
       </article>
     {%- else -%}
