@@ -29,7 +29,7 @@
       this.email = form.elements['contact[email]'];
       this.date = form.elements['contact[date]'];
       this.occasion = form.querySelector('input[name="contact[occasion]"]');
-      if (!form.elements['contact[name]'] || !this.email || !this.date || !this.occasion) return;
+      if (!form.elements['contact[name]'] || !this.email) return; // occasion and date are asked only on the Commissions form
       this.button = form.querySelector('button[type="submit"]');
       this.formError = form.querySelector('.av-form__error');
       this.hint = form.querySelector('.av-field__hint');
@@ -44,7 +44,7 @@
       }
 
       form.noValidate = true; // our messages instead of the browser's bubbles; without JS the native checks still run
-      this.date.min = isoDate(new Date()); // today on the visitor's clock, in case the page was cached
+      if (this.date) this.date.min = isoDate(new Date()); // today on the visitor's clock, in case the page was cached
       form.addEventListener('focusout', this.onBlur.bind(this));
       form.addEventListener('input', this.onInput.bind(this));
       form.addEventListener('change', this.onInput.bind(this));
@@ -65,8 +65,8 @@
     onInput(e) {
       var c = e.target;
       if (!this.isControl(c)) return;
-      if (c === this.date) this.warnLead();
-      if (c === this.date || c.name === this.occasion.name) this.updateWhatsApp();
+      if (this.date && c === this.date) this.warnLead();
+      if ((this.date && c === this.date) || (this.occasion && c.name === this.occasion.name)) this.updateWhatsApp();
       this.validate(c, false); // only clears an error already shown
     }
 
@@ -100,7 +100,7 @@
     }
 
     warnLead() {
-      if (!this.hint) return;
+      if (!this.hint || !this.date) return;
       var chosen = localDate(this.date.value);
       var text = '';
       if (chosen && this.leadWeeks > 0) {
@@ -114,8 +114,8 @@
 
     updateWhatsApp() {
       if (!this.wa.length) return;
-      var occasion = this.form.querySelector('input[name="' + this.occasion.name + '"]:checked');
-      var chosen = localDate(this.date.value);
+      var occasion = this.occasion ? this.form.querySelector('input[name="' + this.occasion.name + '"]:checked') : null;
+      var chosen = this.date ? localDate(this.date.value) : null;
       var text = this.waText;
       if (occasion) text += ' — ' + occasion.value.toLowerCase();
       if (chosen) text += (occasion ? ', ' : ' — ') + chosen.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -127,7 +127,7 @@
       if (this.sending) { e.preventDefault(); return; }
       var self = this;
       var first = null;
-      var required = [this.form.elements['contact[name]'], this.email, this.occasion, this.date];
+      var required = [this.form.elements['contact[name]'], this.email, this.occasion, this.date].filter(Boolean);
       required.forEach(function (c) { if (!self.validate(c, true) && !first) first = c; });
       if (first) { e.preventDefault(); first.focus(); return; }
       this.setError('');

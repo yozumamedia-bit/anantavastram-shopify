@@ -14,7 +14,8 @@
       "settings": {
         "label": "Write",
         "heading": "Write to Kamalam",
-        "text": "Tell us the occasion, the date, where you are and who will wear the piece — and anything you already have in mind. Or book a call, or send the same on WhatsApp.",
+        "text": "Tell us what it is about, where you are, and anything you already have in mind. Or send the same on WhatsApp.",
+        "ask_occasion": false,
         "subject": "Contact enquiry",
         "tag": "contact",
         "reply_line": "Kamalam replies herself",
