@@ -304,7 +304,8 @@ legend.av-field__label { margin: 0 0 10px; } /* a legend is not a flex item, so 
 .av-cards { padding: 0 var(--av-gutter) var(--av-section); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
 .av-card { display: flex; flex-direction: column; gap: 16px; }
 .av-card__title { margin: 0; }
-@media (max-width: 900px) { .av-cards { grid-template-columns: 1fr; } }
+.av-cards--one { grid-template-columns: minmax(0, calc(50% - 12px)); justify-content: center; } /* a single card sits centred, not in a half-empty row */
+@media (max-width: 900px) { .av-cards, .av-cards--one { grid-template-columns: 1fr; } }
 
 /* av-product: stacked media left, sticky panel right */
 .av-product { padding: 0 var(--av-gutter) var(--av-section); display: grid; grid-template-columns: 7fr 5fr; gap: 64px; align-items: start; }
