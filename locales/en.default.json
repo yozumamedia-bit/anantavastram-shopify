@@ -247,8 +247,8 @@
       }
     },
     "404": {
-      "title": "Page not found",
-      "subtext": "404"
+      "title": "This page is not here.",
+      "subtext": "Not found"
     }
   },
   "sections": {
@@ -261,14 +261,14 @@
       }
     },
     "cart": {
-      "title": "Your cart",
-      "caption": "Cart items",
+      "title": "Your bag",
+      "caption": "Pieces in your bag",
       "remove_title": "Remove {{ title }}",
       "subtotal": "Subtotal",
       "new_subtotal": "New subtotal",
       "note": "Order special instructions",
       "checkout": "Check out",
-      "empty": "Your cart is empty",
+      "empty": "Your bag is empty.",
       "cart_error": "There was an error while updating your cart. Please try again.",
       "cart_quantity_error_html": "You can only add {{ quantity }} of this item to your cart.",
       "taxes_and_shipping_policy_at_checkout_html": "Taxes and <a href=\"{{ link }}\">shipping</a> calculated at checkout",
