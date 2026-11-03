@@ -89,10 +89,17 @@
     "products-list": {
       "type": "av-product-list",
       "settings": {}
+    },
+    "story": {
+      "type": "av-coll-story",
+      "settings": {
+        "label": "The story"
+      }
     }
   },
   "order": [
     "header",
+    "story",
     "note",
     "motifs",
     "hands",

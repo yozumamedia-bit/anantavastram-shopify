@@ -21,12 +21,13 @@ finds the entry by its `collection` field — nothing to set on the collection. 
 | Field key | Type | Notes |
 |---|---|---|
 | `name` | Single line text | e.g. Mullai — the page heading (empty → the Shopify collection's title) |
-| `theme` | Single line text | one line under the name: what the collection is built from (e.g. the forest — the Tree of Life, the Golden Deer) |
+| `theme` | Single line text | one line under the name: a description of the collection, not a list of its designs (designs keep being added) |
 | `season` | Single line text | e.g. Deepavali 2026 — shown after "Collection ·" |
 | `status` | Single line text | `teaser`, `reveal`, `open` or `closed` — the stage (below). `current` reads as `open` |
 | `opens_on` | Date | the order of collections everywhere (latest first), and "Opens 14 November" on locked tabs and bands |
 | `closes_on` | Date | "Orders close …" while open (optional) |
-| `story` | Rich text or multi-line text | the paragraph on Collections |
+| `story` | Rich text or multi-line text | the collection's story: on the Story tab (headings and paragraphs, beside `story_graphic`) and the paragraph on Collections |
+| `story_graphic` | File (image) | a line drawing beside the story on the Story tab — SVG or transparent PNG (Mullai: the tree growing in two directions, `av-mullai-tree.svg`) |
 | `design_note` | Multi-line text | Kamalam's note, 80–150 words, on the Story tab |
 | `ensemble_image` | File (image) | the opening photograph of the Story tab and the large image on Collections |
 | `film` | File (video) | the collection film (Story tab); also the opening when there is no image |
@@ -165,7 +166,7 @@ For every piece:
 ## 4. Collections
 
 - **One manual collection per collection** (Mullai, Kovil …), default template, and a `collection_meta` entry whose `collection` field points at it. Handle = the name in lower case (`/collections/mullai`).
-- **Products page:** `/collections/all` works without any setup — Shopify's automatic all-products collection renders the compact list, and `/collections/all/everyday` and `/collections/all/occasional` filter by tag. To control its sort order, create a collection with handle **`all`** (title "Products"), automated, condition *Inventory stock is greater than -1* (if rejected, use *Product price is greater than 0*), sort **Newest**, theme template **`collection.products-all`**.
+- **Products page:** lists only pieces that belong to a named collection (a collection with a `collection_meta` entry); a product in no collection keeps its own URL but is not listed. `/collections/all` works without any setup — Shopify's automatic all-products collection renders the compact list, and `/collections/all/everyday` and `/collections/all/occasional` filter by tag. To control its sort order, create a collection with handle **`all`** (title "Products"), automated, condition *Inventory stock is greater than -1* (if rejected, use *Product price is greater than 0*), sort **Newest**, theme template **`collection.products-all`**.
 
 ## 5. Pages
 

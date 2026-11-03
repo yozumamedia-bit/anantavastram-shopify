@@ -1,0 +1,22 @@
+{%- comment -%}
+  One row of the Products list (sections/av-product-list.liquid), printed only when the product belongs to a named
+  collection (its id is in `named_ids`, ",id," pairs) and its state matches `want` ('open' or 'sold').
+{%- endcomment -%}
+{%- liquid
+  assign in_named = false
+  for c in product.collections
+    assign key = ',' | append: c.id | append: ','
+    if named_ids contains key
+      assign in_named = true
+      break
+    endif
+  endfor
+-%}
+{%- if in_named -%}
+  {%- capture state -%}{% render 'av-edition-line', product: product, context: 'state' %}{%- endcapture -%}
+  {%- if want == 'sold' -%}
+    {%- if state contains 'sold' -%}{% render 'av-product-list-item', product: product %}{%- endif -%}
+  {%- else -%}
+    {%- unless state contains 'sold' -%}{% render 'av-product-list-item', product: product %}{%- endunless -%}
+  {%- endif -%}
+{%- endif -%}
