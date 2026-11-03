@@ -85,13 +85,6 @@
           <input id="enq-city" type="text" name="contact[city]" placeholder="{% if ask_occasion %}Where the fitting would be{% else %}Where you are{% endif %}" autocomplete="address-level2">
         </div>
 
-        <fieldset class="av-field av-chips" id="enq-language">
-          <legend class="av-field__label">Language</legend>
-          <div class="av-chips__row">
-            <input type="radio" id="enq-language-tamil" name="contact[language]" value="Tamil"><label for="enq-language-tamil">Tamil</label>
-            <input type="radio" id="enq-language-english" name="contact[language]" value="English"><label for="enq-language-english">English</label>
-          </div>
-        </fieldset>
 
         <div class="av-field av-field--wide">
           <label class="av-field__label" for="enq-notes">A few lines</label>
@@ -128,11 +121,11 @@
   { "type": "text", "id": "subject", "label": "Email subject line", "info": "Subject of the email the store receives.", "default": "Commissions enquiry" },
   { "type": "text", "id": "tag", "label": "Customer tag", "info": "Added to the sender's customer record, so enquiries can be filtered in Customers.", "default": "commissions" },
   { "type": "text", "id": "reply_line", "label": "Reply-time line", "info": "Shown under the form and after sending, e.g. Kamalam replies within 3 days", "default": "Kamalam replies herself" },
-  { "type": "checkbox", "id": "ask_occasion", "label": "Ask for the occasion and the date (Commissions)", "info": "Off on the Contact page: the form asks only name, email, phone, city, language and a note.", "default": true },
+  { "type": "checkbox", "id": "ask_occasion", "label": "Ask for the occasion and the date (Commissions)", "info": "Off on the Contact page: the form asks only name, email, phone, city and a note.", "default": true },
   { "type": "number", "id": "lead_weeks", "label": "Lead time (weeks)", "info": "A date inside this window gets a note under the date field. It is not blocked.", "default": 8 },
   { "type": "header", "content": "Book a call" },
   { "type": "url", "id": "calendar_url", "label": "Booking link", "info": "A Google Calendar appointment schedule link (calendar.app.google/…) or similar. Hidden until set." },
   { "type": "text", "id": "calendar_label", "label": "Booking link label", "default": "Book a call with Kamalam" },
-  { "type": "text", "id": "calendar_note", "label": "Booking note", "info": "e.g. 20 minutes · Tamil or English · video or phone" }
+  { "type": "text", "id": "calendar_note", "label": "Booking note", "info": "e.g. 20 minutes · video or phone" }
 ], "presets": [{ "name": "AV Enquiry form" }] }
 {% endschema %}
