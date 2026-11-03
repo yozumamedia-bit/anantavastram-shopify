@@ -22,7 +22,7 @@ finds the entry by its `collection` field — nothing to set on the collection. 
 |---|---|---|
 | `name` | Single line text | e.g. Mullai — the page heading (empty → the Shopify collection's title) |
 | `theme` | Single line text | one line under the name: a description of the collection, not a list of its designs (designs keep being added) |
-| `season` | Single line text | e.g. Deepavali 2026 — shown after "Collection ·" |
+| `season` | Single line text | e.g. Diwali 2026 (house spelling is Diwali, decided 3 Nov 2026) — shown after "Collection ·" |
 | `status` | Single line text | `teaser`, `reveal`, `open` or `closed` — the stage (below). `current` reads as `open` |
 | `opens_on` | Date | the order of collections everywhere (latest first), and "Opens 14 November" on locked tabs and bands |
 | `closes_on` | Date | "Orders close …" while open (optional) |
