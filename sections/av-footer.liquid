@@ -1,6 +1,7 @@
 <footer class="av-footer">
   <div class="av-footer__grid">
     <div class="av-footer__brand">
+      <img class="av-footer__symbol" src="{{ 'av-symbol-ivory.svg' | asset_url }}" alt="" width="792" height="487" loading="lazy">
       {% render 'av-wordmark', class: 'av-footer__wordmark' %}
       <p class="av-footer__blurb">{{ section.settings.blurb | escape | newline_to_br }}</p>
       {% render 'av-newsletter-form', id: 'footer', placeholder: section.settings.news_placeholder, class: 'av-footer__news' %}

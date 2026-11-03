@@ -12,8 +12,10 @@
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
       <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
     {%- else -%}
-      {%- comment -%} Until the mark is uploaded (Theme settings → Favicon): a plain kumkum square, never the browser's globe. {%- endcomment -%}
+      {%- comment -%} The house glyph (the nautilus alone, ivory on kumkum, brand/logo/av-glyph-tile-kumkum-ivory.svg): SVG for browsers that take it, PNG for the rest, 180px for the phone home screen. A Theme settings → Favicon upload overrides it. {%- endcomment -%}
       <link rel="icon" type="image/svg+xml" href="{{ 'av-favicon.svg' | asset_url }}">
+      <link rel="icon" type="image/png" sizes="32x32" href="{{ 'av-favicon-32.png' | asset_url }}">
+      <link rel="apple-touch-icon" href="{{ 'av-favicon-180.png' | asset_url }}">
     {%- endif -%}
 
     {%- unless settings.type_body_font.system? -%}

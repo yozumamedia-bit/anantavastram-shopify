@@ -396,6 +396,7 @@ html:has(> .av-password-body), .av-password-body { background: var(--av-kumkum);
 .av-password__mark { margin: 0; line-height: 0; color: var(--av-white); }
 .av-password__wordmark.av-wordmark--svg svg { height: auto; width: min(84vw, 720px); }
 .av-password__wordmark img { max-width: min(84vw, 720px); height: auto; }
+.av-password__symbol { display: block; width: clamp(160px, 24vw, 280px); height: auto; margin: 0 auto 8px; }
 .av-password__line { margin: 0; color: var(--av-ivory); font-size: clamp(20px, 2.4vw, 28px); line-height: 1.3; }
 .av-password__news { width: min(100%, 360px); margin-top: 12px; text-align: left; }
 .av-password__entry summary { cursor: pointer; list-style: none; color: var(--av-ivory); opacity: 0.75; min-height: 44px; display: inline-flex; align-items: center; }
