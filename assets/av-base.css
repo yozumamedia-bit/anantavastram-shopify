@@ -149,6 +149,9 @@ img, video { max-width: 100%; display: block; }
 .av-chip--closed { color: var(--av-grey-1); border-color: var(--av-grey-2); }
 a.av-chip--link { text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; padding: 0 18px; transition: background-color .2s; }
 @media (hover: hover) and (pointer: fine) { a.av-chip--link:hover { background: var(--av-kumkum-deep); color: var(--av-ivory); } }
+.av-chip-actions { display: inline-flex; flex-wrap: wrap; gap: 10px; }
+a.av-chip--ghost { background: none; color: var(--av-kumkum); border: 1px solid var(--av-kumkum); }
+@media (hover: hover) and (pointer: fine) { a.av-chip--ghost:hover { background: var(--av-kumkum); color: var(--av-ivory); } }
 a.av-chip--link:focus-visible { outline: 2px solid var(--av-kumkum); outline-offset: 3px; }
 
 .av-button {

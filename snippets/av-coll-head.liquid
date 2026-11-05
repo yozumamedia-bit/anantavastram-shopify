@@ -81,7 +81,7 @@
         {%- if pieces > 0 and remaining == 0 and total > 0 -%}
           <span class="av-chip av-chip--outline av-chip--closed">All placed</span>
         {%- else -%}
-          {%- if pieces_locked -%}<span class="av-chip">Open</span>{%- else -%}<a class="av-chip av-chip--link" href="#pieces" data-av-tab="pieces">Open · See the pieces</a>{%- endif -%}
+          <span class="av-chip-actions"><a class="av-chip av-chip--link" href="#story" data-av-tab="story">Open collection</a>{%- unless pieces_locked -%}<a class="av-chip av-chip--link av-chip--ghost" href="#pieces" data-av-tab="pieces">Products</a>{%- endunless -%}</span>
           {%- if total > 0 -%}<span class="av-price">{{ remaining }} of {{ total }} {% if remaining == 1 %}piece remains{% else %}pieces remain{% endif %}</span>{%- endif -%}
           {%- if closes != blank -%}<span class="av-label">Orders close {{ closes }}</span>{%- endif -%}
         {%- endif -%}
