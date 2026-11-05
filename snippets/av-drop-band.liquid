@@ -68,7 +68,7 @@
     <div class="av-stack" style="gap:28px">
       <div class="av-drop__head"><span class="av-label">{{ eyebrow }}</span>{{ chip }}</div>
       <h2 class="av-sub av-sub--l">{{ name | escape }}</h2>
-      {%- if drop.theme.value != blank -%}<div class="av-label av-label--red av-ta">{{ drop.theme.value | escape }}</div>{%- endif -%}
+      {%- if drop.theme.value != blank -%}<p class="av-body av-drop__theme av-ta">{{ drop.theme.value | escape }}</p>{%- endif -%}
       {%- if drop.story.value != blank -%}<div class="av-body">{% render 'av-field-text', field: drop.story %}</div>{%- endif -%}
       {%- unless upcoming -%}
       <div class="av-counts">

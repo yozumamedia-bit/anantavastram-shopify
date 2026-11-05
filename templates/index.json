@@ -19,21 +19,21 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/av-home-look-1.jpg",
-            "caption": "I"
+            "product": "the-circular-tree-of-life"
           }
         },
         "b": {
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/av-home-look-2.jpg",
-            "caption": "II"
+            "product": "the-chariot-that-carried-a-culture"
           }
         },
         "c": {
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/av-home-look-3.jpg",
-            "caption": "III"
+            "product": "puri-jagannath-temple"
           }
         }
       },

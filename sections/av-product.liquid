@@ -67,7 +67,8 @@
 -%}
 <script type="application/ld+json">{{ product | structured_data }}</script>
 <section class="av-product">
-  <div class="av-product__media">
+  <div class="av-product__gallery">
+  <div class="av-product__media" data-av-gallery tabindex="-1">
     {%- if renderable_media == 0 -%}
       {% render 'av-media', ratio: '4 / 5', sizes: '(min-width: 900px) 58vw, 85vw' %}
     {%- endif -%}
@@ -87,6 +88,8 @@
       {%- endif -%}
     {%- endfor -%}
   </div>
+  {%- if renderable_media > 1 -%}<div class="av-product__count av-label" aria-hidden="true"><span data-av-count>1</span> / {{ renderable_media }}</div>{%- endif -%}
+  </div>
 
   <div class="av-product__panel">
     <div class="av-product__title">
@@ -102,8 +105,6 @@
       {%- endif -%}
       {%- if settings.av_tax_line != blank and enquiry == false and soon == false -%}<div class="av-label av-price__note">{{ settings.av_tax_line | escape }}</div>{%- endif -%}
     </div>
-    {%- if product.description != blank -%}<div class="av-body av-body--s">{{ product.description }}</div>{%- endif -%}
-
     <div class="av-product__notes">
       {%- if enquiry -%}
       <div class="av-row__note"><div class="av-label">Availability</div><div class="av-body av-body--s">Made to order, after a conversation.{% if lead_weeks > 0 %} About {{ lead_weeks }} {% if lead_weeks == 1 %}week{% else %}weeks{% endif %} from confirmation.{% endif %}</div></div>
@@ -148,6 +149,9 @@
       {% render 'av-whatsapp-link', label: 'Ask on WhatsApp', text: wa_text %}
     </div>
 
+    {%- comment -%} Price, availability and the button come first; the story of the piece follows (site review, 4 Nov 2026). {%- endcomment -%}
+    {%- if product.description != blank -%}<div class="av-body av-product__desc">{{ product.description }}</div>{%- endif -%}
+
     <div class="av-product__accordions">
       {%- comment -%} The weaver is named once on this page, in the provenance line under the title. {%- endcomment -%}
       {%- if mf.how_made.value != blank -%}
@@ -172,6 +176,9 @@
       <details class="av-acc"><summary><h2 class="av-acc__title">Shipping</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{{ section.settings.shipping }}</div></details>
       {%- elsif settings.av_shipping_line != blank -%}
       <details class="av-acc"><summary><h2 class="av-acc__title">Shipping</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{{ settings.av_shipping_line | escape }}</div></details>
+      {%- endif -%}
+      {%- if enquiry == false and settings.av_returns_line != blank -%}
+      <details class="av-acc"><summary><h2 class="av-acc__title">Returns</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s"><p>{{ settings.av_returns_line | escape }}</p>{%- if shop.refund_policy.body != blank -%}<p><a href="{{ shop.refund_policy.url }}">The full returns policy</a></p>{%- endif -%}</div></details>
       {%- endif -%}
       {%- if mf.care.value != blank -%}
       <details class="av-acc"><summary><h2 class="av-acc__title">Care</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{{ mf.care.value | escape | newline_to_br }}</div></details>
@@ -208,6 +215,10 @@
 </div>
 {%- endunless -%}
 <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+<dialog class="av-zoom" id="av-zoom" aria-label="{{ product.title | escape }}, photographs">
+  <button class="av-zoom__close" type="button" data-av-zoom-close>Close</button>
+  <div class="av-zoom__strip" data-av-zoom-strip></div>
+</dialog>
 <script src="{{ 'av-product.js' | asset_url }}" defer="defer"></script>
 {% schema %}
 { "name": "AV Product", "settings": [
