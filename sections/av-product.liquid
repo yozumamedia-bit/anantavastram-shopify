@@ -7,7 +7,10 @@
     render 'av-edition-line', product: product, context: 'state'
   endcapture
   assign sold_out = false
-  if state contains 'sold'
+  assign soon = false
+  if state contains 'soon'
+    assign soon = true
+  elsif state contains 'sold'
     assign sold_out = true
   endif
   assign form_id = 'product-form-' | append: section.id
@@ -92,16 +95,21 @@
       {%- if provenance != blank -%}<p class="av-provenance av-body av-body--s">{{ provenance | escape }}</p>{%- endif -%}
       {%- if enquiry -%}
       <div class="av-price">On enquiry</div>
+      {%- elsif soon -%}
+      <div class="av-price">{% render 'av-edition-line', product: product, context: 'tile' %}</div>
       {%- else -%}
       <div class="av-price">{% render 'av-money', price: v.price %}</div>
       {%- endif -%}
-      {%- if settings.av_tax_line != blank and enquiry == false -%}<div class="av-label av-price__note">{{ settings.av_tax_line | escape }}</div>{%- endif -%}
+      {%- if settings.av_tax_line != blank and enquiry == false and soon == false -%}<div class="av-label av-price__note">{{ settings.av_tax_line | escape }}</div>{%- endif -%}
     </div>
     {%- if product.description != blank -%}<div class="av-body av-body--s">{{ product.description }}</div>{%- endif -%}
 
     <div class="av-product__notes">
       {%- if enquiry -%}
       <div class="av-row__note"><div class="av-label">Availability</div><div class="av-body av-body--s">Made to order, after a conversation.{% if lead_weeks > 0 %} About {{ lead_weeks }} {% if lead_weeks == 1 %}week{% else %}weeks{% endif %} from confirmation.{% endif %}</div></div>
+      {%- elsif soon -%}
+      {%- assign soon_left = 0 -%}{%- capture soon_left -%}{% render 'av-edition-line', product: product, context: 'remaining' %}{%- endcapture -%}{%- assign soon_left = soon_left | strip | plus: 0 -%}
+      <div class="av-row__note"><div class="av-label">Availability</div><div class="av-body av-body--s">{% if soon_left > 0 %}{{ soon_left }} {% if soon_left == 1 %}piece{% else %}pieces{% endif %}, held in stock for the opening.{% else %}Held for the opening.{% endif %}</div></div>
       {%- else -%}
       {%- capture pg -%}{% render 'av-edition-line', product: product, context: 'page' %}{%- endcapture -%}
       <div class="av-row__note"><div class="av-label">Availability</div><div class="av-body av-body--s">{% if sold_out %}{{ pg }}.{% else %}In stock.{% unless pg == 'In stock' %} {{ pg }}.{% endunless %}{% endif %}</div></div>
@@ -111,17 +119,20 @@
     <div class="av-product__actions">
       {%- if enquiry -%}
         <a class="av-button" href="{{ commission_url }}">Enquire about this piece</a>
-      {%- elsif sold_out -%}
-        {%- form 'contact', id: 'av-notify', class: 'av-notify' -%}
-          <input type="hidden" name="contact[product]" value="{{ product.handle }}">
-          <input type="hidden" name="contact[subject]" value="Notify me: {{ product.title | escape }}">
+      {%- elsif sold_out or soon -%}
+        {%- comment -%}
+          A customer record, not a contact-form email: Customers → filter by tag "notify-<handle>" (or "opening") to write
+          to everyone who asked. Customer forms subscribe the address to email marketing, so consent is recorded.
+        {%- endcomment -%}
+        {%- form 'customer', id: 'av-notify', class: 'av-notify' -%}
+          <input type="hidden" name="contact[tags]" value="{% if soon %}opening, {% endif %}notify, notify-{{ product.handle }}">
           {%- if form.posted_successfully? -%}
-            <div class="av-body av-body--s" role="status">Noted. If this piece comes back, you hear first.</div>
+            <div class="av-body av-body--s" role="status">{% if soon %}Noted. You hear when it opens.{% else %}Noted. If this piece comes back, you hear first.{% endif %}</div>
           {%- else -%}
-            <label class="av-label" for="av-notify-email">Notify me if it comes back</label>
+            <label class="av-label" for="av-notify-email">{% if soon %}Tell me when it opens{% else %}Notify me if it comes back{% endif %}</label>
             <input id="av-notify-email" type="email" name="contact[email]" value="{{ form.email | escape }}" placeholder="Your email" autocomplete="email" required{% if form.errors %} aria-invalid="true" aria-describedby="av-notify-err"{% endif %}>
             {%- if form.errors -%}<div id="av-notify-err" class="av-body av-body--s" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
-            <button class="av-button" type="submit">Notify me</button>
+            <button class="av-button" type="submit">{% if soon %}Tell me{% else %}Notify me{% endif %}</button>
           {%- endif -%}
         {%- endform -%}
       {%- else -%}
@@ -189,7 +200,7 @@
     {%- endif -%}
   </div>
 </section>
-{%- unless sold_out or enquiry -%}
+{%- unless sold_out or enquiry or soon -%}
 {%- comment -%} Phones only: a slim order bar once the main button has scrolled out of view. The button submits the product form above via its form attribute. {%- endcomment -%}
 <div class="av-orderbar" id="av-orderbar" aria-hidden="true">
   <div class="av-orderbar__info"><span class="av-orderbar__name">{{ product.title | escape }}</span><span class="av-orderbar__price">{% render 'av-money', price: v.price %}</span></div>

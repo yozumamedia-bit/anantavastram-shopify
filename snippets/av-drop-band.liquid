@@ -44,7 +44,7 @@
 {%- capture chip -%}
   {%- if upcoming -%}<span class="av-chip av-chip--outline">{% if opens != blank %}Opens {{ opens }}{% else %}Coming{% endif %}</span>
   {%- elsif stage == 'closed' -%}<span class="av-chip av-chip--outline av-chip--closed">Closed</span>
-  {%- elsif total > 0 and remaining == 0 -%}<span class="av-chip av-chip--outline av-chip--closed">All placed</span>
+  {%- elsif total > 0 and remaining == 0 -%}<span class="av-chip av-chip--outline av-chip--closed">Sold out</span>
   {%- else -%}<span class="av-chip-actions"><a class="av-chip av-chip--link" href="{{ col.url }}">Open collection</a><a class="av-chip av-chip--link av-chip--ghost" href="{{ col.url }}#pieces">Products</a></span>{%- endif -%}
 {%- endcapture -%}
 {%- if mode == 'past' -%}

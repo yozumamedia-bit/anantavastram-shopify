@@ -102,8 +102,7 @@
 .av-tile__price { font-size: 15px; }                      /* General Sans Medium */
 .av-tile__meta { display: flex; justify-content: space-between; align-items: baseline; gap: 4px 8px; flex-wrap: wrap; }
 .av-tile__left { font-family: var(--av-font-body); font-weight: 300; font-size: 12px; letter-spacing: 0.02em; color: var(--av-grey-1); }
-/* sold out: only the photograph dims and desaturates (through --av-dim, which the reveal honours); names and counts stay legible. One rule for tiles, rows and the list. */
-.av-tile--sold .av-media, .av-row--sold .av-media, .av-list__item--sold .av-media { --av-dim: .6; filter: saturate(.4); }
+/* sold out: the photograph stays at full strength (review, 4 Nov 2026: a dimmed embroidery reads as an image that failed to load); the words carry the status. */
 .av-past-head { padding: 96px var(--av-gutter) 40px; display: grid; grid-template-columns: 5fr 7fr; gap: 64px; align-items: end; }
 .av-past { padding: 80px var(--av-gutter) 96px; display: flex; flex-direction: column; gap: 40px; border-bottom: 1px solid var(--av-grey-3); }
 .av-past__head { display: grid; grid-template-columns: 5fr 7fr; gap: 64px; align-items: start; }

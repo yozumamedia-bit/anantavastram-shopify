@@ -8,12 +8,16 @@
     commission            — made to order after a conversation. No price, no order button, never counted.
 
   context:
-    state:     sold | enquiry | open — callers branch on it: {% capture state %}{% render … context: 'state' %}{% endcapture %}
+    state:     sold | enquiry | open | soon — callers branch on it: {% capture state %}{% render … context: 'state' %}{% endcapture %}
     tile:      "3 of 8 remain" / "3 remain" / "In stock" / "Sold out" / "Made to order"   (tiles, lists, look panels)
-    row:       "Edition of 8. 3 remain." / "Edition of 8. All placed."   (only when edition_total is set)
-    page:      "3 of 8 remain" / "All 8 placed" / "Sold out"
+    row:       "Edition of 8. 3 remain." / "Edition of 8. Sold out."   (only when edition_total is set)
+    page:      "3 of 8 remain" / "Sold out"
     remaining: integer, pieces still in stock (0 for commission pieces) — the collection header sums it
     total:     integer, edition_total (0 when unset or for commission pieces) — summed next to it
+
+  soon: before the opening. While the theme setting "Before the opening" (settings.av_opening_line, e.g. "Opens at
+  Diwali") has text, every stocked piece shows that line in place of price, count and order button. A piece whose
+  price is 0 is also 'soon', so a zero price never prints. Clear the setting on the opening day.
 {%- endcomment -%}
 {%- liquid
   assign v = product.selected_or_first_available_variant | default: product.variants.first
@@ -40,18 +44,32 @@
       assign remaining = 0
     endif
   endif
+  assign soon = false
+  if enquiry == false
+    if settings.av_opening_line != blank or v.price == 0
+      assign soon = true
+      assign sold = false
+      if tracked
+        assign remaining = v.inventory_quantity | default: 0
+        if remaining < 0
+          assign remaining = 0
+        endif
+      endif
+    endif
+  endif
+  assign soon_line = settings.av_opening_line | default: 'Price to follow'
 -%}
 {%- case context -%}
 {%- when 'state' -%}
-  {%- if enquiry -%}enquiry{%- elsif sold -%}sold{%- else -%}open{%- endif -%}
+  {%- if enquiry -%}enquiry{%- elsif soon -%}soon{%- elsif sold -%}sold{%- else -%}open{%- endif -%}
 {%- when 'remaining' -%}
   {{- remaining -}}
 {%- when 'total' -%}
   {{- total -}}
 {%- when 'row' -%}
-  {%- if total > 0 and enquiry == false -%}Edition of {{ total }}. {% if sold %}All placed.{% else %}{{ remaining }} remain.{% endif %}{%- endif -%}
+  {%- if total > 0 and enquiry == false -%}Edition of {{ total }}.{% if soon %}{% elsif sold %} Sold out.{% else %} {{ remaining }} remain.{% endif %}{%- endif -%}
 {%- when 'page' -%}
-  {%- if enquiry -%}Made to order{%- elsif sold -%}{% if total > 0 %}All {{ total }} placed{% else %}Sold out{% endif %}{%- elsif tracked -%}{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %} remain{%- else -%}In stock{%- endif -%}
+  {%- if enquiry -%}Made to order{%- elsif soon -%}{{ soon_line | escape }}{%- elsif sold -%}Sold out{%- elsif tracked -%}{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %} remain{%- else -%}In stock{%- endif -%}
 {%- else -%}
-  {%- if enquiry -%}Made to order{%- elsif sold -%}Sold out{%- elsif tracked -%}{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %} remain{%- else -%}In stock{%- endif -%}
+  {%- if enquiry -%}Made to order{%- elsif soon -%}{{ soon_line | escape }}{%- elsif sold -%}Sold out{%- elsif tracked -%}{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %} remain{%- else -%}In stock{%- endif -%}
 {%- endcase -%}

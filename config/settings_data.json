@@ -112,7 +112,7 @@
       "social_twitter_link": "",
       "social_facebook_link": "",
       "social_pinterest_link": "",
-      "social_instagram_link": "",
+      "social_instagram_link": "https://www.instagram.com/ananta_vastram_/",
       "social_tiktok_link": "",
       "social_tumblr_link": "",
       "social_snapchat_link": "",
@@ -144,7 +144,8 @@
       "av_show_account": true,
       "av_header_over_hero": true,
       "av_tax_line": "Inclusive of all taxes",
-      "av_whatsapp_number": "919840002288"
+      "av_opening_line": "Opens at Diwali",
+      "av_whatsapp_number": "919962300009"
     }
   }
 }
