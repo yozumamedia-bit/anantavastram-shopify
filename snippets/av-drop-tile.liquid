@@ -13,7 +13,7 @@
   endcapture
 -%}
 <a class="av-tile{% if state contains 'sold' %} av-tile--sold{% endif %}" href="{{ product.url }}">
-  {% render 'av-media', image: product.featured_image, alt_image: product.images[1], vt: product.handle, ratio: '3 / 4', sizes: '(min-width: 900px) 16vw, 50vw', alt: '' %}
+  {% render 'av-media', image: product.featured_image, alt_image: product.images[1], vt: product.handle, ratio: '3 / 4', sizes: '(min-width: 900px) 16vw, 50vw' %}
   <span class="av-tile__text">
     <span class="av-name av-tile__name">{{ product.title | escape }}</span>
     {%- if state contains 'enquiry' -%}<span class="av-price av-tile__price">On enquiry</span>{%- elsif state contains 'open' -%}<span class="av-price av-tile__price">{% render 'av-money', price: product.price %}</span>{%- endif -%}

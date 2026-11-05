@@ -29,11 +29,33 @@
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
-    {% endif %}
+    {%- comment -%}
+      Meta description: the admin's own SEO text first; otherwise the collection's theme line (collection_meta), the
+      opening of the page, or the house line. Never empty (site review, 4 Nov 2026).
+    {%- endcomment -%}
+    {%- liquid
+      assign av_desc = page_description
+      if av_desc == blank and request.page_type == 'collection'
+        for m in shop.metaobjects.collection_meta.values
+          if m.collection.value.id == collection.id
+            assign av_desc = m.theme.value
+            break
+          endif
+        endfor
+      endif
+      if av_desc == blank and request.page_type == 'page'
+        assign av_desc = page.content | strip_html | strip_newlines | truncate: 155
+      endif
+      if av_desc == blank
+        assign av_desc = 'Handwoven veshtis and menswear, embroidered by hand in Tamil Nadu. Named collections held in stock in limited number; commissions made to order.'
+      endif
+    -%}
+    <meta name="description" content="{{ av_desc | escape }}">
+    {%- if request.page_type == 'index' -%}
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":{{ shop.name | json }},"url":{{ shop.url | json }},"logo":{{ 'av-favicon-512.png' | asset_url | prepend: 'https:' | json }}{% if settings.social_instagram_link != blank %},"sameAs":[{{ settings.social_instagram_link | json }}]{% endif %}}</script>
+    {%- endif -%}
 
-    {% render 'meta-tags' %}
+    {% render 'meta-tags', av_desc: av_desc %}
     {% render 'av-transitions' %}
 
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>

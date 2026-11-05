@@ -2,8 +2,49 @@
   Search in the house's layout and voice: the av-intro heading, one field, then pieces as the Products page's compact
   list (snippets/av-product-list-item.liquid — the edition rule, no sale badges) and stories and pages as plain rows.
   No filters or sorting: the catalogue is a handful of named pieces.
+  As on the Products page, a piece that belongs to no named collection (no collection_meta entry) is not listed: it
+  is unreleased work, still reachable by its own URL only.
 {%- endcomment -%}
+{%- liquid
+  assign named_ids = ''
+  for m in shop.metaobjects.collection_meta.values
+    assign cid = m.collection.value.id
+    if cid != blank
+      assign named_ids = named_ids | append: ',' | append: cid | append: ','
+    endif
+  endfor
+-%}
 {%- paginate search.results by 24 -%}
+{%- liquid
+  assign shown = 0
+  capture rows
+    for item in search.results
+      case item.object_type
+        when 'product'
+          assign in_named = false
+          for c in item.collections
+            assign key = ',' | append: c.id | append: ','
+            if named_ids contains key
+              assign in_named = true
+              break
+            endif
+          endfor
+          if in_named
+            assign shown = shown | plus: 1
+            render 'av-product-list-item', product: item
+          endif
+        when 'article'
+          assign shown = shown | plus: 1
+          assign t = item.title | escape
+          echo '<li class="av-list__row"><a class="av-stack" style="gap:8px;padding:24px 0" href="' | append: item.url | append: '"><span class="av-label">Story</span><span class="av-sub av-sub--s">' | append: t | append: '</span></a></li>'
+        when 'page'
+          assign shown = shown | plus: 1
+          assign t = item.title | escape
+          echo '<li class="av-list__row"><a class="av-stack" style="gap:8px;padding:24px 0" href="' | append: item.url | append: '"><span class="av-label">Page</span><span class="av-sub av-sub--s">' | append: t | append: '</span></a></li>'
+      endcase
+    endfor
+  endcapture
+-%}
 <section class="av-intro av-intro--open">
   <div class="av-stack" style="gap:28px">
     <div class="av-label">Search</div>
@@ -18,32 +59,23 @@
     </form>
     {%- if search.performed -%}
       <p class="av-body av-body--meta" role="status">
-        {%- if search.results_count == 0 -%}
+        {%- if shown == 0 -%}
           Nothing found for “{{ search.terms | escape }}”. Try a single word: a motif, a colour, a collection’s name.
-        {%- elsif search.results_count == 1 -%}
+        {%- elsif shown == 1 -%}
           One result.
         {%- else -%}
-          {{ search.results_count }} results.
+          {{ shown }} results.
         {%- endif -%}
       </p>
     {%- endif -%}
   </div>
 </section>
 
-{%- if search.performed and search.results_count > 0 -%}
+{%- if search.performed and shown > 0 -%}
 <section class="av-list">
   <h2 class="visually-hidden">Results</h2>
   <ul class="av-list__items">
-    {%- for item in search.results -%}
-      {%- case item.object_type -%}
-        {%- when 'product' -%}
-          {% render 'av-product-list-item', product: item %}
-        {%- when 'article' -%}
-          <li class="av-list__row"><a class="av-stack" style="gap:8px;padding:24px 0" href="{{ item.url }}"><span class="av-label">Story</span><span class="av-sub av-sub--s">{{ item.title | escape }}</span></a></li>
-        {%- when 'page' -%}
-          <li class="av-list__row"><a class="av-stack" style="gap:8px;padding:24px 0" href="{{ item.url }}"><span class="av-label">Page</span><span class="av-sub av-sub--s">{{ item.title | escape }}</span></a></li>
-      {%- endcase -%}
-    {%- endfor -%}
+    {{ rows }}
   </ul>
   {%- if paginate.pages > 1 -%}<nav class="av-list__pages" aria-label="Pagination">{{ paginate | default_pagination }}</nav>{%- endif -%}
 </section>
