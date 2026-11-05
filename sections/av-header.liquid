@@ -5,7 +5,7 @@
   </div>
   <nav class="av-header__nav av-header__nav--left" aria-label="The house">
     {%- if section.settings.menu_house.links.size > 0 -%}
-      {%- for link in section.settings.menu_house.links -%}
+      {%- for link in section.settings.menu_house.links -%}{%- if link.type == 'blog_link' and link.object.articles_count == 0 -%}{%- continue -%}{%- endif -%}
         <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
       {%- endfor -%}
     {%- else -%}
@@ -16,7 +16,7 @@
   <div class="av-header__right">
     <nav class="av-header__nav av-header__nav--right" aria-label="Shop">
       {%- if section.settings.menu_shop.links.size > 0 -%}
-        {%- for link in section.settings.menu_shop.links -%}
+        {%- for link in section.settings.menu_shop.links -%}{%- if link.type == 'blog_link' and link.object.articles_count == 0 -%}{%- continue -%}{%- endif -%}
           <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
         {%- endfor -%}
       {%- else -%}
@@ -37,18 +37,27 @@
   <button class="av-drawer__close" type="button" aria-label="Close menu">{% render 'av-icon', name: 'close' %}</button>
   <nav class="av-drawer__group" aria-label="The house">
     {%- if section.settings.menu_house.links.size > 0 -%}
-      {%- for link in section.settings.menu_house.links -%}<a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>{%- endfor -%}
+      {%- for link in section.settings.menu_house.links -%}{%- if link.type == 'blog_link' and link.object.articles_count == 0 -%}{%- continue -%}{%- endif -%}<a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>{%- endfor -%}
     {%- else -%}
       {% render 'av-nav-fallback', group: 'house' %}
     {%- endif -%}
   </nav>
   <nav class="av-drawer__group" aria-label="Shop">
     {%- if section.settings.menu_shop.links.size > 0 -%}
-      {%- for link in section.settings.menu_shop.links -%}<a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>{%- endfor -%}
+      {%- for link in section.settings.menu_shop.links -%}{%- if link.type == 'blog_link' and link.object.articles_count == 0 -%}{%- continue -%}{%- endif -%}<a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>{%- endfor -%}
     {%- else -%}
       {% render 'av-nav-fallback', group: 'shop' %}
     {%- endif -%}
   </nav>
+  <div class="av-drawer__foot">
+    <nav class="av-drawer__more" aria-label="More">
+      <a href="{{ routes.search_url }}">Search</a>
+      {% render 'av-whatsapp-link', label: 'WhatsApp', class: 'av-drawer__wa' %}
+      {%- if pages['contact'].url != blank -%}<a href="{{ pages['contact'].url }}">Write to us</a>{%- endif -%}
+      {%- if settings.social_instagram_link != blank -%}<a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener">Instagram</a>{%- endif -%}
+    </nav>
+    <img class="av-drawer__symbol" src="{{ 'av-symbol-ivory.svg' | asset_url }}" alt="" width="792" height="487" loading="lazy">
+  </div>
 </dialog>
 
 {% schema %}

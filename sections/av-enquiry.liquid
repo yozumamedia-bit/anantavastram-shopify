@@ -30,6 +30,7 @@
       </div>
     {%- endif -%}
     {% render 'av-whatsapp-link', label: wa_label, text: wa_text, class: 'av-link av-enquiry__wa' %}
+    {%- if section.settings.show_details -%}{% render 'av-contact-details', class: 'av-enquiry__details av-body' %}{%- endif -%}
   </div>
   {%- capture enquiry_form -%}
     {%- form 'contact', id: 'av-enquiry-form', class: 'av-form', data-lead-weeks: lead_weeks -%}
@@ -73,8 +74,8 @@
         </fieldset>
 
         <div class="av-field">
-          <label class="av-field__label" for="enq-date">The date <abbr title="required">*</abbr></label>
-          <input id="enq-date" type="date" name="contact[date]" min="{{ today }}" required>
+          <label class="av-field__label" for="enq-date">The date, if it is fixed</label>
+          <input id="enq-date" type="date" name="contact[date]" min="{{ today }}">
           <p class="av-field__error" id="enq-date-error" data-missing="Choose a date." data-past="Choose a date from today on.">Choose a date.</p>
           <p class="av-field__hint" id="enq-date-hint" role="status" data-text="That date is inside the {{ lead_weeks }}-week lead time. Kamalam can still reply — say so in your note, or choose a later date."></p>
         </div>
@@ -122,6 +123,7 @@
   { "type": "text", "id": "tag", "label": "Customer tag", "info": "Added to the sender's customer record, so enquiries can be filtered in Customers.", "default": "commissions" },
   { "type": "text", "id": "reply_line", "label": "Reply-time line", "info": "Shown under the form and after sending, e.g. Kamalam replies within 3 days", "default": "Kamalam replies herself" },
   { "type": "checkbox", "id": "ask_occasion", "label": "Ask for the occasion and the date (Commissions)", "info": "Off on the Contact page: the form asks only name, email, phone, city and a note.", "default": true },
+  { "type": "checkbox", "id": "show_details", "label": "Print the address, number, email and hours", "info": "From Theme settings → Ananta Vastram.", "default": false },
   { "type": "number", "id": "lead_weeks", "label": "Lead time (weeks)", "info": "A date inside this window gets a note under the date field. It is not blocked.", "default": 8 },
   { "type": "header", "content": "Book a call" },
   { "type": "url", "id": "calendar_url", "label": "Booking link", "info": "A Google Calendar appointment schedule link (calendar.app.google/…) or similar. Hidden until set." },

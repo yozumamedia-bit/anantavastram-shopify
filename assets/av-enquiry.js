@@ -83,7 +83,7 @@
         valid = EMAIL.test(value);
       } else if (control.type === 'date') {
         var past = !!value && control.validity.rangeUnderflow;
-        valid = !!value && !past;
+        valid = control.required ? (!!value && !past) : !past; // the date is optional: many enquirers have none yet
         if (error.dataset.past) error.textContent = past ? error.dataset.past : error.dataset.missing;
       } else {
         valid = value !== '';

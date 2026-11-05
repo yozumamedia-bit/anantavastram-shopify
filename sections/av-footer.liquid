@@ -10,15 +10,20 @@
       <div class="av-footer__col" {{ block.shopify_attributes }}>
         <p class="av-label av-footer__title">{{ block.settings.heading | escape }}</p>
         {%- if block.settings.menu.links.size > 0 -%}
-          {%- for link in block.settings.menu.links -%}<a href="{{ link.url }}">{{ link.title | escape }}</a>{%- endfor -%}
+          {%- for link in block.settings.menu.links -%}{%- if link.type == 'blog_link' and link.object.articles_count == 0 -%}{%- continue -%}{%- endif -%}<a href="{{ link.url }}">{{ link.title | escape }}</a>{%- endfor -%}
         {%- elsif block.settings.fallback != 'none' -%}
           {% render 'av-nav-fallback', group: block.settings.fallback %}
+        {%- endif -%}
+        {%- if block.settings.fallback == 'contact' -%}
+          {%- assign menu_text = block.settings.menu.links | map: 'url' | join: ' ' -%}
+          {%- if block.settings.menu.links.size > 0 and settings.social_instagram_link != blank -%}{%- unless menu_text contains 'instagram' -%}<a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener">Instagram</a>{%- endunless -%}{%- endif -%}
+          {% render 'av-contact-details', class: 'av-footer__details' %}
         {%- endif -%}
       </div>
     {%- endfor -%}
   </div>
   <div class="av-footer__bottom">
-    <div>© {{ 'now' | date: '%Y' }} {{ shop.name | escape }}{% if shop.privacy_policy.body != blank %} · <a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title | escape }}</a>{% endif %}{% if shop.terms_of_service.body != blank %} · <a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title | escape }}</a>{% endif %}</div>
+    <div>© {{ 'now' | date: '%Y' }} {{ shop.name | escape }}{% if shop.privacy_policy.body != blank %} · <a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title | escape }}</a>{% endif %}{% if shop.terms_of_service.body != blank %} · <a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title | escape }}</a>{% endif %}{% if shop.contact_information.body != blank %} · <a href="{{ shop.contact_information.url }}">{{ shop.contact_information.title | escape }}</a>{% endif %}</div>
     <div>{{ settings.av_currency_line | escape }}</div>
   </div>
 </footer>

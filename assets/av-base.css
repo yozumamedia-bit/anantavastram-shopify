@@ -402,3 +402,17 @@ html.av-opening-active .av-header__wordmark { visibility: hidden; } /* the trave
   .av-footer__bottom a { display: inline-flex; align-items: center; min-height: 44px; }
   .av-footer__news input { font-size: 16px; }
 }
+
+/* Tap targets (site review, 4 Nov 2026): text links keep their look; an invisible box around them makes the hit
+   area at least 44px tall. */
+.av-link, .av-name a, .av-sub a { position: relative; }
+.av-link::after, .av-name a::after, .av-sub a::after { content: ''; position: absolute; inset: -14px -6px -10px; }
+.av-header__home, .av-header__home a { min-height: 44px; display: flex; align-items: center; justify-content: center; }
+
+/* footer contact details and the drawer's foot (site review, 4 Nov 2026) */
+.av-footer__details { font-style: normal; display: flex; flex-direction: column; gap: 6px; margin-top: 14px; font-family: var(--av-font-body); font-weight: 400; font-size: 14px; line-height: 1.6; color: var(--av-ivory); }
+.av-footer__details a { font-family: inherit; font-size: inherit; letter-spacing: 0; text-transform: none; min-height: 32px; display: inline-flex; align-items: center; }
+.av-drawer__foot { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; border-top: 1px solid rgba(245,239,227,.35); padding-top: 24px; }
+.av-drawer__more { display: flex; flex-direction: column; gap: 2px; }
+.av-drawer__more a { font-family: var(--av-font-nav); font-weight: 400; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--av-ivory); min-height: 44px; display: inline-flex; align-items: center; text-decoration: none; border: 0; padding: 0; }
+.av-drawer__symbol { width: 96px; height: auto; }

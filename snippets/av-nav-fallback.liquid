@@ -14,7 +14,9 @@
         assign stories_url = blogs.news.url
       endif
     -%}
-    <a href="{{ stories_url }}"{% if request.path contains stories_url %} aria-current="page"{% endif %}>Stories</a>
+    {%- comment -%} Stories is linked once one is published (an empty journal is a dead end). {%- endcomment -%}
+    {%- assign stories_blog = blogs.stories | default: blogs.news -%}
+    {%- if stories_blog.articles_count > 0 -%}<a href="{{ stories_url }}"{% if request.path contains stories_url %} aria-current="page"{% endif %}>Stories</a>{%- endif -%}
     <a href="/pages/gallery"{% if request.path == '/pages/gallery' %} aria-current="page"{% endif %}>Gallery</a>
     <a href="/pages/about"{% if request.path == '/pages/about' %} aria-current="page"{% endif %}>About</a>
   {%- when 'shop' -%}
