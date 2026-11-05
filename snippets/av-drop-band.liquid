@@ -77,7 +77,7 @@
       </div>
       {%- endunless -%}
     </div>
-    <a class="av-link" href="{{ col.url }}">{% if upcoming %}Read the story{% else %}See the collection{% endif %}</a>
+    {%- if upcoming -%}<a class="av-link" href="{{ col.url }}">Read the story</a>{%- endif -%}
   </div>
 </section>
 {%- unless upcoming -%}<div class="av-tiles">{%- for p in col.products limit: 6 -%}{% render 'av-drop-tile', product: p %}{%- endfor -%}</div>{%- endunless -%}
