@@ -8,6 +8,7 @@
   <div class="av-commissions__text">
     <h2 class="av-statement av-statement--l av-commissions__statement">{{ section.settings.statement | escape }}</h2>
     <div class="av-label">On enquiry</div>
+    {%- if section.settings.routing != blank -%}<p class="av-body av-body--s av-commissions__routing">{{ section.settings.routing | escape }}</p>{%- endif -%}
     <a class="av-link" href="{{ section.settings.link }}">See the commissions</a>
   </div>
 </section>
@@ -16,6 +17,7 @@
   { "type": "text", "id": "label", "label": "Eyebrow", "default": "Commissions · Wedding" },
   { "type": "image_picker", "id": "image", "label": "Image (full bleed)" },
   { "type": "textarea", "id": "statement", "label": "Statement (General Sans Light)", "default": "One piece, for one person, made once." },
+  { "type": "textarea", "id": "routing", "label": "Line for buyers who do not need a commission", "default": "For a wedding or an occasion, the Occasional pieces in each collection are in stock and ordered online. A commission is for a piece that does not exist yet." },
   { "type": "url", "id": "link", "label": "Link to Commissions page" }
 ], "presets": [{ "name": "AV Commissions band" }] }
 {% endschema %}

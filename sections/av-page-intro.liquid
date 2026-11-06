@@ -13,19 +13,47 @@
   <div class="av-stack">
     <div class="av-body{% if section.settings.large_body %} av-body--l{% endif %}">{{ section.settings.text }}</div>
     {%- if section.settings.note != blank -%}<div class="av-body av-body--s" style="color:var(--av-grey-1)">{{ section.settings.note | escape | newline_to_br }}</div>{%- endif -%}
-    {%- if section.blocks.size > 0 -%}
-    <div class="av-intro__keys">
-      {%- for block in section.blocks -%}
-        {%- liquid
+    {%- comment -%}
+      A filter tab that points at a tag of /collections/all (e.g. /collections/all/everyday) shows only while some piece
+      carries that tag, and the row of tabs shows only when there are two or more: a filter that returns the same pieces
+      as All is noise (site review, 4 Nov 2026).
+    {%- endcomment -%}
+    {%- liquid
+      assign live_tags = '|'
+      for t in collections.all.all_tags
+        assign th = t | handleize
+        assign live_tags = live_tags | append: th | append: '|'
+      endfor
+      assign key_count = 0
+      capture keys
+        for block in section.blocks
+          assign u = block.settings.url
+          if u != blank and u contains '/collections/all/'
+            assign tag = u | split: '/collections/all/' | last | split: '?' | first | handleize
+            assign tag_key = '|' | append: tag | append: '|'
+            unless live_tags contains tag_key
+              continue
+            endunless
+          endif
+          assign key_count = key_count | plus: 1
           assign is_active = false
-          if block.settings.url != blank and block.settings.url == request.path
+          if u != blank and u == request.path
             assign is_active = true
           endif
-        -%}
-        {%- if block.settings.url != blank -%}<a class="av-label av-label--red{% if is_active %} is-active{% endif %}" href="{{ block.settings.url }}"{% if is_active %} aria-current="page"{% endif %} {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>{%- else -%}<span class="av-label av-label--red" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</span>{%- endif -%}
-      {%- endfor -%}
-    </div>
-    {%- endif -%}
+          assign lbl = block.settings.label | escape
+          if u != blank
+            echo '<a class="av-label av-label--red'
+            if is_active
+              echo ' is-active" aria-current="page'
+            endif
+            echo '" href="' | append: u | append: '" ' | append: block.shopify_attributes | append: '>' | append: lbl | append: '</a>'
+          else
+            echo '<span class="av-label av-label--red" ' | append: block.shopify_attributes | append: '>' | append: lbl | append: '</span>'
+          endif
+        endfor
+      endcapture
+    -%}
+    {%- if key_count > 1 -%}<div class="av-intro__keys">{{ keys }}</div>{%- endif -%}
   </div>
 </section>
 {%- endif -%}
@@ -33,8 +61,8 @@
 { "name": "AV Page intro", "settings": [
   { "type": "checkbox", "id": "all_products_only", "label": "Products page only", "info": "Shows only on /collections/all (the Products page). Leave off everywhere else.", "default": false },
   { "type": "text", "id": "label", "label": "Label", "default": "Collections" },
-  { "type": "textarea", "id": "statement", "label": "Statement (General Sans Light)", "default": "Numbered collections, each on one idea." },
-  { "type": "richtext", "id": "text", "label": "Paragraph", "default": "<p>A collection is five or six pieces built around a single design — a motif, a border, a cloth. Each piece is made in a fixed edition. A collection stays open while pieces remain; when the last one goes, it closes and stays here as the record.</p>" },
+  { "type": "textarea", "id": "statement", "label": "Statement (General Sans Light)", "default": "Each collection is built on one design, and opens on its own." },
+  { "type": "richtext", "id": "text", "label": "Paragraph", "default": "<p>A collection is a set of pieces built around one design — a motif, a border, a cloth — across the Everyday and Occasional lines. Each piece is made in limited number and held in stock. A collection stays open while pieces remain; when the last one goes, it stays here as the record.</p>" },
   { "type": "textarea", "id": "note", "label": "Secondary note (About page only)" },
   { "type": "checkbox", "id": "large_body", "label": "Larger paragraph (About)", "default": false },
   { "type": "checkbox", "id": "open", "label": "No bottom rule", "default": false }

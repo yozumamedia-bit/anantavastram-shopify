@@ -1,0 +1,45 @@
+{%- comment -%}
+  Top of a collection page. A collection with a collection_meta entry (the entry's `collection` field points here) is a
+  full collection page: header and tabs (snippets/av-coll-head.liquid), then the opening photograph — the entry's
+  ensemble image, or its film — which belongs to the Story panel. Any other collection gets the plain intro.
+  /collections/all (Shopify's automatic all-products collection) is the Products page; its sections live in this
+  template too, keyed on the handle, so this section prints nothing there.
+{%- endcomment -%}
+{%- unless collection.handle == 'all' -%}
+{%- liquid
+  assign meta = nil
+  for m in shop.metaobjects.collection_meta.values
+    if m.collection.value.id == collection.id
+      assign meta = m
+      break
+    endif
+  endfor
+-%}
+{%- if meta != blank -%}
+  <div class="av-coll" data-av-coll>
+    {% render 'av-coll-head', meta: meta, col: collection %}
+    <div class="av-coll-opening" data-av-panel="story" id="story">
+      {%- if meta.ensemble_image.value != blank -%}
+        {% render 'av-media', image: meta.ensemble_image.value, ratio: '1440 / 640', sizes: '100vw', loading: 'eager', priority: true, class: 'av-coll-opening__media' %}
+      {%- elsif meta.film.value != blank -%}
+        {% render 'av-video', loop_video: meta.film.value, class: 'av-coll-opening__media', reveal: false %}
+      {%- endif -%}
+    </div>
+  </div>
+  <script src="{{ 'av-coll.js' | asset_url }}" defer="defer"></script>
+{%- else -%}
+<section class="av-intro">
+  <div class="av-stack" style="gap:28px">
+    <div class="av-label">Collection</div>
+    <h1 class="av-statement av-statement--xl">{{ collection.title | escape }}</h1>
+  </div>
+  <div class="av-stack">
+    {%- if collection.description != blank -%}<div class="av-body">{{ collection.description }}</div>{%- endif -%}
+    {%- if settings.av_shipping_line != blank -%}<div class="av-body av-body--meta">{{ settings.av_shipping_line | escape }}</div>{%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+{%- endunless -%}
+{% schema %}
+{ "name": "AV Collection header", "settings": [] }
+{% endschema %}

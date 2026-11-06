@@ -8,7 +8,7 @@
   and this file sets the matching image ratio for each slot.
 {%- endcomment -%}
 {%- liquid
-  assign featured = blog.metafields.av.featured_article.value | default: blog.articles.first
+  assign featured = blog.metafields.custom.featured_article.value | default: blog.articles.first
   assign per_page = 10
 -%}
 <section class="av-posts">
@@ -42,8 +42,8 @@
       -%}
       <article class="av-post">
         <div class="av-post__media">
-          {%- if article.metafields.av.video.value.sources.size > 0 -%}
-            {% render 'av-video', loop_video: article.metafields.av.video.value, poster: article.image, class: 'av-post__video' %}
+          {%- if article.metafields.custom.video.value.sources.size > 0 -%}
+            {% render 'av-video', loop_video: article.metafields.custom.video.value, poster: article.image, class: 'av-post__video' %}
           {%- else -%}
             <a href="{{ article.url }}" tabindex="-1" aria-hidden="true">{% render 'av-media', image: article.image, ratio: ratio, sizes: sizes, alt: '' %}</a>
           {%- endif -%}
@@ -52,7 +52,7 @@
           {% render 'av-article-meta', article: article %}
           <h3 class="av-sub av-sub--m av-post__title"><a href="{{ article.url }}">{{ article.title | escape }}</a></h3>
           <div class="av-body">{{ article.excerpt_or_content | replace: '</p>', ' </p>' | strip_html | truncatewords: 40, '…' }}</div>
-          <a class="av-link" href="{{ article.url }}">Read</a>
+          <a class="av-link" href="{{ article.url }}">Read the story</a>
         </div>
       </article>
     {%- else -%}

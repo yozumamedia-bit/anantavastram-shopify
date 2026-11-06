@@ -1,0 +1,11 @@
+{%- comment -%}
+  Prints a metafield or metaobject text field whatever its type: rich text keeps its paragraphs, plain and multi-line text are escaped with line breaks kept.
+  Usage: {% render 'av-field-text', field: drop.story %}
+{%- endcomment -%}
+{%- if field != blank and field.value != blank -%}
+  {%- if field.type == 'rich_text_field' -%}
+    {{- field | metafield_tag -}}
+  {%- else -%}
+    {{- field.value | escape | newline_to_br -}}
+  {%- endif -%}
+{%- endif -%}

@@ -1,0 +1,50 @@
+{%- comment -%}
+  Story panel: the motif plates. Each `motif` entry is shown beside its source — the temple, text or place it comes from —
+  then its Roman numeral, English name, Tamil name and one line. Hidden when the collection has no motifs.
+{%- endcomment -%}
+{%- liquid
+  assign meta = nil
+  if collection != blank and collection.handle != 'all'
+    for m in shop.metaobjects.collection_meta.values
+      if m.collection.value.id == collection.id
+        assign meta = m
+        break
+      endif
+    endfor
+  endif
+-%}
+{%- assign motifs = meta.motifs.value -%}
+{%- assign romans = 'I,II,III,IV,V,VI,VII,VIII,IX,X,XI,XII' | split: ',' -%}
+{%- if meta != blank and motifs.count > 0 -%}
+<section class="av-coll-motifs av-wrap av-section" data-av-panel="story">
+  <div class="av-stack" style="gap:12px">
+    <div class="av-label">{{ section.settings.label | escape }}</div>
+    <h2 class="av-sub av-sub--l">{{ section.settings.heading | escape }}</h2>
+  </div>
+  <div class="av-coll-motifs__grid">
+    {%- for m in motifs -%}
+      <article class="av-motif">
+        <div class="av-motif__plates">
+          <figure>
+            {% render 'av-media', image: m.source_image.value, ratio: '3 / 4', sizes: '(min-width: 900px) 16vw, 50vw', alt: m.source.value %}
+            {%- if m.source.value != blank -%}<figcaption class="av-label">{{ m.source.value | escape }}</figcaption>{%- endif -%}
+          </figure>
+          <figure>
+            {% render 'av-media', image: m.plate_image.value, ratio: '3 / 4', sizes: '(min-width: 900px) 16vw, 50vw', alt: m.name_en.value %}
+            <figcaption class="av-label">On the cloth</figcaption>
+          </figure>
+        </div>
+        <span class="av-numeral">{{ romans[forloop.index0] }}</span>
+        <h3 class="av-sub av-sub--m">{{ m.name_en.value | escape }}{% if m.name_ta.value != blank %} <span class="av-motif__ta av-ta">{{ m.name_ta.value | escape }}</span>{% endif %}</h3>
+        {%- if m.note.value != blank -%}<p class="av-body av-body--s">{{ m.note.value | escape }}</p>{%- endif -%}
+      </article>
+    {%- endfor -%}
+  </div>
+</section>
+{%- endif -%}
+{% schema %}
+{ "name": "AV Collection motifs", "settings": [
+  { "type": "text", "id": "label", "label": "Label", "default": "The motifs" },
+  { "type": "text", "id": "heading", "label": "Heading", "default": "Where the borders come from" }
+], "presets": [{ "name": "AV Collection motifs" }] }
+{% endschema %}

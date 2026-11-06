@@ -1,23 +1,16 @@
-<style type="text/css">
-  .template-404 .title + * {
-    margin-top: 1rem;
-  }
+{%- comment -%} 404 in the house's voice: the av-intro layout, one statement, two ways on. {%- endcomment -%}
+<section class="av-intro av-intro--open">
+  <div class="av-stack" style="gap:28px">
+    <div class="av-label">{{ 'templates.404.subtext' | t }}</div>
+    <h1 class="av-statement av-statement--xl">{{ 'templates.404.title' | t }}</h1>
+  </div>
+  <div class="av-stack">
+    <p class="av-body">The link may be old, or the piece may have moved to its collection.</p>
+    <a class="av-link" href="{{ routes.collections_url }}">See the collections</a>
+    <a class="av-link" href="{{ routes.search_url }}">Search</a>
+  </div>
+</section>
 
-  @media screen and (min-width: 750px) {
-    .template-404 .title + * {
-      margin-top: 2rem;
-    }
-  }
-</style>
-
-<div class="template-404 page-width page-margin center">
-  <p>
-    {{ 'templates.404.subtext' | t }}
-  </p>
-  <h1 class="title">
-    {{ 'templates.404.title' | t }}
-  </h1>
-  <a href="{{ routes.all_products_collection_url }}" class="button">
-    {{ 'general.continue_shopping' | t }}
-  </a>
-</div>
+{% schema %}
+{ "name": "AV 404", "settings": [] }
+{% endschema %}

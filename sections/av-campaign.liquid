@@ -42,6 +42,28 @@
   assign has_archive = false
   if section.settings.archive_label != blank and section.settings.archive_url != blank
     assign has_archive = true
+    comment
+      A link into the journal (/blogs/<handle> or /blogs/<handle>/tagged/<tag>) shows only once that blog, or that
+      tag, has a story — never a link to an empty or missing page.
+    endcomment
+    assign archive_url = section.settings.archive_url
+    if archive_url contains '/blogs/'
+      assign has_archive = false
+      assign blog_handle = archive_url | split: '/blogs/' | last | split: '/' | first | split: '?' | first
+      assign archive_blog = blogs[blog_handle]
+      if archive_url contains '/tagged/'
+        assign archive_tag = archive_url | split: '/tagged/' | last | split: '?' | first | split: '/' | first
+        for t in archive_blog.all_tags
+          assign th = t | handleize
+          if th == archive_tag
+            assign has_archive = true
+            break
+          endif
+        endfor
+      elsif archive_blog.articles_count > 0
+        assign has_archive = true
+      endif
+    endif
   endif
   assign lead_loading = 'lazy'
   if section.settings.page_heading
@@ -107,7 +129,7 @@
 {%- endif -%}
 {% schema %}
 { "name": "AV Campaign", "max_blocks": 8, "settings": [
-  { "type": "text", "id": "label", "label": "Label", "default": "Campaign 001" },
+  { "type": "text", "id": "label", "label": "Label", "default": "Campaign", "info": "Never numbered. The season, when set, follows it." },
   { "type": "checkbox", "id": "page_heading", "label": "Carries the page heading (first campaign only)", "default": false },
   { "type": "metaobject", "metaobject_type": "campaign", "id": "campaign", "label": "Campaign entry", "info": "When set, the fields and image blocks below are ignored." },
   { "type": "header", "content": "Without a campaign entry" },

@@ -5,11 +5,10 @@
     <h2 class="av-sub av-sub--m">{{ section.settings.heading | escape }}</h2>
   </div>
   {%- if section.settings.mode == 'list' -%}
-    {%- comment -%} Roman numerals, as the About chapters: one numbering system on the page. {%- endcomment -%}
-    {%- assign romans = 'I,II,III,IV,V,VI,VII,VIII,IX,X,XI,XII' | split: ',' -%}
+    {%- comment -%} Items numbered 01–04 (the spec's "How the house works"); the chapters around them keep Roman numerals. {%- endcomment -%}
     <div class="av-band__list">
       {%- for block in section.blocks -%}
-        <div class="av-band__item" {{ block.shopify_attributes }}><div class="av-numeral av-band__num" aria-hidden="true">{{ romans[forloop.index0] }}</div><div class="av-stack" style="gap:8px"><h3 class="av-sub av-sub--xs">{{ block.settings.title | escape }}</h3><div class="av-body">{{ block.settings.text | escape | newline_to_br }}</div></div></div>
+        <div class="av-band__item" {{ block.shopify_attributes }}><div class="av-numeral av-band__num" aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div><div class="av-stack" style="gap:8px"><h3 class="av-sub av-sub--xs">{{ block.settings.title | escape }}</h3><div class="av-body">{{ block.settings.text | escape | newline_to_br }}</div></div></div>
       {%- endfor -%}
     </div>
   {%- else -%}
@@ -27,7 +26,7 @@
   { "type": "text", "id": "label", "label": "Label", "default": "Terms" },
   { "type": "text", "id": "numeral", "label": "Chapter numeral (About IV) — replaces label" },
   { "type": "text", "id": "heading", "label": "Heading", "default": "What is agreed before the warp goes on" }
-], "blocks": [ { "type": "item", "name": "Item", "settings": [ { "type": "text", "id": "title", "label": "Title", "default": "[Item]" }, { "type": "textarea", "id": "text", "label": "Text" } ] } ],
+], "blocks": [ { "type": "item", "name": "Item", "settings": [ { "type": "text", "id": "title", "label": "Title" }, { "type": "textarea", "id": "text", "label": "Text" } ] } ],
 "presets": [ { "name": "AV Red band", "blocks": [
   { "type": "item", "settings": { "title": "Capacity", "text": "[X] pieces a season. Dates are taken in order of the first conversation." } },
   { "type": "item", "settings": { "title": "Deposit", "text": "[Deposit terms] on agreement of cloth and motif; balance at fitting." } },
