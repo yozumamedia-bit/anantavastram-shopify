@@ -567,3 +567,5 @@ html.av-look-open { overflow: hidden; }
 .av-drop__theme { margin: 0; color: var(--av-ink); }
 .av-enquiry__details { font-style: normal; display: flex; flex-direction: column; gap: 4px; padding-top: 12px; border-top: 1px solid var(--av-grey-3); }
 .av-enquiry__details a { color: var(--av-kumkum); }
+
+/* resync 5 Nov 2026 */

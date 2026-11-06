@@ -304,7 +304,7 @@ html.no-js .av-reveal > .av-media__img, html.shopify-design-mode .av-reveal > .a
   .av-header__nav, .av-header__right { gap: 24px; }
   .av-header__nav a { letter-spacing: 0.16em; }
   .av-header__icons { margin-left: 0; gap: 16px; }
-  .av-header__wordmark.av-wordmark--svg svg { height: 13px; }
+  .av-header__wordmark.av-wordmark--svg svg { height: 15px; }
 }
 /* landscape tablets and small laptops keep the full navigation (site review, 4 Nov 2026: it collapsed at 1200px) */
 @media (min-width: 1024px) and (max-width: 1240px) {
