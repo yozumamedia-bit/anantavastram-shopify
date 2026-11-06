@@ -278,12 +278,12 @@ html.no-js .av-reveal > .av-media__img, html.shopify-design-mode .av-reveal > .a
 .av-footer__wordmark img { height: 20px; width: auto; }
 .av-wordmark--svg { display: inline-flex; align-items: center; }
 .av-wordmark--svg svg { height: 1em; width: auto; display: block; }
-.av-header__wordmark.av-wordmark--svg svg { height: 22px; }
-.av-footer__wordmark.av-wordmark--svg svg { height: 18px; }
-/* the wordmark is 13:1 wide, so on the opening it is sized by width (≈68px tall at 1440, ≈25px on a phone) — never by height, which cut it on phones */
+.av-header__wordmark.av-wordmark--svg svg { height: 17px; }
+.av-footer__wordmark.av-wordmark--svg svg { height: 14px; }
+/* the wordmark is about 18:1 wide, so on the opening it is sized by width (≈68px tall at 1440, ≈25px on a phone) — never by height, which cut it on phones */
 .av-opening__wordmark.av-wordmark--svg svg { height: auto; width: min(84vw, 900px); max-width: 100%; }
-@media (max-width: 900px) { .av-header__wordmark.av-wordmark--svg svg { height: 16px; } }
-@media (max-width: 480px) { .av-header__wordmark.av-wordmark--svg svg { height: clamp(10px, 3.2vw, 12px); } .av-header__home { min-width: 0; } }
+@media (max-width: 900px) { .av-header__wordmark.av-wordmark--svg svg { height: 12px; } }
+@media (max-width: 480px) { .av-header__wordmark.av-wordmark--svg svg { height: clamp(8px, 2.4vw, 9px); } .av-header__home { min-width: 0; } }
 .av-header__burger { display: none; }
 /* Header over the hero (homepage option): the hero starts under the header; the bar is a soft scrim until the page scrolls */
 .av-header-over .av-header-section { margin-bottom: calc(-1 * var(--av-header-h)); }
@@ -304,7 +304,7 @@ html.no-js .av-reveal > .av-media__img, html.shopify-design-mode .av-reveal > .a
   .av-header__nav, .av-header__right { gap: 24px; }
   .av-header__nav a { letter-spacing: 0.16em; }
   .av-header__icons { margin-left: 0; gap: 16px; }
-  .av-header__wordmark.av-wordmark--svg svg { height: 16px; }
+  .av-header__wordmark.av-wordmark--svg svg { height: 13px; }
 }
 /* landscape tablets and small laptops keep the full navigation (site review, 4 Nov 2026: it collapsed at 1200px) */
 @media (min-width: 1024px) and (max-width: 1240px) {
@@ -312,7 +312,7 @@ html.no-js .av-reveal > .av-media__img, html.shopify-design-mode .av-reveal > .a
   .av-header__nav, .av-header__right { gap: 18px; }
   .av-header__nav a { font-size: 12px; letter-spacing: 0.1em; }
   .av-header__icons { gap: 14px; }
-  .av-header__wordmark.av-wordmark--svg svg { height: 13px; }
+  .av-header__wordmark.av-wordmark--svg svg { height: 10px; }
 }
 .av-cart-count { font-family: var(--av-font-nav); font-size: 12px; margin-left: 4px; }
 
