@@ -6,7 +6,7 @@
         "i1": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/av-gal1-1.jpg"
+            "image": "shopify://shop_images/av-cover-06174.jpg"
           }
         },
         "i2": {
@@ -65,11 +65,11 @@
       "settings": {
         "label": "Campaign",
         "page_heading": true,
-        "title": "Dahod Family Alumni Center",
+        "title": "The first collection",
         "season": "",
         "photographer": "Memory Lane Studios",
         "wearers": "",
-        "location": "Boston, Massachusetts"
+        "location": ""
       }
     },
     "c2": {
@@ -140,7 +140,7 @@
         "season": "",
         "photographer": "Memory Lane Studios",
         "wearers": "",
-        "location": "Boston, Massachusetts",
+        "location": "",
         "archive_label": "The archive",
         "archive_url": "/blogs/stories/tagged/campaigns"
       }
