@@ -644,3 +644,6 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
 .av-coll-opening .av-coll-opening__media--whole img { object-fit: contain; }
 .av-coll-opening .av-coll-opening__media--whole .av-media__lqip { display: none; }
 @media (max-width: 767px) { .av-product__media { align-items: flex-start; } .av-coll-opening .av-coll-opening__media--whole { height: auto; aspect-ratio: var(--ratio); } }
+/* Commissions band and closing pair: photographs whole. */
+.av-commissions .av-media { aspect-ratio: var(--ratio); }
+@media (max-width: 900px) { .av-commissions .av-media { aspect-ratio: var(--ratio); } }

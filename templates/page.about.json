@@ -17,7 +17,8 @@
         "image": "shopify://shop_images/av-about-place.jpg",
         "left": "",
         "right": "Photograph · Memory Lane Studios"
-      }
+      },
+      "disabled": true
     },
     "film": {
       "type": "av-video-block",
@@ -144,8 +145,8 @@
         "r3"
       ],
       "settings": {
-        "image_left": "shopify://shop_images/av-about-route-left.jpg",
-        "image_right": "shopify://shop_images/av-about-route-right.jpg"
+        "image_left": "shopify://shop_images/av-dz-temple-detail.jpg",
+        "image_right": "shopify://shop_images/av-dz-conch-at-the-frame.jpg"
       }
     },
     "frame": {

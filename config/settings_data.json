@@ -142,7 +142,7 @@
       },
       "av_whatsapp_float": true,
       "av_show_account": true,
-      "av_header_over_hero": true,
+      "av_header_over_hero": false,
       "av_tax_line": "Inclusive of all taxes",
       "av_opening_line": "",
       "av_contact_address": "6, 3rd Street, 3rd Floor, Abiramapuram\nChennai 600018, Tamil Nadu",

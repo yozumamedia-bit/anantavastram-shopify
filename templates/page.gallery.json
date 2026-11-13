@@ -48,7 +48,7 @@
         "i8": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/av-gal1-8.jpg"
+            "image": "shopify://shop_images/av-dz-conch-detail.jpg"
           }
         }
       },
@@ -90,13 +90,13 @@
         "i3": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/av-gal2-3.jpg"
+            "image": "shopify://shop_images/av-dz-ocean-bed-worn.jpg"
           }
         },
         "i4": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/av-gal2-4.jpg"
+            "image": "shopify://shop_images/av-home-hero-mobile.jpg"
           }
         },
         "i5": {
@@ -114,7 +114,7 @@
         "i7": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/av-gal2-7.jpg"
+            "image": "shopify://shop_images/av-dz-nautilus-detail.jpg"
           }
         },
         "i8": {

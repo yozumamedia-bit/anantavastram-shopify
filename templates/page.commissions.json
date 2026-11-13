@@ -14,9 +14,10 @@
     "exemplar": {
       "type": "av-full-bleed",
       "settings": {
-        "image": "shopify://shop_images/av-comm-04025.jpg",
-        "left": "The groom set · by commission",
-        "right": "Photograph · Memory Lane Studios"
+        "image": "shopify://shop_images/av-dz-commission-exemplar.jpg",
+        "left": "By commission",
+        "right": "Photograph · Memory Lane Studios",
+        "natural": true
       }
     },
     "steps": {

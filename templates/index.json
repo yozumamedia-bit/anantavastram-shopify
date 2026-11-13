@@ -3,9 +3,9 @@
     "hero": {
       "type": "av-hero",
       "settings": {
-        "image": "shopify://shop_images/av-home-hero.jpg",
-        "focus_y": 80,
-        "image_mobile": "shopify://shop_images/av-home-hero-mobile.jpg"
+        "image": "shopify://shop_images/av-dz-hero.jpg",
+        "focus_y": 50,
+        "image_mobile": "shopify://shop_images/av-dz-hero-mobile.jpg"
       }
     },
     "credo": {
@@ -67,7 +67,7 @@
       "type": "av-commissions-row",
       "settings": {
         "link": "shopify://pages/commissions",
-        "image": "shopify://shop_images/av-cover-06174.jpg",
+        "image": "shopify://shop_images/av-dz-commission-band.jpg",
         "label": "Commissions · Made to order",
         "statement": "One piece, for one person, made once.",
         "routing": "A commission is a piece that does not exist yet. It begins with a conversation and is finalised in our Chennai studio. You choose the cloth from our range, Kamalam draws the design from your occasion and your own references, and we embroider it by hand. A commission takes eight to ten weeks to make. Sample designs are kept at the studio, and you can book a visit to see them."

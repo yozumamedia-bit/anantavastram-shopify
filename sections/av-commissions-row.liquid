@@ -4,7 +4,7 @@
 {%- endcomment -%}
 <section class="av-commissions">
   <div class="av-commissions__head"><span class="av-label">{{ section.settings.label | escape }}</span></div>
-  {% render 'av-media', image: section.settings.image, ratio: '16 / 7', sizes: '100vw', class: 'av-commissions__image' %}
+  {% render 'av-media', image: section.settings.image, ratio: '16 / 7', natural: true, sizes: '100vw', class: 'av-commissions__image' %}
   <div class="av-commissions__text">
     <h2 class="av-statement av-statement--l av-commissions__statement">{{ section.settings.statement | escape }}</h2>
     {%- if section.settings.routing != blank -%}<p class="av-body av-body--s av-commissions__routing">{{ section.settings.routing | escape }}</p>{%- endif -%}

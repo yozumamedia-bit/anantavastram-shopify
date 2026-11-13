@@ -1,8 +1,8 @@
 <section>
   {%- if section.settings.image_left != blank or section.settings.image_right != blank -%}
-  <div class="av-wrap av-grid av-grid--7-5" style="align-items:end;gap:24px;padding-top:var(--av-section)">
-    {% render 'av-media', image: section.settings.image_left, ratio: '820 / 640', sizes: '(min-width: 900px) 58vw, 100vw' %}
-    {% render 'av-media', image: section.settings.image_right, ratio: '560 / 480', sizes: '(min-width: 900px) 42vw, 100vw' %}
+  <div class="av-wrap av-grid av-grid--2" style="align-items:end;gap:24px;padding-top:var(--av-section)">
+    {% render 'av-media', image: section.settings.image_left, ratio: '820 / 640', natural: true, sizes: '(min-width: 900px) 58vw, 100vw' %}
+    {% render 'av-media', image: section.settings.image_right, ratio: '560 / 480', natural: true, sizes: '(min-width: 900px) 42vw, 100vw' %}
   </div>
   {%- endif -%}
   {%- if section.blocks.size > 0 -%}
