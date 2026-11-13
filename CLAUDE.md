@@ -83,3 +83,4 @@ Run `shopify theme check` before every commit.
 - Commissions: eight to ten weeks from the day the conversation is finalised (includes drawing the design); 30% deposit once the design is approved; cannot be returned. No hand delivery anywhere.
 - Returns: collection pieces within 7 days if unworn; faults reported within 48 hours. Full text in Settings → Policies (refund policy has `#handloom` and `#care` anchors).
 - Phone +91 99623 00009 (`av_phone_number`), WhatsApp +91 98400 02288 (`av_whatsapp_number`).
+- Layout grid (13 Nov 2026, end of `av-sections.css`): every heading-left, text-right section uses two equal columns with `--av-col-gap`, so right columns start on the centre line. Two columns hold down to 700px (iPad portrait gets the page layout); below 700px everything stacks. Tablets (700 to 1100px) use a 32px gutter. Add new sections to that block rather than giving them their own column ratios.
