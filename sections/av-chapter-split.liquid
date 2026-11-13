@@ -1,12 +1,14 @@
-<section class="av-chapter av-chapter--split">
-  {% render 'av-media', image: section.settings.portrait, ratio: '600 / 880', sizes: '(min-width: 900px) 42vw, 100vw', alt: section.settings.title %}
-  <div class="av-chapter__text">
+{%- comment -%} With a portrait: portrait left, text right. Without one (portrait pending): the plain chapter layout, heading left and quotes right. {%- endcomment -%}
+{%- capture head -%}
     <div class="av-stack" style="gap:12px">
       {%- if section.settings.numeral != blank -%}<div class="av-numeral">{{ section.settings.numeral | escape }}</div>{%- endif -%}
       <h2 class="av-sub av-sub--m">{{ section.settings.title | escape }}</h2>
       {%- if section.settings.role != blank -%}<div class="av-body av-body--meta">{{ section.settings.role | escape }}</div>{%- endif -%}
     </div>
-    {%- if section.settings.quote != blank -%}<blockquote class="av-quote">“{{ section.settings.quote | escape | newline_to_br }}”</blockquote>{%- endif -%}
+{%- endcapture -%}
+{%- capture words -%}
+    {%- assign quotes = section.settings.quote | newline_to_br | split: '<br />' -%}
+    {%- for q in quotes -%}{%- assign qt = q | strip -%}{%- if qt != blank -%}<blockquote class="av-quote">“{{ qt | escape }}”</blockquote>{%- endif -%}{%- endfor -%}
     {%- if section.settings.text != blank -%}<div class="av-body">{{ section.settings.text }}</div>{%- endif -%}
     {%- if section.settings.film != blank -%}
     <div class="av-stack" style="gap:12px;margin-top:12px">
@@ -14,15 +16,26 @@
       {%- if section.settings.video_caption != blank -%}<div class="av-body av-body--meta">{{ section.settings.video_caption | escape }}</div>{%- endif -%}
     </div>
     {%- endif -%}
-  </div>
+{%- endcapture -%}
+{%- if section.settings.portrait != blank -%}
+<section class="av-chapter av-chapter--split">
+  {% render 'av-media', image: section.settings.portrait, ratio: '600 / 880', sizes: '(min-width: 900px) 42vw, 100vw', alt: section.settings.title %}
+  <div class="av-chapter__text">{{ head }}{{ words }}</div>
 </section>
+{%- else -%}
+<section class="av-chapter">
+  {{ head }}
+  <div class="av-chapter__spacer" aria-hidden="true">&nbsp;</div>
+  <div class="av-chapter__text">{{ words }}</div>
+</section>
+{%- endif -%}
 {% schema %}
 { "name": "AV Chapter split", "settings": [
   { "type": "image_picker", "id": "portrait", "label": "Portrait" },
   { "type": "text", "id": "numeral", "label": "Numeral", "default": "II" },
   { "type": "text", "id": "title", "label": "Name", "default": "Kamalam Moorthy" },
-  { "type": "text", "id": "role", "label": "Role line", "default": "Chief designer · Head of production · Weaver" },
-  { "type": "textarea", "id": "quote", "label": "Pull quote" },
+  { "type": "text", "id": "role", "label": "Role line", "default": "Founder · Chief designer" },
+  { "type": "textarea", "id": "quote", "label": "Pull quote", "info": "One quotation per line." },
   { "type": "richtext", "id": "text", "label": "Paragraphs" },
   { "type": "video", "id": "film", "label": "Interview video (plays with sound on tap)" },
   { "type": "image_picker", "id": "poster", "label": "Video poster", "info": "A still from the footage. Without one the frame shows grey until the video loads." },

@@ -1,23 +1,29 @@
 {%- comment -%}
-  The house's address, number, email and hours, printed where a visitor decides (footer, Contact page).
-  Theme settings → Ananta Vastram: av_contact_address, av_contact_hours; the number is the WhatsApp number; the email is
-  the store's sender email. Usage: {% render 'av-contact-details', class: 'av-footer__details' %}
+  The house's address, phone, WhatsApp, email and hours, printed where a visitor decides (footer, Contact page).
+  Theme settings → Ananta Vastram: av_contact_address, av_contact_hours, av_phone_number, av_whatsapp_number; the email
+  is the store's sender email. Usage: {% render 'av-contact-details', class: 'av-footer__details' %}
 {%- endcomment -%}
 {%- liquid
-  assign n = settings.av_whatsapp_number | strip
-  assign phone = ''
-  if n.size == 12 and n contains '91'
-    assign cc = n | slice: 0, 2
-    assign a = n | slice: 2, 5
-    assign b = n | slice: 7, 5
-    assign phone = '+' | append: cc | append: ' ' | append: a | append: ' ' | append: b
-  elsif n != blank
-    assign phone = '+' | append: n
-  endif
+  assign nums = settings.av_phone_number | append: '|' | append: settings.av_whatsapp_number | split: '|'
 -%}
 <address class="{{ class }}">
-  {%- if settings.av_contact_address != blank -%}<span>{{ settings.av_contact_address | escape | newline_to_br }}</span>{%- endif -%}
-  {%- if phone != blank -%}<a href="tel:+{{ n }}">{{ phone }}</a>{%- endif -%}
+  {%- if settings.av_contact_address != blank -%}<span>{{ settings.av_contact_address | escape | newline_to_br }}. Visits by appointment.</span>{%- endif -%}
+  {%- for raw in nums -%}
+    {%- liquid
+      assign n = raw | strip
+      if n == blank
+        continue
+      endif
+      assign shown = '+' | append: n
+      if n.size == 12
+        assign cc = n | slice: 0, 2
+        assign a = n | slice: 2, 5
+        assign b = n | slice: 7, 5
+        assign shown = '+' | append: cc | append: ' ' | append: a | append: ' ' | append: b
+      endif
+    -%}
+    {%- if forloop.first and settings.av_phone_number != blank -%}<a href="tel:+{{ n }}">Phone {{ shown }}</a>{%- else -%}<a href="https://wa.me/{{ n }}" target="_blank" rel="noopener">WhatsApp {{ shown }}</a>{%- endif -%}
+  {%- endfor -%}
   {%- if shop.email != blank -%}<a href="mailto:{{ shop.email }}">{{ shop.email }}</a>{%- endif -%}
   {%- if settings.av_contact_hours != blank -%}<span>{{ settings.av_contact_hours | escape }}</span>{%- endif -%}
 </address>

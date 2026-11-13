@@ -9,7 +9,8 @@
   assign found = 0
   assign done = ''
 -%}
-{%- for pass in (1..2) -%}
+{%- assign passes = 2 -%}{%- if section.settings.home -%}{%- assign passes = 1 -%}{%- endif -%}
+{%- for pass in (1..passes) -%}
   {%- assign head_done = false -%}
   {%- for k in (1..50) -%}
     {%- liquid
@@ -52,9 +53,12 @@
     {%- if pass == 1 -%}{% render 'av-drop-band', drop: pick, mode: 'open' %}{%- else -%}{% render 'av-drop-band', drop: pick, mode: 'past' %}{%- endif -%}
   {%- endfor -%}
 {%- endfor -%}
-{%- if found == 0 -%}<div class="av-wrap av-section av-body">No collections yet.</div>{%- endif -%}
+{%- if found == 0 -%}{%- unless section.settings.home -%}<div class="av-wrap av-section av-body">No collections yet.</div>{%- endunless -%}
+{%- elsif section.settings.show_strip and settings.av_shipping_line != blank -%}<p class="av-body av-body--meta av-drop-strip">{{ settings.av_shipping_line | escape }}</p>{%- endif -%}
 {% schema %}
 { "name": "AV Collection index", "settings": [
-  { "type": "richtext", "id": "past_text", "label": "Closed collections paragraph", "default": "<p>Every piece of a closed collection stays here, with its weaver, as part of the record.</p>" }
+  { "type": "richtext", "id": "past_text", "label": "Closed collections paragraph", "default": "<p>Every piece of a closed collection stays here.</p>" },
+  { "type": "checkbox", "id": "home", "label": "Homepage: open collections only", "default": false },
+  { "type": "checkbox", "id": "show_strip", "label": "Print the shipping line under the collections", "default": false }
 ], "presets": [{ "name": "AV Collection index" }] }
 {% endschema %}

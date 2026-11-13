@@ -23,7 +23,7 @@
     {%- endunless -%}
 
     <title>
-      {{ page_title }}
+      {%- if request.page_type == 'index' and page_title == shop.name -%}{{ shop.name }} · Hand-embroidered veshtis · Handcrafted in Tamil Nadu{%- else -%}{{ page_title }}{%- endif -%}
       {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
       {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
@@ -47,7 +47,7 @@
         assign av_desc = page.content | strip_html | strip_newlines | truncate: 155
       endif
       if av_desc == blank
-        assign av_desc = 'Handwoven veshtis and menswear, embroidered by hand in Tamil Nadu. Named collections held in stock in limited number; commissions made to order.'
+        assign av_desc = 'Veshtis (dhotis) on handloom cloth, designed and embroidered by hand in our Chennai studio. Collections held in stock. Commissions made to order in eight to ten weeks.'
       endif
     -%}
     <meta name="description" content="{{ av_desc | escape }}">

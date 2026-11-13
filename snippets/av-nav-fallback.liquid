@@ -26,7 +26,7 @@
   {%- when 'orders' -%}
     {%- comment -%} Shipping and refund policies (Settings → Policies) are linked once they have a body; an empty policy page is never linked. {%- endcomment -%}
     {%- if shop.shipping_policy.body != blank -%}<a href="{{ shop.shipping_policy.url }}">Shipping</a>{%- endif -%}
-    {%- if shop.refund_policy.body != blank -%}<a href="{{ shop.refund_policy.url }}">Returns and exchanges</a>{%- endif -%}
+    {%- if shop.refund_policy.body != blank -%}<a href="{{ shop.refund_policy.url }}">Returns and exchanges</a><a href="{{ shop.refund_policy.url }}#handloom">Handloom and care</a>{%- endif -%}
     {%- if pages['care'].url != blank -%}<a href="{{ pages['care'].url }}">Care</a>{%- endif -%}
     {%- if pages['size-and-measure'].url != blank -%}<a href="{{ pages['size-and-measure'].url }}">Size and measure</a>{%- endif -%}
   {%- when 'contact' -%}

@@ -2,21 +2,12 @@
   "sections": {
     "intro": {
       "type": "av-page-intro",
-      "blocks": {
-        "k1": {
-          "type": "key",
-          "settings": {
-            "label": "Wedding sets"
-          }
-        }
-      },
-      "block_order": [
-        "k1"
-      ],
+      "blocks": {},
+      "block_order": [],
       "settings": {
         "label": "Commissions",
         "statement": "One piece, for one person, made once.",
-        "text": "<p>Outside the collections, the house makes single pieces to the wearer — wedding sets above all. Nothing here is listed or held in stock. It begins with a conversation with Kamalam and ends at the loom.</p>",
+        "text": "<p>We make exclusive pieces, each for one wearer, for a wedding, a festival or any other occasion. A commission begins with a conversation and is finalised in our Chennai studio.</p><p>You choose the cloth from our range. Kamalam draws the design from your own inspiration and vision: a family motif, a temple, a story, a photograph. It is a piece you dream of wearing, one that adds value to your occasion and is remembered for life.</p>",
         "open": true
       }
     },
@@ -36,23 +27,23 @@
           "settings": {
             "numeral": "I",
             "title": "The conversation",
-            "text": "Write to us with the occasion and the date. Kamalam replies herself and, if the dates allow, a call is set."
+            "text": "Write to us with the occasion and the date. Kamalam replies herself and, if the dates allow, we arrange a call or a studio visit."
           }
         },
         "s2": {
           "type": "step",
           "settings": {
             "numeral": "II",
-            "title": "Cloth and motif",
-            "text": "Together you settle the cloth, the border, the motif and the colour from the kara set. A sample of the border is woven and sent before anything is committed."
+            "title": "Cloth and design",
+            "text": "You choose the cloth from our range. Kamalam draws the design for your occasion and sends it to you. Nothing goes to the frame until you approve it."
           }
         },
         "s3": {
           "type": "step",
           "settings": {
             "numeral": "III",
-            "title": "The loom",
-            "text": "The veshti is woven by a named weaver at the unit. The kurta or shirt is cut to your measure. You are told when the warp goes on."
+            "title": "The embroidery",
+            "text": "Your piece is embroidered by hand by Sekhar in our Chennai studio. The kurta or shirt is cut to your measure. We tell you when the embroidery begins."
           }
         },
         "s4": {
@@ -60,7 +51,7 @@
           "settings": {
             "numeral": "IV",
             "title": "Fitting and delivery",
-            "text": "One fitting, in Chennai or by measurement. Delivered by hand within Tamil Nadu; insured courier elsewhere. The piece carries the weaver's name and yours."
+            "text": "One fitting, in Chennai or by measurement. Your piece is then sent to you by insured courier."
           }
         }
       },
@@ -70,7 +61,11 @@
         "s3",
         "s4"
       ],
-      "settings": {}
+      "settings": {
+        "label": "How it works",
+        "heading": "",
+        "text": "Each piece is agreed in conversation, then drawn, embroidered and fitted. A commission takes eight to ten weeks to make, once the conversation is complete and everything is finalised. We do not shorten that for a date."
+      }
     },
     "cards": {
       "type": "av-cards",
@@ -80,7 +75,7 @@
           "settings": {
             "image": "shopify://shop_images/av-comm-card-wedding.jpg",
             "title": "The wedding set",
-            "text": "Veshti, kurta and angavastram as one set, in gold or tested zari, with motifs drawn for the family. Lead time and price are agreed after the first conversation."
+            "text": "Veshti, kurta and angavastram as one set, embroidered in zari, with motifs drawn for the family. The price and the dates are agreed after the first conversation."
           }
         }
       },
@@ -95,29 +90,50 @@
         "t1": {
           "type": "item",
           "settings": {
-            "title": "Capacity",
-            "text": "A few pieces a season, so that each has the time it needs. Dates are taken in order of the first conversation."
+            "title": "The cloth",
+            "text": "Chosen from our range of handloom fabrics."
           }
         },
         "t2": {
           "type": "item",
           "settings": {
-            "title": "Deposit",
-            "text": "A deposit on agreement of cloth and motif; the balance at fitting."
+            "title": "The design",
+            "text": "Drawn by Kamalam and approved by you, in writing."
           }
         },
         "t3": {
           "type": "item",
           "settings": {
-            "title": "Lead time",
-            "text": "Set in writing from sample approval. A wedding date too close to allow it cannot be taken."
+            "title": "Price and dates",
+            "text": "Quoted once, in writing, after the design is approved. The price does not change."
           }
         },
         "t4": {
           "type": "item",
           "settings": {
-            "title": "Price",
-            "text": "Quoted once, in writing, after step II. It does not change, and it is never discounted."
+            "title": "Deposit",
+            "text": "30% once the design is approved. The balance at fitting, or before dispatch if you are fitted by measurement."
+          }
+        },
+        "t5": {
+          "type": "item",
+          "settings": {
+            "title": "Lead time",
+            "text": "Eight to ten weeks, from the day the conversation is complete and everything is finalised. This includes the drawing of the design. A date too close to allow this cannot be taken."
+          }
+        },
+        "t6": {
+          "type": "item",
+          "settings": {
+            "title": "Capacity",
+            "text": "A few commissions a season, so each gets the time it needs. Dates are taken in the order of first conversation."
+          }
+        },
+        "t7": {
+          "type": "item",
+          "settings": {
+            "title": "Returns",
+            "text": "A commission is made for one person and cannot be returned or exchanged. If the fit is not right, we alter it."
           }
         }
       },
@@ -125,17 +141,26 @@
         "t1",
         "t2",
         "t3",
-        "t4"
+        "t4",
+        "t5",
+        "t6",
+        "t7"
       ],
       "settings": {
         "mode": "grid",
         "label": "Terms",
-        "heading": "What is agreed before the warp goes on"
+        "heading": "What is agreed before work begins"
       }
     },
     "enquiry": {
       "type": "av-enquiry",
-      "settings": {}
+      "settings": {
+        "label": "Write",
+        "heading": "Write to Kamalam",
+        "text": "Tell us the occasion, the date if it is fixed, and where you are. Or send the same on WhatsApp.",
+        "reply_line": "Kamalam replies herself, within one working day",
+        "lead_weeks": 10
+      }
     }
   },
   "order": [

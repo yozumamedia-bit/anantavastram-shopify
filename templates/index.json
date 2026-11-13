@@ -10,7 +10,10 @@
     },
     "credo": {
       "type": "av-credo",
-      "settings": {}
+      "settings": {
+        "label": "Handcrafted in Tamil Nadu",
+        "statement": "The veshti, embroidered by hand. Designed in our Chennai studio, on handloom cloth. Made in small numbers for authenticity."
+      }
     },
     "showcase": {
       "type": "av-showcase-three",
@@ -49,9 +52,10 @@
       "settings": {
         "image": "shopify://shop_images/av-home-story.jpg",
         "label": "The house",
-        "text": "<p>Every piece begins as a length of silk cotton, its weft spun by hand and woven on a pit loom in Tamil Nadu. Kamalam Moorthy, who designs the cloth and runs its production, draws each motif from the temples, the forests and the stories told about them.</p><p>The embroidery is aari work in metallic thread, done by hand by our senior artisan.</p>",
+        "text": "<p>Every piece begins as a length of cloth, its yarn spun by hand and woven on a pit loom. We choose one cloth for each design, the one that holds the stitch and still shows its own weave: mulberry silk, Eri silk, silk cotton, cotton or linen.</p><p>In our Chennai studio, Kamalam Moorthy draws each design on paper, from forests, temples, epics and the stories told about them. Sekhar, our highly skilled senior artisan, then embroiders it by hand at the frame, with care, in aari and zardosi work, with zari, thread and beads, to bring her vision to life.</p>",
         "link_label": "About the house",
-        "link": "shopify://pages/about"
+        "link": "shopify://pages/about",
+        "heading": "We begin with handloom cloth. The embroidery is ours."
       }
     },
     "film": {
@@ -59,23 +63,22 @@
       "settings": {},
       "disabled": true
     },
-    "drop-1": {
-      "type": "av-drop-rows",
-      "settings": {
-        "auto_index": 1
-      }
-    },
-    "drop-2": {
-      "type": "av-drop-rows",
-      "settings": {
-        "auto_index": 2
-      }
-    },
     "commissions": {
       "type": "av-commissions-row",
       "settings": {
         "link": "shopify://pages/commissions",
-        "image": "shopify://shop_images/av-cover-06174.jpg"
+        "image": "shopify://shop_images/av-cover-06174.jpg",
+        "label": "Commissions · Made to order",
+        "statement": "One piece, for one person, made once.",
+        "routing": "A commission is a piece that does not exist yet. It begins with a conversation and is finalised in our Chennai studio. You choose the cloth from our range, Kamalam draws the design from your occasion and your own references, and we embroider it by hand. A commission takes eight to ten weeks to make. Sample designs are kept at the studio, and you can book a visit to see them."
+      }
+    },
+    "collections": {
+      "type": "av-drop-index",
+      "settings": {
+        "past_text": "",
+        "show_strip": true,
+        "home": true
       }
     }
   },
@@ -85,8 +88,7 @@
     "showcase",
     "story",
     "film",
-    "drop-1",
-    "drop-2",
+    "collections",
     "commissions"
   ]
 }

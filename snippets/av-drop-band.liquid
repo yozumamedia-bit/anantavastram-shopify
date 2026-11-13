@@ -1,7 +1,8 @@
 {%- comment -%}
   One collection's band + its tile strip, on the Collections index. Usage: {% render 'av-drop-band', drop: entry, mode: 'open' %}
   drop: a collection_meta entry. mode: 'open' (large band — every collection not closed) | 'past' (compact band, closed).
-  Before a collection opens (status teaser / reveal) the band shows the opening date and no tiles.
+  Before a collection opens (status teaser / reveal) the band shows the opening date. An open band names its pieces
+  and carries one link, "See the collection"; no count of pieces and no stock figure is shown (copy draft 4, Nov 2026).
   Remaining is summed from snippets/av-edition-line.liquid (contexts 'remaining' and 'total'), as in av-coll-head.
 {%- endcomment -%}
 {%- liquid
@@ -10,7 +11,6 @@
   if stage == 'current'
     assign stage = 'open'
   endif
-  assign pieces = col.products_count | default: 0
   assign remaining = 0
   assign total = 0
   for p in col.products
@@ -34,18 +34,21 @@
     assign opens = drop.opens_on.value | date: '%-d %B'
   endif
   assign name = drop.name.value | default: col.title
-  capture eyebrow
-    echo 'Collection'
-    if drop.season.value != blank
-      echo ' · ' | append: drop.season.value | escape
-    endif
+  assign eyebrow = 'Collection'
+  capture piece_names
+    for p in col.products limit: 8
+      unless forloop.first
+        echo ' · '
+      endunless
+      echo p.title | escape
+    endfor
   endcapture
 -%}
 {%- capture chip -%}
   {%- if upcoming -%}<span class="av-chip av-chip--outline">{% if opens != blank %}Opens {{ opens }}{% else %}Coming{% endif %}</span>
   {%- elsif stage == 'closed' -%}<span class="av-chip av-chip--outline av-chip--closed">Closed</span>
   {%- elsif total > 0 and remaining == 0 -%}<span class="av-chip av-chip--outline av-chip--closed">Sold out</span>
-  {%- else -%}<span class="av-chip-actions"><a class="av-chip av-chip--link" href="{{ col.url }}">Open collection</a><a class="av-chip av-chip--link av-chip--ghost" href="{{ col.url }}#pieces">Products</a></span>{%- endif -%}
+  {%- endif -%}
 {%- endcapture -%}
 {%- if mode == 'past' -%}
 <section class="av-past">
@@ -70,15 +73,9 @@
       <h2 class="av-sub av-sub--l">{{ name | escape }}</h2>
       {%- if drop.theme.value != blank -%}<p class="av-body av-drop__theme av-ta">{{ drop.theme.value | escape }}</p>{%- endif -%}
       {%- if drop.story.value != blank -%}<div class="av-body">{% render 'av-field-text', field: drop.story %}</div>{%- endif -%}
-      {%- unless upcoming -%}
-      <div class="av-counts">
-        <div class="av-count"><span class="av-label">Pieces</span><span class="av-count__v">{{ pieces }}</span></div>
-        {%- if total > 0 -%}<div class="av-count"><span class="av-label">Remaining</span><span class="av-count__v">{{ remaining }} of {{ total }}</span></div>{%- endif -%}
-      </div>
-      {%- endunless -%}
+      {%- unless upcoming -%}{%- if piece_names != blank -%}<p class="av-body av-body--s av-drop__pieces">{{ piece_names }}</p>{%- endif -%}{%- endunless -%}
     </div>
-    {%- if upcoming -%}<a class="av-link" href="{{ col.url }}">Read the story</a>{%- endif -%}
+    <a class="av-link" href="{{ col.url }}">{% if upcoming %}Read the story{% else %}See the collection{% endif %}</a>
   </div>
 </section>
-{%- unless upcoming -%}<div class="av-tiles">{%- for p in col.products limit: 6 -%}{% render 'av-drop-tile', product: p %}{%- endfor -%}</div>{%- endunless -%}
 {%- endif -%}

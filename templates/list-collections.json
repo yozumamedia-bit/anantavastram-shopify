@@ -2,42 +2,19 @@
   "sections": {
     "intro": {
       "type": "av-page-intro",
-      "blocks": {
-        "k1": {
-          "type": "key",
-          "settings": {
-            "label": "Everyday",
-            "url": "/collections/all/everyday"
-          }
-        },
-        "k2": {
-          "type": "key",
-          "settings": {
-            "label": "Occasional",
-            "url": "/collections/all/occasional"
-          }
-        },
-        "k3": {
-          "type": "key",
-          "settings": {
-            "label": "Commissions",
-            "url": "/pages/commissions"
-          }
-        }
-      },
-      "block_order": [
-        "k1",
-        "k2",
-        "k3"
-      ],
+      "blocks": {},
+      "block_order": [],
       "settings": {
         "label": "Collections",
-        "statement": "Each collection is built on one design, and opens on its own."
+        "statement": "Each collection grows from one inspiration.",
+        "text": "<p>A collection is a small set of pieces drawn from one source. Each piece is embroidered in small numbers and held in stock in Chennai.</p>"
       }
     },
     "index": {
       "type": "av-drop-index",
-      "settings": {}
+      "settings": {
+        "past_text": ""
+      }
     }
   },
   "order": [

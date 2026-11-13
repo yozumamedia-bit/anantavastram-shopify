@@ -1,20 +1,23 @@
-{%- comment -%} One compact list row. Usage (inside a <ul class="av-list__items">): {% render 'av-product-list-item', product: product %}  Availability comes from snippets/av-edition-line.liquid (context 'state'); the label from av-piece-label (collection name · numeral · line). {%- endcomment -%}
+{%- comment -%}
+  One tile of the Products grid (rows and columns: four across on a desktop, two on a phone; decided 13 Nov 2026).
+  Usage (inside a <ul class="av-list__items">): {% render 'av-product-list-item', product: product %}
+  Photograph, collection name, piece name, price. No description, no stock figure, no button; a sold-out piece says so
+  in place of its price. Availability comes from snippets/av-edition-line.liquid (context 'state').
+{%- endcomment -%}
 {%- liquid
   capture state
     render 'av-edition-line', product: product, context: 'state'
   endcapture
-  capture label
-    render 'av-piece-label', product: product, with_collection: true
-  endcapture
+  assign meta = product.metafields.custom.collection.value
+  assign cname = meta.name.value | default: meta.collection.value.title
 -%}
 <li class="av-list__row">
   <a class="av-list__item{% if state contains 'sold' %} av-list__item--sold{% endif %}" href="{{ product.url }}">
-    {% render 'av-media', image: product.featured_image, alt_image: product.images[1], vt: product.handle, ratio: '4 / 5', sizes: '(min-width: 900px) 160px, 96px' %}
+    {% render 'av-media', image: product.featured_image, alt_image: product.images[1], vt: product.handle, ratio: '3 / 4', sizes: '(min-width: 900px) 25vw, 50vw' %}
     <div class="av-list__name">
-      {%- if label != blank -%}<span class="av-label">{{ label }}</span>{%- endif -%}
+      {%- if cname != blank -%}<span class="av-label">{{ cname | escape }}</span>{%- endif -%}
       <h3 class="av-name">{{ product.title | escape }}</h3>
     </div>
-    <span class="av-list__left">{% render 'av-edition-line', product: product, context: 'tile' %}</span>
-    <span class="av-price">{% if state contains 'enquiry' %}On enquiry{% elsif state contains 'open' %}{% render 'av-money', price: product.price %}{% endif %}</span>
+    <span class="av-price">{% if state contains 'enquiry' %}On enquiry{% elsif state contains 'sold' %}Sold out{% elsif state contains 'soon' %}{% render 'av-edition-line', product: product, context: 'tile' %}{% else %}{% render 'av-money', price: product.price %}{% endif %}</span>
   </a>
 </li>

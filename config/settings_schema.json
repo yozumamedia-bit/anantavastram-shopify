@@ -14,6 +14,7 @@
       { "type": "image_picker", "id": "av_logo", "label": "Logo (SVG or PNG, white on transparent)", "info": "Overrides the built-in Montage wordmark in header, footer and opening." },
       { "type": "header", "content": "Contact" },
       { "type": "text", "id": "av_whatsapp_number", "label": "WhatsApp number", "info": "International format, digits only, e.g. 919876543210. Leave empty to hide all WhatsApp links." },
+      { "type": "text", "id": "av_phone_number", "label": "Phone number", "info": "International format, digits only. Printed as Phone, beside the WhatsApp number." },
       { "type": "textarea", "id": "av_contact_address", "label": "Address (footer and Contact page)" },
       { "type": "text", "id": "av_contact_hours", "label": "Hours (footer and Contact page)" },
       { "type": "checkbox", "id": "av_whatsapp_float", "label": "Floating WhatsApp button on every page", "info": "Bottom right. Needs the number above.", "default": true },
@@ -23,7 +24,7 @@
       { "type": "header", "content": "Commerce copy" },
       { "type": "text", "id": "av_opening_line", "label": "Before the opening", "info": "While this has text (e.g. Opens at Diwali), every in-stock piece shows it in place of the price, the count and the order button. Clear it on the opening day." },
       { "type": "text", "id": "av_tax_line", "label": "Price note (product rows and pages)", "info": "Shown under the price. Leave empty to hide.", "default": "Inclusive of all taxes" },
-      { "type": "text", "id": "av_shipping_line", "label": "Shipping line (once under each collection banner, and the product page)", "default": "Shipped from Chennai by insured courier across India. For orders from abroad, write to us." },
+      { "type": "text", "id": "av_shipping_line", "label": "Shipping line (once under each collection banner, and the product page)", "default": "In stock in Chennai and dispatched in six to eight days. Free insured shipping across India." },
       { "type": "textarea", "id": "av_returns_line", "label": "Returns line (product page)", "info": "Shown in a Returns panel beside Shipping and Care. Leave empty to hide." },
       { "type": "text", "id": "av_currency_line", "label": "Footer currency line", "default": "India (INR ₹)" }
     ]

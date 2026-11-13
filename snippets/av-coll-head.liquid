@@ -67,7 +67,7 @@
 -%}
 <header class="av-coll-head">
   <div class="av-coll-head__title">
-    <div class="av-label">Collection{% if meta.season.value != blank %} · {{ meta.season.value | escape }}{% endif %}</div>
+    <div class="av-label">Collection</div>
     <h1 class="av-statement av-statement--xl">{{ heading | escape }}</h1>
     {%- if meta.theme.value != blank -%}<p class="av-body av-body--l av-ta">{{ meta.theme.value | escape }}</p>{%- endif -%}
   </div>
@@ -81,8 +81,6 @@
         {%- if pieces > 0 and remaining == 0 and total > 0 -%}
           <span class="av-chip av-chip--outline av-chip--closed">Sold out</span>
         {%- else -%}
-          <span class="av-chip-actions"><a class="av-chip av-chip--link" href="#story" data-av-tab="story">Open collection</a>{%- unless pieces_locked -%}<a class="av-chip av-chip--link av-chip--ghost" href="#pieces" data-av-tab="pieces">Products</a>{%- endunless -%}</span>
-          {%- if total > 0 -%}<span class="av-price">{{ remaining }} of {{ total }} {% if remaining == 1 %}piece remains{% else %}pieces remain{% endif %}</span>{%- endif -%}
           {%- if closes != blank -%}<span class="av-label">Orders close {{ closes }}</span>{%- endif -%}
         {%- endif -%}
     {%- endcase -%}

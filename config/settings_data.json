@@ -16,7 +16,7 @@
       "gradient_background_2": "",
       "heading_scale": 100,
       "type_body_font": "karla_n4",
-      "av_shipping_line": "Shipped from Chennai by insured courier across India. For orders from abroad, write to us.",
+      "av_shipping_line": "In stock in Chennai and dispatched in six to eight days. Free insured shipping across India.",
       "av_currency_line": "India (INR ₹)",
       "body_scale": 100,
       "page_width": 1200,
@@ -144,11 +144,12 @@
       "av_show_account": true,
       "av_header_over_hero": true,
       "av_tax_line": "Inclusive of all taxes",
-      "av_opening_line": "Opens at Diwali",
+      "av_opening_line": "",
       "av_contact_address": "6, 3rd Street, 3rd Floor, Abiramapuram\nChennai 600018, Tamil Nadu",
       "av_contact_hours": "Monday to Saturday, 10 am to 6 pm IST",
-      "av_returns_line": "We do not accept returns or exchanges for a change of mind. An order can be cancelled until it is dispatched. If a piece arrives damaged or with a fault, write to us within 7 days of delivery and we repair, remake or refund it.",
-      "av_whatsapp_number": "919840002288"
+      "av_returns_line": "You can return a collection piece within 7 days of delivery, if it has not been worn.",
+      "av_whatsapp_number": "919840002288",
+      "av_phone_number": "919962300009"
     }
   }
 }

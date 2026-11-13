@@ -9,9 +9,10 @@
 
   context:
     state:     sold | enquiry | open | soon — callers branch on it: {% capture state %}{% render … context: 'state' %}{% endcapture %}
-    tile:      "3 of 8 remain" / "3 remain" / "In stock" / "Sold out" / "Made to order"   (tiles, lists, look panels)
+    tile:      "In stock" / "Sold out" / "Made to order"   (tiles, lists, look panels). The number in stock is never
+               printed (Kamalam, Nov 2026): a visible count reads like a sales push.
     row:       "Edition of 8. 3 remain." / "Edition of 8. Sold out."   (only when edition_total is set)
-    page:      "3 of 8 remain" / "Sold out"
+    page:      "In stock" / "Sold out"
     remaining: integer, pieces still in stock (0 for commission pieces) — the collection header sums it
     total:     integer, edition_total (0 when unset or for commission pieces) — summed next to it
 
@@ -69,7 +70,7 @@
 {%- when 'row' -%}
   {%- if total > 0 and enquiry == false -%}Edition of {{ total }}.{% if soon %}{% elsif sold %} Sold out.{% else %} {{ remaining }} remain.{% endif %}{%- endif -%}
 {%- when 'page' -%}
-  {%- if enquiry -%}Made to order{%- elsif soon -%}{{ soon_line | escape }}{%- elsif sold -%}Sold out{%- elsif tracked -%}{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %} remain{%- else -%}In stock{%- endif -%}
+  {%- if enquiry -%}Made to order{%- elsif soon -%}{{ soon_line | escape }}{%- elsif sold -%}Sold out{%- else -%}In stock{%- endif -%}
 {%- else -%}
-  {%- if enquiry -%}Made to order{%- elsif soon -%}{{ soon_line | escape }}{%- elsif sold -%}Sold out{%- elsif tracked -%}{{ remaining }}{% if total > 0 %} of {{ total }}{% endif %} remain{%- else -%}In stock{%- endif -%}
+  {%- if enquiry -%}Made to order{%- elsif soon -%}{{ soon_line | escape }}{%- elsif sold -%}Sold out{%- else -%}In stock{%- endif -%}
 {%- endcase -%}

@@ -5,8 +5,8 @@
       "settings": {
         "label": "About the house",
         "statement": "Cloth without end.",
-        "text": "<p>Ananta means without end. Vastram means cloth. The name is a description of the work: a length of handwoven cloth with no seam, woven on pit looms in Tamil Nadu, by weavers whose names we print on every piece.</p>",
-        "note": "Ananta Vastram is a menswear house from Tamil Nadu. We make veshtis and the garments worn with them, in limited number; commissions are made to order. The people in our photographs are the wearers of the pieces, named with their consent.",
+        "text": "<p>Ananta means infinite. Vastram means cloth. We chose the name for a simple reason: a veshti is one unbroken length of cloth, with no cut and no seam.</p>",
+        "note": "Ananta Vastram is an embroidery house in Chennai. Most embroidered menswear is a sherwani or a kurta. We embroider the veshti, and the garments worn with it. Collection pieces are made in small numbers and held in stock. Commissions are made to order, for one person, and take eight to ten weeks.",
         "large_body": true,
         "open": true
       }
@@ -31,10 +31,10 @@
       "type": "av-chapter",
       "settings": {
         "numeral": "I",
-        "title": "The loom decides first",
-        "text": "<p>A veshti is fixed before a thread is thrown: its width, its border, the kara at its edge. Kamalam Moorthy, who designs every piece, decides these first.</p><p>The cloth is silk cotton, with a weft spun by hand and woven on a pit loom. Borders carry zari. The embroidery is aari work in metallic thread, done by hand by our senior artisan.</p><p>A piece takes about six weeks from the loom to the last stitch. That time is the reason there are only a few of each.</p>",
-        "link_label": "The craft, in detail",
-        "link": "shopify://blogs/stories"
+        "title": "From the loom to the frame",
+        "text": "<p>Every piece begins with yarn spun by hand and woven on a pit loom by handloom weavers across India.</p><p>In our studio, Kamalam draws the design and chooses the embroidery to suit it. Most of our work is aari, a fine chain stitch made with a hooked needle, and zardosi, which is metal-thread work. We have also worked sashiko, the Japanese running stitch, together with aari. We have set Turkish designs in zardosi, and French embroidery on Kalamkari.</p><p>Sekhar, our senior artisan, embroiders every piece by hand. We use only fine threads and zari.</p>",
+        "link_label": "",
+        "link": ""
       }
     },
     "clips": {
@@ -65,61 +65,21 @@
       "settings": {
         "numeral": "II",
         "title": "Kamalam Moorthy",
-        "role": "Chief designer · Head of production · Weaver",
-        "quote": "",
+        "role": "Founder · Chief designer",
+        "quote": "Women have far more choice in traditional wear than men. We wanted to dress our men in style, and yet in our heritage and culture. So we design pieces inspired by our epics, teachings, architecture, festivities, flora and fauna, on hand-woven fabrics, embellished with hand embroidery.\nWe are not trying to change anything. We are trying to bring ease, and the pride to wear our culture.",
         "text": "",
-        "video_caption": "In her words · from the founder interview"
-      },
-      "disabled": true
+        "video_caption": ""
+      }
     },
     "ch3": {
-      "type": "av-people-grid",
-      "blocks": {
-        "p1": {
-          "type": "person",
-          "settings": {
-            "at_loom": true,
-            "name": "",
-            "role": ""
-          }
-        },
-        "p2": {
-          "type": "person",
-          "settings": {
-            "at_loom": true,
-            "name": "",
-            "role": ""
-          }
-        },
-        "p3": {
-          "type": "person",
-          "settings": {
-            "at_loom": true,
-            "name": "",
-            "role": ""
-          }
-        },
-        "p4": {
-          "type": "person",
-          "settings": {
-            "at_loom": false,
-            "name": "",
-            "role": ""
-          }
-        }
-      },
-      "block_order": [
-        "p1",
-        "p2",
-        "p3",
-        "p4"
-      ],
+      "type": "av-chapter",
       "settings": {
         "numeral": "III",
-        "title": "Every piece carries a name",
-        "text": "The weaver's name is woven into the label and printed on the page. It is not a credit. It is the record of who made the cloth, kept where the buyer can see it."
-      },
-      "disabled": true
+        "title": "The weavers we work with",
+        "text": "<p>Our cloth comes from handloom weavers all over India, and we are always looking for more. If you weave by hand on a pit loom and would like to work with us, write to us.</p>",
+        "link_label": "Write to the studio",
+        "link": "shopify://pages/contact"
+      }
     },
     "ch4": {
       "type": "av-band",
@@ -127,61 +87,44 @@
         "i1": {
           "type": "item",
           "settings": {
-            "title": "Limited number",
-            "text": "Each design is made in a small, fixed number. When the last piece is placed, it is finished. It is not re-run."
+            "title": "Small numbers",
+            "text": "Each design is embroidered in a small number of pieces and held in stock in Chennai. When a design sells out, we make it again if there is demand."
           }
         },
         "i2": {
           "type": "item",
           "settings": {
             "title": "Commissions, made to order",
-            "text": "Everyday and Occasional pieces are woven ahead and ready to wear. A commission begins only when it is asked for, after a conversation, and you are told how long it will take."
+            "text": "Collection pieces are ready to wear. A commission begins only when you ask for it, after a conversation, and takes eight to ten weeks to make."
           }
         },
         "i3": {
           "type": "item",
           "settings": {
-            "title": "Worn by real people",
-            "text": "There are no models. Every photograph on this site is of someone who owns the piece, and we name them."
-          }
-        },
-        "i4": {
-          "type": "item",
-          "settings": {
             "title": "One price",
-            "text": "The price is the price. There are no sales, no launch offers, and no marketplace listings."
+            "text": "The price on the page is the price, on this site and nowhere else."
           }
         }
       },
       "block_order": [
         "i1",
         "i2",
-        "i3",
-        "i4"
+        "i3"
       ],
       "settings": {
         "mode": "list",
-        "numeral": "II",
+        "numeral": "IV",
         "heading": "How the house works"
       }
     },
     "close": {
       "type": "av-routes",
       "blocks": {
-        "r1": {
-          "type": "route",
-          "settings": {
-            "label": "Read",
-            "title": "Stories from the unit",
-            "link_label": "Stories",
-            "url": "shopify://blogs/stories"
-          }
-        },
         "r2": {
           "type": "route",
           "settings": {
             "label": "See",
-            "title": "The pieces, on the people who wear them",
+            "title": "The collections, photographed",
             "link_label": "Gallery",
             "url": "shopify://pages/gallery"
           }
@@ -190,14 +133,13 @@
           "type": "route",
           "settings": {
             "label": "Write",
-            "title": "A conversation with Kamalam, for a piece made to you",
+            "title": "A piece made for you, with Kamalam",
             "link_label": "Commissions",
             "url": "shopify://pages/commissions"
           }
         }
       },
       "block_order": [
-        "r1",
         "r2",
         "r3"
       ],

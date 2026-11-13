@@ -1,6 +1,5 @@
 {%- liquid
   assign mf = product.metafields.custom
-  assign weaver = mf.weaver.value
   assign drop = mf.collection.value
   assign v = product.selected_or_first_available_variant | default: product.variants.first
   capture state
@@ -14,9 +13,7 @@
     assign sold_out = true
   endif
   assign form_id = 'product-form-' | append: section.id
-  assign edition_total = mf.edition_total.value | default: 0
   assign lead_weeks = mf.lead_time_weeks.value | default: 0
-  assign loom_hours = mf.loom_hours.value | default: 0
   capture label
     render 'av-piece-label', product: product, with_collection: true, numeral_prefix: 'No. '
   endcapture
@@ -25,34 +22,16 @@
     assign enquiry = true
   endif
   assign commission_url = section.settings.commission_url | default: '/pages/commissions'
-  assign wa_text = 'About ' | append: product.title | append: ' — ' | append: shop.url | append: product.url
-  assign has_materials = false
-  if mf.yarn.value != blank or mf.dye.value != blank or mf.motif_name_ta.value != blank or mf.motif_name_en.value != blank or mf.cloth_weight.value != blank or mf.cloth_width.value != blank or mf.cloth_length.value != blank
-    assign has_materials = true
-  endif
+  assign wa_text = 'About ' | append: product.title | append: ': ' | append: shop.url | append: product.url
   comment
-    Provenance line under the title: who wove it, where, and the hours — the facts a buyer asks first, above the fold.
+    What the buyer receives: every photograph shows a full outfit and only the veshti is sold, so the page says so.
+    A piece whose length (custom.cloth_length) names an angavastram comes with one.
   endcomment
-  assign hours_word = 'hours'
-  if loom_hours == 1
-    assign hours_word = 'hour'
-  endif
-  assign provenance = ''
-  if weaver != blank and weaver.name.value != blank
-    assign provenance = 'Woven by ' | append: weaver.name.value
-    if weaver.unit_or_village.value != blank
-      assign provenance = provenance | append: ' at ' | append: weaver.unit_or_village.value
-    endif
-  endif
-  if loom_hours > 0
-    if provenance != blank
-      assign provenance = provenance | append: ' · about ' | append: loom_hours | append: ' ' | append: hours_word | append: ' at the loom'
-    else
-      assign provenance = 'About ' | append: loom_hours | append: ' ' | append: hours_word | append: ' at the loom'
-    endif
+  assign receive = 'One veshti. The kurta in the photographs is not included.'
+  if mf.cloth_length.value contains 'ngavastram'
+    assign receive = 'One veshti and one angavastram. The kurta in the photographs is not included.'
   endif
   assign worn_with = mf.worn_with.value
-  assign measure_page = pages['size-and-measure']
   comment
     Availability is snippets/av-edition-line.liquid's rule; tiles, rows and the list read the same snippet.
     Everyday and Occasional pieces are in stock: sold out at inventory 0 ("continue selling" OFF), then a notify form.
@@ -95,7 +74,6 @@
     <div class="av-product__title">
       {%- if label != blank -%}<div class="av-label">{{ label }}</div>{%- endif -%}
       <h1 class="av-name">{{ product.title | escape }}</h1>
-      {%- if provenance != blank -%}<p class="av-provenance av-body av-body--s">{{ provenance | escape }}</p>{%- endif -%}
       {%- if enquiry -%}
       <div class="av-price">On enquiry</div>
       {%- elsif soon -%}
@@ -112,9 +90,9 @@
       {%- assign soon_left = 0 -%}{%- capture soon_left -%}{% render 'av-edition-line', product: product, context: 'remaining' %}{%- endcapture -%}{%- assign soon_left = soon_left | strip | plus: 0 -%}
       <div class="av-row__note"><div class="av-label">Availability</div><div class="av-body av-body--s">{% if soon_left > 0 %}{{ soon_left }} {% if soon_left == 1 %}piece{% else %}pieces{% endif %}, held in stock for the opening.{% else %}Held for the opening.{% endif %}</div></div>
       {%- else -%}
-      {%- capture pg -%}{% render 'av-edition-line', product: product, context: 'page' %}{%- endcapture -%}
-      <div class="av-row__note"><div class="av-label">Availability</div><div class="av-body av-body--s">{% if sold_out %}{{ pg }}.{% else %}In stock.{% unless pg == 'In stock' %} {{ pg }}.{% endunless %}{% endif %}</div></div>
+      <div class="av-row__note"><div class="av-label">Availability</div><div class="av-body av-body--s">{% if sold_out %}Sold out. We make it again if there is demand.{% else %}In stock. Dispatched from Chennai in six to eight days.{% endif %}</div></div>
       {%- endif -%}
+      {%- unless enquiry -%}<div class="av-row__note"><div class="av-label">You receive</div><div class="av-body av-body--s">{{ receive }}</div></div>{%- endunless -%}
     </div>
 
     <div class="av-product__actions">
@@ -128,12 +106,12 @@
         {%- form 'customer', id: 'av-notify', class: 'av-notify' -%}
           <input type="hidden" name="contact[tags]" value="{% if soon %}opening, {% endif %}notify, notify-{{ product.handle }}">
           {%- if form.posted_successfully? -%}
-            <div class="av-body av-body--s" role="status">{% if soon %}Noted. You hear when it opens.{% else %}Noted. If this piece comes back, you hear first.{% endif %}</div>
+            <div class="av-body av-body--s" role="status">{% if soon %}Noted. You will hear from us when it opens.{% else %}Noted. You will hear from us when this piece is back in stock.{% endif %}</div>
           {%- else -%}
-            <label class="av-label" for="av-notify-email">{% if soon %}Tell me when it opens{% else %}Notify me if it comes back{% endif %}</label>
+            <label class="av-label" for="av-notify-email">{% if soon %}Tell me when it opens{% else %}Tell me when it is back{% endif %}</label>
             <input id="av-notify-email" type="email" name="contact[email]" value="{{ form.email | escape }}" placeholder="Your email" autocomplete="email" required{% if form.errors %} aria-invalid="true" aria-describedby="av-notify-err"{% endif %}>
             {%- if form.errors -%}<div id="av-notify-err" class="av-body av-body--s" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
-            <button class="av-button" type="submit">{% if soon %}Tell me{% else %}Notify me{% endif %}</button>
+            <button class="av-button" type="submit">Tell me</button>
           {%- endif -%}
         {%- endform -%}
       {%- else -%}
@@ -153,30 +131,15 @@
     {%- if product.description != blank -%}<div class="av-body av-product__desc">{{ product.description }}</div>{%- endif -%}
 
     <div class="av-product__accordions">
-      {%- comment -%} The weaver is named once on this page, in the provenance line under the title. {%- endcomment -%}
       {%- if mf.how_made.value != blank -%}
       <details class="av-acc"><summary><h2 class="av-acc__title">How it is made</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{{ mf.how_made.value | escape | newline_to_br }}</div></details>
       {%- endif -%}
-      {%- if has_materials -%}
-      <details class="av-acc"><summary><h2 class="av-acc__title">Materials and motif</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">
-        {%- if mf.yarn.value != blank -%}<p>Yarn: {{ mf.yarn.value | escape }}</p>{%- endif -%}
-        {%- if mf.dye.value != blank -%}<p>Dye: {{ mf.dye.value | escape }}</p>{%- endif -%}
-        {%- if mf.motif_name_ta.value != blank and mf.motif_name_en.value != blank -%}<p>Motif: <span class="av-ta" lang="ta">{{ mf.motif_name_ta.value | escape }}</span> — {{ mf.motif_name_en.value | escape }}</p>{%- elsif mf.motif_name_ta.value != blank -%}<p>Motif: <span class="av-ta" lang="ta">{{ mf.motif_name_ta.value | escape }}</span></p>{%- elsif mf.motif_name_en.value != blank -%}<p>Motif: {{ mf.motif_name_en.value | escape }}</p>{%- endif -%}
-        {%- if mf.cloth_weight.value != blank or mf.cloth_width.value != blank or mf.cloth_length.value != blank -%}
-        <dl class="av-measure">
-          {%- if mf.cloth_weight.value != blank -%}<div><dt class="av-label">Weight</dt><dd>{{ mf.cloth_weight.value | escape }}</dd></div>{%- endif -%}
-          {%- if mf.cloth_width.value != blank -%}<div><dt class="av-label">Width</dt><dd>{{ mf.cloth_width.value | escape }}</dd></div>{%- endif -%}
-          {%- if mf.cloth_length.value != blank -%}<div><dt class="av-label">Length</dt><dd>{{ mf.cloth_length.value | escape }}</dd></div>{%- endif -%}
-        </dl>
-        {%- endif -%}
-        {%- if measure_page != blank -%}<p><a class="av-link" href="{{ measure_page.url }}">Size and measure</a></p>{%- endif -%}
-      </div></details>
-      {%- endif -%}
-      {%- if section.settings.shipping != blank -%}
-      <details class="av-acc"><summary><h2 class="av-acc__title">Shipping</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{{ section.settings.shipping }}</div></details>
-      {%- elsif settings.av_shipping_line != blank -%}
-      <details class="av-acc"><summary><h2 class="av-acc__title">Shipping</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{{ settings.av_shipping_line | escape }}</div></details>
-      {%- endif -%}
+      {%- unless enquiry -%}
+      <details class="av-acc"><summary><h2 class="av-acc__title">Colour and cloth</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s"><p>Colours on screen can differ slightly from the cloth. Handloom cloth carries slubs, joined threads and small changes in the weave from one length to the next. They do not affect how the piece wears, and no two pieces are exactly alike.</p></div></details>
+      {%- endunless -%}
+      {%- unless enquiry -%}
+      <details class="av-acc"><summary><h2 class="av-acc__title">Shipping</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{%- if section.settings.shipping != blank -%}{{ section.settings.shipping }}{%- else -%}<p>Orders are dispatched from Chennai in six to eight days. Shipping across India is free and insured, and usually takes 2 to 5 working days after dispatch. Expedited shipping is ₹500. For orders from outside India, write to us.</p>{%- endif -%}{%- if shop.shipping_policy.body != blank -%}<p><a href="{{ shop.shipping_policy.url }}">The shipping policy</a></p>{%- endif -%}</div></details>
+      {%- endunless -%}
       {%- if enquiry == false and settings.av_returns_line != blank -%}
       <details class="av-acc"><summary><h2 class="av-acc__title">Returns</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s"><p>{{ settings.av_returns_line | escape }}</p>{%- if shop.refund_policy.body != blank -%}<p><a href="{{ shop.refund_policy.url }}">The full returns policy</a></p>{%- endif -%}</div></details>
       {%- endif -%}
@@ -187,12 +150,22 @@
       {%- endif -%}
     </div>
 
-    {%- if drop != blank or edition_total > 0 or mf.kara_colour.value != blank or loom_hours > 0 -%}
+    {%- unless enquiry -%}
+    {%- comment -%} The questions a buyer asks before ordering (copy draft 4): the kurta, wearing it, the date, seeing it, returning it. {%- endcomment -%}
+    <div class="av-product__accordions av-product__faq">
+      <h2 class="av-label">Before you order</h2>
+      <details class="av-acc"><summary><h3 class="av-acc__title">Does it come with the kurta?</h3><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s"><p>No. You receive the veshti, and the angavastram where the page says so. The kurta in the photographs is not included. A kurta can be made to your measure as a <a href="{{ commission_url }}">commission</a>.</p></div></details>
+      <details class="av-acc"><summary><h3 class="av-acc__title">How do I wear it?</h3><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s"><p>If you would like help tying the veshti, message us on WhatsApp.</p></div></details>
+      <details class="av-acc"><summary><h3 class="av-acc__title">Will it reach me before my date?</h3><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s"><p>Orders are dispatched from Chennai in six to eight days. Delivery across India usually takes 2 to 5 working days after that. For a close date, choose expedited shipping or message us first.</p></div></details>
+      <details class="av-acc"><summary><h3 class="av-acc__title">Can I see it before I buy?</h3><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s"><p>Message us on WhatsApp and we will send more photographs or a short video of the piece. You can also see it at our Chennai studio, by appointment.</p></div></details>
+      <details class="av-acc"><summary><h3 class="av-acc__title">Can I return it?</h3><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s"><p>Yes, within 7 days of delivery, if it has not been worn.{% if shop.refund_policy.body != blank %} The full policy is under <a href="{{ shop.refund_policy.url }}">Returns</a>.{% endif %}</p></div></details>
+    </div>
+    {%- endunless -%}
+
+    {%- if drop != blank or mf.kara_colour.value != blank -%}
     <div class="av-facts">
       {%- if drop != blank -%}{%- assign coll = drop.collection.value -%}<div class="av-fact"><div class="av-label">Collection</div><div class="av-body av-body--s">{% if coll != blank %}<a href="{{ coll.url }}">{{ drop.name.value | default: coll.title | escape }}</a>{% else %}{{ drop.name.value | escape }}{% endif %}</div></div>{%- endif -%}
-      {%- if edition_total > 0 and enquiry == false -%}<div class="av-fact"><div class="av-label">Edition</div><div class="av-body av-body--s">{{ edition_total }} {% if edition_total == 1 %}piece{% else %}pieces{% endif %}</div></div>{%- endif -%}
       {%- if mf.kara_colour.value != blank -%}<div class="av-fact"><div class="av-label">Kara</div><div class="av-body av-body--s">{{ mf.kara_colour.value | escape }}</div></div>{%- endif -%}
-      {%- if loom_hours > 0 -%}<div class="av-fact"><div class="av-label">At the loom</div><div class="av-body av-body--s">{{ loom_hours }} {{ hours_word }}</div></div>{%- endif -%}
     </div>
     {%- endif -%}
 
