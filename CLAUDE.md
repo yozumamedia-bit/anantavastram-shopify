@@ -72,3 +72,14 @@ No lorem ipsum. Facts not yet known stay as bracketed placeholders `[weaver name
 8. About, Gallery.
 9. `docs/setup.md`, `.github/workflows/theme-check.yml`, README.
 Run `shopify theme check` before every commit.
+
+## Copy and structure as of 13 Nov 2026 (website copy Draft 4, overrides anything above that disagrees)
+- Ananta Vastram designs and embroiders; it does not weave. Cloth comes from handloom weavers across India (no towns named). No weaver names on pieces, no "worn by real people". Kamalam Moorthy (Founder · Chief designer) draws every design; Sekhar, senior artisan, embroiders every piece. Voice is always "we". No em dashes, no semicolons. "Zari", never "real" or "tested".
+- Tagline "Handcrafted in Tamil Nadu." stays (homepage label, footer, home title). No season label: collections read "Collection" only.
+- Homepage: hero, credo, showcase, story, then **collection bands** (`av-drop-index` with `home` + `show_strip`): photograph, name, theme line, piece names, one link "See the collection". Product rows are no longer on the homepage. Then the Commissions band (paragraph + "Begin a commission" + "Book a studio visit" on WhatsApp).
+- Products page (`/collections/all`) is a **grid**, four across (two on phones): photograph, collection, name, price. Inside a collection the Pieces tab keeps one piece per row.
+- Stock counts are never printed ("In stock" / "Sold out"). Dispatch in six to eight days. Sold-out pieces are made again on demand ("Tell me when it is back").
+- Product page: Availability, You receive, description with a Details list in the product description (Fabric, Embroidery, Colour, Border, Length, Design, Embroidery by), panels How it is made · Colour and cloth · Shipping · Returns · Care, then "Before you order" (five questions).
+- Commissions: eight to ten weeks from the day the conversation is finalised (includes drawing the design); 30% deposit once the design is approved; cannot be returned. No hand delivery anywhere.
+- Returns: collection pieces within 7 days if unworn; faults reported within 48 hours. Full text in Settings → Policies (refund policy has `#handloom` and `#care` anchors).
+- Phone +91 99623 00009 (`av_phone_number`), WhatsApp +91 98400 02288 (`av_whatsapp_number`).
