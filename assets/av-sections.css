@@ -586,6 +586,9 @@ html.av-look-open { overflow: hidden; }
 .av-chapter--split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0; }
 .av-story { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 .av-story__text, .av-chapter--split .av-chapter__text { padding: 96px var(--av-gutter) 96px calc(var(--av-col-gap) / 2); }
+/* A photograph that fills its half takes its height from the row, never its width from the ratio (which pushed it over the text on tablets). */
+.av-story > .av-media, .av-chapter--split > .av-media { aspect-ratio: auto; width: 100%; min-height: 52vw; }
+.av-story > .av-media img, .av-chapter--split > .av-media img { position: absolute; inset: 0; }
 .av-drop { align-items: start; padding-top: var(--av-section); }
 .av-drop__info { align-self: stretch; }
 .av-routes { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
@@ -613,6 +616,7 @@ html.av-look-open { overflow: hidden; }
 @media (max-width: 699px) {
   .av-intro, .av-chapter, .av-chapter--split, .av-band, .av-enquiry, .av-people__head, .av-past-head, .av-past__head, .av-campaign__head, .av-coll-story, .av-drop, .av-story { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .av-story, .av-chapter--split { gap: 0; }
+  .av-story > .av-media, .av-chapter--split > .av-media { aspect-ratio: var(--ratio, 4 / 5); min-height: 0; }
   .av-story__text, .av-chapter--split .av-chapter__text { padding: 40px var(--av-gutter); }
   .av-steps__grid, .av-band__grid { grid-template-columns: minmax(0, 1fr); }
   .av-routes { grid-template-columns: minmax(0, 1fr); }
