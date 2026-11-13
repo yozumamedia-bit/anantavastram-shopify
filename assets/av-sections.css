@@ -601,6 +601,13 @@ html.av-look-open { overflow: hidden; }
 .av-cards--one .av-card > .av-card__title { align-self: end; }
 .av-intro .av-body, .av-chapter .av-body, .av-enquiry .av-body, .av-people__head .av-body { max-width: none; }
 .av-people__head > .av-body { max-width: none !important; } /* the steps paragraph fills its column; an inline max-width set it short of the grid */
+.av-coll-tabs { overflow-y: hidden; scrollbar-width: none; }
+.av-coll-tabs::-webkit-scrollbar { display: none; }
+/* The Details list in a product description: label and value in two columns, on hairlines, like the notes above it. */
+.av-product__desc ul { list-style: none; margin: 8px 0 0; padding: 0; border-top: 1px solid var(--av-grey-3); }
+.av-product__desc li { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--av-grey-3); font-size: 15px; line-height: 1.5; }
+.av-product__desc li strong { font-family: var(--av-font-body); font-weight: 400; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--av-grey-1); padding-top: 3px; }
+.av-product__desc h3 { font-family: var(--av-font-body); font-weight: 400; font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--av-kumkum); margin: 28px 0 0; }
 @media (max-width: 1100px) {
   .av-steps__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 32px; }
   .av-form { grid-template-columns: 1fr; }
@@ -613,6 +620,7 @@ html.av-look-open { overflow: hidden; }
 @media (min-width: 700px) and (max-width: 900px) {
   .av-list__items { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px 20px; }
   .av-commissions .av-media { aspect-ratio: 16 / 7; }
+  .av-coll-looks__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 20px; }
   .av-coll-opening .av-media, .av-coll-opening .av-video { aspect-ratio: 3 / 2; }
   .av-footer__grid { grid-template-columns: 1fr 1fr 1fr 1.5fr; }
   .av-campaign__lead { grid-template-columns: 8fr 4fr; gap: 20px; }
