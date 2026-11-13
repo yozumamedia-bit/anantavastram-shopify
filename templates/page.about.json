@@ -151,7 +151,7 @@
     "frame": {
       "type": "av-full-bleed",
       "settings": {
-        "image": "shopify://shop_images/av-in-about-frame.jpg",
+        "image": "shopify://shop_images/av-is-about-frame.jpg",
         "left": "At the frame",
         "right": "Photograph · Memory Lane Studios",
         "natural": true
