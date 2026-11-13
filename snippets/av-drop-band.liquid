@@ -72,7 +72,7 @@
       <div class="av-drop__head"><span class="av-label">{{ eyebrow }}</span>{{ chip }}</div>
       <h2 class="av-sub av-sub--l">{{ name | escape }}</h2>
       {%- if drop.theme.value != blank -%}<p class="av-body av-drop__theme av-ta">{{ drop.theme.value | escape }}</p>{%- endif -%}
-      {%- if drop.story.value != blank -%}<div class="av-body">{% render 'av-field-text', field: drop.story %}</div>{%- endif -%}
+      {%- comment -%} The band carries the theme line only; the collection's story is on its own page. {%- endcomment -%}
       {%- unless upcoming -%}{%- if piece_names != blank -%}<p class="av-body av-body--s av-drop__pieces">{{ piece_names }}</p>{%- endif -%}{%- endunless -%}
     </div>
     <a class="av-link" href="{{ col.url }}">{% if upcoming %}Read the story{% else %}See the collection{% endif %}</a>
