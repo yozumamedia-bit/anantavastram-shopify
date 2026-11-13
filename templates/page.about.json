@@ -147,6 +147,14 @@
         "image_left": "shopify://shop_images/av-about-route-left.jpg",
         "image_right": "shopify://shop_images/av-about-route-right.jpg"
       }
+    },
+    "frame": {
+      "type": "av-full-bleed",
+      "settings": {
+        "image": "shopify://shop_images/av-in-kovil-chariot-embrodering-photos-3-of-3.jpg",
+        "left": "At the frame",
+        "right": "Photograph · Memory Lane Studios"
+      }
     }
   },
   "order": [
@@ -154,6 +162,7 @@
     "place",
     "film",
     "ch1",
+    "frame",
     "clips",
     "ch2",
     "ch3",
