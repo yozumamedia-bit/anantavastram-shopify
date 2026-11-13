@@ -592,6 +592,13 @@ html.av-look-open { overflow: hidden; }
 .av-drop { align-items: start; padding-top: var(--av-section); }
 .av-drop__info { align-self: stretch; }
 .av-routes { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.av-intro, .av-people__head, .av-past-head { align-items: start; } /* heading and words start on the same line */
+/* A single card (the wedding set): photograph in the left column, words in the right, on the same centre line. */
+.av-cards--one { grid-template-columns: minmax(0, 1fr); justify-content: stretch; }
+.av-cards--one .av-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--av-col-gap); row-gap: 16px; align-content: center; }
+.av-cards--one .av-card > .av-media { grid-column: 1; grid-row: 1 / span 6; }
+.av-cards--one .av-card > :not(.av-media) { grid-column: 2; justify-self: start; }
+.av-cards--one .av-card > .av-card__title { align-self: end; }
 .av-intro .av-body, .av-chapter .av-body, .av-enquiry .av-body, .av-people__head .av-body { max-width: none; }
 .av-people__head > .av-body { max-width: none !important; } /* the steps paragraph fills its column; an inline max-width set it short of the grid */
 @media (max-width: 1100px) {
@@ -607,10 +614,9 @@ html.av-look-open { overflow: hidden; }
   .av-list__items { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px 20px; }
   .av-commissions .av-media { aspect-ratio: 16 / 7; }
   .av-coll-opening .av-media, .av-coll-opening .av-video { aspect-ratio: 3 / 2; }
-  .av-cards--one { grid-template-columns: minmax(0, calc(50% - 12px)); }
+  .av-footer__grid { grid-template-columns: 1fr 1fr 1fr 1.5fr; }
   .av-campaign__lead { grid-template-columns: 8fr 4fr; gap: 20px; }
   .av-coll-story__art { position: sticky; max-width: none; margin-inline: 0; }
-  .av-footer__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .av-footer__brand { grid-column: 1 / -1; }
 }
 @media (max-width: 699px) {
@@ -620,4 +626,5 @@ html.av-look-open { overflow: hidden; }
   .av-story__text, .av-chapter--split .av-chapter__text { padding: 40px var(--av-gutter); }
   .av-steps__grid, .av-band__grid { grid-template-columns: minmax(0, 1fr); }
   .av-routes { grid-template-columns: minmax(0, 1fr); }
+  .av-cards--one .av-card { display: flex; flex-direction: column; }
 }
