@@ -63,7 +63,7 @@
         endcapture
       -%}
       <button type="button" class="av-look" data-av-look-open="{{ dialog_id }}" aria-haspopup="dialog" aria-controls="{{ dialog_id }}">
-        {% render 'av-media', image: img, ratio: '4 / 5', sizes: '(min-width: 900px) 40vw, 100vw', alt: title %}
+        {% render 'av-media', image: img, ratio: '2 / 3', natural: true, sizes: '(min-width: 900px) 40vw, 100vw', alt: title %}
         <span class="av-look__meta"><span class="av-numeral">Look {{ num }}</span><span class="av-link" aria-hidden="true">See the look</span></span>
         <span class="av-name av-look__title">{{ title | escape }}</span>
         {%- if wearer != blank -%}<span class="av-body av-body--meta">{{ wearer }}</span>{%- endif -%}
@@ -78,7 +78,7 @@
           {%- if look.images.value.count > 0 -%}
             <div class="av-look-dialog__media">
               {%- for im in look.images.value limit: 3 -%}
-                {% render 'av-media', image: im, ratio: '4 / 5', sizes: '460px', reveal: false, loading: 'lazy' %}
+                {% render 'av-media', image: im, ratio: '2 / 3', natural: true, sizes: '460px', reveal: false, loading: 'lazy' %}
               {%- endfor -%}
             </div>
           {%- endif -%}
