@@ -410,7 +410,6 @@ html.av-zoom-open { overflow: hidden; }
 .av-list__pages .current, .av-pages .current { border-bottom: 1px solid var(--av-kumkum); }
 @media (max-width: 1100px) { .av-list__items { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 900px) { .av-list__items { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 16px; } .av-list__item .av-name { font-size: 15px; } }
-}
 
 /* ---------- Password page ---------- */
 html:has(> .av-password-body), .av-password-body { background: var(--av-kumkum); }
@@ -647,3 +646,41 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
 /* Commissions band and closing pair: photographs whole. */
 .av-commissions .av-media { aspect-ratio: var(--ratio); }
 @media (max-width: 900px) { .av-commissions .av-media { aspect-ratio: var(--ratio); } }
+
+/* ---------- No empty halves (13 Nov 2026, evening) ----------
+   Collection bands: the photograph is never taller than the screen, and the photograph and its words sit together
+   in the middle of the page. Collection page: the opening photograph stands beside the story, on ivory.
+   Product page: one photograph at a time with arrows, a counter and a "+" that opens every photograph. */
+@media (min-width: 700px) {
+  .av-drop { grid-template-columns: auto minmax(0, 480px); justify-content: center; align-items: center; }
+  .av-drop > .av-media { width: min(calc(50vw - var(--av-gutter) - 32px), calc(min(80vh, 860px) * (var(--ratio)))); aspect-ratio: var(--ratio); }
+  .av-drop__info { align-self: center; justify-content: center; gap: 36px; }
+  .av-coll-story { align-items: start; padding-top: 48px; }
+  .av-coll-story__art { display: flex; justify-content: center; position: sticky; top: calc(var(--av-header-h, 72px) + 24px); max-width: none; margin: 0; }
+  .av-coll-story__art img { width: auto; max-width: 100%; height: auto; max-height: calc(100vh - var(--av-header-h, 72px) - 72px); max-height: calc(100svh - var(--av-header-h, 72px) - 72px); }
+  .av-coll-story__text > * { max-width: 620px; }
+}
+.av-coll-story--text { justify-content: center; }
+
+.av-product__media { flex-direction: row; gap: 0; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+.av-product__media::-webkit-scrollbar { display: none; }
+.av-product__media > * { flex: 0 0 100%; scroll-snap-align: start; }
+.av-product__media > .av-media { aspect-ratio: auto; height: auto; background: transparent; }
+.av-product__media > .av-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.av-product__media > .av-media .av-media__lqip { display: none; }
+.av-product__count { display: block; position: absolute; right: 12px; bottom: 12px; padding: 6px 10px; background: rgba(245,239,227,.92); color: var(--av-ink); }
+.av-product__nav, .av-product__more { position: absolute; z-index: 2; width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 0; background: rgba(245,239,227,.92); color: var(--av-kumkum); font-family: var(--av-font-body); font-weight: 300; font-size: 24px; line-height: 1; cursor: pointer; padding: 0; }
+.av-product__nav { top: 50%; transform: translateY(-50%); }
+.av-product__nav--prev { left: 12px; } .av-product__nav--next { right: 12px; }
+.av-product__nav[disabled] { opacity: 0; pointer-events: none; }
+.av-product__more { left: 12px; bottom: 12px; font-size: 26px; }
+@media (min-width: 768px) {
+  .av-product__gallery { position: sticky; top: calc(var(--av-header-h, 72px) + 16px); }
+  .av-product__media { height: min(calc(100vh - var(--av-header-h, 72px) - 48px), 980px); }
+  .av-product__media > * { height: 100%; }
+}
+@media (max-width: 767px) {
+  .av-product__media { margin: 0 calc(-1 * var(--av-gutter)); padding: 0; aspect-ratio: 4 / 5; }
+  .av-product__media > * { flex: 0 0 100%; height: 100%; }
+  .av-product__nav { display: none; }
+}

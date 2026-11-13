@@ -13,13 +13,13 @@
       endif
     endfor
   endif
-  assign graphic = meta.story_graphic.value
+  assign graphic = meta.story_graphic.value | default: meta.ensemble_image.value
 -%}
 {%- if meta != blank and meta.story.value != blank -%}
 <section class="av-coll-story av-wrap av-section{% if graphic == blank %} av-coll-story--text{% endif %}" data-av-panel="story">
   {%- if graphic != blank -%}
     <figure class="av-coll-story__art av-reveal">
-      <img src="{{ graphic | image_url: width: 1400 }}" alt="{{ graphic.alt | escape }}" width="{{ graphic.width | default: 1000 }}" height="{{ graphic.height | default: 1000 }}" loading="lazy" decoding="async">
+      <img src="{{ graphic | image_url: width: 2000 }}" alt="{{ graphic.alt | escape }}" width="{{ graphic.width | default: 1000 }}" height="{{ graphic.height | default: 1000 }}" loading="eager" decoding="async">
     </figure>
   {%- endif -%}
   <div class="av-coll-story__text">

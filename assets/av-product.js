@@ -29,14 +29,30 @@
   if (!media) return;
   var items = Array.prototype.slice.call(media.children);
   var count = document.querySelector('[data-av-count]');
-  if (count && 'IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting && e.intersectionRatio > 0.6) count.textContent = items.indexOf(e.target) + 1;
-      });
-    }, { root: null, threshold: [0.6] });
-    items.forEach(function (el) { io.observe(el); });
+  /* one photograph at a time: arrows step the strip, and the counter follows it */
+  var current = 0;
+  var prev = document.querySelector('[data-av-prev]');
+  var next = document.querySelector('[data-av-next]');
+  function sync() {
+    current = Math.max(0, Math.min(items.length - 1, Math.round(media.scrollLeft / Math.max(1, items[0].offsetWidth))));
+    if (count) count.textContent = current + 1;
+    if (prev) prev.disabled = current === 0;
+    if (next) next.disabled = current === items.length - 1;
   }
+  function go(i) {
+    i = Math.max(0, Math.min(items.length - 1, i));
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    media.scrollTo({ left: items[i].offsetLeft - items[0].offsetLeft, behavior: reduce ? 'auto' : 'smooth' });
+  }
+  var tick;
+  media.addEventListener('scroll', function () { clearTimeout(tick); tick = setTimeout(sync, 60); }, { passive: true });
+  if (prev) prev.addEventListener('click', function () { go(current - 1); });
+  if (next) next.addEventListener('click', function () { go(current + 1); });
+  media.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(current + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(current - 1); }
+  });
+  sync();
   if (!dialog || typeof dialog.showModal !== 'function') return;
   var strip = dialog.querySelector('[data-av-zoom-strip]');
   function largest(img) {
@@ -71,6 +87,14 @@
     }
     el.addEventListener('click', open);
     el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+  });
+  var more = document.querySelector('[data-av-more]');
+  if (more) more.addEventListener('click', function () {
+    build();
+    dialog.showModal();
+    document.documentElement.classList.add('av-zoom-open');
+    var target = strip.children[imgs.slice(0, current).filter(Boolean).length];
+    if (target) target.scrollIntoView({ block: 'start', inline: 'start' });
   });
   dialog.querySelector('[data-av-zoom-close]').addEventListener('click', function () { dialog.close(); });
   dialog.addEventListener('click', function (e) { if (e.target === dialog) dialog.close(); });
