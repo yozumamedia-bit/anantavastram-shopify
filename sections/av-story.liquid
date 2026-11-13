@@ -1,5 +1,5 @@
 <section class="av-story">
-  {% render 'av-media', image: section.settings.image, ratio: '720 / 760', sizes: '(min-width: 900px) 50vw, 100vw' %}
+  {% render 'av-media', image: section.settings.image, ratio: '720 / 760', natural: true, sizes: '(min-width: 700px) 50vw, 100vw' %}
   <div class="av-story__text">
     <div class="av-label">{{ section.settings.label | escape }}</div>
     <p class="av-sub av-sub--l">{{ section.settings.heading | escape }}</p>

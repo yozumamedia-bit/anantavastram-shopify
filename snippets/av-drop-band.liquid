@@ -66,7 +66,7 @@
 </section>
 {%- else -%}
 <section class="av-drop">
-  {% render 'av-media', image: drop.ensemble_image.value, ratio: '780 / 820', sizes: '(min-width: 900px) 58vw, 100vw', loading: 'eager' %}
+  {% render 'av-media', image: drop.ensemble_image.value, ratio: '780 / 820', natural: true, sizes: '(min-width: 700px) 50vw, 100vw', loading: 'eager' %}
   <div class="av-drop__info">
     <div class="av-stack" style="gap:28px">
       <div class="av-drop__head"><span class="av-label">{{ eyebrow }}</span>{{ chip }}</div>

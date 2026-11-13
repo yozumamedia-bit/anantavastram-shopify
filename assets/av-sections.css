@@ -588,7 +588,8 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
 .av-story { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 .av-story__text, .av-chapter--split .av-chapter__text { padding: 96px var(--av-gutter) 96px calc(var(--av-col-gap) / 2); }
 /* A photograph that fills its half takes its height from the row, never its width from the ratio (which pushed it over the text on tablets). */
-.av-story > .av-media, .av-chapter--split > .av-media { aspect-ratio: auto; width: 100%; min-height: 52vw; }
+.av-story > .av-media, .av-chapter--split > .av-media { aspect-ratio: var(--ratio, 4 / 5); width: 100%; align-self: center; }
+.av-story { align-items: center; }
 .av-story > .av-media img, .av-chapter--split > .av-media img { position: absolute; inset: 0; }
 .av-drop { align-items: start; padding-top: var(--av-section); }
 .av-drop__info { align-self: stretch; }
@@ -631,9 +632,15 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
 @media (max-width: 699px) {
   .av-intro, .av-chapter, .av-chapter--split, .av-band, .av-enquiry, .av-people__head, .av-past-head, .av-past__head, .av-campaign__head, .av-coll-story, .av-drop, .av-story { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .av-story, .av-chapter--split { gap: 0; }
-  .av-story > .av-media, .av-chapter--split > .av-media { aspect-ratio: var(--ratio, 4 / 5); min-height: 0; }
   .av-story__text, .av-chapter--split .av-chapter__text { padding: 40px var(--av-gutter); }
   .av-steps__grid, .av-band__grid { grid-template-columns: minmax(0, 1fr); }
   .av-routes { grid-template-columns: minmax(0, 1fr); }
   .av-cards--one .av-card { display: flex; flex-direction: column; }
 }
+
+/* Embroidery photographs are shown whole (13 Nov 2026): a product photograph keeps its own proportions, and an upright
+   photograph at the top of a collection page sits whole on a dark ground. */
+.av-coll-opening .av-coll-opening__media--whole { aspect-ratio: auto; height: min(88vh, 960px); background: var(--av-dark); }
+.av-coll-opening .av-coll-opening__media--whole img { object-fit: contain; }
+.av-coll-opening .av-coll-opening__media--whole .av-media__lqip { display: none; }
+@media (max-width: 767px) { .av-product__media { align-items: flex-start; } .av-coll-opening .av-coll-opening__media--whole { height: auto; aspect-ratio: var(--ratio); } }

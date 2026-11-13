@@ -1,6 +1,7 @@
 {%- comment -%}
   Responsive image in a fixed-ratio box. Ivory placeholder when blank.
   Usage: {% render 'av-media', image: settings.image, ratio: '4 / 5', sizes: '(min-width: 900px) 33vw, 100vw', alt: 'text', loading: 'lazy', class: 'extra', vt: product.handle, priority: true %}
+  `natural: true` keeps the photograph's own proportions (no crop).
   `priority` adds fetchpriority="high" (the one largest image above the fold).
   `alt_image` adds a second photograph that fades in when the enclosing link is hovered or focused (see .av-media__alt).
   Lazy images sit on a blurred 24px copy of themselves and fade in once loaded; eager images (hero, first product photograph) show at once.
@@ -9,6 +10,16 @@
 {%- endcomment -%}
 {%- liquid
   assign ratio = ratio | default: '4 / 5'
+  comment
+    natural: true gives the box the photograph's own proportions, so nothing is cropped (embroidery photographs:
+    the whole design must show). The `ratio` passed in is then only the fallback for an empty box.
+  endcomment
+  if natural and image != blank
+    assign ar = image.aspect_ratio | default: image.preview_image.aspect_ratio
+    if ar != blank and ar > 0
+      assign ratio = ar | append: ' / 1'
+    endif
+  endif
   assign sizes = sizes | default: '100vw'
   assign loading = loading | default: 'lazy'
   assign fetch_priority = 'auto'

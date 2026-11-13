@@ -1,5 +1,5 @@
 <section class="av-bleed">
-  {% render 'av-media', image: section.settings.image, ratio: '1440 / 820', sizes: '100vw' %}
+  {% render 'av-media', image: section.settings.image, ratio: '1440 / 820', natural: section.settings.natural, sizes: '100vw' %}
   {%- if section.settings.left != blank or section.settings.right != blank -%}
   <div class="av-bleed__caption av-caption"><span class="av-body av-body--meta">{{ section.settings.left | escape }}</span><span class="av-body av-body--meta">{{ section.settings.right | escape }}</span></div>
   {%- endif -%}
@@ -7,6 +7,7 @@
 {% schema %}
 { "name": "AV Full-bleed image", "settings": [
   { "type": "image_picker", "id": "image", "label": "Image" },
+  { "type": "checkbox", "id": "natural", "label": "Show the whole photograph (no crop)", "default": false },
   { "type": "text", "id": "left", "label": "Caption left" },
   { "type": "text", "id": "right", "label": "Caption right" }
 ], "presets": [{ "name": "AV Full-bleed image" }] }

@@ -3,7 +3,7 @@
   {%- if section.settings.heading != blank -%}<h2 class="visually-hidden">{{ section.settings.heading | escape }}</h2>{%- endif -%}
   {%- for block in section.blocks -%}
     <div class="av-card" {{ block.shopify_attributes }}>
-      {% render 'av-media', image: block.settings.image, ratio: '1 / 1', sizes: '(min-width: 900px) 50vw, 100vw' %}
+      {% render 'av-media', image: block.settings.image, ratio: '1 / 1', natural: true, sizes: '(min-width: 700px) 50vw, 100vw' %}
       <h3 class="av-sub av-sub--s av-card__title">{{ block.settings.title | escape }}</h3>
       {%- if block.settings.text != blank -%}<div class="av-body av-body--s">{{ block.settings.text | escape | newline_to_br }}</div>{%- endif -%}
       {%- if block.settings.link_label != blank -%}<a class="av-link" href="{{ block.settings.link | default: '#av-enquiry' }}">{{ block.settings.link_label | escape }}</a>{%- endif -%}

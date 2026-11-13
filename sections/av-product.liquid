@@ -61,7 +61,7 @@
         endif
       -%}
       {%- if media.media_type == 'image' -%}
-        {% render 'av-media', image: media, ratio: '4 / 5', sizes: '(min-width: 900px) 58vw, 85vw', loading: loading_attr, vt: vt, priority: forloop.first %}
+        {% render 'av-media', image: media, ratio: '4 / 5', natural: true, sizes: '(min-width: 900px) 58vw, 85vw', loading: loading_attr, vt: vt, priority: forloop.first %}
       {%- elsif media.media_type == 'video' -%}
         {% render 'av-video', loop_video: media, class: 'av-product__video' %}
       {%- endif -%}

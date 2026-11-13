@@ -20,7 +20,9 @@
     {% render 'av-coll-head', meta: meta, col: collection %}
     <div class="av-coll-opening" data-av-panel="story" id="story">
       {%- if meta.ensemble_image.value != blank -%}
-        {% render 'av-media', image: meta.ensemble_image.value, ratio: '1440 / 640', sizes: '100vw', loading: 'eager', priority: true, class: 'av-coll-opening__media' %}
+        {%- comment -%} The opening photograph is shown whole on a dark ground, never cut to a strip: the embroidery must be seen complete. {%- endcomment -%}
+        {%- assign open_class = 'av-coll-opening__media av-coll-opening__media--whole' -%}
+        {% render 'av-media', image: meta.ensemble_image.value, ratio: '1440 / 640', natural: true, sizes: '100vw', loading: 'eager', priority: true, class: open_class %}
       {%- elsif meta.film.value != blank -%}
         {% render 'av-video', loop_video: meta.film.value, class: 'av-coll-opening__media', reveal: false %}
       {%- endif -%}

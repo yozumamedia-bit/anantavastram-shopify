@@ -151,9 +151,10 @@
     "frame": {
       "type": "av-full-bleed",
       "settings": {
-        "image": "shopify://shop_images/av-in-kovil-chariot-embrodering-photos-3-of-3.jpg",
+        "image": "shopify://shop_images/av-in-about-frame.jpg",
         "left": "At the frame",
-        "right": "Photograph · Memory Lane Studios"
+        "right": "Photograph · Memory Lane Studios",
+        "natural": true
       }
     }
   },
