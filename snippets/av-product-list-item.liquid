@@ -1,6 +1,7 @@
 {%- comment -%}
   One tile of the Products grid (rows and columns: four across on a desktop, two on a phone; decided 13 Nov 2026).
   Usage (inside a <ul class="av-list__items">): {% render 'av-product-list-item', product: product %}
+  The photograph is the piece's first one: the embroidery laid flat, upright, shown whole (the photographs are 2:3).
   Photograph, collection name, piece name, price. No description, no stock figure, no button; a sold-out piece says so
   in place of its price. Availability comes from snippets/av-edition-line.liquid (context 'state').
 {%- endcomment -%}
@@ -13,7 +14,7 @@
 -%}
 <li class="av-list__row">
   <a class="av-list__item{% if state contains 'sold' %} av-list__item--sold{% endif %}" href="{{ product.url }}">
-    {% render 'av-media', image: product.featured_image, alt_image: product.images[1], vt: product.handle, ratio: '3 / 4', sizes: '(min-width: 900px) 25vw, 50vw' %}
+    {% render 'av-media', image: product.featured_image, alt_image: product.images[1], vt: product.handle, ratio: '2 / 3', sizes: '(min-width: 900px) 25vw, 50vw' %}
     <div class="av-list__name">
       {%- if cname != blank -%}<span class="av-label">{{ cname | escape }}</span>{%- endif -%}
       <h3 class="av-name">{{ product.title | escape }}</h3>
