@@ -84,3 +84,12 @@ Run `shopify theme check` before every commit.
 - Returns: collection pieces within 7 days if unworn; faults reported within 48 hours. Full text in Settings → Policies (refund policy has `#handloom` and `#care` anchors).
 - Phone +91 99623 00009 (`av_phone_number`), WhatsApp +91 98400 02288 (`av_whatsapp_number`).
 - Layout grid (13 Nov 2026, end of `av-sections.css`): every heading-left, text-right section uses two equal columns with `--av-col-gap`, so right columns start on the centre line. Two columns hold down to 700px (iPad portrait gets the page layout); below 700px everything stacks. Tablets (700 to 1100px) use a 32px gutter. Add new sections to that block rather than giving them their own column ratios.
+
+## Corrections of 14 Nov 2026 (Kamalam's note, overrides Draft 4 where they disagree)
+- Pieces renamed: "Puri Jagannath Temple" is now **The Architecture of Odisha** (`/products/the-architecture-of-odisha`); the temple's name is not used anywhere on the site. "The Chariot That Carried a Culture" is now **Ratham** (`/products/ratham`). Old addresses redirect.
+- Returns: collection pieces are returned **only if they arrive damaged** (write within 48 hours with photographs). Every order is confirmed by chat or email before dispatch. The 7-day return is gone.
+- We ship to the USA from Chennai. Stock is held in Chennai only.
+- New copy says "our senior artisan, with 35 years of experience". Voice stays "we".
+- About: "From the loom to the frame" removed (chapters are I Kamalam Moorthy, II The weavers, III How the house works, which lists Small numbers, Commissions, Occasional, Everyday, One price).
+- Gallery: `av-campaign` has a `whole` setting (on): photographs at their own proportions in columns, never cropped.
+- Collection page: the opening photograph stands beside the story (`av-coll-story`). Product page: one photograph at a time with arrows, a counter and "+" for every photograph.

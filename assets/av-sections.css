@@ -684,3 +684,9 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
   .av-product__media > * { flex: 0 0 100%; height: 100%; }
   .av-product__nav { display: none; }
 }
+
+/* Gallery, whole mode (14 Nov 2026): photographs at their own proportions in columns, nothing cut off. */
+.av-campaign__whole { columns: 3; column-gap: 24px; }
+.av-campaign__whole > .av-media { break-inside: avoid; margin: 0 0 24px; aspect-ratio: var(--ratio); }
+@media (max-width: 1000px) { .av-campaign__whole { columns: 2; column-gap: 16px; } .av-campaign__whole > .av-media { margin-bottom: 16px; } }
+@media (max-width: 520px) { .av-campaign__whole { columns: 1; } }

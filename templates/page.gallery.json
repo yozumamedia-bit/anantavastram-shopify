@@ -69,7 +69,8 @@
         "season": "",
         "photographer": "Memory Lane Studios",
         "wearers": "",
-        "location": ""
+        "location": "",
+        "whole": true
       }
     },
     "c2": {
@@ -142,7 +143,8 @@
         "wearers": "",
         "location": "",
         "archive_label": "The archive",
-        "archive_url": "/blogs/stories/tagged/campaigns"
+        "archive_url": "/blogs/stories/tagged/campaigns",
+        "whole": true
       }
     },
     "c3": {
@@ -199,7 +201,8 @@
         "wearers": "",
         "location": "",
         "archive_label": "The archive",
-        "archive_url": "/blogs/stories/tagged/campaigns"
+        "archive_url": "/blogs/stories/tagged/campaigns",
+        "whole": true
       },
       "disabled": true
     }

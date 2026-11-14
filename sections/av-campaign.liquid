@@ -78,7 +78,12 @@
 {%- if has_campaign or has_archive -%}
 <section class="av-campaign">
   {%- if has_campaign -%}
-  {%- if n > 0 -%}
+  {%- if section.settings.whole and n > 0 -%}
+  {%- comment -%} Whole mode: every photograph at its own proportions, in columns, so no garment is cut off. {%- endcomment -%}
+  <div class="av-campaign__whole">
+    {%- for i in (0..7) -%}{%- if i < n -%}{% render 'av-campaign-image', imgs: imgs, i: i, from_blocks: from_blocks, ratio: '2 / 3', natural: true, sizes: '(min-width: 900px) 33vw, (min-width: 600px) 50vw, 100vw', loading: lead_loading %}{%- endif -%}{%- endfor -%}
+  </div>
+  {%- elsif n > 0 -%}
   <div class="av-campaign__lead">
     {% render 'av-campaign-image', imgs: imgs, i: 0, from_blocks: from_blocks, ratio: '920 / 900', sizes: '(min-width: 900px) 66vw, 100vw', loading: lead_loading %}
     {%- if n > 1 -%}
@@ -102,12 +107,13 @@
     </div>
     {%- if story != blank -%}<div class="av-body" style="max-width:600px">{{ story | escape | newline_to_br }}</div>{%- endif -%}
   </div>
-  {%- if n > 3 -%}
+  {%- if n > 3 and section.settings.whole != true -%}
   <div class="av-grid av-grid--3 av-campaign__row3">
     {%- for i in (3..5) -%}{%- if i < n -%}{% render 'av-campaign-image', imgs: imgs, i: i, from_blocks: from_blocks, ratio: '4 / 5', sizes: '(min-width: 900px) 33vw, 100vw' %}{%- endif -%}{%- endfor -%}
   </div>
   {%- endif -%}
-  {%- if n > 6 or has_film -%}
+  {%- if section.settings.whole and has_film -%}<div class="av-campaign__close">{% render 'av-video', loop_video: film, poster: poster %}</div>
+  {%- elsif n > 6 or has_film -%}
   {%- comment -%} Closing row: narrow image + wide film/image. A lone item spans the row (CSS :only-child). {%- endcomment -%}
   <div class="av-grid av-grid--4-8 av-campaign__close">
     {%- if has_film -%}
@@ -130,6 +136,7 @@
 {% schema %}
 { "name": "AV Campaign", "max_blocks": 8, "settings": [
   { "type": "text", "id": "label", "label": "Label", "default": "Campaign", "info": "Never numbered. The season, when set, follows it." },
+  { "type": "checkbox", "id": "whole", "label": "Show every photograph whole (no cropping)", "default": true },
   { "type": "checkbox", "id": "page_heading", "label": "Carries the page heading (first campaign only)", "default": false },
   { "type": "metaobject", "metaobject_type": "campaign", "id": "campaign", "label": "Campaign entry", "info": "When set, the fields and image blocks below are ignored." },
   { "type": "header", "content": "Without a campaign entry" },

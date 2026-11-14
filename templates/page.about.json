@@ -5,7 +5,7 @@
       "settings": {
         "label": "About the house",
         "statement": "Cloth without end.",
-        "text": "<p>Ananta means infinite. Vastram means cloth. We chose the name for a simple reason: a veshti is one unbroken length of cloth, with no cut and no seam.</p>",
+        "text": "<p>Ananta means infinite. Vastram means cloth. We chose the name for a simple reason: a veshti is one unbroken length of cloth, with no cut and no seam.</p><p>Vastram is the cloth that wraps around you, the layer closest to your skin. We create heirloom veshtis and top wear, on handloom cloth, crafted by hand.</p>",
         "note": "Ananta Vastram is an embroidery house in Chennai. Most embroidered menswear is a sherwani or a kurta. We embroider the veshti, and the garments worn with it. Collection pieces are made in small numbers and held in stock. Commissions are made to order, for one person, and take eight to ten weeks.",
         "large_body": true,
         "open": true
@@ -36,7 +36,8 @@
         "text": "<p>Every piece begins with yarn spun by hand and woven on a pit loom by handloom weavers across India.</p><p>In our studio, Kamalam draws the design and chooses the embroidery to suit it. Most of our work is aari, a fine chain stitch made with a hooked needle, and zardosi, which is metal-thread work. We have also worked sashiko, the Japanese running stitch, together with aari. We have set Turkish designs in zardosi, and French embroidery on Kalamkari.</p><p>Sekhar, our senior artisan, embroiders every piece by hand. We use only fine threads and zari.</p>",
         "link_label": "",
         "link": ""
-      }
+      },
+      "disabled": true
     },
     "clips": {
       "type": "av-video-pair",
@@ -64,20 +65,20 @@
     "ch2": {
       "type": "av-chapter-split",
       "settings": {
-        "numeral": "II",
+        "numeral": "I",
         "title": "Kamalam Moorthy",
         "role": "Founder · Chief designer",
         "quote": "Women have far more choice in traditional wear than men. We wanted to dress our men in style, and yet in our heritage and culture. So we design pieces inspired by our epics, teachings, architecture, festivities, flora and fauna, on hand-woven fabrics, embellished with hand embroidery.\nWe are not trying to change anything. We are trying to bring ease, and the pride to wear our culture.",
-        "text": "",
+        "text": "<p>It began when Kamalam wanted to give her sons something of her grandfather’s veshti, and found that nothing from his wardrobe had come down to her. Her husband still had his father’s angavastram, intact, and it is a piece of art.</p><p>That is when we asked why not create clothing that can become an heirloom, carrying fond memories for the one who gives it and the one who receives it. We love stories that are passed on, and these pieces carry ours into the future. The clothing of our ancestors, kept in our museums, is beautifully crafted and embroidered by hand. We bring those traditions into menswear, alongside the world’s architecture, culture and nature.</p>",
         "video_caption": ""
       }
     },
     "ch3": {
       "type": "av-chapter",
       "settings": {
-        "numeral": "III",
+        "numeral": "II",
         "title": "The weavers we work with",
-        "text": "<p>Our cloth comes from handloom weavers all over India, and we are always looking for more. If you weave by hand on a pit loom and would like to work with us, write to us.</p>",
+        "text": "<p>Our cloth comes from handloom weavers all over India. Our partners have made it their mission to bring ethically sourced handloom fabrics to the world, and we also work with small and large weaving clusters across India. We try to use fabrics whose yarn is dyed naturally before it is woven.</p><p>We are always looking for more weavers. If you weave by hand on a pit loom and would like to work with us, write to us.</p>",
         "link_label": "Write to the studio",
         "link": "shopify://pages/contact"
       }
@@ -95,8 +96,8 @@
         "i2": {
           "type": "item",
           "settings": {
-            "title": "Commissions, made to order",
-            "text": "Collection pieces are ready to wear. A commission begins only when you ask for it, after a conversation, and takes eight to ten weeks to make."
+            "title": "Commissions",
+            "text": "Exclusive pieces designed for an occasion, keeping in mind the sentiments that go with it. We plan each one in conversation with you and make it with care and love. A commission takes eight to ten weeks."
           }
         },
         "i3": {
@@ -105,16 +106,32 @@
             "title": "One price",
             "text": "The price on the page is the price, on this site and nowhere else."
           }
+        },
+        "i4": {
+          "type": "item",
+          "settings": {
+            "title": "Occasional",
+            "text": "Clothes made of natural fibres carry memories. Our occasional pieces are made to bring joy when they are worn and to create memories of their own. They are not overstated or heavy, and they echo the world’s heritage, architecture and nature in a meaningful form."
+          }
+        },
+        "i5": {
+          "type": "item",
+          "settings": {
+            "title": "Everyday",
+            "text": "Made in handwoven cotton, these pieces are for everyday wear. The designs are easy to wear every day, and still set you apart."
+          }
         }
       },
       "block_order": [
         "i1",
         "i2",
+        "i4",
+        "i5",
         "i3"
       ],
       "settings": {
         "mode": "list",
-        "numeral": "IV",
+        "numeral": "III",
         "heading": "How the house works"
       }
     },

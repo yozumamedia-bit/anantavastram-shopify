@@ -29,14 +29,14 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/av-home-look-2.jpg",
-            "product": "the-chariot-that-carried-a-culture"
+            "product": "ratham"
           }
         },
         "c": {
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/av-home-look-3.jpg",
-            "product": "puri-jagannath-temple"
+            "product": "the-architecture-of-odisha"
           }
         }
       },
@@ -52,7 +52,7 @@
       "settings": {
         "image": "shopify://shop_images/av-is-kovil-puri-jagananth-embrodering-photos-2-of-2.jpg",
         "label": "The house",
-        "text": "<p>Every piece begins as a length of cloth, its yarn spun by hand and woven on a pit loom. We choose one cloth for each design, the one that holds the stitch and still shows its own weave: mulberry silk, Eri silk, silk cotton, cotton or linen.</p><p>In our Chennai studio, Kamalam Moorthy draws each design on paper, from forests, temples, epics and the stories told about them. Sekhar, our highly skilled senior artisan, then embroiders it by hand at the frame, with care, in aari and zardosi work, with zari, thread and beads, to bring her vision to life.</p>",
+        "text": "<p>Every piece begins as a length of cloth, its yarn spun by hand and woven on a pit loom. We choose one cloth for each design, the one that holds the stitch and still shows its own weave: mulberry silk, Eri silk, silk cotton, cotton or linen.</p><p>In our Chennai studio, Kamalam Moorthy draws each design on paper, from forests, temples, epics and the stories told about them. Sekhar, our highly skilled senior artisan, then embroiders it by hand at the frame, with care, in aari and zardosi work, with zari, thread and beads, to bring her vision to life.</p><p>The veshti is traditional menswear, passed down through generations across India, and every state drapes it in its own way. We have reimagined it as an heirloom to pass on to the next generation. We choose handwoven fabrics, draw designs inspired by the architecture, culture, food, flora, fauna and landscapes of the world, and have them crafted by hand by experienced artisans, to give the veshti back a meaning that has faded over the generations.</p>",
         "link_label": "About the house",
         "link": "shopify://pages/about",
         "heading": "We begin with handloom cloth. The embroidery is ours."
