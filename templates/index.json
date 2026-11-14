@@ -1,11 +1,20 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "av-hero",
       "settings": {
         "image": "shopify://shop_images/av-home-hero-boston.jpg",
-        "focus_y": 100,
-        "image_mobile": "shopify://shop_images/av-comm-04025.jpg"
+        "image_mobile": "shopify://shop_images/av-comm-04025.jpg",
+        "focus_y": 100
       }
     },
     "credo": {
@@ -54,31 +63,30 @@
         "label": "The house",
         "text": "<p>Every piece begins as a length of cloth, its yarn spun by hand and woven on a pit loom. We choose one cloth for each design, the one that holds the stitch and still shows its own weave: mulberry silk, Eri silk, silk cotton, cotton or linen.</p><p>In our Chennai studio, Kamalam Moorthy draws each design on paper, from forests, temples, epics and the stories told about them. Sekhar, our highly skilled senior artisan, then embroiders it by hand at the frame, with care, in aari and zardosi work, with zari, thread and beads, to bring her vision to life.</p><p>The veshti is traditional menswear, passed down through generations across India, and every state drapes it in its own way. We have reimagined it as an heirloom to pass on to the next generation. We choose handwoven fabrics, draw designs inspired by the architecture, culture, food, flora, fauna and landscapes of the world, and have them crafted by hand by experienced artisans, to give the veshti back a meaning that has faded over the generations.</p>",
         "link_label": "About the house",
-        "link": "shopify://pages/about",
-        "heading": "We begin with handloom cloth. The embroidery is ours."
+        "link": "shopify://pages/about"
       }
     },
     "film": {
       "type": "av-film-banner",
-      "settings": {},
-      "disabled": true
+      "disabled": true,
+      "settings": {}
     },
     "commissions": {
       "type": "av-commissions-row",
       "settings": {
-        "link": "shopify://pages/commissions",
-        "image": "shopify://shop_images/av-dz-commission-band.jpg",
         "label": "Commissions · Made to order",
+        "image": "shopify://shop_images/av-dz-commission-band.jpg",
         "statement": "One piece, for one person, made once.",
-        "routing": "A commission is a piece that does not exist yet. It begins with a conversation and is finalised in our Chennai studio. You choose the cloth from our range, Kamalam draws the design from your occasion and your own references, and we embroider it by hand. A commission takes eight to ten weeks to make. Sample designs are kept at the studio, and you can book a visit to see them."
+        "routing": "A commission is a piece that does not exist yet. It begins with a conversation and is finalised in our Chennai studio. You choose the cloth from our range, Kamalam draws the design from your occasion and your own references, and we embroider it by hand. A commission takes eight to ten weeks to make. Sample designs are kept at the studio, and you can book a visit to see them.",
+        "link": "shopify://pages/commissions"
       }
     },
     "collections": {
       "type": "av-drop-index",
       "settings": {
         "past_text": "",
-        "show_strip": true,
-        "home": true
+        "home": true,
+        "show_strip": true
       }
     }
   },
