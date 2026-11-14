@@ -6,5 +6,10 @@
       assign text = 'About ' | append: product.title
     endif
   -%}
-  {% render 'av-whatsapp-link', label: 'Write to us on WhatsApp', text: text, class: 'av-wa-float', icon: true %}
+  {%- assign wa_class = 'av-wa-float' -%}
+  {%- if template.name == 'index' -%}{%- assign wa_class = 'av-wa-float is-waiting' -%}{%- endif -%}
+  {% render 'av-whatsapp-link', label: 'Write to us on WhatsApp', text: text, class: wa_class, icon: true %}
+  {%- if template.name == 'index' -%}
+  <script>(function(){var b=document.querySelector('.av-wa-float.is-waiting');if(!b)return;function go(){if(window.scrollY>120){b.classList.remove('is-waiting');window.removeEventListener('scroll',go);}}window.addEventListener('scroll',go,{passive:true});go();})();</script>
+  {%- endif -%}
 {%- endif -%}

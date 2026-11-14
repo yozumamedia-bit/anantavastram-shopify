@@ -2,32 +2,19 @@
   "sections": {
     "intro": {
       "type": "av-page-intro",
-      "blocks": {
-        "k1": {
-          "type": "key",
-          "settings": {
-            "label": "Everyday"
-          }
-        },
-        "k2": {
-          "type": "key",
-          "settings": {
-            "label": "Occasion"
-          }
-        }
-      },
-      "block_order": [
-        "k1",
-        "k2"
-      ],
+      "blocks": {},
+      "block_order": [],
       "settings": {
         "label": "Collections",
-        "statement": "Numbered collections, each on one idea."
+        "statement": "Each collection grows from one inspiration.",
+        "text": "<p>A collection is a small set of pieces drawn from one source. Each piece is embroidered in small numbers and held in stock in Chennai. We ship across India, and to the USA from Chennai.</p>"
       }
     },
     "index": {
       "type": "av-drop-index",
-      "settings": {}
+      "settings": {
+        "past_text": ""
+      }
     }
   },
   "order": [

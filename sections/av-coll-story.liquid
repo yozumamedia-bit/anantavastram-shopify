@@ -1,0 +1,39 @@
+{%- comment -%}
+  Story panel: what the collection is and why — the entry's `story` (rich text: headings and paragraphs), set beside
+  the entry's `story_graphic` (a line drawing, e.g. Mullai's tree growing in two directions, from the launch carousel).
+  Hidden when the story is empty. Sits on the Story tab, after the header and opening photograph.
+{%- endcomment -%}
+{%- liquid
+  assign meta = nil
+  if collection != blank and collection.handle != 'all'
+    for m in shop.metaobjects.collection_meta.values
+      if m.collection.value.id == collection.id
+        assign meta = m
+        break
+      endif
+    endfor
+  endif
+  assign graphic = meta.story_graphic.value | default: meta.ensemble_image.value
+-%}
+{%- if meta != blank and meta.story.value != blank -%}
+<section class="av-coll-story av-wrap av-section{% if graphic == blank %} av-coll-story--text{% endif %}" data-av-panel="story">
+  {%- if graphic != blank -%}
+    <figure class="av-coll-story__art av-reveal">
+      <img src="{{ graphic | image_url: width: 2000 }}" alt="{{ graphic.alt | escape }}" width="{{ graphic.width | default: 1000 }}" height="{{ graphic.height | default: 1000 }}" loading="eager" decoding="async">
+    </figure>
+  {%- endif -%}
+  <div class="av-coll-story__text">
+    {%- if section.settings.label != blank -%}<div class="av-label">{{ section.settings.label | escape }}</div>{%- endif -%}
+    {%- if meta.story.type == 'rich_text_field' -%}
+      {{ meta.story | metafield_tag }}
+    {%- else -%}
+      {% render 'av-field-text', field: meta.story %}
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+{% schema %}
+{ "name": "AV Collection story", "settings": [
+  { "type": "text", "id": "label", "label": "Label", "default": "The story" }
+], "presets": [{ "name": "AV Collection story" }] }
+{% endschema %}

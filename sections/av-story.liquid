@@ -1,5 +1,5 @@
 <section class="av-story">
-  {% render 'av-media', image: section.settings.image, ratio: '720 / 760', sizes: '(min-width: 900px) 50vw, 100vw' %}
+  {% render 'av-media', image: section.settings.image, ratio: '720 / 760', natural: true, sizes: '(min-width: 700px) 50vw, 100vw' %}
   <div class="av-story__text">
     <div class="av-label">{{ section.settings.label | escape }}</div>
     <p class="av-sub av-sub--l">{{ section.settings.heading | escape }}</p>
@@ -9,11 +9,11 @@
 </section>
 {% schema %}
 { "name": "AV Story", "settings": [
-  { "type": "image_picker", "id": "image", "label": "Image (weaver at the loom)" },
+  { "type": "image_picker", "id": "image", "label": "Image" },
   { "type": "text", "id": "label", "label": "Label", "default": "The house" },
-  { "type": "textarea", "id": "heading", "label": "Heading (General Sans Bold)", "default": "A veshti is not a garment first. It is a length of cloth that a weaver has already decided everything about." },
-  { "type": "richtext", "id": "text", "label": "Paragraphs", "default": "<p>[Brand story, paragraph one — Kamalam, the unit, the town.]</p><p>[Paragraph two — the yarn, the dye, the border.]</p><p>[Paragraph three — why each piece carries the weaver's name and a number.]</p>" },
-  { "type": "text", "id": "link_label", "label": "Link label", "default": "The craft" },
+  { "type": "textarea", "id": "heading", "label": "Heading (General Sans Bold)", "default": "We begin with handloom cloth. The embroidery is ours." },
+  { "type": "richtext", "id": "text", "label": "Paragraphs" },
+  { "type": "text", "id": "link_label", "label": "Link label", "default": "About the house" },
   { "type": "url", "id": "link", "label": "Link" }
 ], "presets": [{ "name": "AV Story" }] }
 {% endschema %}

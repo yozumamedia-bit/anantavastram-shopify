@@ -77,7 +77,27 @@
                 {{- 'templates.search.products' | t -}}
               </h2>
               <ul id="predictive-search-results-products-list" class="predictive-search__results-list list-unstyled" role="group" aria-labelledby="predictive-search-products">
+                {%- liquid
+                  assign named_ids = ''
+                  for m in shop.metaobjects.collection_meta.values
+                    assign cid = m.collection.value.id
+                    if cid != blank
+                      assign named_ids = named_ids | append: ',' | append: cid | append: ','
+                    endif
+                  endfor
+                -%}
                 {%- for product in predictive_search.resources.products -%}
+                  {%- liquid
+                    assign in_named = false
+                    for c in product.collections
+                      assign key = ',' | append: c.id | append: ','
+                      if named_ids contains key
+                        assign in_named = true
+                        break
+                      endif
+                    endfor
+                  -%}
+                  {%- unless in_named -%}{%- continue -%}{%- endunless -%}
                   <li id="predictive-search-option-product-{{ forloop.index }}" class="predictive-search__list-item" role="option" aria-selected="false">
                     <a href="{{ product.url }}" class="predictive-search__item predictive-search__item--link-with-thumbnail link link--text" tabindex="-1">
                       {%- if product.featured_media != blank -%}

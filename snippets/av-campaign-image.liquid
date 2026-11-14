@@ -9,4 +9,4 @@
     assign im = im.settings.image
   endif
 -%}
-{% render 'av-media', image: im, ratio: ratio, sizes: sizes, loading: loading %}
+{%- if im != blank or natural != true -%}{% render 'av-media', image: im, ratio: ratio, natural: natural, sizes: sizes, loading: loading %}{%- endif -%}
