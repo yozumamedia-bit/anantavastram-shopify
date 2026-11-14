@@ -52,6 +52,34 @@
     if (e.key === 'ArrowRight') { e.preventDefault(); go(current + 1); }
     if (e.key === 'ArrowLeft') { e.preventDefault(); go(current - 1); }
   });
+  /* the hint: a label and one small nudge of the strip, shown until the first swipe or arrow */
+  var hint = document.querySelector('[data-av-hint]');
+  if (hint && items.length > 1) {
+    var nudged = false;
+    var done = function () { hint.classList.add('is-done'); media.removeEventListener('scroll', seen); };
+    var seen = function () { if (!nudged && media.scrollLeft > 60) done(); };
+    media.addEventListener('scroll', seen, { passive: true });
+    if (prev) prev.addEventListener('click', done);
+    if (next) next.addEventListener('click', done);
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduce && 'IntersectionObserver' in window) {
+      var hio = new IntersectionObserver(function (en) {
+        if (!en[0].isIntersecting) return;
+        hio.disconnect();
+        setTimeout(function () {
+          if (media.scrollLeft > 4) return;
+          nudged = true;
+          media.style.scrollSnapType = 'none';
+          media.scrollTo({ left: 56, behavior: 'smooth' });
+          setTimeout(function () {
+            media.scrollTo({ left: 0, behavior: 'smooth' });
+            setTimeout(function () { media.style.scrollSnapType = ''; nudged = false; }, 500);
+          }, 520);
+        }, 1200);
+      }, { threshold: 0.6 });
+      hio.observe(media);
+    }
+  }
   sync();
   if (!dialog || typeof dialog.showModal !== 'function') return;
   var strip = dialog.querySelector('[data-av-zoom-strip]');

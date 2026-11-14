@@ -70,6 +70,7 @@
   {%- if renderable_media > 1 -%}
     <button class="av-product__nav av-product__nav--prev" type="button" data-av-prev aria-label="Previous photograph" disabled>&#8249;</button>
     <button class="av-product__nav av-product__nav--next" type="button" data-av-next aria-label="Next photograph">&#8250;</button>
+    <div class="av-product__hint av-label" data-av-hint aria-hidden="true"><span class="av-product__hint-touch">Swipe for more</span><span class="av-product__hint-mouse">More photographs</span> <span class="av-product__hint-arrow">&#8594;</span></div>
     <div class="av-product__count av-label" aria-hidden="true"><span data-av-count>1</span> / {{ renderable_media }}</div>
   {%- endif -%}
   {%- if renderable_media > 0 -%}<button class="av-product__more" type="button" data-av-more aria-label="See every photograph, large">+</button>{%- endif -%}

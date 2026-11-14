@@ -690,3 +690,12 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
 .av-campaign__whole > .av-media { break-inside: avoid; margin: 0 0 24px; aspect-ratio: var(--ratio); }
 @media (max-width: 1000px) { .av-campaign__whole { columns: 2; column-gap: 16px; } .av-campaign__whole > .av-media { margin-bottom: 16px; } }
 @media (max-width: 520px) { .av-campaign__whole { columns: 1; } }
+
+/* Product photographs: the "swipe for more" hint, gone after the first swipe or arrow. */
+.av-product__hint { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 2; padding: 8px 14px; background: rgba(245,239,227,.92); color: var(--av-kumkum); white-space: nowrap; pointer-events: none; transition: opacity 400ms ease; }
+.av-product__hint.is-done { opacity: 0; }
+.av-product__hint-arrow { display: inline-block; animation: av-hint 1.4s ease-in-out infinite; }
+.av-product__hint-touch { display: none; }
+@media (hover: none), (max-width: 767px) { .av-product__hint-touch { display: inline; } .av-product__hint-mouse { display: none; } }
+@keyframes av-hint { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+@media (prefers-reduced-motion: reduce) { .av-product__hint-arrow { animation: none; } }
