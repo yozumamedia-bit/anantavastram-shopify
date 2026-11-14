@@ -699,3 +699,15 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
 @media (hover: none), (max-width: 767px) { .av-product__hint-touch { display: inline; } .av-product__hint-mouse { display: none; } }
 @keyframes av-hint { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
 @media (prefers-reduced-motion: reduce) { .av-product__hint-arrow { animation: none; } }
+
+/* Hero, whole mode (14 Nov 2026): on screens wider than the photograph it is shown whole and centred, never cut. Phones keep their own portrait photograph. */
+@media (min-width: 750px) {
+  .av-hero--whole { height: min(calc(100svh - var(--av-header-h)), calc(100vw / var(--av-hero-ratio, 1.6))); min-height: 0; background: var(--av-ivory); }
+  .av-hero--whole img { object-fit: contain; animation: none; }
+}
+/* Homepage story: the photograph is never taller than the screen, and photograph and words sit together in the middle. */
+@media (min-width: 700px) {
+  .av-story { grid-template-columns: auto minmax(0, 560px); justify-content: center; align-items: center; column-gap: var(--av-col-gap); padding: var(--av-section) var(--av-gutter); }
+  .av-story > .av-media { width: min(calc(50vw - var(--av-gutter) - 32px), calc(min(78vh, 820px) * (var(--ratio)))); }
+  .av-story__text { padding: 0; }
+}

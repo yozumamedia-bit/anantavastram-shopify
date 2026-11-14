@@ -12,9 +12,10 @@
     "hero": {
       "type": "av-hero",
       "settings": {
-        "image": "shopify://shop_images/av-home-hero-boston.jpg",
+        "image": "shopify://shop_images/av-home-hero-04019.jpg",
         "image_mobile": "shopify://shop_images/av-comm-04025.jpg",
-        "focus_y": 100
+        "focus_y": 100,
+        "whole": true
       }
     },
     "credo": {
