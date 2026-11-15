@@ -711,3 +711,9 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
   .av-story > .av-media { width: min(calc(50vw - var(--av-gutter) - 32px), calc(min(78vh, 820px) * (var(--ratio)))); }
   .av-story__text { padding: 0; }
 }
+
+/* Product photographs on tablets (15 Nov 2026): the frame follows the photograph's 2:3 shape, capped to the screen, so a narrow column has no empty band above and below the photograph. */
+@media (min-width: 768px) {
+  .av-product__media { height: auto; aspect-ratio: 2 / 3; max-height: min(calc(100vh - var(--av-header-h, 72px) - 48px), 980px); align-items: stretch; }
+  .av-product__media > * { height: auto; align-self: stretch; }
+}
