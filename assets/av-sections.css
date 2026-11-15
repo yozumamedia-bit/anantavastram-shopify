@@ -718,3 +718,9 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
   .av-product__media > * { height: auto; align-self: stretch; }
 }
 /* sync 15 Nov */
+
+/* Phones: the product photograph fills its 4:5 frame (the frame had collapsed to nothing, 15 Nov 2026). */
+@media (max-width: 767px) {
+  .av-product__media { align-items: stretch; }
+  .av-product__media > .av-media, .av-product__media > .av-video { height: 100%; align-self: stretch; }
+}
