@@ -90,19 +90,19 @@ img, video { max-width: 100%; display: block; }
 .av-statement--m  { font-size: clamp(22px, 2.4vw, 34px); line-height: 1.2; }
 .av-statement--credo { font-size: clamp(28px, 2.8vw, 40px); line-height: 1.25; }
 
-.av-sub {                 /* General Sans Bold: sub-headings, product names */
+.av-sub {                 /* General Sans Medium: sub-headings. Bold is kept for the large headings only (.av-sub--l), 15 Nov 2026 */
   font-family: var(--av-font-display);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.2;
   color: var(--av-kumkum);
   margin: 0;
   letter-spacing: -0.01em;
 }
-.av-sub--l { font-size: clamp(30px, 2.8vw, 40px); line-height: 1.12; }
+.av-sub--l { font-weight: 700; font-size: clamp(30px, 2.8vw, 40px); line-height: 1.12; }
 .av-sub--m { font-size: clamp(20px, 1.9vw, 26px); }
 .av-sub--s { font-size: 16px; line-height: 1.4; }
 .av-sub--xs { font-size: 13px; line-height: 1.45; }
-.av-name { font-family: var(--av-font-display); font-weight: 700; font-size: clamp(22px, 1.8vw, 26px); line-height: 1.2; letter-spacing: -0.01em; color: var(--av-kumkum); margin: 0; }
+.av-name { font-family: var(--av-font-display); font-weight: 500; font-size: clamp(22px, 1.8vw, 26px); line-height: 1.2; letter-spacing: -0.01em; color: var(--av-kumkum); margin: 0; }
 .av-price { font-family: var(--av-font-display); font-weight: 500; font-size: clamp(18px, 1.5vw, 20px); line-height: 1.2; color: var(--av-kumkum); }
 .av-price__note { margin-top: 6px; font-size: 12px; letter-spacing: 0.14em; color: var(--av-grey-1); }
 

@@ -93,3 +93,4 @@ Run `shopify theme check` before every commit.
 - About: "From the loom to the frame" removed (chapters are I Kamalam Moorthy, II The weavers, III How the house works, which lists Small numbers, Commissions, Occasional, Everyday, One price).
 - Gallery: `av-campaign` has a `whole` setting (on): photographs at their own proportions in columns, never cropped.
 - Collection page: the opening photograph stands beside the story (`av-coll-story`). Product page: one photograph at a time with arrows, a counter and "+" for every photograph.
+- Type weights (15 Nov 2026): Bold 700 is used only on the large headings (`.av-sub--l`: collection names, the homepage story heading, Story-tab section heads). Every other sub-heading, product name and story heading is Medium 500.
