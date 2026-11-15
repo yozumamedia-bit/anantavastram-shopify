@@ -7,7 +7,7 @@
       "settings": {
         "label": "Commissions",
         "statement": "One piece, for one person, made once.",
-        "text": "<p>We make exclusive pieces, each for one wearer, for a wedding, a festival or any other occasion. A commission begins with a conversation and is finalised in our Chennai studio.</p><p>You choose the cloth from our range. Kamalam draws the design from your own inspiration and vision: a family motif, a temple, a story, a photograph. It is a piece you dream of wearing, one that adds value to your occasion and is remembered for life.</p>",
+        "text": "<p>We make exclusive pieces, each for one wearer, for a wedding, a festival or any other occasion. A commission begins with a conversation and is finalised in our Chennai studio.</p><p>You choose the cloth from our range. Kamalam draws the design from your own inspiration and vision: a family motif, a temple, a story, a photograph. It is a piece you dream of wearing, one that honours your occasion and is remembered for life.</p>",
         "open": true
       }
     },
@@ -120,7 +120,7 @@
           "type": "item",
           "settings": {
             "title": "Lead time",
-            "text": "Eight to ten weeks, from the day the conversation is complete and everything is finalised. This includes the drawing of the design. A date too close to allow this cannot be taken."
+            "text": "Eight to ten weeks, from the day the conversation is complete and everything is finalised. This includes the drawing of the design. We cannot take a commission if the date is too close to allow this."
           }
         },
         "t6": {
