@@ -1,12 +1,36 @@
 {%- comment -%}
-  A price as the house writes it: ₹ 12,500 — the rupee sign, no "Rs.", no "INR" suffix, no ".00".
+  A price as the house writes it: ₹ 1,54,900: the rupee sign, Indian digit grouping, no "Rs.", no "INR" suffix, no ".00".
   Usage: {% render 'av-money', price: product.price %}
   In any other presentment currency (a market abroad) it falls back to the shop's own money format.
 {%- endcomment -%}
 {%- if cart.currency.iso_code == 'INR' or cart.currency.iso_code == blank -%}
-  {%- assign amount = price | money_without_currency -%}
-  {%- assign tail = amount | slice: -3, 3 -%}
-  {%- if tail == '.00' -%}{%- assign amount = amount | remove_last: '.00' -%}{%- endif -%}
+  {%- comment -%} Indian grouping: 1,54,900 (the last three digits, then pairs). Paise are shown only when there are any. {%- endcomment -%}
+  {%- liquid
+    assign rupees = price | divided_by: 100 | floor
+    assign paise = price | modulo: 100
+    assign digits = rupees | append: ''
+    assign amount = digits
+    if digits.size > 3
+      assign cut = digits.size | minus: 3
+      assign head = digits | slice: 0, cut
+      assign amount = digits | slice: cut, 3
+      for i in (1..6)
+        if head.size > 2
+          assign cut = head.size | minus: 2
+          assign pair = head | slice: cut, 2
+          assign amount = pair | append: ',' | append: amount
+          assign head = head | slice: 0, cut
+        else
+          assign amount = head | append: ',' | append: amount
+          break
+        endif
+      endfor
+    endif
+    if paise > 0
+      assign p2 = paise | prepend: '0' | slice: -2, 2
+      assign amount = amount | append: '.' | append: p2
+    endif
+  -%}
   ₹&nbsp;{{- amount -}}
 {%- else -%}
   {{- price | money -}}
