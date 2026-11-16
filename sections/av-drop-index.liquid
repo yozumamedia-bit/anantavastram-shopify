@@ -54,7 +54,7 @@
   {%- endfor -%}
 {%- endfor -%}
 {%- if found == 0 -%}{%- unless section.settings.home -%}<div class="av-wrap av-section av-body">No collections yet.</div>{%- endunless -%}
-{%- elsif section.settings.show_strip and settings.av_shipping_line != blank -%}<p class="av-body av-body--meta av-drop-strip">{{ settings.av_shipping_line | escape }}</p>{%- endif -%}
+{%- elsif section.settings.show_strip and settings.av_shipping_line != blank -%}<div class="av-drop-strip">{%- render 'av-ship-strip' -%}</div>{%- endif -%}
 {% schema %}
 { "name": "AV Collection index", "settings": [
   { "type": "richtext", "id": "past_text", "label": "Closed collections paragraph", "default": "<p>Every piece of a closed collection stays here.</p>" },

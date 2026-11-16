@@ -1,0 +1,13 @@
+{%- comment -%}
+  The shipping line as one slim strip: each sentence of the theme setting becomes one item on a single row.
+  Usage: {% render 'av-ship-strip', class: 'av-wrap' %}
+{%- endcomment -%}
+{%- if settings.av_shipping_line != blank -%}
+  {%- assign av_ship_items = settings.av_shipping_line | split: '. ' -%}
+  <ul class="av-ship {{ class }}" role="list">
+    {%- for item in av_ship_items -%}
+      {%- assign t = item | strip | remove_last: '.' -%}
+      {%- if t != blank -%}<li class="av-ship__item">{{ t | escape }}</li>{%- endif -%}
+    {%- endfor -%}
+  </ul>
+{%- endif -%}

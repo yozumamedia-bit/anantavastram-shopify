@@ -39,7 +39,7 @@
   </div>
   <div class="av-stack">
     {%- if collection.description != blank -%}<div class="av-body">{{ collection.description }}</div>{%- endif -%}
-    {%- if settings.av_shipping_line != blank -%}<div class="av-body av-body--meta">{{ settings.av_shipping_line | escape }}</div>{%- endif -%}
+    {%- render 'av-ship-strip', class: 'av-ship--stack' -%}
   </div>
 </section>
 {%- endif -%}

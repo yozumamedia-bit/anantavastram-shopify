@@ -8,5 +8,5 @@
     <h2 class="av-sub av-sub--l">{{ title | escape }}</h2>
   </div>
   {%- if meta != blank -%}<span class="av-label av-label--red">{{ meta | escape }}</span>{%- endif -%}
-  {%- if shipping and settings.av_shipping_line != blank -%}<div class="av-body av-body--meta av-drop-banner__shipping">{{ settings.av_shipping_line | escape }}</div>{%- endif -%}
+  {%- if shipping -%}<div class="av-drop-banner__shipping">{%- render 'av-ship-strip' -%}</div>{%- endif -%}
 </div>

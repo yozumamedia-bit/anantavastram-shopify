@@ -23,7 +23,7 @@
 {%- unless locked -%}
 <section class="av-rows av-rows--page"{% if meta != blank %} id="pieces" data-av-panel="pieces"{% endif %}>
   <h2 class="visually-hidden">Pieces</h2>
-  {%- if meta != blank and settings.av_shipping_line != blank -%}<p class="av-wrap av-body av-body--meta av-rows__ship">{{ settings.av_shipping_line | escape }}</p>{%- endif -%}
+  {%- if meta != blank -%}<div class="av-wrap av-rows__ship">{%- render 'av-ship-strip' -%}</div>{%- endif -%}
   {%- paginate collection.products by 12 -%}
     {%- if collection.products.size == 0 -%}
       <p class="av-body av-list__empty">No pieces yet.</p>
