@@ -11,7 +11,35 @@
   if whole and section.settings.image_2 != blank
     assign pair = true
   endif
+  assign four = false
+  if pair and section.settings.image_3 != blank and section.settings.image_4 != blank
+    assign four = true
+    assign pair = false
+    assign whole = false
+  endif
 -%}
+{%- if four -%}
+{%- comment -%} Four upright photographs in one row (two by two on phones). No copy, no button. {%- endcomment -%}
+<section class="av-hero av-hero--four">
+  <h1 class="visually-hidden">{{ shop.name | escape }}</h1>
+  {%- assign four_images = '' -%}
+  {%- for i in (1..4) -%}
+    {%- case i -%}
+      {%- when 1 -%}{%- assign im = section.settings.image -%}
+      {%- when 2 -%}{%- assign im = section.settings.image_2 -%}
+      {%- when 3 -%}{%- assign im = section.settings.image_3 -%}
+      {%- when 4 -%}{%- assign im = section.settings.image_4 -%}
+    {%- endcase -%}
+    <picture class="av-hero__cell">
+      {%- if i < 3 -%}
+        {{ im | image_url: width: 1600 | image_tag: widths: '400, 600, 800, 1200, 1600', sizes: '(min-width: 750px) 25vw, 50vw', loading: 'eager', fetchpriority: 'high', alt: im.alt | default: '' }}
+      {%- else -%}
+        {{ im | image_url: width: 1600 | image_tag: widths: '400, 600, 800, 1200, 1600', sizes: '(min-width: 750px) 25vw, 50vw', loading: 'eager', alt: im.alt | default: '' }}
+      {%- endif -%}
+    </picture>
+  {%- endfor -%}
+</section>
+{%- else -%}
 <section class="av-hero{% if whole %} av-hero--whole{% endif %}{% if pair %} av-hero--pair{% endif %}" style="--av-hero-y: {{ section.settings.focus_y | default: 50 }}%;{% if section.settings.image != blank %} --av-hero-ratio: {{ section.settings.image.aspect_ratio }};{% endif %}">
   <h1 class="visually-hidden">{{ shop.name | escape }}</h1>
   {%- if section.settings.image != blank -%}
@@ -31,10 +59,13 @@
     <div class="av-media" style="height:100%"></div>
   {%- endif -%}
 </section>
+{%- endif -%}
 {% schema %}
 { "name": "AV Hero", "settings": [
   { "type": "image_picker", "id": "image", "label": "Full-viewport still (no copy, no button)" },
   { "type": "image_picker", "id": "image_2", "label": "Second photograph (optional)", "info": "With \"Show the whole photograph\" on, it stands beside the first on tablets and larger screens. Use two upright photographs." },
+  { "type": "image_picker", "id": "image_3", "label": "Third photograph (optional)", "info": "With all four photographs set, the hero is a row of four upright photographs (two by two on phones)." },
+  { "type": "image_picker", "id": "image_4", "label": "Fourth photograph (optional)" },
   { "type": "image_picker", "id": "image_mobile", "label": "Phone photograph (portrait, optional)" },
   { "type": "checkbox", "id": "whole", "label": "Show the whole photograph on wide screens (never crop it)", "default": false, "info": "On a screen wider than the photograph, the photograph is shown whole and centred, with the page colour at its sides." },
   { "type": "range", "id": "focus_y", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50, "label": "Vertical focus", "info": "Which part of the photograph stays in view when the screen crops it: 0 = top, 100 = bottom." }

@@ -818,3 +818,11 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
 .av-drop { padding-bottom: 32px; }
 .av-story__text, .av-chapter--split .av-chapter__text { padding-top: 64px; padding-bottom: 64px; }
 @media (min-width: 700px) { .av-story { padding-top: calc(var(--av-section) / 2); padding-bottom: calc(var(--av-section) / 2); } }
+
+/* Hero of four (16 Nov 2026): four upright photographs in one row, two by two on phones. */
+.av-hero--four { --four-gap: 8px; height: auto; min-height: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--four-gap); padding: var(--four-gap) var(--av-gutter) 0; background: var(--av-ivory); overflow: visible; }
+.av-hero--four .av-hero__cell { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; overflow: hidden; }
+.av-hero--four img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; animation: none; }
+@media (min-width: 750px) {
+  .av-hero--four { --four-gap: 12px; grid-template-columns: repeat(4, minmax(0, 1fr)); padding-top: 16px; }
+}
