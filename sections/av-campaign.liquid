@@ -113,7 +113,7 @@
   </div>
   {%- endif -%}
   {%- if section.settings.whole and has_film -%}<div class="av-campaign__close">{% render 'av-video', loop_video: film, poster: poster %}</div>
-  {%- elsif n > 6 or has_film -%}
+  {%- elsif section.settings.whole != true and n > 6 or has_film -%}
   {%- comment -%} Closing row: narrow image + wide film/image. A lone item spans the row (CSS :only-child). {%- endcomment -%}
   <div class="av-grid av-grid--4-8 av-campaign__close">
     {%- if has_film -%}
