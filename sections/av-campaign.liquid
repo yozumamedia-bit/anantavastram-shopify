@@ -112,8 +112,16 @@
     {%- for i in (3..5) -%}{%- if i < n -%}{% render 'av-campaign-image', imgs: imgs, i: i, from_blocks: from_blocks, ratio: '4 / 5', sizes: '(min-width: 900px) 33vw, 100vw' %}{%- endif -%}{%- endfor -%}
   </div>
   {%- endif -%}
+  {%- liquid
+    assign close_grid = false
+    unless section.settings.whole
+      if n > 6 or has_film
+        assign close_grid = true
+      endif
+    endunless
+  -%}
   {%- if section.settings.whole and has_film -%}<div class="av-campaign__close">{% render 'av-video', loop_video: film, poster: poster %}</div>
-  {%- elsif section.settings.whole != true and n > 6 or has_film -%}
+  {%- elsif close_grid -%}
   {%- comment -%} Closing row: narrow image + wide film/image. A lone item spans the row (CSS :only-child). {%- endcomment -%}
   <div class="av-grid av-grid--4-8 av-campaign__close">
     {%- if has_film -%}
