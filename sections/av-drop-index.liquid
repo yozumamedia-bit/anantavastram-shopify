@@ -10,6 +10,7 @@
   assign done = ''
 -%}
 {%- assign passes = 2 -%}{%- if section.settings.home -%}{%- assign passes = 1 -%}{%- endif -%}
+{%- if section.settings.home -%}<div class="av-drop-pair">{%- endif -%}
 {%- for pass in (1..passes) -%}
   {%- assign head_done = false -%}
   {%- for k in (1..50) -%}
@@ -53,6 +54,7 @@
     {%- if pass == 1 -%}{% render 'av-drop-band', drop: pick, mode: 'open' %}{%- else -%}{% render 'av-drop-band', drop: pick, mode: 'past' %}{%- endif -%}
   {%- endfor -%}
 {%- endfor -%}
+{%- if section.settings.home -%}</div>{%- endif -%}
 {%- if found == 0 -%}{%- unless section.settings.home -%}<div class="av-wrap av-section av-body">No collections yet.</div>{%- endunless -%}
 {%- elsif section.settings.show_strip and settings.av_shipping_line != blank -%}<div class="av-drop-strip">{%- render 'av-ship-strip' -%}</div>{%- endif -%}
 {% schema %}
