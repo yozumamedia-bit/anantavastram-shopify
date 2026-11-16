@@ -817,3 +817,4 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
 .av-drop-strip { padding-bottom: 0; }
 .av-drop { padding-bottom: 32px; }
 .av-story__text, .av-chapter--split .av-chapter__text { padding-top: 64px; padding-bottom: 64px; }
+@media (min-width: 700px) { .av-story { padding-top: calc(var(--av-section) / 2); padding-bottom: calc(var(--av-section) / 2); } }
