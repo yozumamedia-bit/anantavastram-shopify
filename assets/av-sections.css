@@ -864,6 +864,8 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
 /* Page openings: the paragraph beside the heading is justified, so its right edge is as straight as its left. */
 @media (min-width: 700px) { .av-intro .av-body p { text-align: justify; text-align-last: left; hyphens: auto; -webkit-hyphens: auto; } }
 /* Full-width photographs never run taller than the screen. */
-.av-bleed > .av-media { width: min(100%, calc(82vh * (var(--ratio)))); margin-left: auto; margin-right: auto; } /* shown whole and centred: the design is never cut */
+.av-bleed > .av-media { width: 100%; max-height: 82vh; } /* full page width, never taller than the screen */
+.av-bleed > .av-media > img { object-position: 50% var(--av-bleed-y, 50%); } /* the trim keeps the design in the middle (section setting "Vertical focus") */
 /* Whenever a photograph is cropped to its box, the crop is taken from the centre, so the design stays in the middle. */
 .av-media--ratio > img, .av-product__media img, .av-list img, .av-tiles img { object-position: 50% 50%; }
+.av-bleed > .av-media--ratio > img { object-position: 50% var(--av-bleed-y, 50%); }

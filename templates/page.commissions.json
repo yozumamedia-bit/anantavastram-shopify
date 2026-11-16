@@ -18,7 +18,8 @@
         "image": "shopify://shop_images/av-dz-commission-exemplar.jpg",
         "left": "By commission",
         "right": "",
-        "natural": true
+        "natural": true,
+        "focus_y": 70
       }
     },
     "steps": {
@@ -75,7 +76,7 @@
         "c1": {
           "type": "card",
           "settings": {
-            "image": "shopify://shop_images/av-is-commsion-series-shank-detail-product-photos-3-of-6.jpg",
+            "image": "shopify://shop_images/av-is-commsion-series-shank-detail-product-photos-6-of-6.jpg",
             "title": "The wedding set",
             "text": "Veshti, kurta and angavastram as one set, embroidered in zari, with motifs drawn for the family. The price and the dates are agreed after the first conversation."
           }
