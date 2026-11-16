@@ -3,10 +3,15 @@
   one paragraph and two links (the Commissions page, and a studio visit on WhatsApp). No price, no availability, no shipping line.
 {%- endcomment -%}
 <section class="av-commissions">
-  <div class="av-commissions__head"><span class="av-label">{{ section.settings.label | escape }}</span></div>
+  {%- comment -%} The eyebrow "Commissions · Made to order" is split: the first part is the section's heading, the rest its label, so the band reads as its own section (16 Nov 2026). {%- endcomment -%}
+  {%- assign head_parts = section.settings.label | split: ' · ' -%}
+  <div class="av-commissions__head">
+    {%- if head_parts.size > 1 -%}<span class="av-label">{{ head_parts | slice: 1, 5 | join: ' · ' | escape }}</span>{%- endif -%}
+    <h2 class="av-sub av-sub--l">{{ head_parts.first | escape }}</h2>
+  </div>
   {% render 'av-media', image: section.settings.image, ratio: '16 / 7', natural: true, sizes: '100vw', class: 'av-commissions__image' %}
   <div class="av-commissions__text">
-    <h2 class="av-statement av-statement--l av-commissions__statement">{{ section.settings.statement | escape }}</h2>
+    <p class="av-statement av-statement--l av-commissions__statement">{{ section.settings.statement | escape }}</p>
     {%- if section.settings.routing != blank -%}<p class="av-body av-body--s av-commissions__routing">{{ section.settings.routing | escape }}</p>{%- endif -%}
     <div class="av-commissions__links">
       <a class="av-link" href="{{ section.settings.link }}">Begin a commission</a>
