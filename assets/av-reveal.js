@@ -37,3 +37,39 @@
   document.fonts.ready.then(align);
 })();
 /* sync 16 Nov */
+
+/* Level columns (16 Nov 2026): where a section has a small label and a heading on the left and text on the right,
+   the text on the right starts level with the heading's first line, not with the label above it. */
+(function () {
+  var SEL = '.av-intro, .av-band, .av-enquiry, .av-steps__head, .av-chapter, .av-people__head, .av-past-head, .av-past__head, .av-campaign__head';
+  function capTop(el) {
+    var cs = getComputedStyle(el), fs = parseFloat(cs.fontSize), lh = parseFloat(cs.lineHeight);
+    if (!lh) lh = fs * 1.2;
+    return el.getBoundingClientRect().top + (lh - fs * 0.72) / 2;
+  }
+  function firstText(el) {
+    var w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), n;
+    while ((n = w.nextNode())) { if (n.nodeValue.trim()) return n.parentElement; }
+    return null;
+  }
+  function level() {
+    document.querySelectorAll(SEL).forEach(function (sec) {
+      var a = sec.children[0], b = sec.children[1];
+      if (!a || !b) return;
+      var label = a.querySelector('.av-label');
+      var head = a.querySelector('h1, h2, h3, .av-statement, .av-sub');
+      if (!label || !head || !head.textContent.trim()) return;
+      b.style.paddingTop = '0px';
+      var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+      if (rb.left < ra.right - 1) return; /* stacked: nothing to level */
+      var t = firstText(b);
+      if (!t) return;
+      var d = capTop(head) - capTop(t);
+      b.style.paddingTop = d > 1 ? d.toFixed(1) + 'px' : '0px';
+    });
+  }
+  var timer;
+  function later() { clearTimeout(timer); timer = setTimeout(level, 120); }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(level); else window.addEventListener('load', level);
+  window.addEventListener('resize', later);
+})();

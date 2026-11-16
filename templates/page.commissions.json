@@ -163,12 +163,42 @@
         "reply_line": "Kamalam replies herself, within one working day",
         "lead_weeks": 10
       }
+    },
+    "worn": {
+      "type": "av-showcase-three",
+      "blocks": {
+        "w1": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-gal1-5.jpg"
+          }
+        },
+        "w2": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-gal1-2.jpg"
+          }
+        },
+        "w3": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-gal1-7.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "w1",
+        "w2",
+        "w3"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "intro",
     "exemplar",
     "steps",
+    "worn",
     "cards",
     "terms",
     "enquiry"

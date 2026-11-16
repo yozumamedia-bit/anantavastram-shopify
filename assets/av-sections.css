@@ -863,3 +863,5 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
 .av-drop .av-media { --ratio: 2 / 3; }
 /* Page openings: the paragraph beside the heading is justified, so its right edge is as straight as its left. */
 @media (min-width: 700px) { .av-intro .av-body p { text-align: justify; text-align-last: left; hyphens: auto; -webkit-hyphens: auto; } }
+/* Full-width photographs never run taller than the screen. */
+.av-bleed > .av-media { max-height: 82vh; }
