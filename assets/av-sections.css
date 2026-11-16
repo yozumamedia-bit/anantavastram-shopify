@@ -840,3 +840,15 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
   .av-drop-pair > .av-drop { grid-template-columns: minmax(0, 1fr); row-gap: 20px; align-items: start; }
 }
 .av-drop-pair:empty { display: none; }
+
+/* Alignment, 16 Nov 2026 (afternoon).
+   Page openings: the paragraph on the right starts level with the first line of the heading, not with the small label above it.
+   Collection pairs: both photographs share one proportion and both text blocks start at the same height. */
+@media (min-width: 700px) {
+  .av-intro > :first-child:has(> .av-label) + * { padding-top: 54px; }
+  .av-drop-pair { align-items: start; }
+  .av-drop-pair > .av-drop { align-items: start; }
+  .av-drop-pair > .av-drop > .av-media { aspect-ratio: 2 / 3; }
+  .av-drop-pair > .av-drop > .av-media img { width: 100%; height: 100%; object-fit: cover; }
+  .av-drop-pair .av-drop__info { align-self: start; justify-content: flex-start; padding-top: 8px; }
+}
