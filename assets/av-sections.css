@@ -748,5 +748,5 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
 .av-credo__clause { display: inline-block; text-wrap: balance; }
 @media (max-width: 749px) { .av-credo { padding-left: var(--av-gutter); padding-right: var(--av-gutter); } }
 /* Details list: the label stays on one line ("Embroidery by:" no longer drops "by" to a second line). */
-.av-product__desc li { grid-template-columns: max-content minmax(0, 1fr); }
-.av-product__desc li strong { white-space: nowrap; min-width: 124px; }
+.av-product__desc li { grid-template-columns: 136px minmax(0, 1fr); gap: 12px; }
+.av-product__desc li strong { white-space: nowrap; }
