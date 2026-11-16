@@ -734,3 +734,9 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
 }
 .av-product__see { margin: 0; color: var(--av-ink); }
 .av-product__see a { color: var(--av-kumkum); text-decoration: underline; text-underline-offset: 3px; }
+
+/* Phones: a hero in whole mode shows the whole photograph too (full width, its own height), with no drift. */
+@media (max-width: 749px) {
+  .av-hero--whole { height: min(calc(100svh - var(--av-header-h)), calc(100vw / var(--av-hero-ratio, 0.7))); min-height: 0; }
+  .av-hero--whole img { animation: none; object-position: 50% 50%; }
+}
