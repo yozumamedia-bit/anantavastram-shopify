@@ -750,3 +750,10 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
 /* Details list: the label stays on one line ("Embroidery by:" no longer drops "by" to a second line). */
 .av-product__desc li { grid-template-columns: 136px minmax(0, 1fr); gap: 12px; }
 .av-product__desc li strong { white-space: nowrap; }
+
+/* Size guide table (product page) */
+.av-size { overflow-x: auto; margin-top: 4px; }
+.av-size__table { width: 100%; border-collapse: collapse; font-family: var(--av-font-body); font-size: 14px; color: var(--av-ink); }
+.av-size__table th, .av-size__table td { padding: 9px 8px 9px 0; border-bottom: 1px solid var(--av-grey-3); text-align: left; font-weight: 300; white-space: nowrap; }
+.av-size__table thead th { font-weight: 400; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--av-grey-1); border-bottom-color: var(--av-kumkum); }
+.av-size__table td, .av-size__table thead th:not(:first-child) { text-align: right; padding-right: 0; padding-left: 8px; font-weight: 400; }

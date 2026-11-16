@@ -132,8 +132,8 @@
       {%- endif -%}
       {%- unless enquiry -%}
       {%- comment -%} Seeing the piece before paying: the reassurance beside the button, since a piece is returned only if it arrives damaged (16 Nov 2026). {%- endcomment -%}
-      {%- assign see_text = 'I would like to see ' | append: product.title | append: ' on a video call before I order: ' | append: shop.url | append: product.url -%}
-      <p class="av-body av-body--s av-product__see">See it before you pay, on a video call or at our Chennai studio. {% render 'av-whatsapp-link', label: 'Ask for a video call', text: see_text, class: 'av-product__see-link' %}</p>
+      
+      <p class="av-body av-body--s av-product__see">See it before you pay, on a video call or at our Chennai studio.</p>
       {%- endunless -%}
       {% render 'av-whatsapp-link', label: 'Ask on WhatsApp', text: wa_text %}
     </div>
@@ -148,6 +148,12 @@
       {%- unless enquiry -%}
       <details class="av-acc"><summary><h2 class="av-acc__title">Colour and cloth</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s"><p>Colours on screen can differ slightly from the cloth. Handloom cloth carries slubs, joined threads and small changes in the weave from one length to the next. They do not affect how the piece wears, and no two pieces are exactly alike.</p></div></details>
       {%- endunless -%}
+      {%- comment -%} Size guide (16 Nov 2026): the veshti is one length and is tied, not sized; the table is the house's standard kurta and shirt measurements (Ananta Vastram Size Guide, inches). {%- endcomment -%}
+      <details class="av-acc"><summary><h2 class="av-acc__title">Size guide</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">
+        <p>The veshti is one length of cloth{% if mf.cloth_length.value != blank %} ({{ mf.cloth_length.value | escape }}){% endif %}. It is tied at the waist, so it is not sized. If you would like help tying it, message us on WhatsApp.</p>
+        <p>Kurtas and shirts are made to these standard measurements, or to your own as a <a href="{{ commission_url }}">commission</a>. All measurements are in inches.</p>
+        <div class="av-size"><table class="av-size__table"><thead><tr><th scope="col">Measurement</th><th scope="col">S</th><th scope="col">M</th><th scope="col">L</th><th scope="col">XL</th></tr></thead><tbody><tr><th scope="row">Full length</th><td>41</td><td>42</td><td>43</td><td>44</td></tr><tr><th scope="row">Short length</th><td>34</td><td>35</td><td>36</td><td>37</td></tr><tr><th scope="row">Shoulder</th><td>18</td><td>18½</td><td>19</td><td>19½</td></tr><tr><th scope="row">Chest</th><td>42</td><td>44</td><td>46</td><td>48</td></tr><tr><th scope="row">Waist</th><td>42</td><td>44</td><td>46</td><td>48</td></tr><tr><th scope="row">Hip circumference</th><td>44</td><td>46</td><td>48</td><td>50</td></tr><tr><th scope="row">Armhole</th><td>18½</td><td>19½</td><td>20½</td><td>21½</td></tr><tr><th scope="row">Sleeve length</th><td>24½</td><td>25½</td><td>26½</td><td>27½</td></tr><tr><th scope="row">Sleeve loose</th><td>9</td><td>9½</td><td>10</td><td>11</td></tr><tr><th scope="row">Bicep</th><td>13</td><td>14</td><td>15</td><td>15½</td></tr><tr><th scope="row">Collar</th><td>16</td><td>16½</td><td>17</td><td>18</td></tr></tbody></table></div>
+      </div></details>
       {%- unless enquiry -%}
       <details class="av-acc"><summary><h2 class="av-acc__title">Shipping</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{%- if section.settings.shipping != blank -%}{{ section.settings.shipping }}{%- else -%}<p>Orders are dispatched from Chennai in six to eight days. Shipping across India is free and insured, and usually takes 2 to 5 working days after dispatch. Expedited shipping is ₹500.</p><p>We also ship to the USA from Chennai, by insured courier. The checkout here is for delivery in India. For an order to the USA, message us on WhatsApp with your address, and we will confirm the shipping cost, the delivery time and any import duty before you pay. For other countries, write to us.</p>{%- endif -%}{%- if shop.shipping_policy.body != blank -%}<p><a href="{{ shop.shipping_policy.url }}">The shipping policy</a></p>{%- endif -%}</div></details>
       {%- endunless -%}
