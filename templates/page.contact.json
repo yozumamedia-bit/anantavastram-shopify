@@ -4,9 +4,10 @@
       "type": "av-page-intro",
       "settings": {
         "label": "Contact",
-        "statement": "Write to the house.",
+        "statement": "Write to the house, or call.",
         "text": "<p>For a commission, a question about a piece, or an order already placed. Kamalam reads every message herself.</p>",
-        "open": true
+        "open": true,
+        "show_phone": true
       }
     },
     "enquiry": {
@@ -14,7 +15,7 @@
       "settings": {
         "label": "Write",
         "heading": "Write to Kamalam",
-        "text": "Tell us what it is about, where you are, and anything you already have in mind. Or send the same on WhatsApp.",
+        "text": "Tell us what it is about, where you are, and anything you already have in mind. Or call us, or send the same on WhatsApp.",
         "ask_occasion": false,
         "subject": "Contact enquiry",
         "tag": "contact",

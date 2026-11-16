@@ -12,6 +12,12 @@
   </div>
   <div class="av-stack">
     <div class="av-body{% if section.settings.large_body %} av-body--l{% endif %}">{{ section.settings.text }}</div>
+    {%- if section.settings.show_phone and settings.av_phone_number != blank -%}
+      <div class="av-intro__call av-stack" style="gap:6px">
+        {% render 'av-phone-link', prefix: 'Call ', class: 'av-link av-intro__phone' %}
+        {%- if settings.av_contact_hours != blank -%}<span class="av-body av-body--meta">{{ settings.av_contact_hours | escape }}</span>{%- endif -%}
+      </div>
+    {%- endif -%}
     {%- if section.settings.note != blank -%}<div class="av-body av-body--s" style="color:var(--av-grey-1)">{{ section.settings.note | escape | newline_to_br }}</div>{%- endif -%}
     {%- comment -%}
       A filter tab that points at a tag of /collections/all (e.g. /collections/all/everyday) shows only while some piece
@@ -62,6 +68,7 @@
   { "type": "checkbox", "id": "all_products_only", "label": "Products page only", "info": "Shows only on /collections/all (the Products page). Leave off everywhere else.", "default": false },
   { "type": "text", "id": "label", "label": "Label", "default": "Collections" },
   { "type": "textarea", "id": "statement", "label": "Statement (General Sans Light)", "default": "Each collection grows from one inspiration." },
+  { "type": "checkbox", "id": "show_phone", "label": "Show the phone number and hours under the text", "default": false },
   { "type": "richtext", "id": "text", "label": "Paragraph", "default": "<p>A collection is a small set of pieces drawn from one source. Each piece is embroidered in small numbers and held in stock in Chennai.</p>" },
   { "type": "textarea", "id": "note", "label": "Secondary note (About page only)" },
   { "type": "checkbox", "id": "large_body", "label": "Larger paragraph (About)", "default": false },

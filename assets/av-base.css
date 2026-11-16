@@ -416,3 +416,9 @@ html.av-opening-active .av-header__wordmark { visibility: hidden; } /* the trave
 .av-drawer__more { display: flex; flex-direction: column; gap: 2px; }
 .av-drawer__more a { font-family: var(--av-font-nav); font-weight: 400; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--av-ivory); min-height: 44px; display: inline-flex; align-items: center; text-decoration: none; border: 0; padding: 0; }
 .av-drawer__symbol { width: 96px; height: auto; }
+
+/* WhatsApp button (16 Nov 2026): on phones and tablets it steps aside while the page is read downwards, and on a product page it gives way to the order bar. */
+.av-wa-float.is-away { opacity: 0; pointer-events: none; transform: translateY(12px); }
+@media (max-width: 900px) { body.has-orderbar .av-wa-float { opacity: 0; pointer-events: none; } }
+.av-intro__phone { font-size: 15px; }
+.av-enquiry__call { align-self: flex-start; }

@@ -29,6 +29,7 @@
         {%- if section.settings.calendar_note != blank -%}<span class="av-body av-body--meta">{{ section.settings.calendar_note | escape }}</span>{%- endif -%}
       </div>
     {%- endif -%}
+    {% render 'av-phone-link', prefix: 'Call ', class: 'av-link av-enquiry__call' %}
     {% render 'av-whatsapp-link', label: wa_label, text: wa_text, class: 'av-link av-enquiry__wa' %}
     {%- if section.settings.show_details -%}{% render 'av-contact-details', class: 'av-enquiry__details av-body' %}{%- endif -%}
   </div>

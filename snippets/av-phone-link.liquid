@@ -1,0 +1,15 @@
+{%- comment -%}
+  The house's phone number as a tel: link, written "+91 99623 00009". Prints nothing when no number is set.
+  Usage: {% render 'av-phone-link', prefix: 'Call ', class: 'av-link' %}
+{%- endcomment -%}
+{%- liquid
+  assign n = settings.av_phone_number | strip
+  assign shown = '+' | append: n
+  if n.size == 12
+    assign cc = n | slice: 0, 2
+    assign a = n | slice: 2, 5
+    assign b = n | slice: 7, 5
+    assign shown = '+' | append: cc | append: ' ' | append: a | append: ' ' | append: b
+  endif
+-%}
+{%- if n != blank -%}<a class="{{ class }}" href="tel:+{{ n }}">{{ prefix }}{{ shown }}</a>{%- endif -%}

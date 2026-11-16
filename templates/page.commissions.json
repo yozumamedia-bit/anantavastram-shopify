@@ -8,7 +8,8 @@
         "label": "Commissions",
         "statement": "One piece, for one person, made once.",
         "text": "<p>We make exclusive pieces, each for one wearer, for a wedding, a festival or any other occasion. A commission begins with a conversation and is finalised in our Chennai studio.</p><p>You choose the cloth from our range. Kamalam draws the design from your own inspiration and vision: a family motif, a temple, a story, a photograph. It is a piece you dream of wearing, one that honours your occasion and is remembered for life.</p>",
-        "open": true
+        "open": true,
+        "show_phone": true
       }
     },
     "exemplar": {
@@ -158,7 +159,7 @@
       "settings": {
         "label": "Write",
         "heading": "Write to Kamalam",
-        "text": "Tell us the occasion, the date if it is fixed, and where you are. Or send the same on WhatsApp.",
+        "text": "Tell us the occasion, the date if it is fixed, and where you are. Or call us, or send the same on WhatsApp.",
         "reply_line": "Kamalam replies herself, within one working day",
         "lead_weeks": 10
       }
