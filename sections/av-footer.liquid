@@ -17,10 +17,39 @@
         {%- if block.settings.fallback == 'contact' -%}
           {%- assign menu_text = block.settings.menu.links | map: 'url' | join: ' ' -%}
           {%- if block.settings.menu.links.size > 0 and settings.social_instagram_link != blank -%}{%- unless menu_text contains 'instagram' -%}<a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener">Instagram</a>{%- endunless -%}{%- endif -%}
-          {% render 'av-contact-details', class: 'av-footer__details' %}
         {%- endif -%}
       </div>
     {%- endfor -%}
+  </div>
+  {%- comment -%} The studio's details sit in their own row under the link columns (16 Nov 2026): the Contact column had become crowded. {%- endcomment -%}
+  {%- liquid
+    assign wa = settings.av_whatsapp_number | strip
+    assign wa_shown = '+' | append: wa
+    if wa.size == 12
+      assign wa_cc = wa | slice: 0, 2
+      assign wa_a = wa | slice: 2, 5
+      assign wa_b = wa | slice: 7, 5
+      assign wa_shown = '+' | append: wa_cc | append: ' ' | append: wa_a | append: ' ' | append: wa_b
+    endif
+  -%}
+  <div class="av-footer__studio">
+    {%- if settings.av_contact_address != blank -%}
+    <div class="av-footer__studio-item">
+      <p class="av-footer__title">Studio</p>
+      <p>{{ settings.av_contact_address | escape | newline_to_br }}</p>
+      <p>Visits by appointment.</p>
+    </div>
+    {%- endif -%}
+    <div class="av-footer__studio-item">
+      <p class="av-footer__title">Call or message</p>
+      {% render 'av-phone-link', prefix: 'Phone ', class: 'av-footer__studio-link' %}
+      {%- if wa != blank -%}<a class="av-footer__studio-link" href="https://wa.me/{{ wa }}" target="_blank" rel="noopener">WhatsApp {{ wa_shown }}</a>{%- endif -%}
+    </div>
+    <div class="av-footer__studio-item">
+      <p class="av-footer__title">Email and hours</p>
+      {%- if shop.email != blank -%}<a class="av-footer__studio-link" href="mailto:{{ shop.email }}">{{ shop.email }}</a>{%- endif -%}
+      {%- if settings.av_contact_hours != blank -%}<p>{{ settings.av_contact_hours | escape }}</p>{%- endif -%}
+    </div>
   </div>
   <div class="av-footer__bottom">
     <div>© {{ 'now' | date: '%Y' }} {{ shop.name | escape }}{% if shop.privacy_policy.body != blank %} · <a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title | escape }}</a>{% endif %}{% if shop.terms_of_service.body != blank %} · <a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title | escape }}</a>{% endif %}{% if shop.contact_information.body != blank %} · <a href="{{ shop.contact_information.url }}">{{ shop.contact_information.title | escape }}</a>{% endif %}</div>
