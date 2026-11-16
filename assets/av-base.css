@@ -440,3 +440,8 @@ html.av-opening-active .av-header__wordmark { visibility: hidden; } /* the trave
 .av-footer__bottom { margin-top: 48px; }
 @media (max-width: 1100px) { .av-footer__bottom { padding-right: 72px; } }
 @media (max-width: 749px) { .av-footer__studio { grid-template-columns: 1fr; gap: 32px; margin-top: 40px; padding-top: 32px; } .av-footer__studio-link { min-height: 44px; display: inline-flex; align-items: center; } }
+
+/* INR / USD button in the header and the phone menu (16 Nov 2026) */
+.av-header__icons .av-header__currency { width: auto; height: 44px; margin: 0 4px 0 0; padding: 0 2px; font-family: var(--av-font-nav); font-weight: 400; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--av-white); white-space: nowrap; }
+.av-drawer__currency { all: unset; cursor: pointer; font-family: var(--av-font-nav); font-weight: 400; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--av-ivory); min-height: 44px; display: inline-flex; align-items: center; }
+@media (max-width: 1023px) { .av-header__icons .av-header__currency { display: none; } }

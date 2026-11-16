@@ -111,7 +111,7 @@
       dialog.showModal();
       document.documentElement.classList.add('av-zoom-open');
       var target = strip.children[imgs.slice(0, i).filter(Boolean).length];
-      if (target) target.scrollIntoView({ block: 'start', inline: 'start' });
+      if (target) { strip.scrollLeft = target.offsetLeft; zSync(); }
     }
     el.addEventListener('click', open);
     el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
@@ -122,8 +122,29 @@
     dialog.showModal();
     document.documentElement.classList.add('av-zoom-open');
     var target = strip.children[imgs.slice(0, current).filter(Boolean).length];
-    if (target) target.scrollIntoView({ block: 'start', inline: 'start' });
+    if (target) { strip.scrollLeft = target.offsetLeft; zSync(); }
   });
+  /* the large view: one photograph per screen, moved sideways with the arrows, the keyboard or a swipe */
+  var zPrev = dialog.querySelector('[data-av-zoom-prev]');
+  var zNext = dialog.querySelector('[data-av-zoom-next]');
+  var zCount = dialog.querySelector('[data-av-zoom-count]');
+  function zIndex() { return Math.round(strip.scrollLeft / Math.max(1, strip.clientWidth)); }
+  function zSync() {
+    var i = zIndex();
+    if (zCount) zCount.textContent = i + 1;
+    if (zPrev) zPrev.disabled = i === 0;
+    if (zNext) zNext.disabled = i >= strip.children.length - 1;
+  }
+  function zGo(d) { strip.scrollTo({ left: (zIndex() + d) * strip.clientWidth, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); }
+  var zTick;
+  strip.addEventListener('scroll', function () { clearTimeout(zTick); zTick = setTimeout(zSync, 60); }, { passive: true });
+  if (zPrev) zPrev.addEventListener('click', function () { zGo(-1); });
+  if (zNext) zNext.addEventListener('click', function () { zGo(1); });
+  dialog.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); zGo(1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); zGo(-1); }
+  });
+  dialog.addEventListener('toggle', zSync);
   dialog.querySelector('[data-av-zoom-close]').addEventListener('click', function () { dialog.close(); });
   dialog.addEventListener('click', function (e) { if (e.target === dialog) dialog.close(); });
   dialog.addEventListener('close', function () { document.documentElement.classList.remove('av-zoom-open'); });

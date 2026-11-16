@@ -2,9 +2,9 @@
    A visitor Shopify places in the USA sees dollars first; anyone can switch in the footer, and the choice is remembered.
    The rate is Theme settings > Ananta Vastram > "Rupees to one US dollar". */
 (function () {
-  var box = document.querySelector('[data-av-currency]');
-  if (!box) return;
-  var rate = parseFloat(box.getAttribute('data-rate'));
+  var boxes = document.querySelectorAll('[data-av-currency]');
+  if (!boxes.length) return;
+  var rate = parseFloat(boxes[0].getAttribute('data-rate'));
   if (!(rate > 0)) return;
   var KEY = 'avCurrency';
   function saved() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
@@ -19,11 +19,15 @@
         el.textContent = el.getAttribute('data-av-inr-text');
       }
     });
-    document.querySelectorAll('[data-av-usd-note]').forEach(function (n) { n.hidden = cur !== 'USD'; });
-    box.querySelectorAll('[data-av-cur]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-av-cur') === cur ? 'true' : 'false'); });
+    document.querySelectorAll('[data-av-cur]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-av-cur') === cur ? 'true' : 'false'); });
+    document.querySelectorAll('[data-av-cur-toggle]').forEach(function (b) { b.textContent = cur === 'USD' ? 'USD $' : 'INR \u20b9'; b.setAttribute('aria-label', 'Prices in ' + (cur === 'USD' ? 'US dollars' : 'Indian rupees') + '. Switch to ' + (cur === 'USD' ? 'rupees' : 'dollars')); });
+    current = cur;
     document.documentElement.setAttribute('data-av-currency', cur);
   }
-  box.addEventListener('click', function (e) {
+  var current = 'INR';
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-av-cur-toggle]');
+    if (t) { var nx = current === 'USD' ? 'INR' : 'USD'; save(nx); show(nx); return; }
     var b = e.target.closest('[data-av-cur]');
     if (!b) return;
     var cur = b.getAttribute('data-av-cur');

@@ -86,7 +86,6 @@
       <div class="av-price">{% render 'av-edition-line', product: product, context: 'tile' %}</div>
       {%- else -%}
       <div class="av-price">{% render 'av-money', price: v.price %}</div>
-      <div class="av-label av-usd-note" data-av-usd-note hidden>Approximate. You pay {% render 'av-money', price: v.price, fixed: true %} in Indian rupees.</div>
       {%- endif -%}
       {%- if settings.av_tax_line != blank and enquiry == false and soon == false -%}<div class="av-label av-price__note">{{ settings.av_tax_line | escape }}</div>{%- endif -%}
     </div>
@@ -140,52 +139,31 @@
     </div>
 
     {%- comment -%} Price, availability and the button come first; the story of the piece follows (site review, 4 Nov 2026). {%- endcomment -%}
-    {%- if product.description != blank -%}<div class="av-body av-product__desc">{{ product.description }}</div>{%- endif -%}
+    {%- comment -%} The description is the story of the piece, then a "Details" list. The story is printed here; the list becomes the first panel below (16 Nov 2026: fewer rows, more air). {%- endcomment -%}
+    {%- assign desc_parts = product.description | split: '<h3>Details</h3>' -%}
+    {%- if desc_parts.first != blank -%}<div class="av-body av-product__desc">{{ desc_parts.first }}</div>{%- endif -%}
 
+    {%- comment -%} Six panels at most (16 Nov 2026): Details (open), How it is made, Size guide, Shipping and returns, Cloth and care, Before you order. {%- endcomment -%}
     <div class="av-product__accordions">
+      {%- if desc_parts.size > 1 -%}
+      <details class="av-acc" open><summary><h2 class="av-acc__title">Details</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s av-product__desc av-product__details">{{ desc_parts.last }}</div></details>
+      {%- endif -%}
       {%- if mf.how_made.value != blank -%}
       <details class="av-acc"><summary><h2 class="av-acc__title">How it is made</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{{ mf.how_made.value | escape | newline_to_br }}</div></details>
       {%- endif -%}
-      {%- unless enquiry -%}
-      <details class="av-acc"><summary><h2 class="av-acc__title">Colour and cloth</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s"><p>Colours on screen can differ slightly from the cloth. Handloom cloth carries slubs, joined threads and small changes in the weave from one length to the next. They do not affect how the piece wears, and no two pieces are exactly alike.</p></div></details>
-      {%- endunless -%}
-      {%- comment -%} Size guide (16 Nov 2026): the veshti is one length and is tied, not sized; the table is the house's standard kurta and shirt measurements (Ananta Vastram Size Guide, inches). {%- endcomment -%}
       <details class="av-acc"><summary><h2 class="av-acc__title">Size guide</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">
         <p>The veshti is one length of cloth{% if mf.cloth_length.value != blank %} ({{ mf.cloth_length.value | escape }}){% endif %}. It is tied at the waist, so it is not sized. If you would like help tying it, message us on WhatsApp.</p>
         <p>Kurtas and shirts are made to these standard measurements, or to your own as a <a href="{{ commission_url }}">commission</a>. All measurements are in inches.</p>
         <div class="av-size"><table class="av-size__table"><thead><tr><th scope="col">Measurement</th><th scope="col">S</th><th scope="col">M</th><th scope="col">L</th><th scope="col">XL</th></tr></thead><tbody><tr><th scope="row">Full length</th><td>41</td><td>42</td><td>43</td><td>44</td></tr><tr><th scope="row">Short length</th><td>34</td><td>35</td><td>36</td><td>37</td></tr><tr><th scope="row">Shoulder</th><td>18</td><td>18½</td><td>19</td><td>19½</td></tr><tr><th scope="row">Chest</th><td>42</td><td>44</td><td>46</td><td>48</td></tr><tr><th scope="row">Waist</th><td>42</td><td>44</td><td>46</td><td>48</td></tr><tr><th scope="row">Hip circumference</th><td>44</td><td>46</td><td>48</td><td>50</td></tr><tr><th scope="row">Armhole</th><td>18½</td><td>19½</td><td>20½</td><td>21½</td></tr><tr><th scope="row">Sleeve length</th><td>24½</td><td>25½</td><td>26½</td><td>27½</td></tr><tr><th scope="row">Sleeve loose</th><td>9</td><td>9½</td><td>10</td><td>11</td></tr><tr><th scope="row">Bicep</th><td>13</td><td>14</td><td>15</td><td>15½</td></tr><tr><th scope="row">Collar</th><td>16</td><td>16½</td><td>17</td><td>18</td></tr></tbody></table></div>
       </div></details>
       {%- unless enquiry -%}
-      <details class="av-acc"><summary><h2 class="av-acc__title">Shipping</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{%- if section.settings.shipping != blank -%}{{ section.settings.shipping }}{%- else -%}<p>Orders are dispatched from Chennai in six to eight days. Shipping across India is free and insured, and usually takes 2 to 5 working days after dispatch. Expedited shipping is ₹500.</p><p>We also ship to the USA from Chennai, by insured courier. The checkout here is for delivery in India. For an order to the USA, message us on WhatsApp with your address, and we will confirm the shipping cost, the delivery time and any import duty before you pay. For other countries, write to us.</p>{%- endif -%}{%- if shop.shipping_policy.body != blank -%}<p><a href="{{ shop.shipping_policy.url }}">The shipping policy</a></p>{%- endif -%}</div></details>
+      <details class="av-acc"><summary><h2 class="av-acc__title">Shipping and returns</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{%- if section.settings.shipping != blank -%}{{ section.settings.shipping }}{%- else -%}<p>Orders are dispatched from Chennai in six to eight days. Shipping across India is free and insured, and usually takes 2 to 5 working days after dispatch. Expedited shipping is ₹500.</p><p>We also ship to the USA from Chennai, by insured courier. The checkout here is for delivery in India. For an order to the USA, message us on WhatsApp with your address, and we will confirm the shipping cost, the delivery time and any import duty before you pay. For other countries, write to us.</p>{%- endif -%}{%- if shop.shipping_policy.body != blank -%}<p><a href="{{ shop.shipping_policy.url }}">The shipping policy</a></p>{%- endif -%}{%- if settings.av_returns_line != blank -%}<p class="av-faq__q">Returns</p><p>{{ settings.av_returns_line | escape }}</p>{%- if shop.refund_policy.body != blank -%}<p><a href="{{ shop.refund_policy.url }}">The full returns policy</a></p>{%- endif -%}{%- endif -%}</div></details>
       {%- endunless -%}
-      {%- if enquiry == false and settings.av_returns_line != blank -%}
-      <details class="av-acc"><summary><h2 class="av-acc__title">Returns</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s"><p>{{ settings.av_returns_line | escape }}</p>{%- if shop.refund_policy.body != blank -%}<p><a href="{{ shop.refund_policy.url }}">The full returns policy</a></p>{%- endif -%}</div></details>
-      {%- endif -%}
-      {%- if mf.care.value != blank -%}
-      <details class="av-acc"><summary><h2 class="av-acc__title">Care</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{{ mf.care.value | escape | newline_to_br }}</div></details>
-      {%- elsif section.settings.care != blank -%}
-      <details class="av-acc"><summary><h2 class="av-acc__title">Care</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{{ section.settings.care }}</div></details>
-      {%- endif -%}
+      <details class="av-acc"><summary><h2 class="av-acc__title">Cloth and care</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s">{%- unless enquiry -%}<p>Colours on screen can differ slightly from the cloth. Handloom cloth carries slubs, joined threads and small changes in the weave from one length to the next. They do not affect how the piece wears, and no two pieces are exactly alike.</p>{%- endunless -%}<p class="av-faq__q">Care</p>{%- if mf.care.value != blank -%}<p>{{ mf.care.value | escape | newline_to_br }}</p>{%- else -%}{{ section.settings.care }}{%- endif -%}</div></details>
+      {%- unless enquiry -%}
+      <details class="av-acc"><summary><h2 class="av-acc__title">Before you order</h2><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s av-faq"><p class="av-faq__q">Does it come with the kurta?</p><p>No. You receive the veshti, and the angavastram where the page says so. The kurta in the photographs is not included. A kurta can be made to your measure as a <a href="{{ commission_url }}">commission</a>.</p><p class="av-faq__q">How do I wear it?</p><p>If you would like help tying the veshti, message us on WhatsApp.</p><p class="av-faq__q">Will it reach me before my date?</p><p>Orders are dispatched from Chennai in six to eight days. Delivery across India usually takes 2 to 5 working days after that. For a close date, choose expedited shipping or message us first.</p><p class="av-faq__q">Can I see it before I buy?</p><p>Message us on WhatsApp and we will send more photographs or a short video of the piece. You can also see it at our Chennai studio, by appointment.</p><p class="av-faq__q">Can I return it?</p><p>Only if it arrives damaged. We confirm every order with you by chat or email before it is dispatched. If the piece arrives damaged, write to us within 48 hours of delivery, with photographs.{% if shop.refund_policy.body != blank %} The full policy is under <a href="{{ shop.refund_policy.url }}">Returns</a>.{% endif %}</p></div></details>
+      {%- endunless -%}
     </div>
-
-    {%- unless enquiry -%}
-    {%- comment -%} The questions a buyer asks before ordering (copy draft 4): the kurta, wearing it, the date, seeing it, returning it. {%- endcomment -%}
-    <div class="av-product__accordions av-product__faq">
-      <h2 class="av-label">Before you order</h2>
-      <details class="av-acc"><summary><h3 class="av-acc__title">Does it come with the kurta?</h3><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s"><p>No. You receive the veshti, and the angavastram where the page says so. The kurta in the photographs is not included. A kurta can be made to your measure as a <a href="{{ commission_url }}">commission</a>.</p></div></details>
-      <details class="av-acc"><summary><h3 class="av-acc__title">How do I wear it?</h3><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s"><p>If you would like help tying the veshti, message us on WhatsApp.</p></div></details>
-      <details class="av-acc"><summary><h3 class="av-acc__title">Will it reach me before my date?</h3><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s"><p>Orders are dispatched from Chennai in six to eight days. Delivery across India usually takes 2 to 5 working days after that. For a close date, choose expedited shipping or message us first.</p></div></details>
-      <details class="av-acc"><summary><h3 class="av-acc__title">Can I see it before I buy?</h3><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s"><p>Message us on WhatsApp and we will send more photographs or a short video of the piece. You can also see it at our Chennai studio, by appointment.</p></div></details>
-      <details class="av-acc"><summary><h3 class="av-acc__title">Can I return it?</h3><span class="av-acc__mark" aria-hidden="true"></span></summary><div class="av-acc__body av-body av-body--s"><p>Only if it arrives damaged. We confirm every order with you by chat or email before it is dispatched. If the piece arrives damaged, write to us within 48 hours of delivery, with photographs.{% if shop.refund_policy.body != blank %} The full policy is under <a href="{{ shop.refund_policy.url }}">Returns</a>.{% endif %}</p></div></details>
-    </div>
-    {%- endunless -%}
-
-    {%- if drop != blank or mf.kara_colour.value != blank -%}
-    <div class="av-facts">
-      {%- if drop != blank -%}{%- assign coll = drop.collection.value -%}<div class="av-fact"><div class="av-label">Collection</div><div class="av-body av-body--s">{% if coll != blank %}<a href="{{ coll.url }}">{{ drop.name.value | default: coll.title | escape }}</a>{% else %}{{ drop.name.value | escape }}{% endif %}</div></div>{%- endif -%}
-      {%- if mf.kara_colour.value != blank -%}<div class="av-fact"><div class="av-label">Kara</div><div class="av-body av-body--s">{{ mf.kara_colour.value | escape }}</div></div>{%- endif -%}
-    </div>
-    {%- endif -%}
 
     {%- if worn_with.size > 0 -%}
     {%- comment -%} The other pieces of the set (product metafield custom.worn_with). Three at most; a swipe rail on phones. {%- endcomment -%}
@@ -208,6 +186,9 @@
 <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 <dialog class="av-zoom" id="av-zoom" aria-label="{{ product.title | escape }}, photographs">
   <button class="av-zoom__close" type="button" data-av-zoom-close>Close</button>
+  <button class="av-zoom__nav av-zoom__nav--prev" type="button" data-av-zoom-prev aria-label="Previous photograph">&#8249;</button>
+  <button class="av-zoom__nav av-zoom__nav--next" type="button" data-av-zoom-next aria-label="Next photograph">&#8250;</button>
+  <div class="av-zoom__count av-label" aria-hidden="true"><span data-av-zoom-count>1</span> / {{ renderable_media }}</div>
   <div class="av-zoom__strip" data-av-zoom-strip></div>
 </dialog>
 <script src="{{ 'av-product.js' | asset_url }}" defer="defer"></script>

@@ -24,6 +24,7 @@
       {%- endif -%}
     </nav>
     <div class="av-header__icons">
+      {%- if settings.av_usd_rate > 0 -%}<button class="av-header__currency" type="button" data-av-cur-toggle aria-label="Prices in Indian rupees. Switch to dollars">INR ₹</button>{%- endif -%}
       <a class="av-header__search" href="{{ routes.search_url }}" aria-label="Search">{% render 'av-icon', name: 'search' %}</a>
       {%- if settings.av_show_account and shop.customer_accounts_enabled -%}
         <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" aria-label="Account">{% render 'av-icon', name: 'account' %}</a>
@@ -52,6 +53,7 @@
   <div class="av-drawer__foot">
     <nav class="av-drawer__more" aria-label="More">
       <a href="{{ routes.search_url }}">Search</a>
+      {%- if settings.av_usd_rate > 0 -%}<button class="av-drawer__currency" type="button" data-av-cur-toggle>INR ₹</button>{%- endif -%}
       {% render 'av-phone-link', prefix: 'Call ', class: 'av-drawer__call' %}
       {% render 'av-whatsapp-link', label: 'WhatsApp', class: 'av-drawer__wa' %}
       {%- if pages['contact'].url != blank -%}<a href="{{ pages['contact'].url }}">Write to us</a>{%- endif -%}
