@@ -79,49 +79,49 @@
         "i1": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/av-home-hero.jpg"
+            "image": "shopify://shop_images/av-gal-el-05918.jpg"
           }
         },
         "i2": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/av-home-look-1.jpg"
+            "image": "shopify://shop_images/av-gal-el-05749.jpg"
           }
         },
         "i3": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/av-dz-ocean-bed-worn.jpg"
+            "image": "shopify://shop_images/av-gal-el-05855.jpg"
           }
         },
         "i4": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/av-home-hero-mobile.jpg"
+            "image": "shopify://shop_images/av-gal-el-09222.jpg"
           }
         },
         "i5": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/av-gal2-5.jpg"
+            "image": "shopify://shop_images/av-gal-el-05812.jpg"
           }
         },
         "i6": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/av-gal2-6.jpg"
+            "image": "shopify://shop_images/av-gal-el-05778.jpg"
           }
         },
         "i7": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/av-dz-nautilus-detail.jpg"
+            "image": "shopify://shop_images/av-gal-el-05997.jpg"
           }
         },
         "i8": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/av-about-place.jpg"
+            "image": "shopify://shop_images/av-gal-el-06085.jpg"
           }
         }
       },
