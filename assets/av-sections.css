@@ -827,22 +827,15 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
   .av-hero--four { --four-gap: 12px; grid-template-columns: repeat(4, minmax(0, 1fr)); padding-top: 16px; }
 }
 
-/* Homepage, 16 Nov 2026 (afternoon).
-   The house: the photograph fills the left half of the page edge to edge, the words take the right half.
-   Collections: the open collections stand side by side as columns, photograph above the words. Phones stack both. */
+/* Homepage collections, 16 Nov 2026 (afternoon): the open collections stand side by side as two columns.
+   In each, a smaller photograph with its words beside it. Phones stack: photograph, then words. */
 @media (min-width: 700px) {
-  .av-story { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 0; justify-content: stretch; align-items: stretch; padding: 0; margin: calc(var(--av-section) / 2) 0; }
-  .av-story > .av-media { width: 100%; height: min(84vh, 780px); aspect-ratio: auto; align-self: stretch; }
-  .av-story > .av-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .av-story__text { padding: 56px var(--av-gutter) 56px clamp(32px, 6vw, 96px); max-width: 720px; align-self: center; }
-
-  .av-drop-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--av-col-gap, 48px); row-gap: var(--av-section); align-items: start; padding: var(--av-section) var(--av-gutter) 40px; }
-  .av-drop-pair > .av-drop { display: flex; flex-direction: column; align-items: stretch; gap: 28px; padding: 0; }
+  .av-drop-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--av-col-gap, 48px); row-gap: var(--av-section); align-items: center; padding: var(--av-section) var(--av-gutter) 40px; }
+  .av-drop-pair > .av-drop { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); column-gap: clamp(20px, 2.4vw, 36px); align-items: center; justify-content: stretch; padding: 0; }
   .av-drop-pair > .av-drop > .av-media { width: 100%; aspect-ratio: var(--ratio); }
-  .av-drop-pair .av-drop__info { align-self: stretch; justify-content: flex-start; gap: 24px; }
+  .av-drop-pair .av-drop__info { align-self: center; justify-content: center; gap: 24px; }
   .av-drop-pair .av-drop__info > .av-stack { gap: 16px !important; }
 }
-@media (min-width: 700px) {
-  /* each column's photograph fits the screen with its words, so the pair is held to a comfortable width and centred */
-  .av-drop-pair { grid-template-columns: repeat(2, minmax(0, calc(min(80vh, 820px) * 0.66))); justify-content: center; }
+@media (min-width: 700px) and (max-width: 1100px) {
+  .av-drop-pair > .av-drop { grid-template-columns: minmax(0, 1fr); row-gap: 20px; align-items: start; }
 }
