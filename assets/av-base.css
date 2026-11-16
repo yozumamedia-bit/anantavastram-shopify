@@ -29,12 +29,12 @@
   /* rhythm */
   --av-gutter: 56px;
   --av-gap: 24px;
-  --av-section: 120px;
+  --av-section: 72px;
   --av-header-h: 88px;
 }
 
 @media (max-width: 900px) {
-  :root { --av-gutter: 20px; --av-gap: 16px; --av-section: 72px; --av-header-h: 64px; }
+  :root { --av-gutter: 20px; --av-gap: 16px; --av-section: 48px; --av-header-h: 64px; }
 }
 
 html { background: var(--av-ivory); scrollbar-gutter: stable; }

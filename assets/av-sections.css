@@ -802,3 +802,18 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
   .av-ship__item + .av-ship__item::before { content: none; }
 }
 .av-rows__ship + .av-row { border-top: 0; }
+
+/* Even rhythm (16 Nov 2026): one moderate section space everywhere (--av-section: 72px, 56px on tablets, 48px on phones).
+   The older fixed 96px and 88px section paddings follow it, so no page has a gap of more than about two section spaces. */
+@media (min-width: 901px) and (max-width: 1100px) { :root { --av-section: 56px; } }
+.av-intro { padding-bottom: 56px; }
+.av-past-head { padding-top: var(--av-section); }
+.av-past { padding-top: 56px; padding-bottom: var(--av-section); }
+.shopify-section:has(> .av-campaign) ~ .shopify-section > .av-campaign { padding-top: var(--av-section); }
+.av-featured__text { padding-bottom: var(--av-section); }
+.av-earlier { padding-top: var(--av-section); }
+.av-coll-credits { padding-bottom: var(--av-section); }
+.av-commissions { margin-top: var(--av-section); padding-top: 64px; }
+.av-drop-strip { padding-bottom: 0; }
+.av-drop { padding-bottom: 32px; }
+.av-story__text, .av-chapter--split .av-chapter__text { padding-top: 64px; padding-bottom: 64px; }
