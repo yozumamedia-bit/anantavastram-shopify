@@ -787,17 +787,17 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
 .av-zoom__count { position: fixed; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 2; color: var(--av-ivory); }
 @media (max-width: 767px) { .av-zoom__strip img { padding: 56px 0 44px; } .av-zoom__nav { display: none; } }
 
-/* Shipping strip (16 Nov 2026): the three shipping facts on one slim row between hairlines, in red, instead of a grey paragraph. */
-.av-ship { list-style: none; margin: 0; padding: 14px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 0; border-top: 1px solid var(--av-grey-3); border-bottom: 1px solid var(--av-grey-3); font-family: var(--av-font-sans); font-weight: 500; font-size: 13px; line-height: 1.4; letter-spacing: 0.02em; color: var(--av-kumkum); }
-.av-ship__item { padding: 0 22px; white-space: nowrap; }
-.av-ship__item + .av-ship__item { border-left: 1px solid var(--av-grey-3); }
-.av-ship--stack { flex-direction: column; gap: 6px; padding: 14px 0; }
-.av-ship--stack .av-ship__item { padding: 0; white-space: normal; }
-.av-ship--stack .av-ship__item + .av-ship__item { border-left: 0; }
+/* Shipping strip (16 Nov 2026): the three shipping facts on one slim row in red, no rules; a small dot separates them. */
+.av-ship { list-style: none; margin: 0; padding: 4px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 0; font-family: var(--av-font-sans); font-weight: 500; font-size: 13px; line-height: 1.4; letter-spacing: 0.02em; color: var(--av-kumkum); }
+.av-ship__item { white-space: nowrap; }
+.av-ship__item + .av-ship__item::before { content: "\00B7"; margin: 0 16px; opacity: 0.6; }
+.av-ship--stack { flex-direction: column; gap: 6px; }
+.av-ship--stack .av-ship__item { white-space: normal; }
+.av-ship--stack .av-ship__item + .av-ship__item::before { content: none; }
 .av-drop-strip { padding: 0 var(--av-gutter) 40px; }
 .av-rows__ship { padding-top: 20px; padding-bottom: 0; }
 @media (max-width: 899px) {
-  .av-ship { flex-direction: column; align-items: flex-start; gap: 6px; padding: 12px 0; }
-  .av-ship__item { padding: 0; white-space: normal; }
-  .av-ship__item + .av-ship__item { border-left: 0; }
+  .av-ship { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .av-ship__item { white-space: normal; }
+  .av-ship__item + .av-ship__item::before { content: none; }
 }
