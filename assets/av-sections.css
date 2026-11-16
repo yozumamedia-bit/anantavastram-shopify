@@ -801,3 +801,4 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
   .av-ship__item { white-space: normal; }
   .av-ship__item + .av-ship__item::before { content: none; }
 }
+.av-rows__ship + .av-row { border-top: 0; }
