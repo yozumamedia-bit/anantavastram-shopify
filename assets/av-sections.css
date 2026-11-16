@@ -839,3 +839,4 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
 @media (min-width: 700px) and (max-width: 1100px) {
   .av-drop-pair > .av-drop { grid-template-columns: minmax(0, 1fr); row-gap: 20px; align-items: start; }
 }
+.av-drop-pair:empty { display: none; }
