@@ -745,3 +745,5 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
 /* No hanging words (16 Nov 2026): headings and statements break into even lines; paragraphs never end on a single stranded word. */
 .av-statement, .av-sub, .av-name, .av-coll-story__text h2, .av-coll-story__text h3, .av-quote { text-wrap: balance; }
 .av-body, .av-body p, .av-coll-story__text p, .av-product__desc p, .av-acc__body p, .av-article__body p { text-wrap: pretty; }
+.av-credo__clause { display: inline-block; text-wrap: balance; }
+@media (max-width: 749px) { .av-credo { padding-left: var(--av-gutter); padding-right: var(--av-gutter); } }
