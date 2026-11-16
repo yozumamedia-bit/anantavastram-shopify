@@ -24,7 +24,13 @@
   </div>
   <div class="av-footer__bottom">
     <div>© {{ 'now' | date: '%Y' }} {{ shop.name | escape }}{% if shop.privacy_policy.body != blank %} · <a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title | escape }}</a>{% endif %}{% if shop.terms_of_service.body != blank %} · <a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title | escape }}</a>{% endif %}{% if shop.contact_information.body != blank %} · <a href="{{ shop.contact_information.url }}">{{ shop.contact_information.title | escape }}</a>{% endif %}</div>
+    {%- if settings.av_usd_rate > 0 -%}
+    <div class="av-currency" data-av-currency data-rate="{{ settings.av_usd_rate }}" role="group" aria-label="Show prices in">
+      <button type="button" data-av-cur="INR" aria-pressed="true">INR ₹</button><span aria-hidden="true">/</span><button type="button" data-av-cur="USD" aria-pressed="false">USD $</button>
+    </div>
+    {%- else -%}
     <div>{{ settings.av_currency_line | escape }}</div>
+    {%- endif -%}
   </div>
 </footer>
 

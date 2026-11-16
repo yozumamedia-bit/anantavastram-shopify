@@ -86,6 +86,7 @@
       <div class="av-price">{% render 'av-edition-line', product: product, context: 'tile' %}</div>
       {%- else -%}
       <div class="av-price">{% render 'av-money', price: v.price %}</div>
+      <div class="av-label av-usd-note" data-av-usd-note hidden>Approximate. You pay {% render 'av-money', price: v.price, fixed: true %} in Indian rupees.</div>
       {%- endif -%}
       {%- if settings.av_tax_line != blank and enquiry == false and soon == false -%}<div class="av-label av-price__note">{{ settings.av_tax_line | escape }}</div>{%- endif -%}
     </div>

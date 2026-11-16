@@ -1,6 +1,8 @@
 {%- comment -%}
   A price as the house writes it: ₹ 1,54,900: the rupee sign, Indian digit grouping, no "Rs.", no "INR" suffix, no ".00".
   Usage: {% render 'av-money', price: product.price %}
+  The amount sits in a span carrying the rupee figure, so the INR / USD switch (assets/av-currency.js) can show an
+  approximate dollar price. `fixed: true` prints rupees only (the bag, where the charge is in rupees).
   In any other presentment currency (a market abroad) it falls back to the shop's own money format.
 {%- endcomment -%}
 {%- if cart.currency.iso_code == 'INR' or cart.currency.iso_code == blank -%}
@@ -31,7 +33,7 @@
       assign amount = amount | append: '.' | append: p2
     endif
   -%}
-  ₹&nbsp;{{- amount -}}
+  {%- if fixed -%}₹&nbsp;{{- amount -}}{%- else -%}<span class="av-money" data-av-inr="{{ price | divided_by: 100.0 }}">₹&nbsp;{{- amount -}}</span>{%- endif -%}
 {%- else -%}
   {{- price | money -}}
 {%- endif -%}

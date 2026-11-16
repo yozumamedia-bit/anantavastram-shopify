@@ -422,3 +422,11 @@ html.av-opening-active .av-header__wordmark { visibility: hidden; } /* the trave
 @media (max-width: 900px) { body.has-orderbar .av-wa-float { opacity: 0; pointer-events: none; } }
 .av-intro__phone { font-size: 15px; }
 .av-enquiry__call { align-self: flex-start; }
+
+/* INR / USD switch (footer) and the note under a dollar price */
+.av-currency { display: inline-flex; align-items: center; gap: 8px; }
+.av-currency button { all: unset; cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; color: var(--av-ivory); opacity: 0.6; font: inherit; letter-spacing: inherit; text-transform: inherit; }
+.av-currency button[aria-pressed="true"] { opacity: 1; border-bottom: 1px solid var(--av-ivory); min-height: 0; padding: 2px 0; }
+.av-currency button:focus-visible { outline: 2px solid var(--av-ivory); outline-offset: 3px; }
+.av-usd-note { margin-top: 6px; }
+[data-av-usd-note][hidden] { display: none; }

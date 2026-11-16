@@ -255,6 +255,7 @@
     {{ 'av-sections.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'av-opening.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'av-reveal.js' | asset_url }}" defer="defer"></script>
+    {%- if settings.av_usd_rate > 0 -%}<script src="{{ 'av-currency.js' | asset_url }}" defer="defer"></script>{%- endif -%}
     <script src="{{ 'av-video.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'av-header.js' | asset_url }}" defer="defer"></script>
 
