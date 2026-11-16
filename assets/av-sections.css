@@ -724,3 +724,13 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
   .av-product__media { align-items: stretch; }
   .av-product__media > .av-media, .av-product__media > .av-video { height: 100%; align-self: stretch; }
 }
+
+/* Hero as a pair (16 Nov 2026): two upright photographs side by side, each whole, centred on ivory. Phones show the first alone, filling the screen. */
+.av-hero__second { display: none; }
+@media (min-width: 750px) {
+  .av-hero--pair { --pair-gap: 16px; --pair-h: min(calc(100svh - var(--av-header-h) - 32px), calc((100vw - 2 * var(--av-gutter) - var(--pair-gap)) / 2 / var(--av-hero-ratio, 0.7))); height: calc(var(--pair-h) + 32px); display: flex; justify-content: center; align-items: center; gap: var(--pair-gap); background: var(--av-ivory); }
+  .av-hero--pair picture { display: block; height: var(--pair-h); width: calc(var(--pair-h) * var(--av-hero-ratio, 0.7)); flex: 0 0 auto; }
+  .av-hero--pair img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; animation: none; }
+}
+.av-product__see { margin: 0; color: var(--av-ink); }
+.av-product__see a { color: var(--av-kumkum); text-decoration: underline; text-underline-offset: 3px; }

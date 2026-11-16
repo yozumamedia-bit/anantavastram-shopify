@@ -12,10 +12,11 @@
     "hero": {
       "type": "av-hero",
       "settings": {
-        "image": "shopify://shop_images/av-home-hero-04019.jpg",
-        "image_mobile": "shopify://shop_images/av-comm-04025.jpg",
-        "focus_y": 100,
-        "whole": true
+        "image": "shopify://shop_images/av-home-hero-door.jpg",
+        "image_mobile": "shopify://shop_images/av-home-hero-door.jpg",
+        "focus_y": 60,
+        "whole": true,
+        "image_2": "shopify://shop_images/av-is-kovil-puri-jagananth-embrodering-photos-1-of-2.jpg"
       }
     },
     "credo": {

@@ -130,6 +130,11 @@
           {%- endform -%}
         </product-form>
       {%- endif -%}
+      {%- unless enquiry -%}
+      {%- comment -%} Seeing the piece before paying: the reassurance beside the button, since a piece is returned only if it arrives damaged (16 Nov 2026). {%- endcomment -%}
+      {%- assign see_text = 'I would like to see ' | append: product.title | append: ' on a video call before I order: ' | append: shop.url | append: product.url -%}
+      <p class="av-body av-body--s av-product__see">See it before you pay, on a video call or at our Chennai studio. {% render 'av-whatsapp-link', label: 'Ask for a video call', text: see_text, class: 'av-product__see-link' %}</p>
+      {%- endunless -%}
       {% render 'av-whatsapp-link', label: 'Ask on WhatsApp', text: wa_text %}
     </div>
 

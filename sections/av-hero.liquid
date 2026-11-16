@@ -2,7 +2,17 @@
   Full-viewport still, no copy, no button. A separate portrait photograph can be set for phones (below 750px wide);
   without one, phones crop the main image. "Vertical focus" keeps the part of the main image that matters in frame.
 {%- endcomment -%}
-<section class="av-hero{% if section.settings.whole and section.settings.image != blank %} av-hero--whole{% endif %}" style="--av-hero-y: {{ section.settings.focus_y | default: 50 }}%;{% if section.settings.image != blank %} --av-hero-ratio: {{ section.settings.image.aspect_ratio }};{% endif %}">
+{%- liquid
+  assign whole = false
+  if section.settings.whole and section.settings.image != blank
+    assign whole = true
+  endif
+  assign pair = false
+  if whole and section.settings.image_2 != blank
+    assign pair = true
+  endif
+-%}
+<section class="av-hero{% if whole %} av-hero--whole{% endif %}{% if pair %} av-hero--pair{% endif %}" style="--av-hero-y: {{ section.settings.focus_y | default: 50 }}%;{% if section.settings.image != blank %} --av-hero-ratio: {{ section.settings.image.aspect_ratio }};{% endif %}">
   <h1 class="visually-hidden">{{ shop.name | escape }}</h1>
   {%- if section.settings.image != blank -%}
     <picture>
@@ -11,6 +21,12 @@
       {%- endif -%}
       {{ section.settings.image | image_url: width: 3840 | image_tag: widths: '800, 1200, 1600, 2000, 2800, 3840', sizes: '100vw', loading: 'eager', fetchpriority: 'high', alt: section.settings.image.alt | default: '' }}
     </picture>
+    {%- if pair -%}
+      {%- comment -%} A second photograph beside the first, on screens wide enough for both (tablet and up). Phones show the first alone. {%- endcomment -%}
+      <picture class="av-hero__second">
+        {{ section.settings.image_2 | image_url: width: 2400 | image_tag: widths: '800, 1200, 1600, 2000, 2400', sizes: '50vw', loading: 'eager', alt: section.settings.image_2.alt | default: '' }}
+      </picture>
+    {%- endif -%}
   {%- else -%}
     <div class="av-media" style="height:100%"></div>
   {%- endif -%}
@@ -18,6 +34,7 @@
 {% schema %}
 { "name": "AV Hero", "settings": [
   { "type": "image_picker", "id": "image", "label": "Full-viewport still (no copy, no button)" },
+  { "type": "image_picker", "id": "image_2", "label": "Second photograph (optional)", "info": "With \"Show the whole photograph\" on, it stands beside the first on tablets and larger screens. Use two upright photographs." },
   { "type": "image_picker", "id": "image_mobile", "label": "Phone photograph (portrait, optional)" },
   { "type": "checkbox", "id": "whole", "label": "Show the whole photograph on wide screens (never crop it)", "default": false, "info": "On a screen wider than the photograph, the photograph is shown whole and centred, with the page colour at its sides." },
   { "type": "range", "id": "focus_y", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50, "label": "Vertical focus", "info": "Which part of the photograph stays in view when the screen crops it: 0 = top, 100 = bottom." }
