@@ -99,3 +99,4 @@ Run `shopify theme check` before every commit.
 - Product page has a Size guide panel (veshti is one length; kurta table from the house's size guide, inches).
 - Spacing (16 Nov 2026): one moderate section space, `--av-section` = 72px desktop, 56px tablets, 48px phones. Do not add fixed 96px or 120px section paddings. The shipping line is a single red row with dots and no rules (`snippets/av-ship-strip.liquid`).
 - Homepage hero (16 Nov 2026, replaces the pair): a row of four upright photographs, two by two on phones (`av-hero` with `image`, `image_2`, `image_3`, `image_4`; class `av-hero--four`).
+- Homepage (16 Nov 2026, afternoon): "The house" (`av-story`) is full bleed, photograph filling the left half to the page edge. The open collections stand side by side as two columns (`.av-drop-pair` in `av-drop-index` when `home` is on), photograph above the words. Phones stack both.

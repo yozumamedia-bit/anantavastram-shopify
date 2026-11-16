@@ -842,3 +842,7 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
   .av-drop-pair .av-drop__info { align-self: stretch; justify-content: flex-start; gap: 24px; }
   .av-drop-pair .av-drop__info > .av-stack { gap: 16px !important; }
 }
+@media (min-width: 700px) {
+  /* each column's photograph fits the screen with its words, so the pair is held to a comfortable width and centred */
+  .av-drop-pair { grid-template-columns: repeat(2, minmax(0, calc(min(80vh, 820px) * 0.66))); justify-content: center; }
+}
