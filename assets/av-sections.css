@@ -869,3 +869,5 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
 /* Whenever a photograph is cropped to its box, the crop is taken from the centre, so the design stays in the middle. */
 .av-media--ratio > img, .av-product__media img, .av-list img, .av-tiles img { object-position: 50% 50%; }
 .av-bleed > .av-media--ratio > img { object-position: 50% var(--av-bleed-y, 50%); }
+/* A single card with an upright photograph: the photograph fits the screen and sits next to its words. */
+@media (min-width: 700px) { .av-cards--one .av-card > .av-media { width: min(100%, calc(min(78vh, 760px) * (var(--ratio)))); justify-self: end; } }
