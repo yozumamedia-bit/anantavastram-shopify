@@ -852,3 +852,14 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
   .av-drop-pair > .av-drop > .av-media img { width: 100%; height: 100%; object-fit: cover; }
   .av-drop-pair .av-drop__info { align-self: start; justify-content: flex-start; padding-top: 8px; }
 }
+
+/* One size per orientation (16 Nov 2026): every upright photograph is 2 / 3 and every wide one 3 / 2 (set in snippets/av-media.liquid).
+   The fixed frames below follow the same two proportions. */
+.av-media--ratio > img.av-media__img, .av-media--ratio > .av-media__alt { object-fit: cover; }
+@media (max-width: 900px) { .av-commissions .av-media { aspect-ratio: var(--ratio); } }
+@media (max-width: 767px) { .av-coll-opening .av-media, .av-coll-opening .av-video { aspect-ratio: 2 / 3; } .av-product__media { aspect-ratio: 2 / 3; } }
+.av-video.av-product__video { aspect-ratio: 2 / 3; }
+.av-story .av-media { --ratio: 2 / 3; }
+.av-drop .av-media { --ratio: 2 / 3; }
+/* Page openings: the paragraph beside the heading is justified, so its right edge is as straight as its left. */
+@media (min-width: 700px) { .av-intro .av-body p { text-align: justify; text-align-last: left; hyphens: auto; -webkit-hyphens: auto; } }

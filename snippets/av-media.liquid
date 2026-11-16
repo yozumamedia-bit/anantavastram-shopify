@@ -20,6 +20,24 @@
       assign ratio = ar | append: ' / 1'
     endif
   endif
+  comment
+    One size for upright photographs, one for wide ones (16 Nov 2026): whatever proportion is asked for or the
+    photograph has, an upright box becomes 2 / 3 and a wide box 3 / 2. The photograph fills the box (cover).
+    Full-width banners (wider than 1.7 to 1) keep their own band proportion. `free: true` opts a box out.
+  endcomment
+  unless free
+    assign rparts = ratio | split: '/'
+    assign rw = rparts[0] | strip | times: 1.0
+    assign rh = rparts[1] | strip | times: 1.0
+    if rh > 0
+      assign rnum = rw | divided_by: rh
+      if rnum < 1
+        assign ratio = '2 / 3'
+      elsif rnum <= 1.7
+        assign ratio = '3 / 2'
+      endif
+    endif
+  endunless
   assign sizes = sizes | default: '100vw'
   assign loading = loading | default: 'lazy'
   assign fetch_priority = 'auto'
