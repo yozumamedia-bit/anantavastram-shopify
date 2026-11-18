@@ -872,3 +872,10 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
 /* A single card with an upright photograph: the photograph fits the screen and sits next to its words. */
 @media (min-width: 700px) { .av-cards--one .av-card > .av-media { width: min(100%, calc(min(78vh, 760px) * (var(--ratio)))); justify-self: end; } }
 @media (min-width: 700px) { .av-cards--one .av-card { align-content: center; } .av-cards--one .av-card > .av-body { max-width: 520px; } }
+
+/* Product photographs stay upright (17 Nov 2026): on tablets and desktops the photograph frame is always 2 / 3.
+   Its height fits the screen and its width follows from that, so a wide, short window can no longer make it square. */
+@media (min-width: 768px) {
+  .av-product__gallery { --av-photo-h: min(calc(100vh - var(--av-header-h, 72px) - 48px), 980px); width: min(100%, calc(var(--av-photo-h) * 2 / 3)); justify-self: center; margin-left: auto; margin-right: auto; }
+  .av-product__media { width: 100%; height: auto; max-height: none; aspect-ratio: 2 / 3; }
+}
