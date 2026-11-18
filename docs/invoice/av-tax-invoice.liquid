@@ -21,7 +21,7 @@
   @font-face { font-family: "General Sans"; font-weight: 500; src: url("https://anantavastram.com/cdn/shop/t/4/assets/general-sans-500.woff2") format("woff2"); }
   @page { size: A4; margin: 18mm 18mm 16mm; }
   .inv, .inv * { box-sizing: border-box; }
-  .inv { --kumkum: #9E1B1E; --ink: #2B2826; --grey: #7A746E; --line: #E4DED3; font-family: "General Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: 300; font-size: 9.5pt; line-height: 1.55; color: var(--ink); max-width: 174mm; margin: 0 auto; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .inv { --kumkum: #9E1B1E; --ink: #2B2826; --grey: #7A746E; --line: rgba(158, 27, 30, 0.28); font-family: "General Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: 300; font-size: 9.5pt; line-height: 1.55; color: var(--ink); max-width: 174mm; margin: 0 auto; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .inv p { margin: 0; }
   .inv-label { font-size: 7pt; letter-spacing: 0.16em; text-transform: uppercase; color: var(--grey); margin-bottom: 6px; }
   .inv-strong { font-weight: 500; }
@@ -36,11 +36,11 @@
   .inv-facts td:first-child { color: var(--grey); padding-left: 0; }
 
   /* who it is for */
-  .inv-parties { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 16mm; padding-top: 14px; border-top: 1px solid var(--ink); }
+  .inv-parties { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 16mm; padding-top: 14px; border-top: 1px solid var(--kumkum); }
 
   /* the pieces */
   .inv-items { width: 100%; border-collapse: collapse; margin-top: 14mm; }
-  .inv-items th { font-weight: 300; font-size: 7pt; letter-spacing: 0.16em; text-transform: uppercase; color: var(--grey); text-align: left; padding: 0 0 8px; border-bottom: 1px solid var(--ink); }
+  .inv-items th { font-weight: 300; font-size: 7pt; letter-spacing: 0.16em; text-transform: uppercase; color: var(--grey); text-align: left; padding: 0 0 8px; border-bottom: 1px solid var(--kumkum); }
   .inv-items td { padding: 14px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
   .inv .num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
   .inv-piece { font-weight: 500; font-size: 10.5pt; }
@@ -50,13 +50,13 @@
   .inv-totals { width: 70mm; margin: 10px 0 0 auto; border-collapse: collapse; }
   .inv-totals td { padding: 5px 0; }
   .inv-totals td:first-child { color: var(--grey); }
-  .inv-totals tr.total td { border-top: 1px solid var(--ink); padding-top: 12px; font-size: 12pt; font-weight: 500; color: var(--ink); }
+  .inv-totals tr.total td { border-top: 1px solid var(--kumkum); padding-top: 12px; font-size: 12pt; font-weight: 500; color: var(--ink); }
   .inv-totals tr.total td:last-child { color: var(--kumkum); }
   .inv-totals tr.pre-total td { padding-bottom: 12px; }
 
   /* signature and the small print */
   .inv-sign { margin: 16mm 0 0 auto; width: 70mm; text-align: right; font-size: 8.5pt; color: var(--grey); break-inside: avoid; }
-  .inv-sign__line { margin-top: 16mm; border-top: 1px solid var(--ink); padding-top: 6px; }
+  .inv-sign__line { margin-top: 16mm; border-top: 1px solid var(--kumkum); padding-top: 6px; }
   .inv-small { margin-top: 14mm; padding-top: 12px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: 24px; font-size: 8pt; line-height: 1.6; color: var(--grey); break-inside: avoid; }
   .inv-small .inv-label { margin-bottom: 4px; }
 </style>
