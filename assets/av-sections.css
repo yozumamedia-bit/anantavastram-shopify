@@ -900,3 +900,17 @@ cart-items, .cart__footer { font-family: var(--av-font-sans); font-weight: 300; 
 .cart__checkout-button.button::before, .cart__checkout-button.button::after { display: none; }
 .cart__checkout-button.button:hover { background: var(--av-kumkum-deep); }
 .tax-note, .cart__note { font-family: var(--av-font-sans); font-weight: 300; font-size: 14px; color: var(--av-grey-1); }
+
+/* Small windows (21 Nov 2026): several photographs take their size from the window's height so they fit one screen.
+   In a short window that made them shrink to thumbnails beside full-size text. Each now has a floor, so a small
+   window scrolls instead of squeezing the photograph. */
+@media (min-width: 768px) {
+  .av-product__gallery { --av-photo-h: max(520px, min(calc(100vh - var(--av-header-h, 72px) - 48px), 980px)); }
+}
+@media (min-width: 700px) {
+  .av-story > .av-media { width: min(calc(50vw - var(--av-gutter) - 32px), calc(max(460px, min(78vh, 820px)) * (var(--ratio)))); }
+  .av-drop:not(.av-drop-pair > .av-drop) > .av-media { width: min(calc(50vw - var(--av-gutter) - 32px), calc(max(460px, min(80vh, 860px)) * (var(--ratio)))); }
+  .av-cards--one .av-card > .av-media { width: min(100%, calc(max(460px, min(78vh, 760px)) * (var(--ratio)))); }
+  .av-coll-story__art img { max-height: max(460px, calc(100vh - var(--av-header-h, 72px) - 72px)); max-height: max(460px, calc(100svh - var(--av-header-h, 72px) - 72px)); }
+}
+.av-bleed > .av-media { max-height: max(360px, 82vh); }
