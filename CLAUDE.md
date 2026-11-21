@@ -101,3 +101,14 @@ Run `shopify theme check` before every commit.
 - Homepage hero (16 Nov 2026, replaces the pair): a row of four upright photographs, two by two on phones (`av-hero` with `image`, `image_2`, `image_3`, `image_4`; class `av-hero--four`).
 - Homepage (16 Nov 2026, afternoon): the open collections stand side by side as two columns (`.av-drop-pair` in `av-drop-index`, on the homepage and on the Collections page alike, two per row), each a smaller photograph with its words beside it. "The house" (`av-story`) keeps its centred photograph-and-words layout (a full-bleed version was tried and undone).
 - Photograph sizes (16 Nov 2026): every upright photograph box is 2 / 3 and every wide one 3 / 2, enforced in `snippets/av-media.liquid` (full-width banners wider than 1.7 to 1 keep their band proportion; `free: true` opts out). Do not introduce other proportions. Page-opening paragraphs (`.av-intro`) start level with the heading's first line and are justified.
+
+## Changes of 21 Nov 2026 (override anything above that disagrees)
+- Shipping: "We ship worldwide from Chennai." everywhere (no "USA" wording). Shopify still has only an India shipping zone, so orders to any other country are taken on WhatsApp or by email, and the shipping text says so.
+- Phones: `av_phone_number` +91 98849 69996 (business operations, the number shown for calls), `av_phone_number_2` +91 94421 74559 (second number, footer and Contact only). WhatsApp unchanged, +91 98400 02288.
+- Commissions: paid in full once the design is confirmed (the 30% deposit is gone). Terms band item is "Payment".
+- Homepage credo: "Embroidered by hand. Designed in Chennai. Made in small numbers."
+- Never say "in stock", "stocked" or "held in stock". A piece is "Ready in our studio" or "kept ready in our Chennai studio".
+- US dollar prices are written "US $839".
+- Studio visits are booked two ways: Google Calendar (theme setting `av_calendar_url`, hidden while empty) and WhatsApp.
+- Gallery: campaign 1 "Launch campaign" (Boston shoot only), campaign 2 "The Great Elephant Migration" (elephant shoot only). Never mix the two shoots in one campaign.
+- Homepage hero photograph 3 is the wedding set at the studded door (`av-gal1-5.jpg`).

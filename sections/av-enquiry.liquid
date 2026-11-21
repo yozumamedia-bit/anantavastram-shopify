@@ -26,7 +26,7 @@
     {%- assign cal_url = section.settings.calendar_url | default: settings.av_calendar_url -%}
     {%- if cal_url != blank -%}
       <div class="av-stack" style="gap:8px">
-        <a class="av-link" href="{{ cal_url }}" target="_blank" rel="noopener" aria-describedby="a11y-new-window-message">{{ section.settings.calendar_label | default: 'Book a studio visit on Google Calendar' | escape }}</a>
+        <a class="av-link" href="{{ cal_url }}" target="_blank" rel="noopener" aria-describedby="a11y-new-window-message">{% if section.settings.calendar_url != blank %}{{ section.settings.calendar_label | default: 'Book a call' | escape }}{% else %}Book a studio visit on Google Calendar{% endif %}</a>
         {%- if section.settings.calendar_note != blank -%}<span class="av-body av-body--meta">{{ section.settings.calendar_note | escape }}</span>{%- endif -%}
       </div>
     {%- endif -%}
