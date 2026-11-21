@@ -1,11 +1,22 @@
 {%- if section.blocks.size > 0 -%}
 <section class="av-showcase">
-  {%- comment -%} Three tall stills with numeral captions; a swipe rail on phones (see .av-showcase__rail). {%- endcomment -%}
+  {%- comment -%}
+    Three tall stills. Each links to its piece (block setting "Piece") and is captioned with the wearer and the piece:
+    the website names its wearers (decided 4 Nov 2026; the no-names rule is for Instagram only). With no caption set,
+    the caption is the piece's name. A swipe rail on phones (see .av-showcase__rail).
+  {%- endcomment -%}
   <div class="av-showcase__rail av-grid av-grid--3">
     {%- for block in section.blocks -%}
+      {%- assign piece = block.settings.product -%}
+      {%- assign caption = block.settings.caption | default: piece.title -%}
       <figure class="av-showcase__item" {{ block.shopify_attributes }}>
-        {% render 'av-media', image: block.settings.image, ratio: '3 / 5.6', sizes: '(min-width: 900px) 33vw, 78vw' %}
-        {%- if block.settings.caption != blank -%}<figcaption class="av-showcase__caption">{{ block.settings.caption | escape }}</figcaption>{%- endif -%}
+        {%- if piece != blank -%}
+          <a class="av-showcase__link" href="{{ piece.url }}" tabindex="-1" aria-hidden="true">{% render 'av-media', image: block.settings.image, ratio: '3 / 5.6', sizes: '(min-width: 768px) 33vw, 78vw', alt: '' %}</a>
+          <figcaption class="av-showcase__caption"><a href="{{ piece.url }}">{{ caption | escape }}</a></figcaption>
+        {%- else -%}
+          {% render 'av-media', image: block.settings.image, ratio: '3 / 5.6', sizes: '(min-width: 768px) 33vw, 78vw', alt: caption %}
+          {%- if caption != blank -%}<figcaption class="av-showcase__caption">{{ caption | escape }}</figcaption>{%- endif -%}
+        {%- endif -%}
       </figure>
     {%- endfor -%}
   </div>
@@ -14,6 +25,7 @@
 {% schema %}
 { "name": "AV Showcase (three)", "max_blocks": 3, "blocks": [ { "type": "image", "name": "Image", "settings": [
   { "type": "image_picker", "id": "image", "label": "Image (tall)" },
-  { "type": "text", "id": "caption", "label": "Caption (Roman numeral · name)", "default": "I · [Set]" }
-] } ], "presets": [ { "name": "AV Showcase (three)", "blocks": [ { "type": "image", "settings": { "caption": "I · Red set" } }, { "type": "image", "settings": { "caption": "II · Rust set" } }, { "type": "image", "settings": { "caption": "III · Linen set" } } ] } ] }
+  { "type": "product", "id": "product", "label": "Piece", "info": "The photograph links to this piece." },
+  { "type": "text", "id": "caption", "label": "Caption", "info": "The wearer and the piece, e.g. [wearer] in The Golden Deer. Empty: the piece's name." }
+] } ], "presets": [ { "name": "AV Showcase (three)", "blocks": [ { "type": "image" }, { "type": "image" }, { "type": "image" } ] } ] }
 {% endschema %}

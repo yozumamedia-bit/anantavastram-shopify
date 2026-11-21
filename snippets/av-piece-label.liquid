@@ -1,0 +1,39 @@
+{%- comment -%}
+  The small label above a piece's name: [collection ·] No. II · Everyday. Usage:
+  {% render 'av-piece-label', product: product, with_collection: true, numeral_prefix: 'No. ' %}
+  Lines (custom.tier): everyday → Everyday, occasional (or the older "occasion") → Occasional, commission → Commission.
+  The collection is the name of the product's collection_meta entry (custom.collection), never a number.
+{%- endcomment -%}
+{%- liquid
+  assign mf = product.metafields.custom
+  assign parts = ''
+  if with_collection and mf.collection.value != blank
+    assign cname = mf.collection.value.name.value | default: mf.collection.value.collection.value.title
+    if cname != blank
+      assign parts = cname
+    endif
+  endif
+  if mf.numeral.value != blank
+    if parts != blank
+      assign parts = parts | append: ' · '
+    endif
+    assign parts = parts | append: numeral_prefix | append: mf.numeral.value
+  endif
+  assign tier = mf.tier.value | downcase | strip
+  assign tier_name = ''
+  case tier
+    when 'everyday'
+      assign tier_name = 'Everyday'
+    when 'occasional', 'occasion'
+      assign tier_name = 'Occasional'
+    when 'commission'
+      assign tier_name = 'Commission'
+  endcase
+  if tier_name != blank
+    if parts != blank
+      assign parts = parts | append: ' · '
+    endif
+    assign parts = parts | append: tier_name
+  endif
+-%}
+{{- parts | escape -}}

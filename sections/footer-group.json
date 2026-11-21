@@ -44,7 +44,9 @@
         "orders",
         "contact"
       ],
-      "settings": {}
+      "settings": {
+        "blurb": "Handcrafted in Tamil Nadu.\nMenswear designed and embroidered by hand in our Chennai studio, on handloom cloth."
+      }
     }
   },
   "order": [

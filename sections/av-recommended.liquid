@@ -1,0 +1,43 @@
+{%- comment -%}
+  "You may also like" under a product: the other pieces of the same collection first, then pieces from the other
+  collections, each as a Products-grid tile. Only pieces that belong to a named collection are shown (the same rule
+  as the Products page). Three at most.
+{%- endcomment -%}
+{%- liquid
+  assign own = product.metafields.custom.collection.value
+  assign limit = section.settings.limit | default: 3
+  assign shown = 0
+  assign seen = '|' | append: product.id | append: '|'
+-%}
+{%- capture tiles -%}
+  {%- if own != blank -%}
+    {%- for p in own.collection.value.products -%}
+      {%- assign key = '|' | append: p.id | append: '|' -%}
+      {%- if seen contains key or shown >= limit -%}{%- continue -%}{%- endif -%}
+      {% render 'av-product-list-item', product: p %}
+      {%- assign seen = seen | append: p.id | append: '|' -%}{%- assign shown = shown | plus: 1 -%}
+    {%- endfor -%}
+  {%- endif -%}
+  {%- for m in shop.metaobjects.collection_meta.values -%}
+    {%- assign st = m.status.value | downcase | strip -%}
+    {%- if st == 'teaser' or st == 'closed' -%}{%- continue -%}{%- endif -%}
+    {%- for p in m.collection.value.products -%}
+      {%- assign key = '|' | append: p.id | append: '|' -%}
+      {%- if seen contains key or shown >= limit -%}{%- continue -%}{%- endif -%}
+      {% render 'av-product-list-item', product: p %}
+      {%- assign seen = seen | append: p.id | append: '|' -%}{%- assign shown = shown | plus: 1 -%}
+    {%- endfor -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if shown > 0 -%}
+<section class="av-recommended">
+  <h2 class="av-sub av-sub--m">{{ section.settings.heading | escape }}</h2>
+  <ul class="av-list__items av-list__items--three">{{ tiles }}</ul>
+</section>
+{%- endif -%}
+{% schema %}
+{ "name": "AV Recommended pieces", "settings": [
+  { "type": "text", "id": "heading", "label": "Heading", "default": "You may also like" },
+  { "type": "range", "id": "limit", "label": "Pieces shown", "min": 2, "max": 4, "step": 1, "default": 3 }
+], "presets": [{ "name": "AV Recommended pieces" }] }
+{% endschema %}
