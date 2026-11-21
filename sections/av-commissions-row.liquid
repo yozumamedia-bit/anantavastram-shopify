@@ -1,6 +1,6 @@
 {%- comment -%}
   Commissions band on the homepage. Not a product row: an eyebrow, one full-bleed image, a Light statement,
-  one paragraph and two links (the Commissions page, and a studio visit on WhatsApp). No price, no availability, no shipping line.
+  one paragraph, a link to the Commissions page, and two ways to book a studio visit (Google Calendar, WhatsApp). No price, no availability, no shipping line.
 {%- endcomment -%}
 <section class="av-commissions">
   {%- comment -%} The eyebrow "Commissions · Made to order" is split: the first part is the section's heading, the rest its label, so the band reads as its own section (16 Nov 2026). {%- endcomment -%}
@@ -15,7 +15,14 @@
     {%- if section.settings.routing != blank -%}<p class="av-body av-body--s av-commissions__routing">{{ section.settings.routing | escape }}</p>{%- endif -%}
     <div class="av-commissions__links">
       <a class="av-link" href="{{ section.settings.link }}">Begin a commission</a>
-      {% render 'av-whatsapp-link', label: 'Book a studio visit', text: 'I would like to book a studio visit', class: 'av-link' %}
+    </div>
+    {%- comment -%} A studio visit can be booked two ways: on Google Calendar (theme setting "Studio visit booking link") or on WhatsApp. {%- endcomment -%}
+    <div class="av-commissions__visit">
+      <span class="av-label">Book a studio visit</span>
+      <div class="av-commissions__links">
+        {%- if settings.av_calendar_url != blank -%}<a class="av-link" href="{{ settings.av_calendar_url }}" target="_blank" rel="noopener" aria-describedby="a11y-new-window-message">On Google Calendar</a>{%- endif -%}
+        {% render 'av-whatsapp-link', label: 'On WhatsApp', text: 'I would like to book a studio visit', class: 'av-link' %}
+      </div>
     </div>
   </div>
 </section>

@@ -16,6 +16,8 @@
       { "type": "number", "id": "av_usd_rate", "label": "Rupees to one US dollar", "info": "Used to show approximate US dollar prices to visitors in the USA and in the INR / USD switch in the footer. Orders are always charged in rupees. Set to 0 to switch dollar prices off.", "default": 94 },
       { "type": "text", "id": "av_whatsapp_number", "label": "WhatsApp number", "info": "International format, digits only, e.g. 919876543210. Leave empty to hide all WhatsApp links." },
       { "type": "text", "id": "av_phone_number", "label": "Phone number", "info": "International format, digits only. Printed as Phone, beside the WhatsApp number." },
+      { "type": "url", "id": "av_calendar_url", "label": "Studio visit booking link (Google Calendar)", "info": "The link of a Google Calendar appointment schedule. Shown as \"On Google Calendar\" beside the WhatsApp option wherever a studio visit can be booked. Leave empty to hide." },
+      { "type": "text", "id": "av_phone_number_2", "label": "Second phone number", "info": "International format, digits only. Printed under the first phone number in the footer and on Contact. Leave empty to hide." },
       { "type": "textarea", "id": "av_contact_address", "label": "Address (footer and Contact page)" },
       { "type": "text", "id": "av_contact_hours", "label": "Hours (footer and Contact page)" },
       { "type": "checkbox", "id": "av_whatsapp_float", "label": "Floating WhatsApp button on every page", "info": "Bottom right. Needs the number above.", "default": true },

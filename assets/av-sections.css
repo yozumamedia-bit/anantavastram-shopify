@@ -879,3 +879,24 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
   .av-product__gallery { --av-photo-h: min(calc(100vh - var(--av-header-h, 72px) - 48px), 980px); width: min(100%, calc(var(--av-photo-h) * 2 / 3)); justify-self: center; margin-left: auto; margin-right: auto; }
   .av-product__media { width: 100%; height: auto; max-height: none; aspect-ratio: 2 / 3; }
 }
+
+/* 21 Nov 2026. Studio visit: a small label with its two ways to book beneath it. */
+.av-commissions__visit { display: flex; flex-direction: column; gap: 12px; }
+
+/* The bag page: the theme's own type and weights (it was still in the base theme's heading style). */
+cart-items .title--primary, .cart__empty-text { font-family: var(--av-font-sans); font-weight: 300; letter-spacing: 0; color: var(--av-kumkum); }
+cart-items .title--primary { font-size: clamp(32px, 4vw, 52px); line-height: 1.1; margin: 0; }
+cart-items .title-wrapper-with-link { margin-bottom: 28px; }
+cart-items, .cart__footer { font-family: var(--av-font-sans); font-weight: 300; color: var(--av-ink); }
+.cart-items th { font-family: var(--av-font-sans); font-weight: 300; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--av-grey-1); opacity: 1; border-bottom: 1px solid var(--av-kumkum); }
+.cart-item__name { font-family: var(--av-font-sans); font-weight: 500; font-size: 20px; line-height: 1.25; color: var(--av-kumkum); text-decoration: none; }
+.cart-item .price, .cart-item__price-wrapper, .totals__subtotal-value { font-family: var(--av-font-sans); font-weight: 500; color: var(--av-ink); }
+.totals__subtotal { font-family: var(--av-font-sans); font-weight: 300; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--av-grey-1); }
+.cart-item cart-remove-button .button { min-width: 0; min-height: 0; padding: 6px; color: var(--av-grey-1); background: none; box-shadow: none; }
+.cart-item cart-remove-button .button::before, .cart-item cart-remove-button .button::after { display: none; }
+.cart-item cart-remove-button .icon-remove { width: 16px; height: 16px; }
+.cart-item cart-remove-button .button:hover { color: var(--av-kumkum); }
+.cart__checkout-button.button { font-family: var(--av-font-sans); font-weight: 500; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; background: var(--av-kumkum); color: var(--av-ivory); border-radius: 0; box-shadow: none; min-height: 52px; }
+.cart__checkout-button.button::before, .cart__checkout-button.button::after { display: none; }
+.cart__checkout-button.button:hover { background: var(--av-kumkum-deep); }
+.tax-note, .cart__note { font-family: var(--av-font-sans); font-weight: 300; font-size: 14px; color: var(--av-grey-1); }

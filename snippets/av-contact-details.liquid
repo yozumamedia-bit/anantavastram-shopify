@@ -4,7 +4,8 @@
   is the store's sender email. Usage: {% render 'av-contact-details', class: 'av-footer__details' %}
 {%- endcomment -%}
 {%- liquid
-  assign nums = settings.av_phone_number | append: '|' | append: settings.av_whatsapp_number | split: '|'
+  assign nums = settings.av_phone_number | append: '|' | append: settings.av_phone_number_2 | append: '|' | append: settings.av_whatsapp_number | split: '|'
+  assign wa_digits = settings.av_whatsapp_number | strip
 -%}
 <address class="{{ class }}">
   {%- if settings.av_contact_address != blank -%}<span>{{ settings.av_contact_address | escape | newline_to_br }}. Visits by appointment.</span>{%- endif -%}
@@ -22,7 +23,7 @@
         assign shown = '+' | append: cc | append: ' ' | append: a | append: ' ' | append: b
       endif
     -%}
-    {%- if forloop.first and settings.av_phone_number != blank -%}<a href="tel:+{{ n }}">Phone {{ shown }}</a>{%- else -%}<a href="https://wa.me/{{ n }}" target="_blank" rel="noopener">WhatsApp {{ shown }}</a>{%- endif -%}
+    {%- if n != wa_digits -%}<a href="tel:+{{ n }}">Phone {{ shown }}</a>{%- else -%}<a href="https://wa.me/{{ n }}" target="_blank" rel="noopener">WhatsApp {{ shown }}</a>{%- endif -%}
   {%- endfor -%}
   {%- if shop.email != blank -%}<a href="mailto:{{ shop.email }}">{{ shop.email }}</a>{%- endif -%}
   {%- if settings.av_contact_hours != blank -%}<span>{{ settings.av_contact_hours | escape }}</span>{%- endif -%}

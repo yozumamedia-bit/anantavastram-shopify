@@ -70,7 +70,7 @@
 {%- when 'row' -%}
   {%- if total > 0 and enquiry == false -%}Edition of {{ total }}.{% if soon %}{% elsif sold %} Sold out.{% else %} {{ remaining }} remain.{% endif %}{%- endif -%}
 {%- when 'page' -%}
-  {%- if enquiry -%}Made to order{%- elsif soon -%}{{ soon_line | escape }}{%- elsif sold -%}Sold out{%- else -%}In stock{%- endif -%}
+  {%- if enquiry -%}Made to order{%- elsif soon -%}{{ soon_line | escape }}{%- elsif sold -%}Sold out{%- else -%}Ready in our studio{%- endif -%}
 {%- else -%}
-  {%- if enquiry -%}Made to order{%- elsif soon -%}{{ soon_line | escape }}{%- elsif sold -%}Sold out{%- else -%}In stock{%- endif -%}
+  {%- if enquiry -%}Made to order{%- elsif soon -%}{{ soon_line | escape }}{%- elsif sold -%}Sold out{%- else -%}Ready in our studio{%- endif -%}
 {%- endcase -%}

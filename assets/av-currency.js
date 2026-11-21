@@ -14,7 +14,7 @@
       if (!el.hasAttribute('data-av-inr-text')) el.setAttribute('data-av-inr-text', el.textContent);
       if (cur === 'USD') {
         var usd = Math.round(parseFloat(el.getAttribute('data-av-inr')) / rate);
-        el.textContent = 'US$\u00a0' + usd.toLocaleString('en-US');
+        el.textContent = 'US\u00a0$' + usd.toLocaleString('en-US');
       } else {
         el.textContent = el.getAttribute('data-av-inr-text');
       }
