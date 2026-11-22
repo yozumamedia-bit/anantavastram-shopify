@@ -444,5 +444,12 @@ html.av-opening-active .av-header__wordmark { visibility: hidden; } /* the trave
 /* INR / USD button in the header and the phone menu (16 Nov 2026) */
 .av-header__icons .av-header__currency { width: auto; height: 44px; margin: 0 4px 0 0; padding: 0 2px; font-family: var(--av-font-nav); font-weight: 400; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--av-white); white-space: nowrap; }
 .av-drawer__currency { all: unset; cursor: pointer; font-family: var(--av-font-nav); font-weight: 400; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--av-ivory); min-height: 44px; display: inline-flex; align-items: center; }
-@media (max-width: 1023px) { .av-header__icons .av-header__currency { display: none; } }
+/* The header's currency button needs room: below 1400px it leaves the bar (it stays in the phone menu and the footer),
+   otherwise "Collections" ran into the wordmark in a narrowed window (found 21 Nov 2026). */
+@media (max-width: 1399px) { .av-header__icons .av-header__currency { display: none; } }
+@media (min-width: 1024px) and (max-width: 1140px) {
+  .av-header__nav, .av-header__right { gap: 14px; }
+  .av-header__nav a { letter-spacing: 0.06em; }
+  .av-header__icons { gap: 10px; }
+}
 .av-intro__reach { display: flex; flex-wrap: wrap; gap: 10px 28px; align-items: baseline; }
