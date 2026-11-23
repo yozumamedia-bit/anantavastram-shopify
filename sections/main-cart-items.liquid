@@ -24,11 +24,11 @@
 
 <cart-items class="page-width{% if cart == empty %} is-empty{% else %} section-{{ section.id }}-padding{% endif %}">
   {%- comment -%}
-    The house's bag: no "Continue shopping", no log-in nudge, no quantity steppers (each piece is one of a limited
-    number, so a line is one piece and can only be removed), no discount or sale markup.
+    The house's bag: no "Continue shopping", no log-in nudge, no discount or sale markup. The quantity of each piece can be
+    changed here (23 Nov 2026), up to the number ready in the studio.
   {%- endcomment -%}
   <div class="title-wrapper-with-link">
-    <h1 class="title title--primary">{{ 'sections.cart.title' | t }}</h1>
+    <h1 class="title title--primary av-bag-title"><span class="av-bag-title__icon" aria-hidden="true">{% render 'av-icon', name: 'bag' %}</span>{{ 'sections.cart.title' | t }}</h1>
   </div>
 
   <div class="cart__warnings">
@@ -168,15 +168,28 @@
                   <td class="cart-item__quantity">
                     <div class="cart-item__quantity-wrapper">
                       <span class="visually-hidden">{{ 'products.product.quantity.label' | t }}</span>
-                      {%- comment -%} The quantity is shown, not edited; the hidden field keeps cart.js and the no-JS form working. {%- endcomment -%}
-                      <span class="cart-item__qty caption-large">{{ item.quantity }}</span>
-                      <input
-                        type="hidden"
-                        name="updates[]"
-                        value="{{ item.quantity }}"
-                        id="Quantity-{{ item.index | plus: 1 }}"
-                        data-index="{{ item.index | plus: 1 }}"
-                      >
+                      <quantity-input class="quantity cart-quantity">
+                        <button class="quantity__button no-js-hidden" name="minus" type="button">
+                          <span class="visually-hidden">{{ 'products.product.quantity.decrease' | t: product: item.product.title | escape }}</span>
+                          {% render 'icon-minus' %}
+                        </button>
+                        <input
+                          class="quantity__input"
+                          type="number"
+                          name="updates[]"
+                          value="{{ item.quantity }}"
+                          min="1"
+                          {% if item.variant.inventory_management == 'shopify' and item.variant.inventory_policy == 'deny' and item.variant.inventory_quantity > 0 %}max="{{ item.variant.inventory_quantity }}"{% endif %}
+                          step="1"
+                          aria-label="{{ 'products.product.quantity.input_label' | t: product: item.product.title | escape }}"
+                          id="Quantity-{{ item.index | plus: 1 }}"
+                          data-index="{{ item.index | plus: 1 }}"
+                        >
+                        <button class="quantity__button no-js-hidden" name="plus" type="button">
+                          <span class="visually-hidden">{{ 'products.product.quantity.increase' | t: product: item.product.title | escape }}</span>
+                          {% render 'icon-plus' %}
+                        </button>
+                      </quantity-input>
 
                       <cart-remove-button
                         id="Remove-{{ item.index | plus: 1 }}"
