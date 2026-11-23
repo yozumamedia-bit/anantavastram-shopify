@@ -93,8 +93,8 @@
   .inv-totals tr.total td { background: var(--kumkum); color: var(--ivory); border: 0; padding: 12px 5mm 12px 0; font-size: 12.5pt; }
   .inv-totals tr.total td:first-child { padding-left: 5mm; }
   .inv-totals tr.total td:first-child { color: var(--ivory); }
-  .inv-close { margin-top: 9mm; align-items: flex-start; padding: 0 5mm; }
-  .inv-thanks { line-height: 1.2; }
+  .inv-close { margin-top: 9mm; justify-content: flex-end; padding: 0 5mm; }
+  .inv-thanks { line-height: 1.2; white-space: normal; margin-bottom: 4mm; }
   .inv-sign { padding-top: 3px; }
   .inv-thanks { font-size: 13pt; }
   .inv-sign__line { margin-top: 10mm; }
@@ -178,7 +178,6 @@
     </table>
 
     <div class="inv-close">
-      <div class="inv-thanks">Thank you for choosing a piece made by hand.</div>
       <div class="inv-sign">
         <div>For {{ seller_legal_name }}</div>
         <div class="inv-sign__line">Authorised signatory</div>
@@ -186,6 +185,7 @@
     </div>
 
     <div class="inv-small">
+      <div class="inv-thanks">Thank you for choosing a piece made by hand.</div>
       <p>If your piece arrives damaged, write to us within 48 hours with photographs. Commissions are made for one person and cannot be returned.</p>
       {%- if o.note != blank -%}<p>{{ o.note }}</p>{%- endif -%}
     </div>
