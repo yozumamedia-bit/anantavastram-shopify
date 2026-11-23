@@ -74,7 +74,7 @@
   .inv-body { padding: 12mm 22mm 7mm; }
   .inv-title { font-size: 21pt; letter-spacing: 0; text-transform: none; padding-left: 0; line-height: 1.1; }
   .inv-title::after { content: ""; display: block; width: 14mm; height: 1px; background: var(--kumkum); margin: 4mm auto 0; }
-  .inv-facts { margin-top: 7mm; background: var(--ivory); border: 0; }
+  .inv-facts { grid-template-columns: repeat(3, 1fr); margin-top: 7mm; background: var(--ivory); border: 0; }
   .inv-facts > div { padding: 13px 10px 12px; }
   .inv-facts > div + div { border-left: 1px solid #fff; }
   .inv-facts > div > div:last-child { font-weight: 500; }
@@ -116,7 +116,6 @@
     <div class="inv-facts">
       <div><div class="inv-label">Invoice no.</div><div class="inv-strong">{{ o.name | default: o.order_name }}</div></div>
       <div><div class="inv-label">Date</div><div>{{ o.created_at | date: "%-d %B %Y" }}</div></div>
-      <div><div class="inv-label">Place of supply</div><div>{{ ship.province | default: ship.country }}</div></div>
       <div><div class="inv-label">Payment</div><div>{{ o.financial_status | default: 'pending' | replace: '_', ' ' | capitalize }}</div></div>
     </div>
 
