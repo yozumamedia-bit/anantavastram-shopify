@@ -8,7 +8,8 @@
   assign seller_legal_name = 'Ananta Vastram'
   assign seller_gstin = '33ACQFA3693R1ZJ'
   assign seller_state = 'Tamil Nadu (33)'
-  assign seller_address = '6, 3rd Street, 3rd Floor, Abiramapuram, Chennai 600018, Tamil Nadu, India'
+  assign seller_address_1 = '6, 3rd Street, 3rd Floor, Abiramapuram'
+  assign seller_address_2 = 'Chennai 600018, Tamil Nadu, India'
   assign seller_phone = '+91 98849 69996'
   assign seller_whatsapp = '+91 98400 02288'
   assign o = order
@@ -65,6 +66,40 @@
   .inv-sign__line { margin-top: 12mm; border-top: 1px solid var(--kumkum); padding-top: 6px; }
   .inv-small { margin-top: auto; padding-top: 6mm; text-align: center; font-size: 7.6pt; line-height: 1.7; color: var(--grey); break-inside: avoid; }
   .inv-small p { max-width: 130mm; margin: 0 auto; }
+
+  /* refinement, 23 Nov 2026: statement title, ivory panels, red total, three-column foot */
+  .inv-bar--top { padding: 12mm 20mm 10mm; }
+  .inv-logo { width: 86mm; }
+  .inv-tag { margin-top: 11px; }
+  .inv-body { padding: 12mm 22mm 7mm; }
+  .inv-title { font-size: 21pt; letter-spacing: 0; text-transform: none; padding-left: 0; line-height: 1.1; }
+  .inv-title::after { content: ""; display: block; width: 14mm; height: 1px; background: var(--kumkum); margin: 4mm auto 0; }
+  .inv-facts { margin-top: 7mm; background: var(--ivory); border: 0; }
+  .inv-facts > div { padding: 13px 10px 12px; }
+  .inv-facts > div + div { border-left: 1px solid #fff; }
+  .inv-facts > div > div:last-child { font-weight: 500; }
+  .inv-parties { margin-top: 9mm; gap: 0; }
+  .inv-parties > div { padding-left: 5mm; border-left: 1px solid var(--kumkum); }
+  .inv-parties .inv-strong { font-size: 11pt; margin-bottom: 2px; }
+  .inv-items { margin-top: 10mm; }
+  .inv-items th { background: var(--ivory); color: var(--kumkum); padding: 10px 0; border-bottom: 0; }
+  .inv-items th:first-child, .inv-items td:first-child { padding-left: 5mm; }
+  .inv-items th:last-child, .inv-items td:last-child { padding-right: 5mm; }
+  .inv-items td { padding: 16px 0; }
+  .inv-piece { font-size: 11.5pt; }
+  .inv-totals { width: 78mm; margin-top: 10px; }
+  .inv-totals td { padding: 5px 5mm 5px 0; }
+  .inv-totals td:first-child { padding-left: 5mm; }
+  .inv-totals tr.total td { background: var(--kumkum); color: var(--ivory); border: 0; padding: 12px 5mm 12px 0; font-size: 12.5pt; }
+  .inv-totals tr.total td:first-child { padding-left: 5mm; }
+  .inv-totals tr.total td:first-child { color: var(--ivory); }
+  .inv-close { margin-top: 9mm; }
+  .inv-thanks { font-size: 13pt; }
+  .inv-sign__line { margin-top: 10mm; }
+  .inv-small { padding-top: 5mm; }
+  .inv-foot { display: grid; grid-template-columns: 1fr 1.35fr 0.85fr; align-items: start; text-align: left; padding: 6mm 22mm; line-height: 1.7; }
+  .inv-foot > div + div { padding-left: 6mm; border-left: 1px solid rgba(245, 239, 227, 0.35); }
+  .inv-foot .inv-caps { display: block; margin-bottom: 4px; opacity: 0.8; }
 </style>
 
 <div class="inv">
@@ -154,9 +189,9 @@
     </div>
   </div>
 
-  <div class="inv-bar inv-bar--bottom">
-    <div class="inv-caps">{{ seller_legal_name }} · GSTIN {{ seller_gstin }} · {{ seller_state }}</div>
-    <div>{{ seller_address }}</div>
-    <div>{{ seller_phone }} · {{ shop.email }} · {{ shop.domain | default: 'anantavastram.com' }}</div>
+  <div class="inv-bar inv-bar--bottom inv-foot">
+    <div><span class="inv-caps">{{ seller_legal_name }}</span>GSTIN {{ seller_gstin }}<br>{{ seller_state }}</div>
+    <div><span class="inv-caps">Studio</span>{{ seller_address_1 }}<br>{{ seller_address_2 }}</div>
+    <div><span class="inv-caps">Write or call</span>{{ seller_phone }}<br>{% if shop.email != blank %}{{ shop.email }}<br>{% endif %}{{ shop.domain | default: 'anantavastram.com' }}</div>
   </div>
 </div>
