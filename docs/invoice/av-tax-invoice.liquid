@@ -3,7 +3,6 @@
   For the Shopify Order Printer app (Apps → Order Printer → Templates → Add template, paste this whole file),
   or any GST invoice app that takes a Liquid / HTML template.
   Fill in the details below once. Tax names, rates and amounts are read from the order, as Shopify calculated them.
-  HSN is read from the piece's metafield custom.hsn.
 {%- endcomment -%}
 {%- liquid
   assign seller_legal_name = 'Ananta Vastram'
@@ -108,7 +107,6 @@
       <thead>
         <tr>
           <th>Description</th>
-          <th style="width:24mm">HSN</th>
           <th class="num" style="width:14mm">Qty</th>
           <th class="num" style="width:30mm">Rate</th>
           <th class="num" style="width:32mm">Amount</th>
@@ -116,14 +114,12 @@
       </thead>
       <tbody>
         {%- for line_item in o.line_items -%}
-          {%- assign hsn = line_item.product.metafields.custom.hsn.value | default: line_item.product.metafields.custom.hsn | default: line_item.variant.harmonized_system_code -%}
           <tr>
             <td>
               <div class="inv-piece">{{ line_item.title }}</div>
               {%- if line_item.variant_title != blank and line_item.variant_title != 'Default Title' -%}<div class="inv-sub">{{ line_item.variant_title }}</div>{%- endif -%}
               {%- if line_item.sku != blank -%}<div class="inv-sub">{{ line_item.sku }}</div>{%- endif -%}
             </td>
-            <td>{{ hsn | default: '&nbsp;' }}</td>
             <td class="num">{{ line_item.quantity }}</td>
             <td class="num">{{ line_item.final_price | default: line_item.price | money }}</td>
             <td class="num">{{ line_item.final_line_price | default: line_item.line_price | money }}</td>
