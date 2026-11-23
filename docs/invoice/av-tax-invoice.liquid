@@ -60,11 +60,11 @@
   .inv-totals tr.total td:first-child { font-size: 6.8pt; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 300; color: var(--kumkum); vertical-align: middle; }
 
   /* closing: thanks left, signature right, small print pinned above the bottom bar */
-  .inv-close { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-top: 16mm; break-inside: avoid; }
+  .inv-close { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-top: 10mm; break-inside: avoid; }
   .inv-thanks { font-size: 13pt; line-height: 1.35; color: var(--kumkum); white-space: nowrap; }
   .inv-sign { width: 62mm; text-align: right; font-size: 8pt; color: var(--grey); }
-  .inv-sign__line { margin-top: 15mm; border-top: 1px solid var(--kumkum); padding-top: 6px; }
-  .inv-small { margin-top: auto; padding-top: 10mm; text-align: center; font-size: 7.6pt; line-height: 1.7; color: var(--grey); break-inside: avoid; }
+  .inv-sign__line { margin-top: 12mm; border-top: 1px solid var(--kumkum); padding-top: 6px; }
+  .inv-small { margin-top: auto; padding-top: 6mm; text-align: center; font-size: 7.6pt; line-height: 1.7; color: var(--grey); break-inside: avoid; }
   .inv-small p { max-width: 130mm; margin: 0 auto; }
 </style>
 
@@ -136,7 +136,7 @@
       <tr><td>Subtotal</td><td class="num">{{ o.subtotal_price | money }}</td></tr>
       <tr><td>Shipping</td><td class="num">{% if o.shipping_price == blank or o.shipping_price == 0 %}Free{% else %}{{ o.shipping_price | money }}{% endif %}</td></tr>
       {%- for tax_line in o.tax_lines -%}
-        <tr{% if forloop.last %} class="pre-total"{% endif %}><td>{{ tax_line.title }} {{ tax_line.rate | times: 100 | round: 2 }}%{% if o.taxes_included %}, included{% endif %}</td><td class="num">{{ tax_line.price | money }}</td></tr>
+        <tr{% if forloop.last %} class="pre-total"{% endif %}>{%- assign pct = tax_line.rate | times: 100 | round: 2 -%}{%- assign pct_whole = pct | round -%}<td>{{ tax_line.title }} {% if pct == pct_whole %}{{ pct_whole }}{% else %}{{ pct }}{% endif %}%{% if o.taxes_included %}, included{% endif %}</td><td class="num">{{ tax_line.price | money }}</td></tr>
       {%- endfor -%}
       <tr class="total"><td>Total</td><td class="num">{{ o.total_price | money }}</td></tr>
       {%- if o.total_outstanding != blank and o.total_outstanding != 0 -%}
