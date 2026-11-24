@@ -964,3 +964,7 @@ cart-items .cart__items { border-bottom: 0; padding-bottom: 0; }
   cart-items .cart-item__name { font-size: 18px; }
   .cart__footer { padding-top: 24px; }
 }
+
+/* Footer, 23 Nov 2026: the email field has room for its hint, and a link never breaks onto two lines on desktop. */
+.av-footer__news input { min-width: 0; }
+@media (min-width: 1101px) { .av-footer__grid .av-footer__col a { white-space: nowrap; } }
