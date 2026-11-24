@@ -81,7 +81,7 @@
   {%- if section.settings.whole and n > 0 -%}
   {%- comment -%} Whole mode: every photograph at its own proportions, in columns, so no garment is cut off. {%- endcomment -%}
   <div class="av-campaign__whole">
-    {%- for i in (0..7) -%}{%- if i < n -%}{% render 'av-campaign-image', imgs: imgs, i: i, from_blocks: from_blocks, ratio: '2 / 3', natural: true, sizes: '(min-width: 900px) 33vw, (min-width: 600px) 50vw, 100vw', loading: lead_loading %}{%- endif -%}{%- endfor -%}
+    {%- for i in (0..11) -%}{%- if i < n -%}{% render 'av-campaign-image', imgs: imgs, i: i, from_blocks: from_blocks, ratio: '2 / 3', natural: true, sizes: '(min-width: 900px) 33vw, (min-width: 600px) 50vw, 100vw', loading: lead_loading %}{%- endif -%}{%- endfor -%}
   </div>
   {%- elsif n > 0 -%}
   <div class="av-campaign__lead">
