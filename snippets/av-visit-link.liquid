@@ -1,0 +1,11 @@
+{%- comment -%}
+  Usage: {% render 'av-visit-link', label: 'Book a studio visit', class: 'av-link' %}
+  Opens the studio-visit pop-up (snippets/av-visit-dialog.liquid, rendered once in layout/theme.liquid), where the
+  visitor chooses Google Calendar or WhatsApp. Without JavaScript it is a plain WhatsApp link.
+{%- endcomment -%}
+{%- if settings.av_whatsapp_number != blank -%}
+  {%- assign number = settings.av_whatsapp_number | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' | remove: '.' -%}
+  <a class="{{ class | default: 'av-link' }}" href="https://wa.me/{{ number }}?text=I%20would%20like%20to%20book%20a%20studio%20visit" data-av-visit aria-haspopup="dialog">{{ label | default: 'Book a studio visit' | escape }}</a>
+{%- elsif settings.av_calendar_url != blank -%}
+  <a class="{{ class | default: 'av-link' }}" href="{{ settings.av_calendar_url }}" data-av-visit aria-haspopup="dialog">{{ label | default: 'Book a studio visit' | escape }}</a>
+{%- endif -%}

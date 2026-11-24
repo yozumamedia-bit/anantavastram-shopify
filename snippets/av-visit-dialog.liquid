@@ -1,0 +1,41 @@
+{%- comment -%}
+  The studio-visit pop-up (23 Nov 2026). One per page, opened by any [data-av-visit] link.
+  Two ways to book: Google Calendar (theme setting "Studio visit booking link", hidden while empty) and WhatsApp.
+{%- endcomment -%}
+<dialog class="av-visit" id="av-visit" aria-labelledby="av-visit-t">
+  <div class="av-visit__in">
+    <form method="dialog" class="av-visit__top">
+      <span class="av-label">Our Chennai studio</span>
+      <button class="av-visit__close" type="submit" aria-label="Close">{% render 'av-icon', name: 'close' %}</button>
+    </form>
+    <h2 class="av-sub av-sub--m" id="av-visit-t">Book a studio visit</h2>
+    <p class="av-body av-body--s">Visits are by appointment. Choose how you would like to book.</p>
+    <div class="av-visit__options">
+      {%- if settings.av_calendar_url != blank -%}
+        <a class="av-visit__option" href="{{ settings.av_calendar_url }}" target="_blank" rel="noopener">
+          <span class="av-visit__name">Google Calendar</span>
+          <span class="av-body av-body--meta">Pick a day and time that is open</span>
+        </a>
+      {%- endif -%}
+      {%- if settings.av_whatsapp_number != blank -%}
+        {%- assign number = settings.av_whatsapp_number | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' | remove: '.' -%}
+        <a class="av-visit__option" href="https://wa.me/{{ number }}?text=I%20would%20like%20to%20book%20a%20studio%20visit" target="_blank" rel="noopener">
+          <span class="av-visit__name">WhatsApp</span>
+          <span class="av-body av-body--meta">Message us and we will agree a time</span>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</dialog>
+<script>
+  (function () {
+    var d = document.getElementById('av-visit');
+    if (!d || !d.showModal) return;
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest && e.target.closest('[data-av-visit]');
+      if (t) { e.preventDefault(); d.showModal(); return; }
+      if (e.target === d) d.close();
+      if (e.target.closest && e.target.closest('.av-visit__option')) d.close();
+    });
+  })();
+</script>
