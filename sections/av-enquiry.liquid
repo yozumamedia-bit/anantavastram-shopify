@@ -23,7 +23,8 @@
     {%- if section.settings.label != blank -%}<div class="av-label">{{ section.settings.label | escape }}</div>{%- endif -%}
     <h2 class="av-sub av-sub--m">{{ section.settings.heading | escape }}</h2>
     {%- if section.settings.text != blank -%}<div class="av-body">{{ section.settings.text | escape | newline_to_br }}</div>{%- endif -%}
-    {%- assign cal_url = section.settings.calendar_url | default: settings.av_calendar_url -%}
+    {%- assign cal_url = section.settings.calendar_url -%}
+    {%- if cal_url == blank -%}{% render 'av-visit-link', label: 'Book a studio visit', class: 'av-link' %}{%- endif -%}
     {%- if cal_url != blank -%}
       <div class="av-stack" style="gap:8px">
         <a class="av-link" href="{{ cal_url }}" target="_blank" rel="noopener" aria-describedby="a11y-new-window-message">{% if section.settings.calendar_url != blank %}{{ section.settings.calendar_label | default: 'Book a call' | escape }}{% else %}Book a studio visit on Google Calendar{% endif %}</a>

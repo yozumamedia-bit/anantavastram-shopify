@@ -968,3 +968,17 @@ cart-items .cart__items { border-bottom: 0; padding-bottom: 0; }
 /* Footer, 23 Nov 2026: the email field has room for its hint, and a link never breaks onto two lines on desktop. */
 .av-footer__news input { min-width: 0; }
 @media (min-width: 1101px) { .av-footer__grid .av-footer__col a { white-space: nowrap; } }
+
+/* Studio visit pop-up, 23 Nov 2026: a small centred panel with the two ways to book. */
+.av-visit { width: min(440px, calc(100vw - 32px)); margin: auto; padding: 0; border: 0; background: var(--av-ivory); color: var(--av-ink); }
+.av-visit::backdrop { background: rgb(30 26 23 / 0.45); }
+.av-visit__in { padding: 28px 32px 32px; display: flex; flex-direction: column; gap: 14px; }
+.av-visit__top { display: flex; justify-content: space-between; align-items: center; margin: 0 0 6px; }
+.av-visit__close { width: 44px; height: 44px; margin-right: -12px; display: inline-flex; align-items: center; justify-content: center; background: none; border: 0; color: var(--av-kumkum); cursor: pointer; }
+.av-visit h2 { margin: 0; color: var(--av-kumkum); }
+.av-visit p { margin: 0; }
+.av-visit__options { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+.av-visit__option { display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; border: 1px solid var(--av-kumkum); color: var(--av-ink); text-decoration: none; transition: background 160ms ease, color 160ms ease; }
+.av-visit__name { font-family: var(--av-font-sans); font-weight: 500; font-size: 17px; color: var(--av-kumkum); }
+@media (hover: hover) { .av-visit__option:hover { background: var(--av-kumkum); } .av-visit__option:hover .av-visit__name, .av-visit__option:hover .av-body { color: var(--av-ivory); } }
+@media (max-width: 480px) { .av-visit__in { padding: 22px 20px 24px; } }

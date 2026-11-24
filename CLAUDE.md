@@ -117,3 +117,4 @@ Run `shopify theme check` before every commit.
 - Footer: the four link columns stay (house, shop, orders, contact links) but their headings are not shown.
 - Bag page: a bag mark beside "Your bag"; each piece has a quantity control (it was removed earlier; it is back), capped at the number held. Bag rules in `av-sections.css` are prefixed `cart-items` so they outrank the base theme's.
 - Invoice (`docs/invoice/`): legal name Ananta Vastram, GSTIN from the GST certificate; no HSN column, no place of supply; thank-you line centred above the returns note.
+- Studio visits: every "Book a studio visit" link (`snippets/av-visit-link.liquid`: homepage Commissions band, enquiry sections, footer "Visits by appointment") opens one pop-up (`snippets/av-visit-dialog.liquid`, rendered in `theme.liquid`) offering Google Calendar (`av_calendar_url`, hidden while empty) and WhatsApp.
