@@ -969,7 +969,7 @@ cart-items .cart__items { border-bottom: 0; padding-bottom: 0; }
 .av-footer__news input { min-width: 0; }
 @media (min-width: 1101px) { .av-footer__grid .av-footer__col a { white-space: nowrap; } }
 
-/* Studio visit pop-up, 23 Nov 2026: a small centred panel with the two ways to book. */
+/* Studio visit pop-up, 23 Nov 2026: a small centred panel with the two ways to book (Google Calendar, WhatsApp). */
 .av-visit { width: min(440px, calc(100vw - 32px)); margin: auto; padding: 0; border: 0; background: var(--av-ivory); color: var(--av-ink); }
 .av-visit::backdrop { background: rgb(30 26 23 / 0.45); }
 .av-visit__in { padding: 28px 32px 32px; display: flex; flex-direction: column; gap: 14px; }
