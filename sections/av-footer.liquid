@@ -38,6 +38,7 @@
     <div class="av-footer__studio-item">
       <p class="av-footer__title">Studio</p>
       <p>{{ settings.av_contact_address | escape | newline_to_br }}</p>
+      {%- comment -%} Opens the studio-visit pop-up. {%- endcomment -%}
       <p>{% render 'av-visit-link', label: 'Visits by appointment', class: 'av-footer__studio-link' %}</p>
     </div>
     {%- endif -%}

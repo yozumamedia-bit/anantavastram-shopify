@@ -335,6 +335,7 @@
       <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
+    {%- comment -%} The studio-visit pop-up, opened by any [data-av-visit] link. {%- endcomment -%}
     {% render 'av-visit-dialog' %}
   </body>
 </html>
