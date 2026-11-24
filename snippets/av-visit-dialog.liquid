@@ -1,6 +1,6 @@
 {%- comment -%}
   The studio-visit pop-up (23 Nov 2026). One per page, opened by any [data-av-visit] link.
-  Two ways to book: Google Calendar (theme setting "Studio visit booking link", hidden while empty) and WhatsApp.
+  Two ways: a video call booked on Google Calendar (theme setting av_calendar_url, the house's "Consultation & Product Catalog" page, hidden while empty) and WhatsApp for a visit in person.
 {%- endcomment -%}
 <dialog class="av-visit" id="av-visit" aria-labelledby="av-visit-t">
   <div class="av-visit__in">
@@ -9,19 +9,19 @@
       <button class="av-visit__close" type="submit" aria-label="Close">{% render 'av-icon', name: 'close' %}</button>
     </form>
     <h2 class="av-sub av-sub--m" id="av-visit-t">Book a studio visit</h2>
-    <p class="av-body av-body--s">Visits are by appointment. Choose how you would like to book.</p>
+    <p class="av-body av-body--s">{% if settings.av_calendar_url != blank %}Visits to the studio are by appointment. You can also see the pieces on a video call.{% else %}Visits are by appointment. Message us and we will agree a time.{% endif %}</p>
     <div class="av-visit__options">
       {%- if settings.av_calendar_url != blank -%}
         <a class="av-visit__option" href="{{ settings.av_calendar_url }}" target="_blank" rel="noopener">
-          <span class="av-visit__name">Google Calendar</span>
-          <span class="av-body av-body--meta">Pick a day and time that is open</span>
+          <span class="av-visit__name">Video call</span>
+          <span class="av-body av-body--meta">Half an hour on Google Meet. Pick a time on Google Calendar</span>
         </a>
       {%- endif -%}
       {%- if settings.av_whatsapp_number != blank -%}
         {%- assign number = settings.av_whatsapp_number | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' | remove: '.' -%}
         <a class="av-visit__option" href="https://wa.me/{{ number }}?text=I%20would%20like%20to%20book%20a%20studio%20visit" target="_blank" rel="noopener">
           <span class="av-visit__name">WhatsApp</span>
-          <span class="av-body av-body--meta">Message us and we will agree a time</span>
+          <span class="av-body av-body--meta">Message us to arrange a visit to the studio</span>
         </a>
       {%- endif -%}
     </div>
