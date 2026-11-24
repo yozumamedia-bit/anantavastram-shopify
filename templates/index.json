@@ -13,12 +13,12 @@
       "type": "av-hero",
       "settings": {
         "image": "shopify://shop_images/av-home-hero-door-2.jpg",
-        "image_mobile": "shopify://shop_images/av-home-hero-door-2.jpg",
-        "focus_y": 60,
-        "whole": true,
         "image_2": "shopify://shop_images/av-is-kovil-puri-jagananth-embrodering-photos-1-of-2.jpg",
         "image_3": "shopify://shop_images/av-gal1-5.jpg",
-        "image_4": "shopify://shop_images/av-gal-el-05997.jpg"
+        "image_4": "shopify://shop_images/av-gal-el-05997.jpg",
+        "image_mobile": "shopify://shop_images/av-home-hero-door-2.jpg",
+        "whole": true,
+        "focus_y": 60
       }
     },
     "credo": {
