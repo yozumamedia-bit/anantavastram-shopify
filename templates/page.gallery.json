@@ -85,13 +85,13 @@
         "i2": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/av-gal-el-05749.jpg"
+            "image": "shopify://shop_images/av-gal-el-05812.jpg"
           }
         },
         "i3": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/av-gal-el-05855.jpg"
+            "image": "shopify://shop_images/av-el-tree-of-life-05863.jpg"
           }
         },
         "i4": {
@@ -103,7 +103,7 @@
         "i5": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/av-gal-el-05812.jpg"
+            "image": "shopify://shop_images/av-gal-el-05997.jpg"
           }
         },
         "i6": {
@@ -115,13 +115,25 @@
         "i7": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/av-gal-el-05997.jpg"
+            "image": "shopify://shop_images/av-gal-el-05749.jpg"
           }
         },
         "i8": {
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/av-gal-el-06085.jpg"
+          }
+        },
+        "i9": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-el-tree-of-life-05765.jpg"
+          }
+        },
+        "i10": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/av-el-tree-of-life-05665.jpg"
           }
         }
       },
@@ -133,7 +145,9 @@
         "i5",
         "i6",
         "i7",
-        "i8"
+        "i8",
+        "i9",
+        "i10"
       ],
       "settings": {
         "label": "Campaign",
