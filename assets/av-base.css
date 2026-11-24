@@ -377,7 +377,7 @@ html.av-opening-active .av-header__wordmark { visibility: hidden; } /* the trave
 
 /* ---- footer ---------------------------------------------------------- */
 .av-footer { background: var(--av-kumkum); padding: 72px var(--av-gutter) 40px; display: flex; flex-direction: column; gap: 56px; }
-.av-footer__grid { display: grid; grid-template-columns: 1.4fr repeat(4, minmax(0, 1fr)); gap: 40px; }
+.av-footer__grid { display: grid; grid-template-columns: 1.4fr repeat(3, minmax(0, 1fr)); gap: 40px; }
 .av-footer__brand { display: flex; flex-direction: column; gap: 18px; }
 .av-footer__wordmark { font-family: var(--av-font-wordmark); font-weight: 700; font-size: 22px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--av-white); }
 .av-footer__symbol { display: block; width: 132px; height: auto; margin-bottom: 18px; }

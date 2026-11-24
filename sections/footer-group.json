@@ -13,14 +13,6 @@
             "fallback": "house"
           }
         },
-        "shop": {
-          "type": "column",
-          "settings": {
-            "heading": "Shop",
-            "menu": "av-shop",
-            "fallback": "shop"
-          }
-        },
         "orders": {
           "type": "column",
           "settings": {
@@ -40,7 +32,6 @@
       },
       "block_order": [
         "house",
-        "shop",
         "orders",
         "contact"
       ],
