@@ -114,6 +114,6 @@ Run `shopify theme check` before every commit.
 - Homepage hero photograph 3 is the wedding set at the studded door (`av-gal1-5.jpg`).
 
 ## Changes of 23 Nov 2026
-- Footer: the **Shop** column is removed (its links stay in the header). Columns are The house · Orders · Contact.
+- Footer: the four link columns stay (house, shop, orders, contact links) but their headings are not shown.
 - Bag page: a bag mark beside "Your bag"; each piece has a quantity control (it was removed earlier; it is back), capped at the number held. Bag rules in `av-sections.css` are prefixed `cart-items` so they outrank the base theme's.
 - Invoice (`docs/invoice/`): legal name Ananta Vastram, GSTIN from the GST certificate; no HSN column, no place of supply; thank-you line centred above the returns note.

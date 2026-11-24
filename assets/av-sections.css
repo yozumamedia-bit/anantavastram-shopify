@@ -624,7 +624,7 @@ html, body { overflow-x: clip; } /* nothing can push the page sideways, whatever
   .av-commissions .av-media { aspect-ratio: 16 / 7; }
   .av-coll-looks__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 20px; }
   .av-coll-opening .av-media, .av-coll-opening .av-video { aspect-ratio: 3 / 2; }
-  .av-footer__grid { grid-template-columns: 1fr 1fr 1.5fr; }
+  .av-footer__grid { grid-template-columns: 1fr 1fr 1fr 1.5fr; }
   .av-campaign__lead { grid-template-columns: 8fr 4fr; gap: 20px; }
   .av-coll-story__art { position: sticky; max-width: none; margin-inline: 0; }
   .av-footer__brand { grid-column: 1 / -1; }
