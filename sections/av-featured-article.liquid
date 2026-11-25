@@ -4,7 +4,7 @@
   When this section renders it owns the page h1 (visually hidden); av-tabs renders it otherwise.
 {%- endcomment -%}
 {%- liquid
-  assign article = blog.metafields.av.featured_article.value | default: blog.articles.first
+  assign article = blog.metafields.custom.featured_article.value | default: blog.articles.first
 -%}
 {%- if article != blank and current_tags == blank and current_page == 1 -%}
 <section class="av-featured">

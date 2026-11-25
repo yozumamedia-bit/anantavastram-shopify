@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": "Default",
   "presets": {
@@ -16,7 +25,8 @@
       "gradient_background_2": "",
       "heading_scale": 100,
       "type_body_font": "karla_n4",
-      "av_shipping_line": "[Shipping terms — India and worldwide, duties note]",
+      "favicon": "shopify://shop_images/av-favicon-wordmark.png",
+      "av_shipping_line": "Ready in our Chennai studio, sent in six to eight days. Free insured shipping in India. We ship worldwide from Chennai.",
       "av_currency_line": "India (INR ₹)",
       "body_scale": 100,
       "page_width": 1200,
@@ -112,7 +122,7 @@
       "social_twitter_link": "",
       "social_facebook_link": "",
       "social_pinterest_link": "",
-      "social_instagram_link": "",
+      "social_instagram_link": "https://www.instagram.com/ananta_vastram_/",
       "social_tiktok_link": "",
       "social_tumblr_link": "",
       "social_snapchat_link": "",
@@ -141,8 +151,18 @@
         }
       },
       "av_whatsapp_float": true,
-      "av_header_over_hero": true,
-      "av_tax_line": "Inclusive of all taxes"
+      "av_show_account": true,
+      "av_header_over_hero": false,
+      "av_tax_line": "Inclusive of all taxes",
+      "av_opening_line": "",
+      "av_contact_address": "6, 3rd Street, 3rd Floor, Abiramapuram\nChennai 600018, Tamil Nadu",
+      "av_contact_hours": "Monday to Saturday, 10 am to 6 pm IST",
+      "av_returns_line": "We confirm every order with you by chat or email before it is dispatched. A piece can be returned only if it arrives damaged. Write to us within 48 hours of delivery, with photographs.",
+      "av_usd_rate": 94,
+      "av_whatsapp_number": "919840002288",
+      "av_phone_number": "919884969996",
+      "av_phone_number_2": "919442174559",
+      "av_calendar_url": "https://calendar.app.google/4NhLiBdYSTyxKNQz9"
     }
   }
 }

@@ -1,11 +1,21 @@
 <section class="av-credo">
   <div class="av-label">{{ section.settings.label | escape }}</div>
-  <p class="av-statement av-statement--credo av-credo__text">{{ section.settings.statement | escape }}</p>
+  {%- comment -%} One sentence to a line, so no word is left hanging at the end of a line (16 Nov 2026). Inside a sentence, a line breaks at a comma before it breaks anywhere else. A line break typed in the setting also starts a new line. {%- endcomment -%}
+  <p class="av-statement av-statement--credo av-credo__text">
+    {%- assign sentences = section.settings.statement | strip | newline_to_br | replace: '<br />', '. ' | replace: '.. ', '. ' | split: '. ' -%}
+    {%- for sentence in sentences -%}
+      {%- assign line = sentence | strip -%}
+      {%- if line == blank -%}{%- continue -%}{%- endif -%}
+      {%- assign last = line | slice: -1, 1 -%}
+      {%- assign clauses = line | split: ', ' -%}
+      <span class="av-credo__sentence">{%- for clause in clauses -%}<span class="av-credo__clause">{{ clause | escape }}{% if forloop.last %}{% unless last == '.' or last == '?' or last == '!' %}.{% endunless %}{% else %},{% endif %}</span>{% unless forloop.last %}{{ ' ' }}{% endunless %}{%- endfor -%}</span>{{ ' ' }}
+    {%- endfor -%}
+  </p>
   <span class="av-credo__line"></span>
 </section>
 {% schema %}
 { "name": "AV Credo", "settings": [
-  { "type": "text", "id": "label", "label": "Label", "default": "The house keeps to this" },
-  { "type": "textarea", "id": "statement", "label": "Statement", "default": "Woven by hand, in numbered editions, by weavers we name. Nothing is made until it is asked for, and nothing is ever marked down." }
+  { "type": "text", "id": "label", "label": "Label", "default": "Handcrafted in Tamil Nadu" },
+  { "type": "textarea", "id": "statement", "label": "Statement", "default": "The veshti, embroidered by hand. Designed in our Chennai studio, on handloom cloth. Made in small numbers for authenticity." }
 ], "presets": [{ "name": "AV Credo" }] }
 {% endschema %}

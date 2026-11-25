@@ -1,21 +1,33 @@
 {%- comment -%}
   Commissions band on the homepage. Not a product row: an eyebrow, one full-bleed image, a Light statement,
-  "On enquiry" and a single link to the Commissions page. No price, no availability, no shipping line.
+  one paragraph, a link to the Commissions page, and two ways to book a studio visit (Google Calendar, WhatsApp). No price, no availability, no shipping line.
 {%- endcomment -%}
 <section class="av-commissions">
-  <div class="av-commissions__head"><span class="av-label">{{ section.settings.label | escape }}</span></div>
-  {% render 'av-media', image: section.settings.image, ratio: '16 / 7', sizes: '100vw', class: 'av-commissions__image' %}
+  {%- comment -%} The eyebrow "Commissions · Made to order" is split: the first part is the section's heading, the rest its label, so the band reads as its own section (16 Nov 2026). {%- endcomment -%}
+  {%- assign head_parts = section.settings.label | split: ' · ' -%}
+  <div class="av-commissions__head">
+    {%- if head_parts.size > 1 -%}<span class="av-label">{{ head_parts | slice: 1, 5 | join: ' · ' | escape }}</span>{%- endif -%}
+    <h2 class="av-sub av-sub--l">{{ head_parts.first | escape }}</h2>
+  </div>
+  {% render 'av-media', image: section.settings.image, ratio: '16 / 7', natural: true, sizes: '100vw', class: 'av-commissions__image' %}
   <div class="av-commissions__text">
-    <h2 class="av-statement av-statement--l av-commissions__statement">{{ section.settings.statement | escape }}</h2>
-    <div class="av-label">On enquiry</div>
-    <a class="av-link" href="{{ section.settings.link }}">See the commissions</a>
+    <p class="av-statement av-statement--l av-commissions__statement">{{ section.settings.statement | escape }}</p>
+    {%- if section.settings.routing != blank -%}<p class="av-body av-body--s av-commissions__routing">{{ section.settings.routing | escape }}</p>{%- endif -%}
+    <div class="av-commissions__links">
+      <a class="av-link" href="{{ section.settings.link }}">Begin a commission</a>
+    </div>
+    {%- comment -%} "Book a studio visit" opens a pop-up with the two ways to book: Google Calendar and WhatsApp (snippets/av-visit-dialog.liquid, 23 Nov 2026). {%- endcomment -%}
+    <div class="av-commissions__links">
+      {% render 'av-visit-link', label: 'Book a studio visit', class: 'av-link' %}
+    </div>
   </div>
 </section>
 {% schema %}
 { "name": "AV Commissions band", "settings": [
-  { "type": "text", "id": "label", "label": "Eyebrow", "default": "Commissions · Wedding" },
+  { "type": "text", "id": "label", "label": "Eyebrow", "default": "Commissions · Made to order" },
   { "type": "image_picker", "id": "image", "label": "Image (full bleed)" },
   { "type": "textarea", "id": "statement", "label": "Statement (General Sans Light)", "default": "One piece, for one person, made once." },
+  { "type": "textarea", "id": "routing", "label": "Paragraph", "default": "A commission is a piece that does not exist yet. It begins with a conversation and is finalised in our Chennai studio." },
   { "type": "url", "id": "link", "label": "Link to Commissions page" }
 ], "presets": [{ "name": "AV Commissions band" }] }
 {% endschema %}

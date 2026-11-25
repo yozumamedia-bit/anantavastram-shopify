@@ -3,8 +3,8 @@
   <div class="av-article__body">
     {% render 'av-article-meta', article: article, date_format: '%-d %B %Y' %}
     <h1 class="av-statement av-statement--l">{{ article.title | escape }}</h1>
-    {%- if article.metafields.av.video.value.sources.size > 0 -%}
-      {% render 'av-video', loop_video: article.metafields.av.video.value, poster: article.image %}
+    {%- if article.metafields.custom.video.value.sources.size > 0 -%}
+      {% render 'av-video', loop_video: article.metafields.custom.video.value, poster: article.image %}
     {%- elsif article.image != blank -%}
       {% render 'av-media', image: article.image, ratio: '16 / 10', sizes: '(min-width: 900px) 66vw, 100vw', loading: 'eager', priority: true %}
     {%- endif -%}
