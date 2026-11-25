@@ -251,8 +251,9 @@ html.no-js .av-reveal > .av-media__img, html.shopify-design-mode .av-reveal > .a
   height: var(--av-header-h);
   background: var(--av-kumkum);
   display: grid;
-  /* minmax(0, 1fr) keeps both sides equal so the wordmark stays on the true centre */
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  /* Equal sides keep the wordmark on the true centre. A side never shrinks below its own content (25 Nov 2026):
+     in a window too narrow for both, the wordmark moves a little off centre, and nothing is ever printed over it. */
+  grid-template-columns: minmax(min-content, 1fr) auto minmax(min-content, 1fr);
   column-gap: 32px;
   align-items: center;
   padding: 0 var(--av-gutter);
@@ -299,7 +300,7 @@ html.no-js .av-reveal > .av-media__img, html.shopify-design-mode .av-reveal > .a
 }
 @keyframes av-header-fill { from { opacity: 0; } to { opacity: 1; } }
 /* Narrow desktops: tighten the nav so both sides fit beside a centred wordmark */
-@media (min-width: 1024px) and (max-width: 1500px) {
+@media (min-width: 1024px) and (max-width: 1720px) {
   .av-header { padding: 0 32px; column-gap: 24px; }
   .av-header__nav, .av-header__right { gap: 24px; }
   .av-header__nav a { letter-spacing: 0.16em; }
@@ -446,7 +447,7 @@ html.av-opening-active .av-header__wordmark { visibility: hidden; } /* the trave
 .av-drawer__currency { all: unset; cursor: pointer; font-family: var(--av-font-nav); font-weight: 400; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--av-ivory); min-height: 44px; display: inline-flex; align-items: center; }
 /* The header's currency button needs room: below 1400px it leaves the bar (it stays in the phone menu and the footer),
    otherwise "Collections" ran into the wordmark in a narrowed window (found 21 Nov 2026). */
-@media (max-width: 1399px) { .av-header__icons .av-header__currency { display: none; } }
+@media (max-width: 1499px) { .av-header__icons .av-header__currency { display: none; } }
 @media (min-width: 1024px) and (max-width: 1140px) {
   .av-header__nav, .av-header__right { gap: 14px; }
   .av-header__nav a { letter-spacing: 0.06em; }
